@@ -30,7 +30,6 @@ class ApiWeb::V01::StopsController < ApiWeb::V01::ApiWebController
 
   def show
     respond_to do |format|
-      @manage_planning = [:organize]
       @show_isoline = false
       format.json
     end

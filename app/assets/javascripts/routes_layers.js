@@ -81,6 +81,7 @@ var popupModule = (function() {
           if (_context.options.url_click2call) {
             phoneNumberCall(data, _context.options.url_click2call);
           }
+          $.extend(data, _context.options.popupOptions);
 
           popup.setContent(SMT['stops/show'](data));
         }
@@ -496,7 +497,7 @@ var RoutesLayer = L.FeatureGroup.extend({
       success: function(data) {
         this._addRoutes(data);
         if (typeof callback === 'function') {
-          callback(this);
+          callback();
         }
       }.bind(this),
       complete: completeAjaxMap,

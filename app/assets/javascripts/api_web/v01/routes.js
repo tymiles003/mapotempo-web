@@ -39,12 +39,15 @@ var api_web_v01_routes_index = function(params) {
 
   var routesLayer = new RoutesLayer(planning_id, {
     unit: prefered_unit,
-    appBaseUrl: '/api-web/0.1/'
+    appBaseUrl: '/api-web/0.1/',
+    popupOptions: {
+      isoline: false
+    }
   }).addTo(map);
   routesLayer.showRoutes(route_ids, null, function() {
     if (fitBounds) {
       progressBar && progressBar.done();
-      var bounds = this.getBounds();
+      var bounds = routesLayer.getBounds();
       if (bounds && bounds.isValid()) {
         map.invalidateSize();
         map.fitBounds(bounds, {

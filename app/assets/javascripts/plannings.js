@@ -477,12 +477,17 @@ var plannings_edit = function(params) {
   params.geocoder = true;
 
   var map = mapInitialize(params);
+  var popupOptions = {};
+  $.each(params.manage_planning, function(i, elt) {
+    popupOptions['manage_' + elt] = true;
+  });
   var routesLayer = new RoutesLayer(planning_id, {
     url_click2call: url_click2call,
     unit: prefered_unit,
     outOfRouteId: outOfRouteId,
     allRoutesWithVehicle: allRoutesWithVehicle,
-    appBaseUrl: params.apiWeb ? '/api-web/0.1/' : '/'
+    appBaseUrl: params.apiWeb ? '/api-web/0.1/' : '/',
+    popupOptions: popupOptions
   }).on('clickStop', function(stop) {
     enlighten_stop(stop.index, stop.routeId);
   }).addTo(map);
@@ -1185,9 +1190,9 @@ var plannings_edit = function(params) {
       initRoutes($('#edit-planning'), data);
 
       if (options.firstTime) {
-        routesLayer.showAllRoutes(function(layer) {
+        routesLayer.showAllRoutes(function() {
           if (fitBounds) {
-            var bounds = layer.getBounds();
+            var bounds = routesLayer.getBounds();
             if (bounds && bounds.isValid()) {
               map.invalidateSize();
               map.fitBounds(bounds, {

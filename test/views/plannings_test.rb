@@ -32,6 +32,6 @@ class PlanningsTest < ActiveSupport::TestCase
     assert last_response.ok?, last_response.body
     json = JSON.parse(last_response.body)
     assert json['stop_id']
-    assert_equal true, json['manage_organize']
+    assert !json['manage_organize']
   end
 end

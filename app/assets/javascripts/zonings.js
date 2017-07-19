@@ -81,7 +81,10 @@ var zonings_edit = function(params) {
     allRoutesWithVehicle: [],
     appBaseUrl: params.apiWeb ? '/api-web/0.1/' : '/',
     withPolylines: false,
-    withQuantities: deliverableUnits.length > 0
+    withQuantities: deliverableUnits.length > 0,
+    popupOptions: {
+      isoline: false
+    }
   }).addTo(map);
 
   var zonesMap = {};
@@ -470,12 +473,12 @@ var zonings_edit = function(params) {
   var displayZoningFirstTime = function(data) {
     displayZoning(data);
     if (planning_id) {
-      markersGroup.showAllRoutes(function(layer) {
+      markersGroup.showAllRoutes(function() {
         $.each(featureGroup.getLayers(), function(idx, zone) {
           countPointInPolygon(zonesMap[zone._leaflet_id].layer, zonesMap[zone._leaflet_id].ele);
         });
         if (fitBounds && featureGroup.getLayers().length == 0) {
-          var bounds = layer.getBounds();
+          var bounds = markersGroup.getBounds();
           if (bounds && bounds.isValid()) {
             map.invalidateSize();
             map.fitBounds(bounds, {

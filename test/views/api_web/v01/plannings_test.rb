@@ -17,7 +17,6 @@ class ApiWeb::V01::PlanningsTest < ActiveSupport::TestCase
     assert last_response.ok?, last_response.body
     json = JSON.parse(last_response.body)
     assert json['stop_id']
-    assert_equal true, json['manage_organize']
-    assert_not json['manage_destination']
+    assert !json['manage_organize']
   end
 end

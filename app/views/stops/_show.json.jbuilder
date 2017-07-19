@@ -9,8 +9,6 @@ else
   json.automatic_insert true
 end
 
-(json.manage_organize true) if @manage_planning.include?(:organize)
-(json.manage_destination true) if @manage_planning.include?(:destination)
 (json.error true) if (stop.is_a?(StopVisit) && !stop.position?) || stop.out_of_window || stop.out_of_capacity || stop.out_of_drive_time || stop.no_path
 
 json.extract! stop, :name, :street, :detail, :postalcode, :city, :country, :comment, :phone_number, :lat, :lng, :drive_time, :out_of_window, :out_of_capacity, :out_of_drive_time, :no_path, :active

@@ -16,14 +16,12 @@
 # <http://www.gnu.org/licenses/agpl.html>
 #
 
-
 class StopsController < ApplicationController
   before_action :set_stop, only: :show # Before load_and_authorize_resource
   load_and_authorize_resource # Load resource except for show action
 
   def show
     respond_to do |format|
-      @manage_planning = PlanningsController.manage
       @show_isoline = true
       format.json
     end
