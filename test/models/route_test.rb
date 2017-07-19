@@ -199,37 +199,40 @@ class RouteTest < ActiveSupport::TestCase
     assert_equal route.color, route.default_color
   end
 
+  test 'should update route color' do
+    o = routes(:route_one_one)
+    o.update! color: '#123123' # Some visits are tagged with #FF0000
+    features = JSON.parse('[' + ((o.geojson_tracks || []) + (o.geojson_points || [])).join(',') + ']')
+    assert_equal ['#123123', '#FF0000'], features.map{ |f| f['properties']['color'] }.uniq.compact
+  end
+
   test 'should output as geojson' do
     o = routes(:route_one_one)
 
-    # polyline
+    # polyline & respect_hidden
+    o.hidden = false
+    assert_not o.hidden
+    geojson = JSON.parse(o.to_geojson(true, :polyline))
+    assert geojson['features'].size > 0
+    assert geojson['features'][0]['geometry']['polylines']
 
-    # respect_hidden
+    # polyline & don't respect_hidden
+    o.hidden = true
+    assert o.hidden
+    geojson = o.to_geojson(true, :polyline)
+    assert_equal geojson, '{"type":"FeatureCollection","features":[]}'
+
+    # coordinates & respect_hidden
     o.hidden = false
     assert_not o.hidden
     geojson = JSON.parse(o.to_geojson(true, true))
     assert geojson['features'].size > 0
-    assert geojson['features'][0]['geometry']['polylines']
+    assert geojson['features'][0]['geometry']['coordinates']
 
-    # dont't respect_hidden
+    # coordinates & don't respect_hidden
     o.hidden = true
     assert o.hidden
     geojson = o.to_geojson(true, true)
-    assert_equal geojson, "{\"type\":\"FeatureCollection\",\"features\":[]}"
-
-    # coordinates
-
-    # respect_hidden
-    o.hidden = false
-    assert_not o.hidden
-    geojson = JSON.parse(o.to_geojson(true, false))
-    assert geojson['features'].size > 0
-    assert geojson['features'][0]['geometry']['coordinates']
-
-    # dont't respect_hidden
-    o.hidden = true
-    assert o.hidden
-    geojson = o.to_geojson(true, false)
-    assert_equal geojson, "{\"type\":\"FeatureCollection\",\"features\":[]}"
+    assert_equal geojson, '{"type":"FeatureCollection","features":[]}'
   end
 end

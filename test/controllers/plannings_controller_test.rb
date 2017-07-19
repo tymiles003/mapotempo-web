@@ -157,6 +157,12 @@ class PlanningsControllerTest < ActionController::TestCase
     assert_equal 3, JSON.parse(response.body)['routes'].size
   end
 
+  test 'should show only some routes from planning' do
+    get :show, format: :json, id: @planning, route_ids: "#{routes(:route_one_one).id},#{routes(:route_three_one).id}"
+    assert_response :success
+    assert_equal 2, JSON.parse(response.body)['routes'].size
+  end
+
   test 'should show planning without loading stops' do
     begin
       Stop.class_eval do

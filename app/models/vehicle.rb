@@ -45,7 +45,7 @@ class Vehicle < ApplicationRecord
   after_initialize :assign_defaults, :increment_max_vehicles, if: 'new_record?'
   before_create :create_vehicle_usage
   before_save :nilify_router_options_blanks
-  before_update :update_outdated
+  before_update :update_outdated, :update_color
   before_destroy :destroy_vehicle
 
   include RefSanitizer
@@ -185,6 +185,16 @@ class Vehicle < ApplicationRecord
       vehicle_usages.each{ |vehicle_usage|
         vehicle_usage.routes.each{ |route|
           route.outdated = true
+        }
+      }
+    end
+  end
+
+  def update_color
+    if color_changed?
+      vehicle_usages.each{ |vehicle_usage|
+        vehicle_usage.routes.each{ |route|
+          route.vehicle_color_changed = true
         }
       }
     end

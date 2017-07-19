@@ -108,6 +108,7 @@ class VehicleTest < ActiveSupport::TestCase
     assert_not vehicle.vehicle_usages[0].routes[-1].outdated
     vehicle.capacities = {customers(:customer_one).deliverable_units[0].id => '12,3'}
     vehicle.save!
+    vehicle.reload
     assert vehicle.vehicle_usages[0].routes[-1].outdated
     assert_equal 12.3, Vehicle.where(name: :vehicle_one).first.capacities[customers(:customer_one).deliverable_units[0].id]
   end
@@ -117,8 +118,19 @@ class VehicleTest < ActiveSupport::TestCase
     assert_not vehicle.vehicle_usages[0].routes[-1].outdated
     vehicle.capacities = {}
     vehicle.save!
+    vehicle.reload
     assert vehicle.vehicle_usages[0].routes[-1].outdated
     assert_nil Vehicle.where(name: :vehicle_one).first.capacities[customers(:customer_one).deliverable_units[0].id]
+  end
+
+  test 'should update geojson if color changed' do
+    vehicle = vehicles(:vehicle_one)
+    vehicle.color = '#123123' # Some visits are tagged with #FF0000
+    vehicle.save!
+    vehicle.reload
+    o = vehicle.vehicle_usages[0].routes[-1]
+    features = JSON.parse('[' + ((o.geojson_tracks || []) + (o.geojson_points || [])).join(',') + ']')
+    assert_equal ['#123123', '#FF0000'], features.map{ |f| f['properties']['color'] }.uniq.compact
   end
 
   test 'should validate email' do

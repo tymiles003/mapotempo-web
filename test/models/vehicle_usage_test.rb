@@ -12,16 +12,6 @@ class VehicleUsageTest < ActiveSupport::TestCase
     vehicle_usage.save!
   end
 
-  test 'should update outdated for store' do
-    store = stores(:store_one).dup
-    store.save!
-    vehicle_usage = vehicle_usages(:vehicle_usage_one_one)
-    vehicle_usage.store_start = store
-    assert_not vehicle_usage.routes[-1].outdated
-    vehicle_usage.save!
-    assert vehicle_usage.routes[-1].outdated
-  end
-
   test 'should change store' do
     store = stores(:store_one).dup
     store.name = 's2'
@@ -33,22 +23,28 @@ class VehicleUsageTest < ActiveSupport::TestCase
     assert_not_equal store, vehicle_usage.store_stop
   end
 
-  test 'changes on service time start should set route out of date' do
+  test 'should update outdated for store' do
+    store = stores(:store_one).dup
+    store.save!
     vehicle_usage = vehicle_usages(:vehicle_usage_one_one)
-    assert vehicle_usage.service_time_start.nil?
-    route = vehicle_usage.routes.take
-    assert !route.outdated
-    vehicle_usage.update! service_time_start: 10.minutes.to_i
-    assert route.reload.outdated
+    assert_not vehicle_usage.routes[-1].outdated
+    [:store_start, :store_stop, :store_rest].shuffle.each do |attr|
+      vehicle_usage[attr.to_s + '_id'] = store.id
+      vehicle_usage.save!
+      vehicle_usage.reload
+      assert vehicle_usage.routes[-1].outdated
+    end
   end
 
-  test 'changes on service time end should set route out of date' do
+  test 'should update outdated if service time changed' do
     vehicle_usage = vehicle_usages(:vehicle_usage_one_one)
-    assert vehicle_usage.service_time_end.nil?
     route = vehicle_usage.routes.take
     assert !route.outdated
-    vehicle_usage.update! service_time_end: 10.minutes.to_i
-    assert route.reload.outdated
+    [:service_time_start, :service_time_end].shuffle.each do |attr|
+      assert vehicle_usage.send(attr).nil?
+      vehicle_usage.update! attr => 10.minutes.to_i
+      assert route.reload.outdated
+    end
   end
 
   test 'setting a rest duration requires time start and stop' do

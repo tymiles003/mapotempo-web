@@ -26,7 +26,7 @@ class Route < ApplicationRecord
   validates :planning, presence: true
 #  validates :vehicle_usage, presence: true # nil on unplanned route
   validate :stop_index_validation
-  attr_accessor :no_stop_index_validation
+  attr_accessor :no_stop_index_validation, :vehicle_color_changed
 
   include TimeAttr
   attribute :start, ScheduleType.new
@@ -476,7 +476,7 @@ class Route < ApplicationRecord
   end
 
   def changed?
-    @stops_updated || super
+    @stops_updated || @vehicle_color_changed || super
   end
 
   def set_send_to(name)
@@ -647,10 +647,10 @@ class Route < ApplicationRecord
 
   # Update geojson without need of computing route
   def update_geojson
-    if color_changed?
+    if color_changed? || @vehicle_color_changed
       self.geojson_tracks = self.geojson_tracks.map{ |s|
         linestring = JSON.parse(s)
-        linestring['properties']['color'] = self.color
+        linestring['properties']['color'] = self.default_color
         linestring.to_json
       }
       self.geojson_points = stops_to_geojson_points

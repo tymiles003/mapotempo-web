@@ -92,22 +92,15 @@ class VehicleUsageSetTest < ActiveSupport::TestCase
     assert !customer.vehicle_usage_sets[0].destroy
   end
 
-  test 'changes on service time start should set route out of date' do
+  test 'should update outdated if service time changed' do
     vehicle_usage_set = vehicle_usage_sets(:vehicle_usage_set_one)
-    assert vehicle_usage_set.service_time_start.nil?
-    route = vehicle_usage_set.vehicle_usages.detect{|vehicle_usage| vehicle_usage.service_time_start.nil? }.routes.take
+    route = vehicle_usage_set.vehicle_usages.sample.routes.take
     assert !route.outdated
-    vehicle_usage_set.update! service_time_start: 10.minutes.to_i
-    assert route.reload.outdated
-  end
-
-  test 'changes on service time end should set route out of date' do
-    vehicle_usage_set = vehicle_usage_sets(:vehicle_usage_set_one)
-    assert vehicle_usage_set.service_time_end.nil?
-    route = vehicle_usage_set.vehicle_usages.detect{|vehicle_usage| vehicle_usage.service_time_end.nil? }.routes.take
-    assert !route.outdated
-    vehicle_usage_set.update! service_time_end: 10.minutes.to_i
-    assert route.reload.outdated
+    [:service_time_start, :service_time_end].shuffle.each do |attr|
+      assert vehicle_usage_set.send(attr).nil?
+      vehicle_usage_set.update! attr => 10.minutes.to_i
+      assert route.reload.outdated
+    end
   end
 
   test 'setting a rest duration requires time start and stop' do
