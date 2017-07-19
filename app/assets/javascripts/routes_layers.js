@@ -55,6 +55,9 @@ var popupModule = (function() {
 
       _currentAjaxRequested.done(function() {
         marker.openPopup();
+        marker.on('popupclose', function() {
+          marker.unbindPopup();
+        });
       });
     }
   };
@@ -65,36 +68,38 @@ var popupModule = (function() {
       url: url,
       beforeSend: beforeSendWaiting,
       success: function(data) {
-        data.i18n = mustache_i18n;
-        data.routes = _context.options.allRoutesWithVehicle; // unecessary to load all for each stop
-        data.out_of_route_id = _context.options.outOfRouteId;
+        if (marker.getPopup()) {
+          data.i18n = mustache_i18n;
+          data.routes = _context.options.allRoutesWithVehicle; // unecessary to load all for each stop
+          data.out_of_route_id = _context.options.outOfRouteId;
 
-        var container = (function(data, marker) {
-          var options = { number: marker.properties.number };
-          if (marker.properties.tomtom) {
-            $.extend(options, { tomtom: marker.properties.tomtom });
-          }
-          marker.getPopup().setContent(SMT['stops/show']($.extend(data, options)));
+          var container = (function(data, marker) {
+            var options = { number: marker.properties.number };
+            if (marker.properties.tomtom) {
+              $.extend(options, { tomtom: marker.properties.tomtom });
+            }
+            marker.getPopup().setContent(SMT['stops/show']($.extend(data, options)));
 
-          return marker.getPopup()._container;
-        })(data, marker);
+            return marker.getPopup()._container;
+          })(data, marker);
 
-        if (container) {
-          if (_context.options.url_click2call) {
-            $('.phone_number', container).click(function(e) {
-              phone_number_call(e.currentTarget.innerHTML, _context.options.url_click2call, e.target);
+          if (container) {
+            if (_context.options.url_click2call) {
+              $('.phone_number', container).click(function(e) {
+                phone_number_call(e.currentTarget.innerHTML, _context.options.url_click2call, e.target);
+              });
+            }
+            $('[data-target$=isochrone-modal]', container).click(function() {
+              $('#isochrone_lat').val(data.lat);
+              $('#isochrone_lng').val(data.lng);
+              $('#isochrone_vehicle_usage_id').val(data.vehicle_usage_id);
+            });
+            $('[data-target$=isodistance-modal]', container).click(function() {
+              $('#isodistance_lat').val(data.lat);
+              $('#isodistance_lng').val(data.lng);
+              $('#isodistance_vehicle_usage_id').val(data.vehicle_usage_id);
             });
           }
-          $('[data-target$=isochrone-modal]', container).click(function() {
-            $('#isochrone_lat').val(data.lat);
-            $('#isochrone_lng').val(data.lng);
-            $('#isochrone_vehicle_usage_id').val(data.vehicle_usage_id);
-          });
-          $('[data-target$=isodistance-modal]', container).click(function() {
-            $('#isodistance_lat').val(data.lat);
-            $('#isodistance_lng').val(data.lng);
-            $('#isodistance_vehicle_usage_id').val(data.vehicle_usage_id);
-          });
         }
       },
       complete: completeAjaxMap,
@@ -116,7 +121,7 @@ var popupModule = (function() {
     _context = that;
   };
 
-  var publicObject = {
+  return {
     initGlobal: initializeModule,
     getPopupContent: getPopupContent,
     createPopupForLayer: createPopupForLayer,
@@ -142,8 +147,6 @@ var popupModule = (function() {
     }
 
   };
-
-  return publicObject;
 
 })();
 
