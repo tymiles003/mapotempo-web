@@ -35,3 +35,6 @@ before_script:
 # Run
 script:
   - bundle exec rake test
+
+notifications:
+  slack: mapotempo:JU2Tat4AuZkNYkQEtOTbtWGP#git
