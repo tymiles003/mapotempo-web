@@ -707,11 +707,18 @@ var destinations_index = function(params, api) {
           type: "delete",
           url: '/api/0.1/' + api + '/' + id + '.json',
           beforeSend: beforeSendWaiting,
-          success: function(data) {
+          success: function() {
             $row.remove();
             if (markers[id]) {
               markersLayers.removeLayer(markers[id]);
+              var keys  = Object.keys(markers);
+              var index = keys.indexOf(id);
               delete markers[id];
+
+              keys.splice(index, 1);
+              var last = keys[index] || keys[index - 1];
+              if (last)
+                over(last, true);
             }
             count_dec();
           },
