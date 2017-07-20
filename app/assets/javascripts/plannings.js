@@ -375,7 +375,7 @@ var plannings_edit = function(params) {
     };
 
     if (data) {
-      var routeL, routeStops, currentStop, $item;
+      var routeL, routeStops, marker, $item;
 
       data.forEach(function(route) {
         if (route.vehicle_usage_id) {
@@ -387,10 +387,10 @@ var plannings_edit = function(params) {
             routeL = routesLayer.clustersByRoute[route.id];
             if (routeL) {
               routeStops = routeL.getLayers();
-              currentStop = $(routeStops).sort(sort);
+              marker = routeStops.filter(sort)[0];
 
-              if (currentStop) {
-                currentStop.properties.tomtom = stop;
+              if (marker) {
+                marker.properties.tomtom = stop;
               }
             }
             $.each($("[data-stop_id='" + stop.id + "']"), function(i, item) {
