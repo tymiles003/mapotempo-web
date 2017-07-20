@@ -489,7 +489,7 @@ var plannings_edit = function(params) {
     appBaseUrl: params.apiWeb ? '/api-web/0.1/' : '/',
     popupOptions: popupOptions
   }).on('clickStop', function(stop) {
-    enlighten_stop(stop.index, stop.routeId);
+    enlighten_stop({index: stop.index, routeId: stop.routeId});
   }).addTo(map);
 
   if (vehicleLayer) map.addLayer(vehicleLayer);
@@ -572,11 +572,17 @@ var plannings_edit = function(params) {
   });
 
   // Used to highlight the current stop (or route if over 1t points) in sidebar routes
-  var enlighten_stop = function(index, routeId) {
-    var target = $(".routes [data-route_id='" + routeId + "'] [data-stop_index='" + index + "']");
+  var enlighten_stop = function(stop) {
+    var target;
+
+    if (stop.index) {
+      target = $(".routes [data-route_id='" + stop.routeId + "'] [data-stop_index='" + stop.index + "']");
+    } else {
+      target = $("[data-stop_id='" + stop.id + "']");
+    }
 
     if (target.length === 0) {
-      target = $(".routes [data-route_id='" + routeId + "']");
+      target = $(".routes [data-route_id='" + stop.routeId + "']");
     } else {
       target.css("background", "orange");
       setTimeout(function() {
@@ -1424,10 +1430,11 @@ var plannings_edit = function(params) {
 
   $(".main").on("click", ".automatic_insert", function() {
     var stop_id = $(this).closest("[data-stop_id]").attr("data-stop_id");
+
     automaticInsertStops([stop_id], {
       success: function(data) {
         updatePlanning(data);
-        enlighten_stop(stop_id);
+        enlighten_stop({id: stop_id});
       }
     });
   });
@@ -1484,8 +1491,8 @@ var plannings_edit = function(params) {
       url: url,
       beforeSend: beforeSendWaiting,
       success: function(data) {
-        data.stop_id_enlighten = stop_id;
         updatePlanning(data);
+        enlighten_stop({id: stop_id});
       },
       complete: completeAjaxMap,
       error: ajaxError
