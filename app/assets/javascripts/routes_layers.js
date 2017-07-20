@@ -68,39 +68,29 @@ var popupModule = (function() {
       url: url,
       beforeSend: beforeSendWaiting,
       success: function(data) {
-        if (marker.getPopup()) {
+        var popup = marker.getPopup();
+
+        if (popup) {
           data.i18n = mustache_i18n;
           data.routes = _context.options.allRoutesWithVehicle; // unecessary to load all for each stop
           data.out_of_route_id = _context.options.outOfRouteId;
-
-          var container = (function(data, marker) {
-            var options = { number: marker.properties.number };
-            if (marker.properties.tomtom) {
-              $.extend(options, { tomtom: marker.properties.tomtom });
-            }
-            marker.getPopup().setContent(SMT['stops/show']($.extend(data, options)));
-
-            return marker.getPopup()._container;
-          })(data, marker);
-
-          if (container) {
-            if (_context.options.url_click2call) {
-              $('.phone_number', container).click(function(e) {
-                phone_number_call(e.currentTarget.innerHTML, _context.options.url_click2call, e.target);
-              });
-            }
-            $('[data-target$=isochrone-modal]', container).click(function() {
-              $('#isochrone_lat').val(data.lat);
-              $('#isochrone_lng').val(data.lng);
-              $('#isochrone_vehicle_usage_id').val(data.vehicle_usage_id);
-            });
-            $('[data-target$=isodistance-modal]', container).click(function() {
-              $('#isodistance_lat').val(data.lat);
-              $('#isodistance_lng').val(data.lng);
-              $('#isodistance_vehicle_usage_id').val(data.vehicle_usage_id);
-            });
+          data.number = marker.properties.number;
+          if (marker.properties.tomtom) {
+            data.tomtom = marker.properties.tomtom;
           }
+          if (_context.options.url_click2call) {
+            phoneNumberCall(data, _context.options.url_click2call);
+          }
+
+          popup.setContent(SMT['stops/show'](data));
         }
+
+        $('#isochrone_lat').val(data.lat);
+        $('#isochrone_lng').val(data.lng);
+        $('#isochrone_vehicle_usage_id').val(data.vehicle_usage_id);
+        $('#isodistance_lat').val(data.lat);
+        $('#isodistance_lng').val(data.lng);
+        $('#isodistance_vehicle_usage_id').val(data.vehicle_usage_id);
       },
       complete: completeAjaxMap,
       error: ajaxError

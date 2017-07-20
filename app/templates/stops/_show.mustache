@@ -76,7 +76,7 @@
   {{/detail}}
   {{postalcode}} {{city}} {{country}}
   {{#phone_number}}
-    <br/><i class="fa fa-phone fa-fw"></i><a class="phone_number" target="click2call_iframe" href={{phone_number}}>{{phone_number}}</a>
+    <br/><i class="fa fa-phone fa-fw"></i><a class="phone_number" target="{{numberTarget}}" href={{numberHref}}>{{phone_number}}</a>
   {{/phone_number}}
   {{#comment}}
     <p class="wrapped-text">{{comment}}</p>

@@ -304,11 +304,7 @@ var fake_select2 = function(selector, callback) {
     .on('keydown', fake_select2_key_event);
 };
 
-var phone_number_call = function(num, url_template, link) {
-  if (num) {
-    link.href = url_template.replace('{TEL}', num);
-    if (document.location.protocol == 'http:' && !(link.href.substr(0, 5) == 'https')) {
-      link.target = link.target.replace('click2call_iframe', '_blank');
-    }
-  }
+var phoneNumberCall = function(object, userCall) {
+  object.numberHref   = userCall.replace("{TEL}", object.phone_number);
+  object.numberTarget = (document.location.protocol === "http:") ? '_blank' : '_self';
 };
