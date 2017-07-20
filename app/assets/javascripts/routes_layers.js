@@ -203,6 +203,7 @@ function markerClusterIcon(childCount, defaultColor, borderColors) {
   return new L.Icon.MarkerCluster();
 }
 
+var nbRoutes = 0;
 var RoutesLayer = L.FeatureGroup.extend({
   options: {
     outOfRouteId: undefined,
@@ -228,7 +229,7 @@ var RoutesLayer = L.FeatureGroup.extend({
     spiderfyOnMaxZoom: true,
     animate: false,
     maxClusterRadius: function(currentZoom) {
-      return currentZoom > defaultMapZoom ? 1 : 100;
+      return currentZoom > defaultMapZoom ? 1 : nbRoutes < 4 ? 30 * nbRoutes : 100;
     },
     spiderfyDistanceMultiplier: 0.5,
     // disableClusteringAtZoom: 12,
@@ -607,6 +608,7 @@ var RoutesLayer = L.FeatureGroup.extend({
     this.addLayer(globalLayer);
 
     // Add marker clusters
+    nbRoutes = Object.keys(this.clustersByRoute).length;
     for (var routeId in this.clustersByRoute) {
       this.addLayer(this.clustersByRoute[routeId]);
     }
