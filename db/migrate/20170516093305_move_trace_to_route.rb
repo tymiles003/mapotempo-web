@@ -5,7 +5,7 @@ class MoveTraceToRoute < ActiveRecord::Migration
     add_column :routes, :stop_no_path, :boolean
     add_column :stops, :no_path, :boolean
 
-    Route.find_each{ |route|
+    Route.includes({stops: {visit: [:tags, {destination: [:visits, :tags, :customer]}]}}).find_each{ |route|
       previous_with_pos = route.vehicle_usage && route.vehicle_usage.default_store_start.try(&:position?)
 
       geojson_tracks = []
@@ -90,7 +90,7 @@ class MoveTraceToRoute < ActiveRecord::Migration
     add_column :routes, :stop_trace, :text
     change_column :stops, :index, :integer, null: true
 
-    Route.find_each{ |route|
+    Route.includes({stops: {visit: [:tags, {destination: [:visits, :tags, :customer]}]}}).find_each{ |route|
       next unless route.geojson_tracks
       geojson_track_stop = nil
 

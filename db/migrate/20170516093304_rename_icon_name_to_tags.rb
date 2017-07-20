@@ -8,7 +8,7 @@ class RenameIconNameToTags < ActiveRecord::Migration
           elsif tag.icon == 'star'
             tag.icon = 'fa-star'
           elsif tag.icon == 'diamon'
-            tag.icon = 'fa-diamond'
+            tag.icon = 'fa-play'
           elsif tag.icon == 'user'
             tag.icon = 'fa-user'
           end
@@ -28,7 +28,7 @@ class RenameIconNameToTags < ActiveRecord::Migration
             tag.icon = 'square'
           elsif tag.icon == 'fa-star'
             tag.icon = 'star'
-          elsif tag.icon == 'fa-diamon'
+          elsif tag.icon == 'fa-play'
             tag.icon = 'diamond'
           elsif tag.icon == 'fa-user'
             tag.icon = 'user'
