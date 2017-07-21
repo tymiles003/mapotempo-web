@@ -80,4 +80,16 @@ class V01::Entities::RouteProperties < Grape::Entity
   expose(:hidden, documentation: { type: 'Boolean' })
   expose(:locked, documentation: { type: 'Boolean' })
   expose(:color, documentation: { type: String, desc: 'Color code with #. For instance: #FF0000' })
+  expose(:geojson, documentation: { type: String, desc: 'Geojson string of track and stops of the route. Default empty, set parameter geojson=true|point|polyline to get this extra content.' }) { |m, options|
+    if options[:geojson] != :false
+      m.to_geojson(true,
+        if options[:geojson] == :polyline
+          :polyline
+        elsif options[:geojson] == :point
+          false
+        else
+          true
+        end)
+    end
+  }
 end

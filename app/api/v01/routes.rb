@@ -52,10 +52,11 @@ class V01::Routes < Grape::API
         params do
           requires :id, type: String, desc: ID_DESC
           use :params_from_entity, entity: V01::Entities::Route.documentation.slice(:hidden, :locked, :color)
+          optional :geojson, type: Symbol, values: [:true, :false, :point, :polyline], default: :false, desc: 'Fill the geojson field with route geometry: `point` to return only points, `polyline` to return with encoded linestring.'
         end
         put ':id' do
           get_route.update! route_params
-          present get_route, with: V01::Entities::RouteProperties
+          present(get_route, with: V01::Entities::RouteProperties, geojson: params[:geojson])
         end
 
         desc 'Change stops activation.',

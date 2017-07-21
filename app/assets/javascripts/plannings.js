@@ -961,7 +961,7 @@ var plannings_edit = function(params) {
             type: 'PUT',
             data: JSON.stringify({
               hidden: hidden,
-              geojson: hidden ? 'false' : 'true'
+              geojson: (id in routesLayer.clustersByRoute) ? 'false' : 'polyline'
             }),
             contentType: 'application/json',
             url: '/api/0.1/plannings/' + planning_id + '/routes/' + id + '.json',
