@@ -208,6 +208,7 @@ var RoutesLayer = L.FeatureGroup.extend({
   options: {
     outOfRouteId: undefined,
     allRoutesWithVehicle: [],
+    colorsByRoute: {},
     isochrone: false,
     isodistance: false,
     url_click2call: undefined,
@@ -265,7 +266,7 @@ var RoutesLayer = L.FeatureGroup.extend({
         });
       } else {
         var childCount = cluster.getChildCount();
-        var routeColor = cluster.getAllChildMarkers()[0].properties.route_color || cluster.getAllChildMarkers()[0].properties.color;
+        var routeColor = cluster.getAllChildMarkers()[0].properties.route_color || '#707070';
         var countByColor = {};
         cluster.getAllChildMarkers().forEach(function(childMarker) {
           if (!countByColor[childMarker.properties.color]) {
@@ -507,7 +508,6 @@ var RoutesLayer = L.FeatureGroup.extend({
   },
 
   _addRoutes: function(geojson) {
-    var colorsByRoute = {};
     var overlappingMarkers = {};
 
     var globalLayer = L.geoJSON(geojson, {
@@ -533,10 +533,6 @@ var RoutesLayer = L.FeatureGroup.extend({
         layer.properties = feature.properties;
       }.bind(this),
       style: function(feature) {
-        if (!colorsByRoute[feature.properties.route_id]) {
-          colorsByRoute[feature.properties.route_id] = feature.properties.color;
-        }
-
         return {
           color: feature.properties.color,
           opacity: 0.5,
@@ -590,7 +586,7 @@ var RoutesLayer = L.FeatureGroup.extend({
 
         marker.properties = geoJsonPoint.properties;
         // Add route color to each marker
-        marker.properties.route_color = colorsByRoute[geoJsonPoint.properties.route_id];
+        marker.properties.route_color = this.options.colorsByRoute[geoJsonPoint.properties.route_id];
 
         if (storeId) {
           this.markerStores.push(marker);

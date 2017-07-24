@@ -227,7 +227,6 @@ var plannings_edit = function(params) {
     vehicles_usages_map = params.vehicles_usages_map,
     withStopsInSidePanel = params.with_stops,
     url_click2call = params.url_click2call,
-    colors = params.colors,
     layer_zoning,
     lastPopover,
     nbBackgroundTaskErrors = 0,
@@ -486,6 +485,7 @@ var plannings_edit = function(params) {
     unit: prefered_unit,
     outOfRouteId: outOfRouteId,
     allRoutesWithVehicle: allRoutesWithVehicle,
+    colorsByRoute: params.colors_by_route,
     appBaseUrl: params.apiWeb ? '/api-web/0.1/' : '/',
     popupOptions: popupOptions
   }).on('clickStop', function(stop) {
@@ -1155,7 +1155,7 @@ var plannings_edit = function(params) {
     data.i18n = mustache_i18n;
     data.planning_id = data.id;
 
-    var empty_colors = colors.slice();
+    var empty_colors = params.vehicle_colors.slice();
     empty_colors.unshift('');
 
     var updateColorsForRoutesAndStops = function(i, route) {

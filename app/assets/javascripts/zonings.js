@@ -79,6 +79,7 @@ var zonings_edit = function(params) {
     unit: prefered_unit,
     outOfRouteId: params.out_of_route_id,
     allRoutesWithVehicle: [],
+    colorsByRoute: params.colors_by_route,
     appBaseUrl: params.apiWeb ? '/api-web/0.1/' : '/',
     withPolylines: false,
     withQuantities: deliverableUnits.length > 0,
