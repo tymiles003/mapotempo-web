@@ -18,18 +18,12 @@ json.routes @routes do |route|
     json.work_time '%i:%02i' % [(route.vehicle_usage.default_close - route.vehicle_usage.default_open) / 60 / 60, (route.vehicle_usage.default_close - route.vehicle_usage.default_open) / 60 % 60]
   end
   number = 0
-  no_geolocalization = out_of_window = out_of_capacity = out_of_drive_time = no_path = false
   json.store_start do
     json.extract! route.vehicle_usage.default_store_start, :id, :name, :street, :postalcode, :city, :country, :lat, :lng
     (json.time route.start_time) if route.start
     (json.time_day number_of_days(route.start)) if route.start
   end if route.vehicle_usage && route.vehicle_usage.default_store_start
   json.stops route.stops do |stop|
-    out_of_window |= stop.out_of_window
-    out_of_capacity |= stop.out_of_capacity
-    out_of_drive_time |= stop.out_of_drive_time
-    no_geolocalization |= stop.is_a?(StopVisit) && !stop.position?
-    no_path |= stop.is_a?(StopVisit) && stop.no_path
     (json.error true) if (stop.is_a?(StopVisit) && !stop.position?) || stop.out_of_window || stop.out_of_capacity || stop.out_of_drive_time || stop.no_path
     json.stop_id stop.id
     json.extract! stop, :name, :street, :detail, :postalcode, :city, :country, :comment, :phone_number, :lat, :lng, :drive_time, :out_of_window, :out_of_capacity, :out_of_drive_time, :no_path
@@ -93,10 +87,12 @@ json.routes @routes do |route|
     out_of_drive_time |= route.stop_out_of_drive_time
     (json.no_path true) if route.stop_no_path
   end if route.vehicle_usage && route.vehicle_usage.default_store_stop
-  (json.route_no_geolocalization no_geolocalization) if no_geolocalization
-  (json.route_out_of_window out_of_window) if out_of_window
-  (json.route_out_of_capacity out_of_capacity) if out_of_capacity
-  (json.route_out_of_drive_time out_of_drive_time) if out_of_drive_time
-  (json.route_no_path no_path) if no_path
-  (json.route_error true) if no_geolocalization || out_of_window || out_of_capacity || out_of_drive_time || no_path
+  if route.no_geolocalization || route.out_of_window || route.out_of_capacity || route.out_of_drive_time || route.no_path
+    json.route_error true
+    json.route_no_geolocalization route.no_geolocalization
+    json.route_out_of_window route.out_of_window
+    json.route_out_of_capacity route.out_of_capacity
+    json.route_out_of_drive_time route.out_of_drive_time
+    json.route_no_path route.no_path
+  end
 end

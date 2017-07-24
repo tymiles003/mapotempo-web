@@ -102,7 +102,7 @@ class Route < ApplicationRecord
       service_time_end = service_time_end_value
       self.end = self.start = departure || vehicle_usage.default_open
       speed_multiplicator = vehicle_usage.vehicle.default_speed_multiplicator
-      if vehicle_usage.default_store_start && vehicle_usage.default_store_start.position?
+      if vehicle_usage.default_store_start.try(&:position?)
         last_lat, last_lng = vehicle_usage.default_store_start.lat, vehicle_usage.default_store_start.lng
       end
       router = vehicle_usage.vehicle.default_router
@@ -129,7 +129,7 @@ class Route < ApplicationRecord
         ret
       }
 
-      if !last_lat.nil? && !last_lng.nil? && vehicle_usage.default_store_stop && vehicle_usage.default_store_stop.position?
+      if !last_lat.nil? && !last_lng.nil? && vehicle_usage.default_store_stop.try(&:position?)
         segments << [last_lat, last_lng, vehicle_usage.default_store_stop.lat, vehicle_usage.default_store_stop.lng]
       else
         segments << nil
@@ -153,15 +153,14 @@ class Route < ApplicationRecord
           raise
         end
       end
-      traces[0] = [0, 0, nil] if !vehicle_usage.default_store_start || !vehicle_usage.default_store_start.position?
+      traces[0] = [0, 0, nil] if !vehicle_usage.default_store_start.try(&:position?)
 
       # Recompute Stops
       stops_time_windows = quantities_ = {}
       stops_sort.each{ |stop|
         if stop.active && (stop.position? || (stop.is_a?(StopRest) && ((stop.open1 && stop.close1) || (stop.open2 && stop.close2)) && stop.duration))
           stop.distance, stop.drive_time, trace = traces.shift
-          stop.no_path = (traces[0].nil? || vehicle_usage.default_store_start.try(:position?)) && trace.nil?
-          self.stop_no_path |= stop.no_path # Settled to true once
+          stop.no_path = (traces[0].nil? || vehicle_usage.default_store_start.try(:position?)) && stop.position? && trace.nil?
 
           if trace
             geojson_tracks << {
@@ -229,6 +228,7 @@ class Route < ApplicationRecord
         self.end += drive_time
         self.stop_distance, self.stop_drive_time = distance, drive_time
       end
+      self.stop_no_path = vehicle_usage.default_store_stop.try(:position?) && trace.nil?
 
       # Add service time to end point
       self.end += service_time_end unless service_time_end.nil?
@@ -432,6 +432,32 @@ class Route < ApplicationRecord
   def size_active
     # TODO: use :counter_cache for has_many relation
     vehicle_usage_id ? (stops.loaded? ? stops.select(&:active).size : stops.select(:active).count) : 0
+  end
+
+  def no_geolocalization
+    stops.loaded? ?
+      stops.any?{ |s| s.is_a?(StopVisit) && !s.position? } :
+      stops.joins(visit: :destination).where('destinations.lat IS NULL AND destinations.lng IS NULL').count > 0
+  end
+
+  def no_path
+    vehicle_usage_id && (stop_no_path ||
+      (stops.loaded? ?
+        stops.any?{ |s| s.is_a?(StopVisit) && s.no_path } :
+        stops.select(:no_path).where(type: 'StopVisit', no_path: true).count > 0))
+  end
+
+  [:out_of_window, :out_of_capacity, :out_of_drive_time].each do |s|
+    define_method "#{s}" do
+      vehicle_usage_id && (respond_to?("stop_#{s}") && send("stop_#{s}") ||
+        if stops.loaded?
+          stops.any?(&s)
+        else
+          h = {}
+          h[s] = true
+          stops.select(s).where(h).count > 0
+        end)
+    end
   end
 
   include LocalizedAttr

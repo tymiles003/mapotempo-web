@@ -49,7 +49,6 @@ if route.vehicle_usage
     json.status_any status_uniq.size > 0 || (!route.vehicle_usage.vehicle.devices[:tomtom_id].blank? && route.planning.customer.device.configured?(:tomtom))
   end
 end
-no_geolocalization = out_of_window = out_of_capacity = out_of_drive_time = no_path = false
 json.store_start do
   json.extract! route.vehicle_usage.default_store_start, :id, :name, :street, :postalcode, :city, :country, :lat, :lng, :color, :icon, :icon_size
   (json.time route.start_time) if route.start
@@ -64,11 +63,6 @@ json.with_stops @with_stops
 if @with_stops
   inactive_stops = 0
   json.stops route.vehicle_usage_id ? route.stops.sort_by{ |s| s.index || Float::INFINITY } : (route.stops.all?{ |s| s.name.to_i != 0 } ? route.stops.sort_by{ |s| s.name.to_i } : route.stops.sort_by{ |s| s.name.to_s.downcase }) do |stop|
-    out_of_window |= stop.out_of_window
-    out_of_capacity |= stop.out_of_capacity
-    out_of_drive_time |= stop.out_of_drive_time
-    no_geolocalization |= stop.is_a?(StopVisit) && !stop.position?
-    no_path |= stop.is_a?(StopVisit) && stop.no_path
     (json.error true) if (stop.is_a?(StopVisit) && !stop.position?) || stop.out_of_window || stop.out_of_capacity || stop.out_of_drive_time || stop.no_path
     json.stop_id stop.id
     json.stop_index stop.index
@@ -156,9 +150,12 @@ json.store_stop do
 end if route.vehicle_usage && route.vehicle_usage.default_store_stop
 (json.end_without_service Time.at(display_end_time(route)).utc.strftime('%H:%M')) if display_end_time(route)
 (json.end_without_service_day number_of_days(display_end_time(route))) if display_end_time(route)
-(json.route_no_geolocalization no_geolocalization) if no_geolocalization
-(json.route_out_of_window out_of_window) if out_of_window
-(json.route_out_of_capacity out_of_capacity) if out_of_capacity
-(json.route_out_of_drive_time out_of_drive_time) if out_of_drive_time
-(json.route_no_path no_path) if no_path
-(json.route_error true) if no_geolocalization || out_of_window || out_of_capacity || out_of_drive_time || no_path
+
+if route.no_geolocalization || route.out_of_window || route.out_of_capacity || route.out_of_drive_time || route.no_path
+  json.route_error true
+  json.route_no_geolocalization route.no_geolocalization
+  json.route_out_of_window route.out_of_window
+  json.route_out_of_capacity route.out_of_capacity
+  json.route_out_of_drive_time route.out_of_drive_time
+  json.route_no_path route.no_path
+end

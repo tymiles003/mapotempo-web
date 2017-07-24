@@ -11,7 +11,7 @@ class MoveTraceToRoute < ActiveRecord::Migration
       geojson_tracks = []
       route.stops.sort_by{ |s| s.route.vehicle_usage ? s.index : s.id }.each_with_index{ |stop, i|
         if stop.position? && stop.active?
-          stop.no_path |= stop.position? && stop.active && route.vehicle_usage && !stop.trace && previous_with_pos
+          stop.no_path = route.vehicle_usage && !stop.trace && previous_with_pos
           previous_with_pos = stop if stop.position?
 
           if stop.trace
@@ -48,6 +48,8 @@ class MoveTraceToRoute < ActiveRecord::Migration
             distance: route.stop_distance
           }.compact
         }.to_json
+      elsif route.vehicle_usage && route.vehicle_usage.default_store_stop.try(&:position?)
+        route.stop_no_path = true
       end
 
       route.geojson_tracks = geojson_tracks unless geojson_tracks.empty?
