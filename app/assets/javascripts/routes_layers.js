@@ -235,11 +235,6 @@ var RoutesLayer = L.FeatureGroup.extend({
       if (cluster._map.getZoom() > cluster._map.defaultMapZoom) {
         var markers = cluster.getAllChildMarkers();
         var n = ['…'];
-        if (markers[0].properties.number && markers.length > 2) {
-          n = [markers[0].properties.number, '…'];
-        } else if (markers[0].properties.number && markers[1].properties.number) {
-          n = [markers[0].properties.number, markers[1].properties.number];
-        }
         var color;
         if (markers.length > 50) {
           color = markers[0].properties.color;
