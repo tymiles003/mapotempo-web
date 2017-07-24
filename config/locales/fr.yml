@@ -1297,7 +1297,7 @@ fr:
     new:
       title: Nouveau planning
       dialog:
-        new_planning: Application du nouveau planning en cours, merci de patienter
+        new_planning: Création du nouveau planning en cours, merci de patienter
     export_file:
       ref_planning: référence planning
       planning: planning

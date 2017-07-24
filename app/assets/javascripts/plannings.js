@@ -489,7 +489,7 @@ var plannings_edit = function(params) {
     appBaseUrl: params.apiWeb ? '/api-web/0.1/' : '/',
     popupOptions: popupOptions
   }).on('clickStop', function(stop) {
-    enlighten_stop({index: stop.index, routeId: stop.routeId});
+    enlightenStop({index: stop.index, routeId: stop.routeId});
   }).addTo(map);
 
   if (vehicleLayer) map.addLayer(vehicleLayer);
@@ -572,7 +572,7 @@ var plannings_edit = function(params) {
   });
 
   // Used to highlight the current stop (or route if over 1t points) in sidebar routes
-  var enlighten_stop = function(stop) {
+  var enlightenStop = function(stop) {
     var target;
 
     if (stop.index) {
@@ -1434,7 +1434,7 @@ var plannings_edit = function(params) {
     automaticInsertStops([stop_id], {
       success: function(data) {
         updatePlanning(data);
-        enlighten_stop({id: stop_id});
+        enlightenStop({id: stop_id});
       }
     });
   });
@@ -1492,7 +1492,7 @@ var plannings_edit = function(params) {
       beforeSend: beforeSendWaiting,
       success: function(data) {
         updatePlanning(data);
-        enlighten_stop({id: stop_id});
+        enlightenStop({id: stop_id});
       },
       complete: completeAjaxMap,
       error: ajaxError

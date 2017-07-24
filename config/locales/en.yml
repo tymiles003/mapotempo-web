@@ -1268,7 +1268,7 @@ en:
     new:
       title: New plan
       dialog:
-        new_planning: Applying the new schedule in progress, please wait
+        new_planning: Creating the new schedule in progress, please wait
     export_file:
       ref_planning: reference planning
       planning: planning

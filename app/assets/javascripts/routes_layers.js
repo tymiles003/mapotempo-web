@@ -55,9 +55,6 @@ var popupModule = (function() {
 
       _currentAjaxRequested.done(function() {
         marker.openPopup();
-        marker.on('popupclose', function() {
-          marker.unbindPopup();
-        });
       });
     }
   };
@@ -314,11 +311,8 @@ var RoutesLayer = L.FeatureGroup.extend({
         if (e.layer.click)
           e.layer.click = false; // Don't forget to re-init e.layer.click
 
-        if (!e.layer.getPopup()) {
-          popupModule.createPopupForLayer(e.layer);
-        } else if (!e.layer.getPopup().isOpen()) {
-          e.layer.openPopup();
-        }
+        popupModule.createPopupForLayer(e.layer);
+
       } else if (e.layer instanceof L.Path) {
         e.layer.setStyle({
           opacity: 0.9,
@@ -337,10 +331,6 @@ var RoutesLayer = L.FeatureGroup.extend({
           weight: 5
         });
       }
-
-      if (this.popupOpenTimer) {
-        clearTimeout(this.popupOpenTimer);
-      }
     }.bind(this))
       .on('click', function(e) {
         // Open popup if only one is actually in a click statement.
@@ -354,19 +344,14 @@ var RoutesLayer = L.FeatureGroup.extend({
           if (e.layer.click) {
             if (e.layer === popupModule.activeClickMarker) {
               e.layer.closePopup();
-              popupModule.activeClickMarker = void(0);
             }
             e.layer.click = false;
           } else {
             if (popupModule.activeClickMarker === void(0)) {
-              if (!e.layer.getPopup()) {
-                popupModule.createPopupForLayer(e.layer);
-              } else {
-                e.layer.openPopup();
-              }
+              popupModule.createPopupForLayer(e.layer);
             } else if (e.layer !== popupModule.activeClickMarker) {
               popupModule.activeClickMarker.click = false;
-              popupModule.activeClickMarker.closePopup().unbindPopup();
+              popupModule.activeClickMarker.closePopup();
               popupModule.createPopupForLayer(e.layer);
             }
             popupModule.activeClickMarker = e.layer;
@@ -402,6 +387,7 @@ var RoutesLayer = L.FeatureGroup.extend({
       }.bind(this))
       .on('popupclose', function(e) {
         // Silence is golden
+        e.layer.unbindPopup();
         popupModule.activeClickMarker = void(0);
       }.bind(this));
   },
@@ -628,5 +614,6 @@ var RoutesLayer = L.FeatureGroup.extend({
         delete this.clustersByRoute[routeId];
       }
     }.bind(this));
+    popupModule.activeClickMarker = false;
   }
 });
