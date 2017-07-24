@@ -118,7 +118,7 @@ class ImporterDestinations < ImporterBase
     }
   end
 
-  def before_import(name, data, options)
+  def before_import(_name, data, options)
     @common_tags = nil
     @tag_labels = Hash[@customer.tags.collect{ |tag| [tag.label, tag] }]
     @tag_ids = Hash[@customer.tags.collect{ |tag| [tag.id, tag] }]
@@ -210,7 +210,7 @@ class ImporterDestinations < ImporterBase
     end
   end
 
-  def valid_row(destination, row)
+  def valid_row(destination)
     if destination.name.nil?
       raise ImportInvalidRow.new(I18n.t('destinations.import_file.missing_name'))
     end
@@ -219,7 +219,7 @@ class ImporterDestinations < ImporterBase
     end
   end
 
-  def import_row(name, row, options)
+  def import_row(_name, row, _options)
     return if !row[:stop_type].nil? && row[:stop_type] != I18n.t('destinations.import_file.stop_type_visit')
 
     # Deals with deprecated open and close
@@ -292,7 +292,7 @@ class ImporterDestinations < ImporterBase
       end
     end
 
-    valid_row(visit ? visit.destination : destination, row)
+    valid_row visit ? visit.destination : destination
     if visit
       # Instersection of tags of all rows for tags of new planning
       if !@common_tags
@@ -329,7 +329,7 @@ class ImporterDestinations < ImporterBase
     end
   end
 
-  def after_import(name, options)
+  def after_import(name, _options)
     if !@destinations_to_geocode.empty? && (@synchronous || !Mapotempo::Application.config.delayed_job_use)
       @destinations_to_geocode.each_slice(50){ |destinations|
         geocode_args = destinations.collect(&:geocode_args)
@@ -365,7 +365,7 @@ class ImporterDestinations < ImporterBase
     end
   end
 
-  def finalize_import(name, options)
+  def finalize_import(_name, _options)
     if !@destinations_to_geocode.empty? && !@synchronous && Mapotempo::Application.config.delayed_job_use
       @customer.job_destination_geocoding = Delayed::Job.enqueue(GeocoderDestinationsJob.new(@customer.id, @planning ? @planning.id : nil))
     elsif @planning

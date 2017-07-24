@@ -57,7 +57,7 @@ class ImporterStores < ImporterBase
     rows
   end
 
-  def before_import(name, data, options)
+  def before_import(_name, _data, options)
     @stores_to_geocode = []
 
     if options[:replace]
@@ -83,7 +83,7 @@ class ImporterStores < ImporterBase
     @stores_by_ref = Hash[@customer.stores.select(&:ref).collect{ |store| [store.ref, store] }]
   end
 
-  def import_row(name, row, options)
+  def import_row(_name, row, _options)
     if row[:name].nil?
       raise ImportInvalidRow.new(I18n.t('stores.import_file.missing_name'))
     end
@@ -109,7 +109,7 @@ class ImporterStores < ImporterBase
     store # For subclasses
   end
 
-  def after_import(name, options)
+  def after_import(_name, options)
     if options[:replace]
       if !@customer.stores[1].nil?
         @customer.vehicle_usage_sets.each{ |vehicle_usage_set|
@@ -137,7 +137,7 @@ class ImporterStores < ImporterBase
     @customer.save!
   end
 
-  def finalize_import(name, options)
+  def finalize_import(_name, _options)
     if !@stores_to_geocode.empty? && !@synchronous && Mapotempo::Application.config.delayed_job_use
       @customer.job_store_geocoding = Delayed::Job.enqueue(GeocoderStoresJob.new(@customer.id))
     end

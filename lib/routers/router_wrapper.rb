@@ -47,7 +47,8 @@ module Routers
         nocache_segments.each_slice(50){ |slice_segments|
           resource = RestClient::Resource.new(url + '/0.1/routes.json', timeout: nil)
           request = resource.post(params(mode, dimension, options).merge({
-              locs: slice_segments.collect{ |segment| segment.join(',') }.join('|')
+            locs: slice_segments.collect{ |segment| segment.join(',') }.join('|'),
+            precision: 6
           })) { |response, request, result, &block|
             case response.code
             when 200
@@ -107,8 +108,8 @@ module Routers
       if !request
         resource = RestClient::Resource.new(url + '/0.1/matrix.json', timeout: nil)
         request = resource.post(params(mode, dimensions.join('_'), options).merge({
-            src: row.flatten.join(','),
-            dst: row != column ? column.flatten.join(',') : nil
+          src: row.flatten.join(','),
+          dst: row != column ? column.flatten.join(',') : nil,
         }.compact)) { |response, request, result, &block|
           case response.code
           when 200
@@ -145,8 +146,8 @@ module Routers
       if !request
         resource = RestClient::Resource.new(url + '/0.1/isoline.json', timeout: nil)
         request = resource.post(params(mode, dimension, options).merge({
-            loc: [lat, lng].join(','),
-            size: size,
+          loc: [lat, lng].join(','),
+          size: size,
         })) { |response, request, result, &block|
           case response.code
           when 200

@@ -74,7 +74,7 @@ class ImporterVehicleUsageSets < ImporterBase
     rows
   end
 
-  def before_import(name, data, options)
+  def before_import(_name, data, options)
     if options[:line_shift] == 1
       # Create missing deliverable units if needed
       column_titles = data[0].is_a?(Hash) ? data[0].keys : data.size > 0 ? data[0].map { |a| a[0] } : []
@@ -111,7 +111,7 @@ class ImporterVehicleUsageSets < ImporterBase
     row[:capacities] = capacities if capacities.length > 0
   end
 
-  def import_row(name, row, options)
+  def import_row(_name, row, options)
     if row[:name_vehicle_usage_set].nil? && @vehicle_usage_set.nil?
       raise ImportInvalidRow.new(I18n.t('vehicle_usage_sets.import.missing_name'))
     elsif (row[:open].nil? || row[:close].nil?) && @vehicle_usage_set.nil?
@@ -165,7 +165,7 @@ class ImporterVehicleUsageSets < ImporterBase
     end
   end
 
-  def after_import(name, options)
+  def after_import(_name, options)
     @customer.save!
 
     if options[:replace] && @previous_vehicle_usage_set && @vehicle_usage_set && @vehicle_usage_set.persisted?
@@ -173,7 +173,7 @@ class ImporterVehicleUsageSets < ImporterBase
     end
   end
 
-  def finalize_import(name, options)
+  def finalize_import(_name, _options)
     @customer.save!
   end
 end
