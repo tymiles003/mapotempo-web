@@ -205,7 +205,7 @@ function markerClusterIcon(childCount, defaultColor, borderColors) {
 
 var nbRoutes = 0;
 var RoutesLayer = L.FeatureGroup.extend({
-  options: {
+  defaultOptions: {
     outOfRouteId: undefined,
     allRoutesWithVehicle: [],
     colorsByRoute: {},
@@ -293,7 +293,7 @@ var RoutesLayer = L.FeatureGroup.extend({
     popupModule.initGlobal(null, this);
     L.FeatureGroup.prototype.initialize.call(this);
     this.planningId = planningId;
-    this.options = $.extend(this.options, options);
+    this.options = $.extend({}, this.defaultOptions, options); // Don't modify defaultOptions which can be reinitialized by turbolinks
 
     // Clear layers if page is reloaded with turbolinks
     this.hideAllRoutes();
