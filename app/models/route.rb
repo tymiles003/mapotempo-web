@@ -203,7 +203,7 @@ class Route < ApplicationRecord
             self.distance += stop.distance if stop.distance
             self.end = stop.time + stop.duration
 
-            if vehicle_usage.vehicle.default_capacities? && stop.visit.try(:default_quantities?)
+            if stop.visit.try(:default_quantities?)
               stop.route.planning.customer.deliverable_units.each{ |du|
                 quantities_[du.id] = ((quantities_[du.id] || 0) + (stop.visit.default_quantities[du.id] || 0)).round(3)
               }
