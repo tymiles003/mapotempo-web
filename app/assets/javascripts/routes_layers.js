@@ -184,8 +184,11 @@ function markerClusterIcon(childCount, defaultColor, borderColors) {
           canvas.beginPath();
           canvas.moveTo(halfSize, halfSize);
           canvas.fillStyle = colorValue;
-          var from = start + 0.14,
-            to = start + size * Math.PI * 2;
+          var from = start;
+          if (Object.keys(borderColors).length > 1) {
+            from += 0.06;
+          }
+          var to = start + size * Math.PI * 2;
           if (to < from) {
             from = start;
           }
@@ -269,6 +272,7 @@ var RoutesLayer = L.FeatureGroup.extend({
           className: 'cluster-icon-container'
         });
       } else {
+        var useCanvasIcon = false;
         var childCount = cluster.getChildCount();
         var routeColor = cluster.getAllChildMarkers()[0].properties.route_color || '#707070';
         var countByColor = {};
@@ -278,9 +282,13 @@ var RoutesLayer = L.FeatureGroup.extend({
           } else {
             countByColor[childMarker.properties.color] += 1;
           }
+
+          if (childMarker.properties.color !== routeColor) {
+            useCanvasIcon = true;
+          }
         });
 
-        if (Object.keys(countByColor).length > 1) {
+        if (useCanvasIcon) {
           return markerClusterIcon(childCount, routeColor, countByColor);
         } else {
           return new L.DivIcon({
