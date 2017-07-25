@@ -39,6 +39,7 @@ var api_web_v01_routes_index = function(params) {
 
   var routesLayer = new RoutesLayer(planning_id, {
     unit: prefered_unit,
+    colorsByRoute: params.colors_by_route,
     appBaseUrl: '/api-web/0.1/',
     popupOptions: {
       isoline: false
