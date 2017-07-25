@@ -18,7 +18,7 @@
 class TagsController < ApplicationController
   load_and_authorize_resource
   before_action :set_tag, only: [:edit, :update, :destroy]
-  before_action :icons_table, only: [:new, :edit, :update]
+  before_action :icons_table, except: [:index]
 
   def index
     @tags = current_user.customer.tags
@@ -85,6 +85,6 @@ class TagsController < ApplicationController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def tag_params
-    params.require(:tag).permit(:label, :color, :icon, :ref)
+    params.require(:tag).permit(:label, :color, :icon, :icon_size, :ref)
   end
 end

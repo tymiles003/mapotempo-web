@@ -33,6 +33,7 @@ class StopVisit < Stop
            :phone_number,
            :color,
            :icon,
+           :icon_size,
            :default_icon,
            :default_icon_size,
            to: :visit
@@ -72,10 +73,6 @@ class StopVisit < Stop
 
   def base_updated_at
     [visit.updated_at, visit.destination.updated_at].max
-  end
-
-  def icon_size
-    nil
   end
 
   def to_s

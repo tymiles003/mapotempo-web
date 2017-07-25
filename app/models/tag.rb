@@ -28,7 +28,7 @@ class Tag < ApplicationRecord
   has_and_belongs_to_many :visits
   has_and_belongs_to_many :plannings
 
-  nilify_blanks
+  nilify_blanks before: :validation
   auto_strip_attributes :label
 
   validates :label, presence: true

@@ -45,13 +45,21 @@ class V01::TagsTest < ActiveSupport::TestCase
     end
   end
 
-  test 'should not create a tag' do
-    @tag.icon = '' # Invalid for enum
+  test 'should create a tag without icon' do
+    @tag.icon = '' # Use default icon instead
+    post api(), @tag.attributes
+    assert_equal 201, last_response.status
+    response = JSON.parse(last_response.body)
+    assert_nil response[:icon]
+    assert_not_nil @tag.reload.default_icon
+  end
+
+  test 'should not create if not a font awesome icon' do
+    @tag.icon = 'not-icon' # Invalid as font-awesome
     post api(), @tag.attributes
     assert_equal 400, last_response.status, 'Bad response: ' + last_response.body
     response = JSON.parse(last_response.body)
-    assert_match I18n.t('activerecord.errors.models.tag.icon_unknown'), response['message']
-    assert response['backtrace'], 'Empty backtrace'
+    assert_match(I18n.t('activerecord.errors.models.tag.icon_unknown'), response['message'])
   end
 
   test 'should update a tag' do

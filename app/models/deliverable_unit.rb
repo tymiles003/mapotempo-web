@@ -25,7 +25,7 @@ class DeliverableUnit < ApplicationRecord
 
   belongs_to :customer
 
-  nilify_blanks
+  nilify_blanks before: :validation
   auto_strip_attributes :label
   validates :default_quantity, numericality: { greater_than_or_equal_to: 0 }, allow_nil: true
   validates :default_capacity, numericality: { greater_than_or_equal_to: 0 }, allow_nil: true
