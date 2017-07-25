@@ -438,15 +438,15 @@ var RoutesLayer = L.FeatureGroup.extend({
     if (!this.clustersByRoute[routeId].hasLayer(marker)) {
       marker.addTo(this.clustersByRoute[routeId]);
     }
-
-    this.map.setView(marker.getLatLng(), this.map.getBounds().contains(marker.getLatLng()) ? this.map.getZoom() : 17, {
-      reset: true
-    });
-    var cluster = this.clustersByRoute[routeId].getVisibleParent(marker);
-    if (cluster && ('spiderfy' in cluster)) {
-      cluster.spiderfy();
+    if (this.map.getBounds().contains(marker.getLatLng()) && marker._map) {
+      // _map is actually undefined or null (markerCluster set it on clustered markers)
+      popupModule.createPopupForLayer(marker);
+    } else {
+      this.map.setView(this.map.getCenter(), this.map.getMaxZoom(), {animate: false, duration: 0});
+      this.clustersByRoute[routeId].zoomToShowLayer(marker, function() {
+        popupModule.createPopupForLayer(marker);
+      });
     }
-    popupModule.createPopupForLayer(marker);
   },
 
   _load: function(routeIds, includeStores, geojson, callback) {
