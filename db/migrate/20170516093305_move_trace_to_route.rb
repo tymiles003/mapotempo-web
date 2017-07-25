@@ -56,7 +56,7 @@ class MoveTraceToRoute < ActiveRecord::Migration
                   distance: route.stop_distance
                 }.compact
               }.to_json
-            elsif route.vehicle_usage && route.vehicle_usage.default_store_stop.try(&:position?)
+            elsif route.vehicle_usage && route.vehicle_usage.default_store_stop.try(&:position?) && route.stops.any?{ |s| s.active && s.position? }
               route.stop_no_path = true
             end
 

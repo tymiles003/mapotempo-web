@@ -232,7 +232,7 @@ class Route < ApplicationRecord
         self.end += drive_time
         self.stop_distance, self.stop_drive_time = distance, drive_time
       end
-      self.stop_no_path = vehicle_usage.default_store_stop.try(:position?) && trace.nil?
+      self.stop_no_path = vehicle_usage.default_store_stop.try(:position?) && stops_sort.any?{ |s| s.active && s.position? } && trace.nil?
 
       # Add service time to end point
       self.end += service_time_end unless service_time_end.nil?
