@@ -133,7 +133,7 @@
 
           <div class="col-md-6">
             <div class="input-group">
-              <%= number_field 'vehicle_usage[vehicle][router_options]', :weight, value: @vehicle_usage.vehicle.router_options['weight'], placeholder: !@vehicle_usage.vehicle.customer.weight.to_s.empty? ? t('customers.form.router_options_default', n: @vehicle_usage.vehicle.customer.weight) : '', step: 'any', class: 'form-control' %>
+              <%= number_field_tag 'vehicle_usage[vehicle][router_options][weight]', @vehicle_usage.vehicle.router_options['weight'], { min: 0, max: 1000, placeholder: !@vehicle_usage.vehicle.customer.weight.to_s.empty? ? t('customers.form.router_options_default', n: @vehicle_usage.vehicle.customer.weight) : '', class: 'form-control' } %>
               <span class="input-group-addon"><%= t('all.unit.ton') %></span>
             </div>
             <p class="help-block"><%=  t('customers.form.router_options_weight_range', from: 0, to: 1000) %></p>
@@ -147,7 +147,7 @@
 
           <div class="col-md-6">
             <div class="input-group">
-              <%= number_field 'vehicle_usage[vehicle][router_options]', :weight_per_axle, value: @vehicle_usage.vehicle.router_options['weight_per_axle'], placeholder: !@vehicle_usage.vehicle.customer.weight_per_axle.to_s.empty? ? t('customers.form.router_options_default', n: @vehicle_usage.vehicle.customer.weight_per_axle) : '', step: 'any', class: 'form-control' %>
+              <%= number_field_tag 'vehicle_usage[vehicle][router_options][weight_per_axle]', @vehicle_usage.vehicle.router_options['weight_per_axle'], { min: 0, max: 1000, placeholder: !@vehicle_usage.vehicle.customer.weight_per_axle.to_s.empty? ? t('customers.form.router_options_default', n: @vehicle_usage.vehicle.customer.weight_per_axle) : '', class: 'form-control' } %>
               <span class="input-group-addon"><%= t('all.unit.ton') %></span>
             </div>
             <p class="help-block"><%=  t('customers.form.router_options_weight_per_axle_range', from: 0, to: 1000) %></p>
@@ -161,7 +161,7 @@
 
           <div class="col-md-6">
             <div class="input-group">
-              <%= number_field 'vehicle_usage[vehicle][router_options]', :height, value: @vehicle_usage.vehicle.router_options['height'], placeholder: !@vehicle_usage.vehicle.customer.height.to_s.empty? ? t('customers.form.router_options_default', n: @vehicle_usage.vehicle.customer.height) : '', step: 'any', class: 'form-control' %>
+              <%= number_field_tag 'vehicle_usage[vehicle][router_options][height]', @vehicle_usage.vehicle.router_options['height'], { min: 0, max: 50, placeholder: !@vehicle_usage.vehicle.customer.height.to_s.empty? ? t('customers.form.router_options_default', n: @vehicle_usage.vehicle.customer.height) : '', class: 'form-control' } %>
               <span class="input-group-addon"><%= t('all.unit.m') %></span>
             </div>
             <p class="help-block"><%= t('customers.form.router_options_height_range', from: 0, to: 50) %></p>
@@ -175,7 +175,7 @@
 
           <div class="col-md-6">
             <div class="input-group">
-              <%= number_field 'vehicle_usage[vehicle][router_options]', :width, value: @vehicle_usage.vehicle.router_options['width'], placeholder: !@vehicle_usage.vehicle.customer.width.to_s.empty? ? t('customers.form.router_options_default', n: @vehicle_usage.vehicle.customer.width) : '', step: 'any', class: 'form-control' %>
+              <%= number_field_tag 'vehicle_usage[vehicle][router_options][width]', @vehicle_usage.vehicle.router_options['width'], { min: 0, max: 50, placeholder: !@vehicle_usage.vehicle.customer.width.to_s.empty? ? t('customers.form.router_options_default', n: @vehicle_usage.vehicle.customer.width) : '', class: 'form-control' } %>
               <span class="input-group-addon"><%= t('all.unit.m') %></span>
             </div>
             <p class="help-block"><%= t('customers.form.router_options_width_range', from: 0, to: 50) %></p>
@@ -189,7 +189,7 @@
 
           <div class="col-md-6">
             <div class="input-group">
-              <%= number_field 'vehicle_usage[vehicle][router_options]', :length, value: @vehicle_usage.vehicle.router_options['length'], placeholder: !@vehicle_usage.vehicle.customer.length.to_s.empty? ? t('customers.form.router_options_default', n: @vehicle_usage.vehicle.customer.length) : '', step: 'any', class: 'form-control' %>
+              <%= number_field_tag 'vehicle_usage[vehicle][router_options][length]', @vehicle_usage.vehicle.router_options['length'], { min: 0, max: 300, placeholder: !@vehicle_usage.vehicle.customer.length.to_s.empty? ? t('customers.form.router_options_default', n: @vehicle_usage.vehicle.customer.length) : '', class: 'form-control' } %>
               <span class="input-group-addon"><%= t('all.unit.m') %></span>
             </div>
             <p class="help-block"><%= t('customers.form.router_options_length_range', from: 0, to: 300) %></p>

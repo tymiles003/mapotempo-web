@@ -105,7 +105,7 @@
 
       <div class="col-md-6">
         <div class="input-group">
-          <%= number_field 'customer[router_options]', :weight, value: @customer.router_options['weight'], min: 0, max: 1000, step: 'any', class: 'form-control' %>
+          <%= number_field_tag 'customer[router_options][weight]', @customer.router_options['weight'], min: 0, max: 1000, class: 'form-control' %>
           <span class="input-group-addon"><%= t('all.unit.ton') %></span>
         </div>
         <p class="help-block"><%= t('customers.form.router_options_weight_range', from: 0, to: 1000) %></p>
