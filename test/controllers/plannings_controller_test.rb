@@ -382,12 +382,26 @@ class PlanningsControllerTest < ActionController::TestCase
     patch :switch, planning_id: @planning, format: :json, route_id: routes(:route_one_one).id, vehicle_usage_id: vehicle_usages(:vehicle_usage_one_one).id
     assert_response :success, id: @planning
     assert_equal 1, JSON.parse(response.body)['routes'].size
+    @planning.reload
+    @planning.routes.select(&:vehicle_usage).each{ |r| assert_equal 1, r.stops.select{ |s| s.is_a?(StopRest) }.size }
   end
 
   test 'should switch' do
+    @planning.routes.each(&:compute!) # To get correct colors for linestrings
+    assert_equal 0, JSON.parse(@planning.to_geojson)['features'].select{ |f|
+        f['geometry']['type'] == 'LineString' && f['properties']['color'] == '#00FF00'
+      }.size
+
     patch :switch, planning_id: @planning, format: :json, route_id: routes(:route_one_one).id, vehicle_usage_id: vehicle_usages(:vehicle_usage_one_three).id
     assert_response :success, id: @planning
     assert_equal 2, JSON.parse(response.body)['routes'].size
+    @planning.reload
+    @planning.routes.select(&:vehicle_usage).each{ |r|
+      assert_equal 1, r.stops.select{ |s| s.is_a?(StopRest) }.size
+    }
+    assert_equal 2, JSON.parse(@planning.to_geojson)['features'].select{ |f|
+        f['geometry']['type'] == 'LineString' && f['properties']['color'] == '#00FF00'
+      }.size
   end
 
   test 'should not switch' do

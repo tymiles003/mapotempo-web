@@ -27,7 +27,7 @@ vehicle_three:
   emission: 1.5
   consumption: 1.5
   capacities: '"1" => "3"'
-  color: "#004499"
+  color: "#00FF00"
   customer: customer_one
   speed_multiplicator:
 

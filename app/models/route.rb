@@ -386,7 +386,7 @@ class Route < ApplicationRecord
     if vehicle_usage
       self.optimized_at = self.last_sent_to = self.last_sent_at = nil
     end
-    compute!
+    outdated = true
   end
 
   def move_stop_out(stop, force = false)
@@ -396,7 +396,7 @@ class Route < ApplicationRecord
         self.optimized_at = self.last_sent_to = self.last_sent_at = nil
       end
       stop.route.stops.destroy(stop)
-      compute!
+      outdated = true
     end
   end
 
@@ -659,7 +659,7 @@ class Route < ApplicationRecord
       elsif stops.none?{ |stop| stop.is_a?(StopRest) }
         add_rest
       end
-      self.outdated = true if outdated.nil?
+      self.outdated = true
       self.optimized_at = self.last_sent_to = self.last_sent_at = nil
     end
   end
