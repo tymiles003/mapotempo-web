@@ -52,12 +52,12 @@ class VehicleUsagesController < ApplicationController
     # Convert each time field into integer from hour and day value
     times.each do |time|
       if !params[:vehicle_usage]["#{time}_day".to_sym].to_s.empty? && !local_params[time].to_s.empty?
-        local_params[time] = ChronicDuration.parse("#{params[:vehicle_usage]["#{time}_day".to_sym]} days and #{local_params[time].tr(':', 'h')}min")
+        local_params[time] = ChronicDuration.parse("#{params[:vehicle_usage]["#{time}_day".to_sym]} days and #{local_params[time].tr(':', 'h')}min", keep_zero: true)
       elsif !params[:vehicle_usage]["#{time}_day".to_sym].to_s.empty? && local_params[time].to_s.empty?
         # Use default value if only input day is given
         default_time_value = @vehicle_usage.send("default_#{time}_time")
         if default_time_value && !default_time_value.empty?
-          local_params[time] = ChronicDuration.parse("#{params[:vehicle_usage]["#{time}_day".to_sym]} days and #{default_time_value.tr(':', 'h')}min")
+          local_params[time] = ChronicDuration.parse("#{params[:vehicle_usage]["#{time}_day".to_sym]} days and #{default_time_value.tr(':', 'h')}min", keep_zero: true)
         end
       end
     end

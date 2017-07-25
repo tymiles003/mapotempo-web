@@ -211,7 +211,7 @@ class VehicleUsage < ApplicationRecord
   end
 
   def close_after_open
-    if self.open.present? && self.close.present? && self.close <= self.open
+    if self.default_open.present? && self.default_close.present? && self.default_close <= self.default_open
       errors.add(:close, I18n.t('activerecord.errors.models.vehicle_usage.attributes.close.after'))
     end
   end

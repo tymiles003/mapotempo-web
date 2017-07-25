@@ -43,6 +43,8 @@ class VehicleUsageSet < ApplicationRecord
   validates :customer, presence: true
   validates :name, presence: true
 
+  validates :open, presence: true
+  validates :close, presence: true
   validate :close_after_open
   validate :rest_stop_after_rest_start
   validates :rest_start, presence: {if: :rest_duration?, message: ->(*_) { I18n.t('activerecord.errors.models.vehicle_usage_set.missing_rest_window') }}

@@ -20,7 +20,7 @@ module Exceptions
 
   # Class errors # | ADD new nested handlers here |
   class NegativeErrors     < BaseNestedModelErrors; end
-  class CLoseAndOpenErrors < BaseNestedModelErrors; end
+  class CloseAndOpenErrors < BaseNestedModelErrors; end
 
   ############################################
   #   Nested Manager, handle display errors  #

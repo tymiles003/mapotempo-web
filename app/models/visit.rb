@@ -207,25 +207,25 @@ class Visit < ApplicationRecord
 
   def close1_after_open1
     if self.open1.present? && self.close1.present? && self.close1 < self.open1
-      raise Exceptions::CLoseAndOpenErrors.new(nil, id, nested_attr: :close1, record: self)
+      raise Exceptions::CloseAndOpenErrors.new(nil, id, nested_attr: :close1, record: self)
     end
-  rescue Exceptions::CLoseAndOpenErrors => e
+  rescue Exceptions::CloseAndOpenErrors
     self.errors.add(:close1, :after, s: I18n.t('activerecord.attributes.visit.open1').downcase)
   end
 
   def close2_after_open2
     if self.open2.present? && self.close2.present? && self.close2 < self.open2
-      raise Exceptions::CLoseAndOpenErrors.new(nil, id, nested_attr: :close2, record: self)
+      raise Exceptions::CloseAndOpenErrors.new(nil, id, nested_attr: :close2, record: self)
     end
-  rescue Exceptions::CLoseAndOpenErrors => e
+  rescue Exceptions::CloseAndOpenErrors
     self.errors.add(:close2, :after, s: I18n.t('activerecord.attributes.visit.open2').downcase)
   end
 
   def open2_after_close1
     if self.open2.present? && self.close1.present? && self.open2 < self.close1
-      raise Exceptions::CLoseAndOpenErrors.new(nil, id, nested_attr: :close2, record: self)
+      raise Exceptions::CloseAndOpenErrors.new(nil, id, nested_attr: :close2, record: self)
     end
-  rescue Exceptions::CLoseAndOpenErrors => e
+  rescue Exceptions::CloseAndOpenErrors
     self.errors.add(:open2, :after, s: I18n.t('activerecord.attributes.visit.close1').downcase)
   end
 end
