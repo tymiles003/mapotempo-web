@@ -54,16 +54,16 @@
 }
 
 [data-controller='customers'][data-action='index'] {
-  .table-striped tr:nth-child(4n+1),
-  .table-striped tr:nth-child(4n+2) {
-    background-color: #f9f9f9;
-  }
-
-  .table-striped tr:nth-child(4n+3),
-  .table-striped tr:nth-child(4n+4) {
+  .table-striped tr {
     background-color: transparent;
   }
 
+  .table-striped tr:nth-child(4n+1) td,
+  .table-striped tr:nth-child(4n+2) td {
+    background-color: #f9f9f9;
+  }
+
+  .table-striped tr:nth-child(4n+0) td,
   .table-striped tr:nth-child(4n+2) td {
     border-top: none;
   }

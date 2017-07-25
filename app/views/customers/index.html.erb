@@ -91,7 +91,7 @@
         </td>
         <td><%= customer.destinations.count %></td>
         <td><%= customer.plannings.count %></td>
-        <td class="text-right">
+        <td rowspan="2" class="text-right">
           <div class="btn-group" role="group" aria-label="Actions">
             <%= link_to [:duplicate, customer], method: :patch, class: "btn btn-default btn-sm", title: t('all.verb.duplicate'), data: { confirm: t('all.verb.destroy_confirm') } do %>
               <i class="fa fa-copy fa-fw"></i>
@@ -107,7 +107,7 @@
       </tr>
       <tr>
         <td></td>
-        <td colspan="13">
+        <td colspan="9">
           <%= render 'job', customer: customer, job: customer.job_optimizer %>
           <%= render 'job', customer: customer, job: customer.job_destination_geocoding %>
           <%= render 'job', customer: customer, job: customer.job_store_geocoding %>
