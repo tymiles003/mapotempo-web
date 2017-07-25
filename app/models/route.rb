@@ -210,11 +210,10 @@ class Route < ApplicationRecord
               stop.out_of_capacity = stop.route.planning.customer.deliverable_units.any?{ |du|
                 vehicle_usage.vehicle.default_capacities[du.id] && quantities_[du.id] > vehicle_usage.vehicle.default_capacities[du.id]
               }
-
-              self.quantities = quantities_
             else
               stop.out_of_capacity = false
             end
+            self.quantities = quantities_
 
             stop.out_of_drive_time = stop.time > vehicle_usage.default_close
           end
