@@ -266,7 +266,7 @@ var RoutesLayer = L.FeatureGroup.extend({
         }
 
         return new L.divIcon({
-          html: '<span class="fa-stack"><i class="fa fa-circle cluster-point-icon" style="color: ' + color + ';"></i><span class="fa-stack-1x point-icon-text cluster-point-text">' + n.join(',') + '</span></span>',
+          html: '<span class="fa-stack"><i class="fa fa-circle cluster-point-icon" style="color: ' + color + '; text-shadow: 0 0 6px rgba(10, 10, 6, 0.7);"></i><span class="fa-stack-1x point-icon-text cluster-point-text">' + n.join(',') + '</span></span>',
           iconSize: new L.Point(24, 24),
           iconAnchor: new L.Point(12, 12),
           className: 'cluster-icon-container'
