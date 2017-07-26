@@ -574,20 +574,55 @@ var RoutesLayer = L.FeatureGroup.extend({
             className: 'store-icon-container'
           });
         } else {
+          var radius, baseAngle, baseMultiplier = 6, baseModulo = 1, lowIndex = false;
+
           var pointIcon = geoJsonPoint.properties.icon || 'fa-circle';
           var pointIconSize = geoJsonPoint.properties.icon_size || 'medium';
           var pointColor = geoJsonPoint.properties.color || '#707070';
           var pointAnchor = new L.Point(this.map.iconSize[pointIconSize].size / 2, this.map.iconSize[pointIconSize].size / 2);
-          if (overlappingMarkers[overlapKey] && overlappingMarkers[overlapKey] !== routeId) {
-            pointAnchor = new L.Point(0, 0);
+
+          if (overlappingMarkers[overlapKey]) {
+            if (!overlappingMarkers.routeIds.includes(routeId)) {
+              var cycleSize = overlappingMarkers[overlapKey] === (baseMultiplier * Math.pow(overlappingMarkers.modulo, 2));
+
+              if ((overlappingMarkers[overlapKey] % overlappingMarkers.multiplier) === 0 && cycleSize) {
+                overlappingMarkers.modulo++;
+                overlappingMarkers.multiplier *= overlappingMarkers.modulo;
+              }
+
+              radius = 13 * overlappingMarkers.modulo;
+              baseAngle = 10 * overlappingMarkers.modulo;
+
+              var x = radius * Math.cos(baseAngle * overlappingMarkers[overlapKey]);
+              var y = radius * Math.sin(baseAngle * overlappingMarkers[overlapKey]);
+
+              var reducer = this.map.iconSize[pointIconSize].size / 2;
+              pointAnchor = new L.Point(x + reducer, y + reducer);
+
+              overlappingMarkers[overlapKey]++;
+              overlappingMarkers.routeIds.push(routeId);
+              lowIndex = true;
+            } else {
+              // Reset values if same routes same posXY
+              this.clustersByRoute[routeId].getLayers().forEach(function(marker) {
+                var size = this.map.iconSize[pointIconSize].size / 2;
+                marker.options.icon.options.iconAnchor = marker.options.icon.options.popupAnchor = L.Point(size, size);
+              }.bind(this));
+            }
           } else {
-            overlappingMarkers[overlapKey] = routeId;
+            overlappingMarkers[overlapKey] = 1;
+            overlappingMarkers.modulo = baseModulo;
+            overlappingMarkers.multiplier = baseMultiplier * overlappingMarkers.modulo;
+            overlappingMarkers.routeIds = [];
           }
+
+          var pAnchor = [-pointAnchor.x + this.map.iconSize[pointIconSize].size / 2, -pointAnchor.y + this.map.iconSize[pointIconSize].size / 2];
 
           icon = L.divIcon({
             html: '<span class="fa-stack" style="line-height: ' + this.map.iconSize[pointIconSize].size + 'px"><i class="fa ' + pointIcon + ' point-icon" style="color: ' + pointColor + '; font-size: ' + this.map.iconSize[pointIconSize].size + 'px"></i><span class="fa-stack-1x point-icon-text">' + (geoJsonPoint.properties.number || '') + '</span></span>',
             iconSize: new L.Point(this.map.iconSize[pointIconSize].size, this.map.iconSize[pointIconSize].size),
             iconAnchor: pointAnchor,
+            popupAnchor: pAnchor,
             className: 'point-icon-container'
           });
         }
@@ -597,7 +632,7 @@ var RoutesLayer = L.FeatureGroup.extend({
         });
 
         if (geoJsonPoint.properties.number) {
-          marker.setZIndexOffset(500);
+          (lowIndex) ? marker.setZIndexOffset(-999): marker.setZIndexOffset(500);
         }
 
         marker.properties = geoJsonPoint.properties;
