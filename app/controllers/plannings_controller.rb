@@ -230,7 +230,7 @@ class PlanningsController < ApplicationController
         @route = @planning.routes.find{ |route| route.id == params[:route_id] }
         params[:stop_id] = Integer(params[:stop_id])
         @stop = @route.stops.find{ |stop| stop.id == params[:stop_id] }
-        if @route && @stop && @stop.update(stop_params) && @route.compute! && @planning.save
+        if @route && @stop && @stop.update(stop_params) && @route.save && @route.compute! && @planning.save
           @routes = [@route]
           format.json { render action: 'show', location: @planning }
         else

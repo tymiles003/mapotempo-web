@@ -64,6 +64,7 @@ class V01::Stops < Grape::API
               stop = route.stops.find{ |stop| stop.id == id }
               Planning.transaction do
                 stop.update! stop_params
+                route.save!
                 route.compute && planning.save!
                 status 204
               end

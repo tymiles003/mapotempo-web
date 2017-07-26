@@ -665,7 +665,7 @@ class Route < ApplicationRecord
   end
 
   def check_outdated
-    if self.outdated && self.vehicle_usage_id
+    if (self.outdated || @stops_updated) && self.vehicle_usage_id
       self.optimized_at = nil unless optimized_at_changed?
       self.last_sent_to = self.last_sent_at = nil
     end
