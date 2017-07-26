@@ -46,7 +46,7 @@ class V01::Entities::Route < Grape::Entity
   expose(:optimized_at, documentation: { type: DateTime, desc: 'Last optimized at'})
   expose(:geojson, documentation: { type: String, desc: 'Geojson string of track and stops of the route. Default empty, set parameter geojson=true|point|polyline to get this extra content.' }) { |m, options|
     if options[:geojson] != :false
-      m.to_geojson(true,
+      m.to_geojson(true, true,
         if options[:geojson] == :polyline
           :polyline
         elsif options[:geojson] == :point
@@ -82,7 +82,7 @@ class V01::Entities::RouteProperties < Grape::Entity
   expose(:color, documentation: { type: String, desc: 'Color code with #. For instance: #FF0000' })
   expose(:geojson, documentation: { type: String, desc: 'Geojson string of track and stops of the route. Default empty, set parameter geojson=true|point|polyline to get this extra content.' }) { |m, options|
     if options[:geojson] != :false
-      m.to_geojson(true,
+      m.to_geojson(true, true,
         if options[:geojson] == :polyline
           :polyline
         elsif options[:geojson] == :point

@@ -96,7 +96,7 @@ class V01::RoutesGet < Grape::API
             end
             status 204
           elsif env['api.format'] == :geojson
-            r.to_geojson(true,
+            r.to_geojson(true, true,
               if params[:geojson] == :polyline
                 :polyline
               elsif params[:geojson] == :point

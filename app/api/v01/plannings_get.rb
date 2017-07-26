@@ -99,6 +99,7 @@ class V01::PlanningsGet < Grape::API
       requires :id, type: String, desc: ID_DESC
       optional :geojson, type: Symbol, values: [:true, :false, :point, :polyline], default: :false, desc: 'Fill the geojson field with route geometry, when using json output. For geojson output, param can be only set to `point` to return only points, `polyline` to return with encoded linestring.'
       optional :quantities, type: Boolean, default: false, desc: 'Include the quantities when using geojson output.'
+      optional :stores, type: Boolean, default: false, desc: 'Include the stores in geojson output.'
     end
     get ':id' do
       planning = current_customer.plannings.where(ParseIdsRefs.read(params[:id])).first!
@@ -111,15 +112,18 @@ class V01::PlanningsGet < Grape::API
           planning_calendar(planning).to_ical
         end
       elsif env['api.format'] == :geojson
-        planning.to_geojson(true,
-          if params[:geojson] == :polyline
-            :polyline
-          elsif params[:geojson] == :point
-            false
-          else
-            true
-          end,
-          params[:quantities])
+        planning.to_geojson(
+            true,
+            params[:stores],
+            if params[:geojson] == :polyline
+              :polyline
+            elsif params[:geojson] == :point
+              false
+            else
+              true
+            end,
+            params[:quantities]
+        )
       else
         present planning, with: V01::Entities::Planning, geojson: params[:geojson]
       end

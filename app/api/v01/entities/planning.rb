@@ -42,7 +42,7 @@ class V01::Entities::Planning < Grape::Entity
   expose(:updated_at, documentation: { type: DateTime, desc: 'Last Updated At'})
   expose(:geojson, documentation: { type: String, desc: 'Geojson string of track and stops of the route. Default empty, set parameter geojson=true|point|polyline to get this extra content.' }) { |m, options|
     if options[:geojson] != :false
-      m.to_geojson(true,
+      m.to_geojson(true, true,
         if options[:geojson] == :polyline
           :polyline
         elsif options[:geojson] == :point

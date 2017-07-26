@@ -431,9 +431,9 @@ var RoutesLayer = L.FeatureGroup.extend({
     this.showRoutes(routeIds, geojson);
   },
 
-  showAllRoutes: function(callback) {
+  showAllRoutes: function(options, callback) {
     this.hideAllRoutes();
-    this._loadAll(callback);
+    this._loadAll(options, callback);
   },
 
   hideAllRoutes: function() {
@@ -501,11 +501,16 @@ var RoutesLayer = L.FeatureGroup.extend({
     }
   },
 
-  _loadAll: function(callback) {
+  _loadAll: function(options, callback) {
+    var requestData = options || {};
+    requestData.quantities = this.options.withQuantities;
+    if (this.planningId) {
+      requestData.geojson = this.options.withPolylines ? 'polyline' : 'point';
+    }
+
     $.ajax({
-      url: this.planningId ?
-        '/api/0.1/plannings/' + this.planningId + '.geojson?geojson=' + (this.options.withPolylines ? 'polyline' : 'point') + '&quantities=' + this.options.withQuantities :
-        '/api/0.1/visits.geojson?quantities=' + this.options.withQuantities,
+      url: this.planningId ? '/api/0.1/plannings/' + this.planningId + '.geojson' : '/api/0.1/visits.geojson',
+      data: requestData,
       beforeSend: beforeSendWaiting,
       success: function(data) {
         this._addRoutes(data);

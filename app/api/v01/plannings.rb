@@ -181,6 +181,7 @@ class V01::Plannings < Grape::API
       rescue NoSolutionFoundError
         status 304
       end
+
       if params[:details]
         present planning, with: V01::Entities::Planning, geojson: params[:geojson]
       else

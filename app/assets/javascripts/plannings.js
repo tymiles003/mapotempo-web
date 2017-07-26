@@ -1201,7 +1201,7 @@ var plannings_edit = function(params) {
       initRoutes($('#edit-planning'), data);
 
       if (options.firstTime) {
-        routesLayer.showAllRoutes(function() {
+        routesLayer.showAllRoutes({stores: true}, function() {
           if (fitBounds) {
             var bounds = routesLayer.getBounds();
             if (bounds && bounds.isValid()) {

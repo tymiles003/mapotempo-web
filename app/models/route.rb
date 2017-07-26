@@ -551,8 +551,8 @@ class Route < ApplicationRecord
     '{"type":"FeatureCollection","features":[' + features.join(',') + ']}'
   end
 
-  def to_geojson(respect_hidden = true, include_linestrings = :polyline, with_quantities = false)
-    self.class.routes_to_geojson([self], false, respect_hidden, include_linestrings, with_quantities)
+  def to_geojson(include_stores = true, respect_hidden = true, include_linestrings = :polyline, with_quantities = false)
+    self.class.routes_to_geojson([self], include_stores, respect_hidden, include_linestrings, with_quantities)
   end
 
   # Add route_id to geojson after create

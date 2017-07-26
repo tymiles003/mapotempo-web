@@ -474,7 +474,7 @@ var zonings_edit = function(params) {
   var displayZoningFirstTime = function(data) {
     displayZoning(data);
     if (planning_id) {
-      markersGroup.showAllRoutes(function() {
+      markersGroup.showAllRoutes({stores: true}, function() {
         $.each(featureGroup.getLayers(), function(idx, zone) {
           countPointInPolygon(zonesMap[zone._leaflet_id].layer, zonesMap[zone._leaflet_id].ele);
         });
@@ -509,7 +509,7 @@ var zonings_edit = function(params) {
   $('[name=all-destinations]').change(function() {
     if ($(this).is(':checked')) {
       if (!destLoaded) {
-        markersGroup.showAllRoutes(function() {
+        markersGroup.showAllRoutes({}, function() {
           destLoaded = true;
           $.each(featureGroup.getLayers(), function(idx, zone) {
             countPointInPolygon(zonesMap[zone._leaflet_id].layer, zonesMap[zone._leaflet_id].ele);
