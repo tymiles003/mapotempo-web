@@ -27,6 +27,7 @@ var popupModule = (function() {
   var _context,
     _previousMarker,
     _activeClickMarker,
+    _previousPopup,
     _currentAjaxRequested,
     _ajaxTimer = 100;
 
@@ -100,7 +101,8 @@ var popupModule = (function() {
       offset: layer.options.icon.options.iconSize.divideBy(2)
     }), {
       minWidth: 200,
-      autoPan: false
+      autoPan: false,
+      closeOnClick: false
     });
     _buildContentForPopup(layer);
   };
@@ -132,6 +134,15 @@ var popupModule = (function() {
     },
     set activeClickMarker(value) {
       if (_activeClickMarker !== value) _activeClickMarker = value;
+    },
+
+    // Previous popup setter/getter
+    get previousPopup() {
+      return _previousPopup;
+    },
+    set previousPopup(value) {
+      if (_previousPopup !== value && _previousMarker instanceof Object)
+        _previousPopup = value;
     }
 
   };
@@ -295,6 +306,8 @@ var RoutesLayer = L.FeatureGroup.extend({
     L.FeatureGroup.prototype.onAdd.call(this, map);
     this.layersByRoute = {};
     this.map = map;
+    this.map.on('click', this.hideLastPopup)
+            .on('zoomstart', this.hideLastPopup);
 
     this.on('mouseover', function(e) {
       if (e.layer instanceof L.Marker && !popupModule.activeClickMarker) {
@@ -307,6 +320,7 @@ var RoutesLayer = L.FeatureGroup.extend({
           e.layer.click = false; // Don't forget to re-init e.layer.click
 
         popupModule.createPopupForLayer(e.layer);
+        popupModule.previousPopup = e.layer.getPopup();
 
       } else if (e.layer instanceof L.Path) {
         e.layer.setStyle({
@@ -336,21 +350,21 @@ var RoutesLayer = L.FeatureGroup.extend({
               routeId: e.layer.properties.route_id
             });
           }
-          if (e.layer.click) {
-            if (e.layer === popupModule.activeClickMarker) {
-              e.layer.closePopup();
-            }
+          if (e.layer.click && (e.layer === popupModule.activeClickMarker)) {
+            e.layer.closePopup();
             e.layer.click = false;
           } else {
-            if (popupModule.activeClickMarker === void(0)) {
-              popupModule.createPopupForLayer(e.layer);
-            } else if (e.layer !== popupModule.activeClickMarker) {
+            if (popupModule.activeClickMarker && e.layer !== popupModule.activeClickMarker) {
               popupModule.activeClickMarker.click = false;
               popupModule.activeClickMarker.closePopup();
               popupModule.createPopupForLayer(e.layer);
+            } else if (popupModule.previousPopup) {
+              e.layer._popup = popupModule.previousPopup;
+              popupModule.previousPopup.addTo(this.map);
             }
-            popupModule.activeClickMarker = e.layer;
             e.layer.click = true;
+            popupModule.activeClickMarker = e.layer;
+            popupModule.previousPopup = e.layer.getPopup();
           }
         } else if (e.layer instanceof L.Path) {
           var distance = e.layer.properties.distance / 1000;
@@ -373,7 +387,8 @@ var RoutesLayer = L.FeatureGroup.extend({
           var content = (driveTime ? '<div>' + I18n.t('plannings.edit.popup.stop_drive_time') + ' ' + driveTime + '</div>' : '') + '<div>' + I18n.t('plannings.edit.popup.stop_distance') + ' ' + distance + '</div>';
           L.responsivePopup({
             minWidth: 200,
-            autoPan: false
+            autoPan: false,
+            closeOnClick: true
           }).setLatLng(e.latlng).setContent(content).openOn(this.map);
         }
       }.bind(this))
@@ -385,6 +400,13 @@ var RoutesLayer = L.FeatureGroup.extend({
         e.layer.unbindPopup();
         popupModule.activeClickMarker = void(0);
       }.bind(this));
+  },
+
+  hideLastPopup: function() {
+    if (popupModule.previousPopup) {
+      this.removeLayer(popupModule.previousPopup);
+      popupModule.previousPopup = {};
+    }
   },
 
   showRoutes: function(routeIds, geojson, callback) {
