@@ -33,4 +33,9 @@ class ApiWeb::V01::ZoningsControllerTest < ActionController::TestCase
     assert_response :success
     assert_valid response
   end
+
+  test 'should update zoning' do
+    patch :update, id: @zoning, zoning: { name: @zoning.name }
+    assert_redirected_to api_web_v01_edit_zoning_path(assigns(:zoning))
+  end
 end

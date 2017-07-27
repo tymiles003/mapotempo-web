@@ -32,4 +32,9 @@ class ApiWeb::V01::PlanningsControllerTest < ActionController::TestCase
     assert_response :success
     assert_valid response
   end
+
+  test 'should print' do
+    get :print, id: @planning
+    assert_response :success
+  end
 end

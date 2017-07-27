@@ -28,4 +28,9 @@ class ApiWeb::V01::RoutesControllerTest < ActionController::TestCase
     assert_not_nil assigns(:routes)
     assert_valid response
   end
+
+  test 'should print' do
+    get :print, planning_id: @route.planning_id, id: @route.id
+    assert_response :success
+  end
 end
