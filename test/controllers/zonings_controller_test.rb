@@ -117,9 +117,9 @@ class ZoningsControllerTest < ActionController::TestCase
     [:isochrone, :isodistance].each { |isowhat|
       uri_template = Addressable::Template.new('localhost:5000/0.1/isoline.json')
       stub_table = stub_request(:post, uri_template)
-        .with(:body => hash_including(dimension: (isowhat == :isochrone ? 'time' : 'distance'), loc: "#{store_one.lat},#{store_one.lng}", mode: 'car', size: '600'))
+        .with(:body => hash_including(dimension: (isowhat == :isochrone ? 'time' : 'distance'), loc: "#{store_one.lat},#{store_one.lng}", mode: 'car', size: isowhat == :isochrone ? '600' : '1000'))
         .to_return(File.new(File.expand_path('../../web_mocks/', __FILE__) + '/isochrone/isochrone-1.json').read)
-      patch :isochrone, format: :json, vehicle_usage_set_id: vehicle_usage_sets(:vehicle_usage_set_one).id, zoning_id: @zoning
+      patch isowhat, format: :json, vehicle_usage_set_id: vehicle_usage_sets(:vehicle_usage_set_one).id, zoning_id: @zoning
       assert_response :success
       assert_equal 1, JSON.parse(response.body)['zoning'].length
       assert_not_nil JSON.parse(response.body)['zoning'][0]['polygon']
