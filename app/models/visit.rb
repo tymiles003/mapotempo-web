@@ -37,7 +37,7 @@ class Visit < ApplicationRecord
   time_attr :open1, :close1, :open2, :close2, :take_over
 
   validate :close1_after_open1
-  validates :close1, presence: true, if: :open2
+  validates :close1, presence: true, if: ->(visit) { visit.open2 || visit.close2 }
   validate :close2_after_open2
   validate :open2_after_close1
 

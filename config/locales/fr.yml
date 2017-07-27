@@ -490,7 +490,7 @@ fr:
           attributes:
             close1:
               after: "doit être après le %{s}"
-              blank: doit être rempli(e) si un début de Plage horaire 2 est renseigné
+              blank: doit être rempli(e) si un début ou une fin de Plage horaire 2 est renseigné
             open2:
               after: "doit être après la fin de %{s}"
             close2:

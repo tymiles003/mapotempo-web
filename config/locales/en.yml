@@ -490,7 +490,7 @@ en:
           attributes:
             close1:
               after: "must be after %{s}"
-              blank: can't be blank when Time window 2 open is set
+              blank: can't be blank when Time window 2 open or close is set
             open2:
               after: "must be after %{s}"
             close2:
