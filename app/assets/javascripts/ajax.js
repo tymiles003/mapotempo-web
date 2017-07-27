@@ -126,39 +126,39 @@ var progressDialog = function(delayedJob, dialog, url, callback, options) {
     freezeProgressDialog(dialog);
 
     var progress = delayedJob.progress && delayedJob.progress.split(';');
-    $(".progress-bar", dialog).each(function(i, event) {
+    $(".progress-bar", dialog).each(function(i, e) {
       // hide or show dialog-progress class
       if (typeof progress === "undefined" || progress === null || progress === '' || typeof progress[i] === "undefined" || progress[i] === '') {
-        $(event).parent().parent().hide();
+        $(e).parent().parent().hide();
       } else {
-        $(event).parent().parent().show();
+        $(e).parent().parent().show();
       }
 
       if (!progress || typeof progress[i] === "undefined" || progress[i] === null || progress[i] === '') {
         // Inactive progress class
-        $(event).parent().removeClass("active");
-        $(event).css({
+        $(e).parent().removeClass("active");
+        $(e).css({
           transition: 'linear 0s',
           width: '0%'
         });
       } else if (progress[i] === 0 || progress[i] === '0') {
         isProgressing = true;
-        $(event).parent().removeClass("active");
-        $(event).css({
+        $(e).parent().removeClass("active");
+        $(e).css({
           transition: 'linear 0s',
           width: '0%'
         });
       } else if (progress[i] === 100 || progress[i] === '100') {
         isProgressing = true;
-        $(event).parent().removeClass("active");
-        $(event).css({
+        $(e).parent().removeClass("active");
+        $(e).css({
           transition: 'linear 0s',
           width: '100%'
         });
       } else if (progress[i] === -1 || progress[i] === '-1') {
         isProgressing = true;
-        $(event).parent().addClass("active");
-        $(event).css({
+        $(e).parent().addClass("active");
+        $(e).css({
           transition: 'linear 0s',
           width: '100%'
         });
@@ -170,15 +170,15 @@ var progressDialog = function(delayedJob, dialog, url, callback, options) {
         }
         if (iteration != timeSpent[1] || $(".dialog-attempts-number", dialog).html() != delayedJob.attempts) {
           iteration = timeSpent[1];
-          $(event).css('transition', 'linear 0s');
-          $(event).css('width', '0%');
+          $(e).css('transition', 'linear 0s');
+          $(e).css('width', '0%');
 
           setTimeout(function() { // to be sure width is 0%
             duration = parseInt(timeSpent[0]);
             if (duration > timeout) {
-              $(event).parent().removeClass("active");
-              $(event).css("transition", "linear " + ((duration - timeout - 20) / 1000) + "s");
-              $(event).css("width", "100%");
+              $(e).parent().removeClass("active");
+              $(e).css("transition", "linear " + ((duration - timeout - 20) / 1000) + "s");
+              $(e).css("width", "100%");
             }
           }, 20);
         }
@@ -188,15 +188,15 @@ var progressDialog = function(delayedJob, dialog, url, callback, options) {
         if (currentSteps[0] > 0) {
           isProgressing = true;
         }
-        $(event).parent().removeClass("active");
-        $(event).css("transition", "linear 0.5s");
-        $(event).css("width", "" + (100 * currentSteps[0] / currentSteps[1]) + "%");
-        $(event).html(progress[i]);
+        $(e).parent().removeClass("active");
+        $(e).css("transition", "linear 0.5s");
+        $(e).css("width", "" + (100 * currentSteps[0] / currentSteps[1]) + "%");
+        $(e).html(progress[i]);
       } else {
         isProgressing = true;
-        $(event).parent().removeClass("active");
-        $(event).css("transition", "linear 2s");
-        $(event).css("width", "" + progress[i] + "%");
+        $(e).parent().removeClass("active");
+        $(e).css("transition", "linear 2s");
+        $(e).css("width", "" + progress[i] + "%");
       }
     });
 
@@ -242,7 +242,7 @@ var progressDialog = function(delayedJob, dialog, url, callback, options) {
         });
       }, 2000);
 
-      $(document).on('page:before-change', function(e) {
+      $(document).on('page:before-change', function() {
         clearTimeout(progressDialogTimerId);
         $(document).off('page:before-change');
       });

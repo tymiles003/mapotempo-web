@@ -46,8 +46,9 @@ var popupModule = (function() {
       var url = _context.options.appBaseUrl;
 
       if (_context.planningId) {
-        url += (marker.properties.store_id) ? 'stores/' + marker.properties.store_id + '.json' :
-                                              'routes/' + marker.properties.route_id + '/stops/by_index/' + marker.properties.index + '.json';
+        url += (marker.properties.store_id) ?
+          'stores/' + marker.properties.store_id + '.json' :
+          'routes/' + marker.properties.route_id + '/stops/by_index/' + marker.properties.index + '.json';
       } else {
         url += 'visits/' + marker.properties.visit_id + '.json';
       }
@@ -306,8 +307,7 @@ var RoutesLayer = L.FeatureGroup.extend({
     L.FeatureGroup.prototype.onAdd.call(this, map);
     this.layersByRoute = {};
     this.map = map;
-    this.map.on('click', this.hideLastPopup)
-            .on('zoomstart', this.hideLastPopup);
+    this.map.on('click', this.hideLastPopup).on('zoomstart', this.hideLastPopup);
 
     this.on('mouseover', function(e) {
       if (e.layer instanceof L.Marker && !popupModule.activeClickMarker) {
@@ -460,7 +460,7 @@ var RoutesLayer = L.FeatureGroup.extend({
     if (!this.clustersByRoute[routeId].hasLayer(marker)) {
       marker.addTo(this.clustersByRoute[routeId]);
     }
-    if (this.map.getBounds().contains(marker.getLatLng()) && marker._map) {
+    if (this.map.getBounds().contains(marker.getLatLng()) && marker._map) {
       // _map is actually undefined or null (markerCluster set it on clustered markers)
       popupModule.createPopupForLayer(marker);
     } else {
