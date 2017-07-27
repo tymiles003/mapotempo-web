@@ -63,7 +63,7 @@ class ImporterBase
             next
           end
 
-          if !@synchronous && Mapotempo::Application.config.delayed_job_use
+          if !@synchronous && Mapotempo::Application.config.delayed_job_use && dest.respond_to?(:delay_geocode)
             dest.delay_geocode
           end
           dest
