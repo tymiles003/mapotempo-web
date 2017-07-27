@@ -39,11 +39,14 @@ class V01::Entities::Route < Grape::Entity
   expose(:stop_out_of_drive_time, documentation: { type: 'Boolean' })
   expose(:stop_distance, documentation: { type: Float, desc: 'Distance between the vehicle\'s store_stop and last stop.' })
   expose(:stop_drive_time, documentation: { type: Integer, desc: 'Time in seconds between the vehicle\'s store_stop and last stop.' })
-  expose(:color, documentation: { type: String, desc: 'Color code with #. For instance: #FF0000' })
-  expose(:updated_at, documentation: { type: DateTime, desc: 'Last Updated At'})
-  expose(:last_sent_to, documentation: { type: String, desc: 'Type GPS Device of Last Sent'})
-  expose(:last_sent_at, documentation: { type: DateTime, desc: 'Last Time Sent To External GPS Device'})
-  expose(:optimized_at, documentation: { type: DateTime, desc: 'Last optimized at'})
+  expose(:color, documentation: { type: String, desc: 'Color code with #. For instance: #FF0000.' })
+  expose(:updated_at, documentation: { type: DateTime, desc: 'Last Updated At.'})
+  expose(:last_sent_to, documentation: { type: String, desc: 'Type GPS Device of Last Sent.'})
+  expose(:last_sent_at, documentation: { type: DateTime, desc: 'Last Time Sent To External GPS Device.'})
+  expose(:optimized_at, documentation: { type: DateTime, desc: 'Last optimized at.'})
+  expose(:quantities, using: V01::Entities::DeliverableUnitQuantity, documentation: { type: V01::Entities::DeliverableUnitQuantity, is_array: true, param_type: 'form' }) { |m|
+    m.quantities ? m.quantities.to_a.collect{ |a| {deliverable_unit_id: a[0], quantity: a[1]} } : []
+  }
   expose(:geojson, documentation: { type: String, desc: 'Geojson string of track and stops of the route. Default empty, set parameter geojson=true|point|polyline to get this extra content.' }) { |m, options|
     if options[:geojson] != :false
       m.to_geojson(true, true,
@@ -65,8 +68,8 @@ class V01::Entities::RouteStatus < Grape::Entity
 
   expose(:id, documentation: { type: Integer })
   expose(:vehicle_usage_id, documentation: { type: Integer })
-  expose(:last_sent_to, documentation: { type: String, desc: 'Type GPS Device of Last Sent'})
-  expose(:last_sent_at, documentation: { type: DateTime, desc: 'Last Time Sent To External GPS Device'})
+  expose(:last_sent_to, documentation: { type: String, desc: 'Type GPS Device of Last Sent.'})
+  expose(:last_sent_at, documentation: { type: DateTime, desc: 'Last Time Sent To External GPS Device.'})
   expose(:stops, using: V01::Entities::StopStatus, documentation: { type: V01::Entities::StopStatus, is_array: true })
 end
 
@@ -79,7 +82,7 @@ class V01::Entities::RouteProperties < Grape::Entity
   expose(:vehicle_usage_id, documentation: { type: Integer })
   expose(:hidden, documentation: { type: 'Boolean' })
   expose(:locked, documentation: { type: 'Boolean' })
-  expose(:color, documentation: { type: String, desc: 'Color code with #. For instance: #FF0000' })
+  expose(:color, documentation: { type: String, desc: 'Color code with #. For instance: #FF0000.' })
   expose(:geojson, documentation: { type: String, desc: 'Geojson string of track and stops of the route. Default empty, set parameter geojson=true|point|polyline to get this extra content.' }) { |m, options|
     if options[:geojson] != :false
       m.to_geojson(true, true,
