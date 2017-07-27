@@ -136,7 +136,7 @@ class OptimizerWrapper
           }  }
       }
 
-      resource_vrp = RestClient::Resource.new(@url + '/vrp/submit.json')
+      resource_vrp = RestClient::Resource.new(@url + '/vrp/submit.json', timeout: nil)
       json = resource_vrp.post({api_key: @api_key, vrp: vrp}.to_json, content_type: :json, accept: :json)
 
       result = nil
