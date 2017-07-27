@@ -121,10 +121,8 @@ class Route < ApplicationRecord
       segments = stops_sort.select{ |stop|
         stop.active && (stop.position? || (stop.is_a?(StopRest) && ((stop.open1 && stop.close1) || (stop.open2 && stop.close2)) && stop.duration))
       }.collect{ |stop|
-        if stop.position? && !last_lat.nil? && !last_lng.nil?
-          ret = [last_lat, last_lng, stop.lat, stop.lng]
-        end
         if stop.position?
+          ret = [last_lat, last_lng, stop.lat, stop.lng] if !last_lat.nil? && !last_lng.nil?
           last_lat, last_lng = stop.lat, stop.lng
         end
         ret
@@ -159,10 +157,12 @@ class Route < ApplicationRecord
       # Recompute Stops
       stops_time_windows = {}
       quantities_ = {}
+      previous_with_pos = vehicle_usage.default_store_start.try(:position?)
       stops_sort.each{ |stop|
         if stop.active && (stop.position? || (stop.is_a?(StopRest) && ((stop.open1 && stop.close1) || (stop.open2 && stop.close2)) && stop.duration))
           stop.distance, stop.drive_time, trace = traces.shift
-          stop.no_path = (traces[0].nil? || vehicle_usage.default_store_start.try(:position?)) && stop.position? && trace.nil?
+          stop.no_path = previous_with_pos && stop.position? && trace.nil?
+          previous_with_pos = stop if stop.position?
 
           if trace
             geojson_tracks << {
