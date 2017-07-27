@@ -674,7 +674,7 @@ class Route < ApplicationRecord
   # Update geojson without need of computing route
   def update_geojson
     if color_changed? || @vehicle_color_changed
-      self.geojson_tracks = self.geojson_tracks.map{ |s|
+      self.geojson_tracks = self.geojson_tracks && self.geojson_tracks.map{ |s|
         linestring = JSON.parse(s)
         linestring['properties']['color'] = self.default_color
         linestring.to_json
