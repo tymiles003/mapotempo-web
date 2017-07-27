@@ -54,6 +54,8 @@ Rails.application.routes.draw do
 
       get 'stops/:id' => 'stops#show'
       get 'routes/:route_id/stops/by_index/:index' => 'stops#show'
+
+      get 'visits/:id' => 'visits#show'
     end
   end
 

@@ -15,7 +15,7 @@
 # along with Mapotempo. If not, see:
 # <http://www.gnu.org/licenses/agpl.html>
 #
-class VisitsController < ApplicationController
+class ApiWeb::V01::VisitsController < ApplicationController
   load_and_authorize_resource
 
   def show
