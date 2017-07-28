@@ -34,7 +34,7 @@ class Route < ApplicationRecord
   attribute :end, ScheduleType.new
   time_attr :start, :end
 
-  before_update :update_vehicle_usage, :check_outdated, :update_geojson
+  before_update :update_vehicle_usage, :update_geojson
 
   after_initialize :assign_defaults, if: 'new_record?'
   after_create :complete_geojson
@@ -218,7 +218,7 @@ class Route < ApplicationRecord
             stop.out_of_drive_time = stop.time > vehicle_usage.default_close
           end
         else
-          stop.active = stop.out_of_capacity = stop.out_of_drive_time = stop.out_of_window = false
+          stop.active = stop.out_of_capacity = stop.out_of_drive_time = stop.out_of_window = stop.no_path = false
           stop.distance = stop.time = stop.wait_time = nil
         end
       }
@@ -323,15 +323,9 @@ class Route < ApplicationRecord
         visit, active = stop
         stops.build(type: StopVisit.name, visit: visit, active: active, index: i += 1)
       }
-      if vehicle_usage
-        self.optimized_at = self.last_sent_to = self.last_sent_at = nil
-      end
+      self.outdated = true
 
-      if recompute
-        compute!(ignore_errors: ignore_errors)
-      else
-        self.outdated = true
-      end
+      compute(ignore_errors: ignore_errors) if recompute
     end
   end
 
@@ -339,11 +333,7 @@ class Route < ApplicationRecord
     index = stops.size + 1 if !index || index < 0
     shift_index(index)
     stops.build(type: StopVisit.name, visit: visit, index: index, active: active, id: stop_id)
-
     self.outdated = true
-    if vehicle_usage
-      self.optimized_at = self.last_sent_to = self.last_sent_at = nil
-    end
   end
 
   def add_rest(active = true, stop_id = nil)
@@ -383,20 +373,14 @@ class Route < ApplicationRecord
       end
       stop.index = index
     end
-    if vehicle_usage
-      self.optimized_at = self.last_sent_to = self.last_sent_at = nil
-    end
-    outdated = true
+    self.outdated = true
   end
 
   def move_stop_out(stop, force = false)
     if force || stop.is_a?(StopVisit)
       shift_index(stop.index + 1, -1)
-      if vehicle_usage
-        self.optimized_at = self.last_sent_to = self.last_sent_at = nil
-      end
       stop.route.stops.destroy(stop)
-      outdated = true
+      self.outdated = true
     end
   end
 
@@ -428,7 +412,7 @@ class Route < ApplicationRecord
         stop.active = stop.status && stop.status.downcase == action.to_s
       end
     }
-    self.optimized_at = self.last_sent_to = self.last_sent_at = nil
+    self.outdated = true
     true
   end
 
@@ -482,23 +466,27 @@ class Route < ApplicationRecord
         stop.active = true
       end
     }
-    self.optimized_at = self.last_sent_to = self.last_sent_at = nil
+    self.outdated = true
     compute!
   end
 
   def reverse_order
-    self.optimized_at = self.last_sent_to = self.last_sent_at = nil
     stops.sort_by{ |stop| -stop.index }.each_with_index{ |stop, index|
       stop.index = index + 1
     }
+    self.outdated = true
   end
 
   def stops_segregate(active_only = true)
     stops.group_by{ |stop| (!active_only ? true : stop.active) && (stop.position? || stop.is_a?(StopRest)) }
   end
 
-  def outdated
-    self[:outdated]
+  def outdated=(value)
+    if vehicle_usage && value
+      self.optimized_at = nil unless optimized_at_changed?
+      self.last_sent_to = self.last_sent_at = nil
+    end
+    self['outdated'] = value
   end
 
   def changed?
@@ -646,6 +634,7 @@ class Route < ApplicationRecord
   end
 
   def update_stops_track(_stop)
+    self.outdated = true
     @stops_updated = true
   end
 
@@ -660,14 +649,6 @@ class Route < ApplicationRecord
         add_rest
       end
       self.outdated = true
-      self.optimized_at = self.last_sent_to = self.last_sent_at = nil
-    end
-  end
-
-  def check_outdated
-    if (self.outdated || @stops_updated) && self.vehicle_usage_id
-      self.optimized_at = nil unless optimized_at_changed?
-      self.last_sent_to = self.last_sent_at = nil
     end
   end
 

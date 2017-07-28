@@ -298,7 +298,6 @@ class Planning < ApplicationRecord
         route.stops.each{ |stop|
           stop.active = orders.key?(stop.visit_id) && !orders[stop.visit_id].empty?
         }
-        route.optimized_at = route.last_sent_to = route.last_sent_at = nil
       end
       route.outdated = true
     }
