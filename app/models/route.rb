@@ -87,7 +87,9 @@ class Route < ApplicationRecord
     vehicle_usage.default_service_time_end if vehicle_usage && vehicle_usage.default_service_time_end
   end
 
-  def plan(departure = nil, ignore_errors = false)
+  def plan(departure = nil, options = {})
+    options[:ignore_errors] ||= false
+
     self.touch if self.id # To force route save in case none attribute has changed below
     self.distance = 0
     geojson_tracks = []
@@ -148,11 +150,9 @@ class Route < ApplicationRecord
           end
         }
       rescue RouterError
-        if !ignore_errors
-          raise
-        end
+        raise unless options[:ignore_errors]
       end
-      traces[0] = [0, 0, nil] if !vehicle_usage.default_store_start.try(&:position?)
+      traces[0] = [0, 0, nil] unless vehicle_usage.default_store_start.try(&:position?)
 
       # Recompute Stops
       stops_time_windows = {}
@@ -164,7 +164,7 @@ class Route < ApplicationRecord
           stop.no_path = previous_with_pos && stop.position? && trace.nil?
           previous_with_pos = stop if stop.position?
 
-          if trace
+          if trace && !options[:no_geojson]
             geojson_tracks << {
               type: 'Feature',
               geometry: {
@@ -204,16 +204,18 @@ class Route < ApplicationRecord
             self.end = stop.time + stop.duration
 
             if stop.visit.try(:default_quantities?)
-              stop.route.planning.customer.deliverable_units.each{ |du|
-                quantities_[du.id] = ((quantities_[du.id] || 0) + (stop.visit.default_quantities[du.id] || 0)).round(3)
-              }
-              stop.out_of_capacity = stop.route.planning.customer.deliverable_units.any?{ |du|
-                vehicle_usage.vehicle.default_capacities[du.id] && quantities_[du.id] > vehicle_usage.vehicle.default_capacities[du.id]
-              }
+              unless options[:no_quantities]
+                stop.route.planning.customer.deliverable_units.each{ |du|
+                  quantities_[du.id] = ((quantities_[du.id] || 0) + (stop.visit.default_quantities[du.id] || 0)).round(3)
+                }
+                stop.out_of_capacity = stop.route.planning.customer.deliverable_units.any?{ |du|
+                  vehicle_usage.vehicle.default_capacities[du.id] && quantities_[du.id] > vehicle_usage.vehicle.default_capacities[du.id]
+                }
+              end
             else
               stop.out_of_capacity = false
             end
-            self.quantities = quantities_
+            self.quantities = quantities_ unless options[:no_quantities]
 
             stop.out_of_drive_time = stop.time > vehicle_usage.default_close
           end
@@ -236,7 +238,7 @@ class Route < ApplicationRecord
       # Add service time to end point
       self.end += service_time_end unless service_time_end.nil?
 
-      if trace
+      if trace && !options[:no_geojson]
         geojson_tracks << {
           type: 'Feature',
           geometry: {
@@ -252,7 +254,7 @@ class Route < ApplicationRecord
         }.to_json
       end
 
-      self.geojson_tracks = geojson_tracks
+      self.geojson_tracks = geojson_tracks unless options[:no_geojson]
       self.stop_out_of_drive_time = self.end > vehicle_usage.default_close
       self.emission = vehicle_usage.vehicle.emission.nil? || vehicle_usage.vehicle.consumption.nil? ? nil : self.distance / 1000 * vehicle_usage.vehicle.emission * vehicle_usage.vehicle.consumption / 100
 
@@ -260,12 +262,14 @@ class Route < ApplicationRecord
     end
   end
 
+  # Available options:
+  # ignore_errors
+  # no_geojson
+  # no_quantities
   def compute!(options = {})
-    self.geojson_points = stops_to_geojson_points
-
     if self.vehicle_usage
       self.geojson_tracks = nil
-      stops_sort, stops_drive_time, stops_time_windows = plan(nil, options[:ignore_errors])
+      stops_sort, stops_drive_time, stops_time_windows = plan(nil, options)
 
       if stops_sort
         # Try to minimize waiting time by a later begin
@@ -295,10 +299,12 @@ class Route < ApplicationRecord
         force_start = planning.customer.optimization_force_start.nil? ? Mapotempo::Application.config.optimize_force_start : planning.customer.optimization_force_start
         if time > start && !force_start
           # We can sleep a bit more on morning, shift departure
-          plan(time, options[:ignore_errors])
+          plan(time, options)
         end
       end
     end
+
+    self.geojson_points = stops_to_geojson_points unless options[:no_geojson]
 
     self.outdated = false
     true

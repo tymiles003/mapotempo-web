@@ -89,6 +89,7 @@ class V01::Routes < Grape::API
           unless visits_ordered.empty?
             Planning.transaction do
               visits_ordered.each{ |visit| get_route.planning.move_visit(get_route, visit, params[:automatic_insert] ? nil : -1) }
+              get_route.planning.compute
               get_route.planning.save!
             end
           end

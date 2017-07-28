@@ -143,7 +143,7 @@ class PlanningsController < ApplicationController
           @planning.routes.find{ |route| stop = route.stops.find{ |stop| stop.id == Integer(params[:stop_id]) } }
           stop_route_id_was = stop.route.id
           # save! is used to rollback all the transaction with associations
-          if @planning.move_stop(route, stop, params[:index] ? Integer(params[:index]) : nil) && @planning.save!
+          if @planning.move_stop(route, stop, params[:index] ? Integer(params[:index]) : nil) && @planning.compute && @planning.save!
             @planning.reload
             @routes = [route]
             @routes << @planning.routes.find{ |route| route.id == stop_route_id_was } if stop_route_id_was != route.id

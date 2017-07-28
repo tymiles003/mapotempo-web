@@ -560,7 +560,7 @@ class Planning < ApplicationRecord
       else
         r.add_rest(true)
       end
-      r.compute
+      r.compute(no_geojson: true, no_quantities: true)
 
       # Difference of total time + difference of sum of out_of_window time
       ri[2] = ((r.end - r.start) - (ri[0].end && ri[0].start ? ri[0].end - ri[0].start : 0)) + (r.sum_out_of_window - cache_sum_out_of_window[ri[0]])
