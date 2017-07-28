@@ -466,16 +466,6 @@ class Route < ApplicationRecord
     }]
   end
 
-  def active_all
-    stops.each { |stop|
-      if stop.position?
-        stop.active = true
-      end
-    }
-    self.outdated = true
-    compute!
-  end
-
   def reverse_order
     stops.sort_by{ |stop| -stop.index }.each_with_index{ |stop, index|
       stop.index = index + 1
