@@ -45,28 +45,28 @@
 </div>
 <hr>
 {{/route_id}}
-<div>
-{{^rest}}
-  <div class="btn-group pull-right stop-tools">
-    {{#store}}{{#manage_store}}
-    <a href="/stores/{{id}}/edit?back=true" class="marker_edit btn btn-inverse btn-xs" title="{{#i18n}}plannings.edit.edit_visit_help{{/i18n}}"><i class="fa fa-pencil"></i></a>
-    {{/manage_store}}{{/store}}
-    {{#destination}}{{#manage_destination}}
-    <a href="/destinations/{{destination_id}}/edit?back=true#collapseVisit{{visit_id}}" class="marker_edit btn btn-inverse btn-xs" title="{{#i18n}}plannings.edit.edit_visit_help{{/i18n}}"><i class="fa fa-pencil"></i></a>
-    {{/manage_destination}}{{/destination}}
-    {{#isoline}}
-      <button type="button" class="btn btn-xs btn-default dropdown-toggle draw_zone" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-magic"></i> <span class="caret"></span></button>
-      <ul class="dropdown-menu" role="menu">
-        {{#isochrone}}
-        <li><a data-toggle="modal" data-target="#isochrone-modal" data-keyboard="true" href="#"><i class="fa fa-clock-o fa-fw"></i> {{#i18n}}zonings.form.isochrone{{/i18n}}</a></li>
-        {{/isochrone}}
-        {{#isodistance}}
-        <li><a data-toggle="modal" data-target="#isodistance-modal" data-keyboard="true" href="#"><i class="fa fa-road fa-fw"></i> {{#i18n}}zonings.form.isodistance{{/i18n}}</a></li>
-        {{/isodistance}}
-      </ul>
-    {{/isoline}}
-  </div>
-{{/rest}}
+<div class="stop-popup-header">
+  {{^rest}}
+    <div class="btn-group pull-right stop-tools">
+      {{#store}}{{#manage_store}}
+      <a href="/stores/{{id}}/edit?back=true" class="marker_edit btn btn-inverse btn-xs" title="{{#i18n}}plannings.edit.edit_visit_help{{/i18n}}"><i class="fa fa-pencil"></i></a>
+      {{/manage_store}}{{/store}}
+      {{#destination}}{{#manage_destination}}
+      <a href="/destinations/{{destination_id}}/edit?back=true#collapseVisit{{visit_id}}" class="marker_edit btn btn-inverse btn-xs" title="{{#i18n}}plannings.edit.edit_visit_help{{/i18n}}"><i class="fa fa-pencil"></i></a>
+      {{/manage_destination}}{{/destination}}
+      {{#isoline}}
+        <button type="button" class="btn btn-xs btn-default dropdown-toggle draw_zone" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-magic"></i> <span class="caret"></span></button>
+        <ul class="dropdown-menu" role="menu">
+          {{#isochrone}}
+          <li><a data-toggle="modal" data-target="#isochrone-modal" data-keyboard="true" href="#"><i class="fa fa-clock-o fa-fw"></i> {{#i18n}}zonings.form.isochrone{{/i18n}}</a></li>
+          {{/isochrone}}
+          {{#isodistance}}
+          <li><a data-toggle="modal" data-target="#isodistance-modal" data-keyboard="true" href="#"><i class="fa fa-road fa-fw"></i> {{#i18n}}zonings.form.isodistance{{/i18n}}</a></li>
+          {{/isodistance}}
+        </ul>
+      {{/isoline}}
+    </div>
+  {{/rest}}
   {{^store}}{{#color}}<span class="number label label-default" style="background-color: {{color}};">{{#number}}{{number}}{{/number}}{{^number}}-{{/number}}</span>{{/color}}{{/store}}
   {{#manage_organize}}{{#vehicle_name}}{{^store}}<input type="checkbox" class="stop_active"{{#active}} checked="checked"{{/active}} title="{{#i18n}}plannings.edit.active_help{{/i18n}}"/>{{/store}}{{/vehicle_name}}{{/manage_organize}}
   <b>{{#ref}}{{^visits}}{{ref}} {{/visits}}{{/ref}}{{name}}</b><br/>

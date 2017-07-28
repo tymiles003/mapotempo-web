@@ -215,6 +215,11 @@ span.color[data-color=''][data-selected]:after {
 }
 
 .stop-popup {
+  .stop-popup-header:before, .stop-popup-header:after {
+    content: " ";
+    display: table;
+    clear: both;
+  }
   .visits {
     max-height: 200px;
     overflow-y: auto;
