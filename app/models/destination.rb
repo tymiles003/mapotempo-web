@@ -16,7 +16,7 @@
 # <http://www.gnu.org/licenses/agpl.html>
 #
 class Destination < Location
-  COLOR_DEFAULT = DEFAULT_COLOR
+  COLOR_DEFAULT = '#707070'.freeze
   ICON_DEFAULT = 'circle'.freeze
 
   default_scope { order(:id) }
