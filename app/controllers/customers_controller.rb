@@ -145,7 +145,10 @@ class CustomersController < ApplicationController
                                                         :width,
                                                         :length,
                                                         :hazardous_goods,
-                                                        :max_walk_distance
+                                                        :max_walk_distance,
+                                                        :approach,
+                                                        :snap,
+                                                        :truck_restriction_penalty
                                                     ],
                                                     devices: permit_recursive_params(params[:customer][:devices]))
       parameters[:end_subscription] = Date.strptime(parameters[:end_subscription], I18n.t('time.formats.datepicker')).strftime(ACTIVE_RECORD_DATE_MASK) unless parameters[:end_subscription].blank?
@@ -179,7 +182,10 @@ class CustomersController < ApplicationController
           :width,
           :length,
           :hazardous_goods,
-          :max_walk_distance
+          :max_walk_distance,
+          :approach,
+          :snap,
+          :truck_restriction_penalty
         ],
         devices: permit_recursive_params(params[:customer][:devices])
       ]

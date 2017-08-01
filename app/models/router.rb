@@ -22,8 +22,8 @@ class Router < ApplicationRecord
   default_scope { order(:name) }
 
   include HashBoolAttr
-  store_accessor :options, :time, :distance, :avoid_zones, :isochrone, :isodistance, :motorway, :toll, :trailers, :weight, :weight_per_axle, :height, :width, :length, :hazardous_goods, :max_walk_distance
-  hash_bool_attr :options, :time, :distance, :avoid_zones, :isochrone, :isodistance, :motorway, :toll, :trailers, :weight, :weight_per_axle, :height, :width, :length, :hazardous_goods, :max_walk_distance
+  store_accessor :options, :time, :distance, :avoid_zones, :isochrone, :isodistance, :motorway, :toll, :trailers, :weight, :weight_per_axle, :height, :width, :length, :hazardous_goods, :max_walk_distance, :approach, :snap, :truck_restriction_penalty
+  hash_bool_attr :options, :time, :distance, :avoid_zones, :isochrone, :isodistance, :motorway, :toll, :trailers, :weight, :weight_per_axle, :height, :width, :length, :hazardous_goods, :max_walk_distance, :approach, :snap, :truck_restriction_penalty
 
   nilify_blanks
   auto_strip_attributes :name, :url_time, :url_distance, :mode

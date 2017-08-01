@@ -27,6 +27,9 @@ router_one:
     length: true
     hazardous_goods: true
     max_walk_distance: true
+    approach: true
+    snap: true
+    truck_restriction_penalty: true
 
 router_two:
   mode: car

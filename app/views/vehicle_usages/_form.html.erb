@@ -220,6 +220,40 @@
           </div>
         </div>
 
+        <div id="router_options_approach_input" class="form-group <%= @vehicle_usage.vehicle.default_router.approach? ? '' : 'router-option-disabled' %>">
+          <label class="col-md-2 control-label" for="customer_router_options_approach">
+            <%= t('activerecord.attributes.customer.router_options_approach') %>
+          </label>
+
+          <div class="col-md-6">
+            <%= select_tag 'vehicle_usage[vehicle][router_options][approach]', options_for_select(t('activerecord.attributes.router.options.approach').invert, current_router_options(@vehicle_usage.vehicle)['approach']), include_blank: t('vehicles.form.router.default') + ' (' + (!!@vehicle_usage.vehicle.customer.approach ? t("activerecord.attributes.router.options.approach.#{@vehicle_usage.vehicle.customer.approach}") : t('activerecord.attributes.router.options.approach_none')) + ')', class: 'form-control' %>
+          </div>
+        </div>
+
+        <div id="router_options_snap_input" class="form-group <%= @vehicle_usage.vehicle.default_router.snap? ? '' : 'router-option-disabled' %>">
+          <label class="col-md-2 control-label" for="vehicle_usage_vehicle_router_options_snap">
+            <%= t('activerecord.attributes.customer.router_options_snap') %>
+          </label>
+
+          <div class="col-md-6">
+            <div class="input-group">
+              <%= number_field 'vehicle_usage[vehicle][router_options]', :snap, value: @vehicle_usage.vehicle.router_options['snap'], placeholder: !@vehicle_usage.vehicle.customer.snap.to_s.empty? ? t('customers.form.router_options_default', n: @vehicle_usage.vehicle.customer.snap) : '', step: 'any', class: 'form-control' %>
+              <span class="input-group-addon"><%= t('all.unit.m') %></span>
+            </div>
+            <p class="help-block"><%= t('customers.form.router_options_snap_range') %></p>
+          </div>
+        </div>
+
+        <div id="router_options_truck_restriction_penalty_input" class="form-group <%= @vehicle_usage.vehicle.default_router.truck_restriction_penalty? ? '' : 'router-option-disabled' %>">
+          <label class="col-md-2 control-label" for="vehicle_usage_vehicle_router_options_truck_restriction_penalty">
+            <%= t('activerecord.attributes.customer.router_options_truck_restriction_penalty') %>
+          </label>
+
+          <div class="col-md-6 input-append form-inline">
+            <%= check_box_tag 'vehicle_usage[vehicle][router_options][truck_restriction_penalty]', @vehicle_usage.vehicle.router_options['truck_restriction_penalty'], !!@vehicle_usage.vehicle.router_options['truck_restriction_penalty'] %>
+          </div>
+        </div>
+
         <div class="form-group">
           <label class="col-md-2 control-label" for="speed_multiplicator">
             <%= t('activerecord.attributes.vehicle.speed_multiplicator') %>

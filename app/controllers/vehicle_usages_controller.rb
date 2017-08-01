@@ -108,7 +108,10 @@ class VehicleUsagesController < ApplicationController
                                                                :width,
                                                                :length,
                                                                :hazardous_goods,
-                                                               :max_walk_distance
+                                                               :max_walk_distance,
+                                                               :approach,
+                                                               :snap,
+                                                               :truck_restriction_penalty
                                                            ],
                                                            devices: permit_devices
                                                        ])

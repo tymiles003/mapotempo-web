@@ -13,13 +13,13 @@ car = RouterWrapper.create!(
     name: 'RouterWrapper-Car',
     name_locale: {fr: 'Calculateur pour voiture', en: 'Car router'},
     url_time: 'http://localhost:9090',
-    options: {time: true, distance: true, avoid_zones: false, isochrone: true, isodistance: true})
+    options: {time: true, distance: true, avoid_zones: false, isochrone: true, isodistance: true, approach: true, snap: true})
 car_urban = RouterWrapper.create!(
     mode: 'car_urban',
     name: 'RouterWrapper-Car-Urban',
     name_locale: {fr: 'Calculateur pour voiture urbaine', en: 'Urban car router'},
     url_time: 'http://localhost:9090',
-    options: {time: true, distance: true, avoid_zones: false, isochrone: true, isodistance: true})
+    options: {time: true, distance: true, avoid_zones: false, isochrone: true, isodistance: true, approach: true, snap: true})
 bicycle = RouterWrapper.create!(
     mode: 'bicycle',
     name: 'RouterWrapper-Bicycle',
@@ -37,7 +37,7 @@ truck = RouterWrapper.create!(
     name: 'RouterWrapper-HereTruck',
     name_locale: {fr: 'Calculateur pour camion', en: 'Truck router'},
     url_time: 'http://localhost:9090',
-    options: {time: true, distance: false, avoid_zones: true, isochrone: false, isodistance: false, motorway: true, toll: true, trailers: true, weight: true, weight_per_axle: true, height: true, width: true, length: true, hazardous_goods: true})
+    options: {time: true, distance: false, avoid_zones: true, isochrone: false, isodistance: false, motorway: true, toll: true, trailers: true, weight: true, weight_per_axle: true, height: true, width: true, length: true, hazardous_goods: true, truck_restriction_penalty: true})
 public_transport = RouterWrapper.create!(
     mode: 'public_transport',
     name: 'RouterWrapper-PublicTransport',

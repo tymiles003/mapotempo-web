@@ -89,7 +89,10 @@ class RouterTest < ActiveSupport::TestCase
         width: true,
         length: true,
         hazardous_goods: true,
-        max_walk_distance: true
+        max_walk_distance: true,
+        approach: true,
+        snap: true,
+        truck_restriction_penalty: true
     }
 
     router.save!
@@ -138,5 +141,14 @@ class RouterTest < ActiveSupport::TestCase
 
     assert router.max_walk_distance, true
     assert router.max_walk_distance?, true
+
+    assert router.approach, true
+    assert router.approach?, true
+
+    assert router.snap, true
+    assert router.snap?, true
+
+    assert router.truck_restriction_penalty, true
+    assert router.truck_restriction_penalty?, true
   end
 end

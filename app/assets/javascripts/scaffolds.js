@@ -310,9 +310,16 @@ var routerOptionsSelect = function(selectId, params) {
       var routerOptions = params.routers_options[routerId];
 
       if (routerId && routerOptions) {
-        // Truck
+        // Car
+        checkInputFieldState($('#router_options_approach_input'), routerOptions.approach);
+        checkInputFieldState($('#router_options_snap_input'), routerOptions.snap);
+        checkInputFieldState($('#router_options_truck_restriction_penalty_input'), routerOptions.truck_restriction_penalty);
+
+        // Car and Truck
         checkInputFieldState($('#router_options_motorway_input'), routerOptions.motorway);
         checkInputFieldState($('#router_options_toll_input'), routerOptions.toll);
+
+        // Truck
         checkInputFieldState($('#router_options_trailers_input'), routerOptions.trailers);
         checkInputFieldState($('#router_options_weight_input'), routerOptions.weight);
         checkInputFieldState($('#router_options_weight_per_axle_input'), routerOptions.weight_per_axle);
