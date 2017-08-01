@@ -25,6 +25,7 @@ json.open_close2 stop.open2 || stop.close2
 (json.close2_day number_of_days(stop.close2)) if stop.close2
 (json.wait_time '%i:%02i' % [stop.wait_time / 60 / 60, stop.wait_time / 60 % 60]) if stop.wait_time && stop.wait_time > 60
 (json.time stop.time_time) if stop.time
+(json.time_day number_of_days(stop.time)) if stop.time
 (json.link_phone_number current_user.link_phone_number) if current_user.url_click2call
 json.distance (stop.distance || 0) / 1000
 duration = nil
