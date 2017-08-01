@@ -390,7 +390,7 @@ span.color[data-color=''][data-selected]:after {
     }
     .sidebar-content {
       right: 0;
-      background-color: white;
+      background-color: rgba(255, 255, 255, .75);
 
       .sidebar-pane {
         padding: 5px;
