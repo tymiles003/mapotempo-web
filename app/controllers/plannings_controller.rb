@@ -350,11 +350,14 @@ class PlanningsController < ApplicationController
   def set_planning
     @manage_planning = PlanningsController.manage
     @with_stops = ValueToBoolean.value_to_boolean(params[:with_stops], true)
+
     @planning = if [:show, :edit, :optimize].include?(action_name.to_sym) && @with_stops && !request.format.html?
-      current_user.customer.plannings.includes(routes: {stops: :visit}).find(params[:id] || params[:planning_id])
-    else
-      current_user.customer.plannings.find(params[:id] || params[:planning_id])
-    end
+                  # BUG: stops returned are randomly not in the correct order if includes is added
+                  # current_user.customer.plannings.includes(routes: {stops: :visit}).find(params[:id] || params[:planning_id])
+                  current_user.customer.plannings.includes(:routes).find(params[:id] || params[:planning_id])
+                else
+                  current_user.customer.plannings.find(params[:id] || params[:planning_id])
+                end
   end
 
   def planning_params
