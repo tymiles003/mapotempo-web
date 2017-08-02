@@ -300,6 +300,13 @@ html.turbolinks-progress-bar::before {
   left: -1px;
 }
 
+.cluster-point-border {
+  position: absolute;
+  margin-left: -2px;
+  font-size: 28px;
+  opacity: .4;
+}
+
 .cluster-point-icon {
   font-size: 24px;
 }
