@@ -147,22 +147,22 @@ class Planning < ApplicationRecord
   end
 
   def switch(route, vehicle_usage)
-    route_prec = routes.find{ |route| route.vehicle_usage == vehicle_usage }
-    if route_prec
-      need_fetch_stop_status = route_prec.stops.any?(&:status)
+    previous_route = routes.find{ |route| route.vehicle_usage == vehicle_usage }
+    if previous_route
+      need_fetch_stop_status = previous_route.stops.any?(&:status)
 
-      vehicle_usage_prec = route.vehicle_usage
+      previous_vehicle_usage = route.vehicle_usage
       route.vehicle_usage = vehicle_usage
-      route_prec.vehicle_usage = vehicle_usage_prec
+      previous_route.vehicle_usage = previous_vehicle_usage
 
       # Rest sticky with vehicle_usage
-      rests_prec = route_prec.stops.select{ |stop| stop.is_a?(StopRest) }
+      previous_rests = previous_route.stops.select{ |stop| stop.is_a?(StopRest) }
       rests = route.stops.select{ |stop| stop.is_a?(StopRest) }
-      rests_prec.each{ |rest|
+      previous_rests.each{ |rest|
         move_stop(route, rest, -1, true)
       }
       rests.each{ |rest|
-        move_stop(route_prec, rest, -1, true)
+        move_stop(previous_route, rest, -1, true)
       }
 
       fetch_stops_status if need_fetch_stop_status

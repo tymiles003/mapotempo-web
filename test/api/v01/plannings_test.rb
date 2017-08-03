@@ -152,10 +152,17 @@ class V01::PlanningsTest < V01::PlanningsBaseTest
     assert last_response.ok?, last_response.body
   end
 
-#  test 'should switch two vehicles' do
-#    patch api("#{@planning.id}/switch")
-#    assert last_response.ok?, last_response.body
-#  end
+ test 'should switch two vehicles' do
+   initial_first_route = @planning.routes.second.vehicle_usage.id
+   initial_second_route = @planning.routes.third.vehicle_usage.id
+
+   patch api("#{@planning.id}/switch"), {id: @planning.id, route_id: @planning.routes.second.id, vehicle_usage_id: @planning.routes.third.vehicle_usage.id}
+   assert_equal 204, last_response.status
+
+   @planning.reload
+   assert_equal initial_second_route, @planning.routes.second.vehicle_usage.id
+   assert_equal initial_first_route, @planning.routes.third.vehicle_usage.id
+ end
 
 #  test 'should set stop status' do
 #    patch api("#{@planning.id}/update_stop")

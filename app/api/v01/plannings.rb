@@ -111,14 +111,32 @@ class V01::Plannings < Grape::API
     end
 
     desc 'Switch two vehicles.',
-      detail: 'Not Implemented',
+      detail: 'Switch vehicle associated to one route with another existing vehicle.',
       nickname: 'switchVehicles'
     params do
       requires :id, type: String, desc: ID_DESC
+      requires :route_id, type: Integer, desc: 'Route id to switch associated vehicle.'
+      requires :vehicle_usage_id, type: Integer, desc: 'New vehicle id to associate to the route.'
+      optional :details, type: Boolean, desc: 'Output complete planning.', default: false
+      optional :geojson, type: Symbol, values: [:true, :false, :point, :polyline], default: :false, desc: 'Fill the geojson field with route geometry: `point` to return only points, `polyline` to return with encoded linestring.'
     end
     patch ':id/switch' do
-      # TODO
-      error!('501 Not Implemented', 501)
+      planning_id = ParseIdsRefs.read(params[:id])
+      planning = current_customer.plannings.where(planning_id).first!
+      route = planning.routes.find{ |route| route.id == Integer(params[:route_id]) }
+      vehicle_usage = planning.vehicle_usage_set.vehicle_usages.find(params[:vehicle_usage_id])
+
+      Planning.transaction do
+        if route && vehicle_usage && planning.switch(route, vehicle_usage) && planning.save! && planning.compute && planning.save!
+          if params[:details]
+            present planning, with: V01::Entities::Planning, geojson: params[:geojson]
+          else
+            status 204
+          end
+        else
+          status 400
+        end
+      end
     end
 
     desc 'Insert one or more stop into planning routes.',
