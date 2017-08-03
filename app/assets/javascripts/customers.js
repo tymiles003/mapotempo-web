@@ -133,8 +133,16 @@ var customers_edit = function(params) {
     spinnerImage: ''
   });
 
+  var getLocaleFromCurrentLocale = function () {
+    for (var locale in $.fn.wysihtml5.locale) {
+      if (locale.includes(I18n.currentLocale())) {
+        return locale;
+      }
+    }
+  };
+
   $('#customer_print_header').wysihtml5({
-    locale: I18n.currentLocale() == 'fr' ? 'fr-FR' : 'en-US',
+    locale: getLocaleFromCurrentLocale(),
     toolbar: {
       link: false,
       image: false,
@@ -216,7 +224,7 @@ var devicesObserveCustomer = (function() {
       });
     }
 
-    // Check Credentials Without Before / Complete Callbacks ----- TRANSLATE IN ERROR CALL ISN'T SET 
+    // Check Credentials Without Before / Complete Callbacks ----- TRANSLATE IN ERROR CALL ISN'T SET
     function checkCredentials() {
       if (!_allFieldsFilled()) return;
       _ajaxCall(true);
