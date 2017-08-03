@@ -101,6 +101,17 @@ var api_web_v01_destinations_index = function(params, api) {
   });
   map.addLayer(markersLayers);
 
+  var fitBounds = !window.location.hash;
+  // FIXME when turbolinks get updated
+  if (navigator.userAgent.indexOf('Edge') === -1) {
+    map.addHash();
+    var removeHash = function() {
+      map.removeHash();
+      $(document).off('page:before-change', removeHash);
+    };
+    $(document).on('page:before-change', removeHash);
+  }
+
   if (api === 'destinations') {
     var storesLayers = map.storesLayers = L.featureGroup();
     storesLayers.addTo(map);
@@ -108,7 +119,7 @@ var api_web_v01_destinations_index = function(params, api) {
 
   var display_destinations = function(data) {
     api_web_v01_display_destinations_(api, map, data);
-    if (markersLayers.getLayers().length > 0) {
+    if (markersLayers.getLayers().length > 0 && fitBounds) {
       map.fitBounds(markersLayers.getBounds(), {
         maxZoom: 15,
         padding: [20, 20]

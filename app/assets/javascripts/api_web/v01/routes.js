@@ -23,11 +23,9 @@ var api_web_v01_routes_index = function(params) {
   var progressBar = Turbolinks.enableProgressBar();
   progressBar && progressBar.advanceTo(25);
 
-  var prefered_unit = (!params.prefered_unit ? "km" : params.prefered_unit),
+  var prefered_unit = (!params.prefered_unit ? 'km' : params.prefered_unit),
     planning_id = params.planning_id,
     route_ids = params.route_ids;
-
-  var fitBounds = (window.location.hash) ? false : true;
 
   var map = mapInitialize(params);
   L.control.attribution({
@@ -45,20 +43,6 @@ var api_web_v01_routes_index = function(params) {
       isoline: false
     }
   }).addTo(map);
-  routesLayer.showRoutes(route_ids, null, function() {
-    if (fitBounds) {
-      progressBar && progressBar.done();
-      var bounds = routesLayer.getBounds();
-      if (bounds && bounds.isValid()) {
-        map.invalidateSize();
-        map.fitBounds(bounds, {
-          maxZoom: 15,
-          animate: false,
-          padding: [20, 20]
-        });
-      }
-    }
-  });
 
   var caption = L.DomUtil.get('routes-caption');
   if (caption) {
@@ -75,6 +59,33 @@ var api_web_v01_routes_index = function(params) {
     });
     map.addControl(new control_caption());
   }
+
+  var fitBounds = !window.location.hash;
+  // FIXME when turbolinks get updated
+  // Must be placed after caption, otherwise hash is override
+  if (navigator.userAgent.indexOf('Edge') === -1) {
+    map.addHash();
+    var removeHash = function() {
+      map.removeHash();
+      $(document).off('page:before-change', removeHash);
+    };
+    $(document).on('page:before-change', removeHash);
+  }
+
+  routesLayer.showRoutes(route_ids, null, function() {
+    if (fitBounds) {
+      progressBar && progressBar.done();
+      var bounds = routesLayer.getBounds();
+      if (bounds && bounds.isValid()) {
+        map.invalidateSize();
+        map.fitBounds(bounds, {
+          maxZoom: 15,
+          animate: false,
+          padding: [20, 20]
+        });
+      }
+    }
+  });
 
   progressBar && progressBar.advanceTo(50);
 };

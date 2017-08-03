@@ -53,6 +53,18 @@ var api_web_v01_zones_index = function(params) {
 
   map.addLayer(featureGroup).addLayer(map.storesLayers).addLayer(map.markersLayers);
 
+  var fitBounds = !window.location.hash;
+  // FIXME when turbolinks get updated
+  // Must be placed after caption, otherwise hash is override
+  if (navigator.userAgent.indexOf('Edge') === -1) {
+    map.addHash();
+    var removeHash = function() {
+      map.removeHash();
+      $(document).off('page:before-change', removeHash);
+    };
+    $(document).on('page:before-change', removeHash);
+  }
+
   var setColor = function(polygon, vehicle_id, speed_multiplicator) {
     polygon.setStyle((speed_multiplicator === 0) ? {
       color: '#FF0000',
@@ -150,7 +162,7 @@ var api_web_v01_zones_index = function(params) {
     });
 
     var bounds = featureGroup.getBounds();
-    if (bounds && bounds.isValid()) {
+    if (bounds && bounds.isValid() && fitBounds) {
       map.fitBounds(bounds, {
         maxZoom: 15,
         padding: [20, 20]
