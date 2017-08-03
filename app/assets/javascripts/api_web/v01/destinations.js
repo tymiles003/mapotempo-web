@@ -50,12 +50,12 @@ var api_web_v01_display_destinations_ = function(api, map, data) {
         iconUrl: '/images/' + (options.icon || 'point') + (options.color ? '-' + options.color.substr(1) : '') + '.svg',
         iconSize: new L.Point(12, 12),
         iconAnchor: new L.Point(6, 6),
-        popupAnchor: new L.Point(0, -6),
+        popupAnchor: new L.Point(0, -6)
       });
     }
     var marker = L.marker(new L.LatLng(options.lat, options.lng), {
       icon: licon
-    }).addTo((options.store && api == 'destinations') ? map.storesLayers : map.markersLayers);
+    }).addTo((options.store && api === 'destinations') ? map.storesLayers : map.markersLayers);
     return marker;
   };
 
@@ -68,11 +68,9 @@ var api_web_v01_display_destinations_ = function(api, map, data) {
     if (data[e]) {
       $.each(data[e], function(i, destination) {
         destination = prepare_display_destination(destination);
-        if (e == 'stores') destination.store = true;
+        if (e === 'stores') destination.store = true;
         if ($.isNumeric(destination.lat) && $.isNumeric(destination.lng)) {
-          addMarker(destination).bindPopup(SMT['stops/show']({
-            stop: destination
-          }));
+          addMarker(destination).bindPopup(SMT['stops/show'](destination));
         }
       });
     }
@@ -85,9 +83,7 @@ var api_web_v01_destinations_index = function(params, api) {
   var progressBar = Turbolinks.enableProgressBar();
   progressBar && progressBar.advanceTo(25);
 
-  var map_lat = params.map_lat,
-    map_lng = params.map_lng,
-    ids = params.ids;
+  var ids = params.ids;
 
   var map = mapInitialize(params);
   L.control.attribution({
@@ -101,11 +97,11 @@ var api_web_v01_destinations_index = function(params, api) {
   var markersLayers = map.markersLayers = new L.MarkerClusterGroup({
     showCoverageOnHover: false,
     removeOutsideVisibleBounds: true,
-    disableClusteringAtZoom: (api == 'destinations' && !params.disable_clusters) ? 19 : 0
+    disableClusteringAtZoom: (api === 'destinations' && !params.disable_clusters) ? 19 : 0
   });
   map.addLayer(markersLayers);
 
-  if (api == 'destinations') {
+  if (api === 'destinations') {
     var storesLayers = map.storesLayers = L.featureGroup();
     storesLayers.addTo(map);
   }
