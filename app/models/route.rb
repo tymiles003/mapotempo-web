@@ -137,7 +137,6 @@ class Route < ApplicationRecord
       end
 
       # Compute legs traces
-      traces = [nil, nil, nil] * segments.size
       begin
         router_options = vehicle_usage.vehicle.default_router_options.symbolize_keys.merge(speed_multiplicator_areas: Zoning.speed_multiplicator_areas(planning.zonings))
 
@@ -151,6 +150,7 @@ class Route < ApplicationRecord
         }
       rescue RouterError
         raise unless options[:ignore_errors]
+        traces = [nil, nil, nil] * segments.size
       end
       traces[0] = [0, 0, nil] unless vehicle_usage.default_store_start.try(&:position?)
 
