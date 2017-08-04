@@ -8,7 +8,7 @@ json.visits destination.visits do |visit|
   json.quantities visit_quantities(visit, nil) # Hash { id, quantity, icon, label } for deliverable units
   json.index_visit (destination.visits.index(visit) + 1) if destination.visits.size > 1
   json.ref visit.ref if @customer.enable_references
-  take_over = visit.take_over_time_with_seconds
+  take_over = visit.default_take_over_time_with_seconds
   json.take_over take_over
   json.duration take_over
   json.open_close1 visit.open1 || visit.close1
