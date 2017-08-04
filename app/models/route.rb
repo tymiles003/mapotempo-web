@@ -206,7 +206,7 @@ class Route < ApplicationRecord
             if stop.visit.try(:default_quantities?)
               unless options[:no_quantities]
                 stop.route.planning.customer.deliverable_units.each{ |du|
-                  quantities_[du.id] = ((quantities_[du.id] || 0) + (stop.visit.default_quantities[du.id] || 0)).round(3)
+                  quantities_[du.id] = (quantities_[du.id] || 0) + (stop.visit.default_quantities[du.id] || 0)
                 }
                 stop.out_of_capacity = stop.route.planning.customer.deliverable_units.any?{ |du|
                   vehicle_usage.vehicle.default_capacities[du.id] && quantities_[du.id] > vehicle_usage.vehicle.default_capacities[du.id]
@@ -215,7 +215,6 @@ class Route < ApplicationRecord
             else
               stop.out_of_capacity = false
             end
-            self.quantities = quantities_ unless options[:no_quantities]
 
             stop.out_of_drive_time = stop.time > vehicle_usage.default_close
           end
@@ -224,6 +223,12 @@ class Route < ApplicationRecord
           stop.distance = stop.time = stop.wait_time = nil
         end
       }
+
+      unless options[:no_quantities]
+        self.quantities = quantities_.each{ |k, v|
+          v = v.round(3)
+        }
+      end
 
       # Last stop to store
       distance, drive_time, trace = traces.shift
