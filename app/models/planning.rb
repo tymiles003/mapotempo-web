@@ -68,6 +68,10 @@ class Planning < ApplicationRecord
     copy
   end
 
+  def changed?
+    routes_changed? || super
+  end
+
   def set_routes(routes_visits, recompute = true, ignore_errors = false)
     default_empty_routes(ignore_errors)
     routes_visits = routes_visits.select{ |ref, _d| ref } # Remove out_of_route
@@ -112,10 +116,12 @@ class Planning < ApplicationRecord
   end
 
   def visit_add(visit)
+    update_routes_changed
     routes.find{ |r| !r.vehicle_usage }.add(visit)
   end
 
   def visit_remove(visit)
+    update_routes_changed
     routes.each{ |route|
       route.remove_visit(visit)
     }
@@ -578,6 +584,14 @@ class Planning < ApplicationRecord
       # Return route with the minimum time
       ri[2]
     }
+  end
+
+  def update_routes_changed
+    @routes_changed = true
+  end
+
+  def routes_changed?
+    @routes_changed
   end
 
   def update_zonings_track(_zoning)
