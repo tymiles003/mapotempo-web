@@ -524,7 +524,7 @@ fr:
         route:
           attributes:
             stops:
-              bad_index: Mauvais index %{n}
+              bad_index: Mauvais index %{index} sur la tournée %{route}
         planning:
           attributes:
             ref:
