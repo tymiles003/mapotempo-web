@@ -276,7 +276,7 @@ class Tomtom < DeviceBase
     orders && orders.collect{ |order| {
       order_id: decode_order_id(order[:order_id]),
       status: @@order_status[order[:order_state][:@state_code]] || order[:order_state][:@state_code],
-      eta: order[:estimated_arrivalTime]
+      eta: order[:estimated_arrival_time]
     } } || []
   end
 
@@ -392,6 +392,7 @@ class Tomtom < DeviceBase
         dstOrderToSend: {
           orderNo: encode_order_id(description, orderid),
           orderType: 'DELIVERY_ORDER',
+          scheduledCompletionDateAndTime: time
         }
       }
     }
