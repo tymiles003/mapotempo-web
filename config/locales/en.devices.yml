@@ -25,7 +25,7 @@ en:
       customer:
         devices:
           tomtom:
-            account: "Aaccount name"
+            account: "Account name"
             user: "User"
             password: "Password"
             tomtom_id: "TomTom"
