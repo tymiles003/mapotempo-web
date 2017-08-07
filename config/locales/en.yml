@@ -564,6 +564,7 @@ en:
     planning:
       import_too_routes: Tried to import more routes than available vehicles
       already_optimizing: A plan optimization is already in progress
+      deadlock: "Warning: attempt to update the same data simultaneously. To get back the correct data, please refresh the planning."
   import:
     csv:
       line: Line %{s}

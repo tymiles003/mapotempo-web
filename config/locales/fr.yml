@@ -567,6 +567,7 @@ fr:
     planning:
       import_too_routes: Tentative d'importer plus de tournées que de véhicules disponibles
       already_optimizing: Une optimisation de planning est déjà en cours
+      deadlock: "Attention : tentative de mettre à jour les mêmes données simultanément. Pour retrouver les bonnes données, merci de rafraîchir le planning."
   import:
     csv:
       line: Ligne %{s}
