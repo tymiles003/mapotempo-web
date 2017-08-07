@@ -147,7 +147,11 @@ class Planning < ApplicationRecord
 
   def compute(options = {})
     Planning.transaction do
-      split_by_zones(nil) if zoning_outdated
+      if zoning_outdated
+        split_by_zones(nil)
+        zoning_outdated = false
+        @zoning_ids_changed = false
+      end
       routes.each{ |r| r.compute(options) }
     end
   end
