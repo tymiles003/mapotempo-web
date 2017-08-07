@@ -428,8 +428,7 @@ class Route < ApplicationRecord
   end
 
   def size_active
-    # TODO: use :counter_cache for has_many relation
-    vehicle_usage_id ? (stops.loaded? ? stops.select(&:active).size : stops.select(:active).count) : 0
+    vehicle_usage_id ? stops.select(&:active).size : 0
   end
 
   def no_geolocalization
