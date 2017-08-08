@@ -18,7 +18,7 @@ class CustomersControllerTest < ActionController::TestCase
 
     sign_in users(:user_one)
     get :edit, id: customers(:customer_two)
-    assert_response :redirect
+    assert_response :not_found
   end
 
   test 'should get edit' do

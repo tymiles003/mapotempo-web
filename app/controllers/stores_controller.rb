@@ -20,12 +20,14 @@ require 'importer_stores'
 require 'font_awesome'
 
 class StoresController < ApplicationController
-  include LinkBack
-
-  load_and_authorize_resource
+  before_action :authenticate_user!
   before_action :set_store, only: [:show, :edit, :update, :destroy]
   before_action :icons_table, except: [:index]
   after_action :warnings, only: [:create, :update]
+
+  load_and_authorize_resource
+
+  include LinkBack
 
   def index
     if current_user.customer.job_store_geocoding

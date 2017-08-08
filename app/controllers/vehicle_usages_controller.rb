@@ -16,10 +16,12 @@
 # <http://www.gnu.org/licenses/agpl.html>
 #
 class VehicleUsagesController < ApplicationController
-  include LinkBack
+  before_action :authenticate_user!
+  before_action :set_vehicle_usage, only: [:edit, :update, :toggle]
 
   load_and_authorize_resource
-  before_action :set_vehicle_usage, only: [:edit, :update, :toggle]
+
+  include LinkBack
 
   def edit
   end

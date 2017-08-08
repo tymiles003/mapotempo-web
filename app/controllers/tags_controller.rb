@@ -16,9 +16,11 @@
 # <http://www.gnu.org/licenses/agpl.html>
 #
 class TagsController < ApplicationController
-  load_and_authorize_resource
+  before_action :authenticate_user!
   before_action :set_tag, only: [:edit, :update, :destroy]
   before_action :icons_table, except: [:index]
+
+  load_and_authorize_resource
 
   def index
     @tags = current_user.customer.tags

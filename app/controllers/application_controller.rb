@@ -111,6 +111,36 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  def js_redirect_to(path, flash_type = nil, flash_message = nil)
+    if flash_type
+      flash[flash_type] = flash_message
+    end
+
+    render js: %(window.location.href='#{path}') and return
+  end
+
+  def authenticate_user!(options = {})
+    if user_signed_in?
+      super(options)
+    else
+      self.response_body = nil
+      respond_to do |format|
+        format.js do
+          flash[:alert] = I18n.t('devise.failure.unauthenticated')
+          js_redirect_to(root_path)
+        end
+        format.html do
+          redirect_to root_path, notice: I18n.t('devise.failure.unauthenticated')
+        end
+        format.json do
+          flash.now[:alert] = I18n.t('devise.failure.unauthenticated')
+          render json:   { error: I18n.t('devise.failure.unauthenticated') }.to_json,
+                 status: :forbidden
+        end
+      end
+    end
+  end
+
   def not_found_error(exception)
     # Display in logger
     Rails.logger.fatal(exception.class.to_s + ' : ' + exception.to_s)

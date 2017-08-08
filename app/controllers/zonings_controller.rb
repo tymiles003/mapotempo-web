@@ -16,11 +16,13 @@
 # <http://www.gnu.org/licenses/agpl.html>
 #
 class ZoningsController < ApplicationController
-  include LinkBack
-
-  load_and_authorize_resource
+  before_action :authenticate_user!
   before_action :set_zoning, only: [:show, :edit, :update, :destroy, :duplicate, :automatic, :from_planning, :isochrone, :isodistance]
   before_action :manage_zoning
+
+  load_and_authorize_resource
+
+  include LinkBack
 
   def index
     @zonings = current_user.customer.zonings

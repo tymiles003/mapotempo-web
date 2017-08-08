@@ -23,7 +23,7 @@ class VehicleUsageSetsControllerTest < ActionController::TestCase
     assert ability.cannot? :manage, @vehicle_usage_set
 
     get :edit, id: vehicle_usage_sets(:vehicle_usage_set_two)
-    assert_response :redirect
+    assert_response :not_found
   end
 
   test 'should get index vehicle_usage_set' do

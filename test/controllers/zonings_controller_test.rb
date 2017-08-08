@@ -15,7 +15,7 @@ class ZoningsControllerTest < ActionController::TestCase
     assert ability.cannot? :manage, @zoning
 
     get :edit, id: zonings(:zoning_three)
-    assert_response :redirect
+    assert_response :not_found
   end
 
   test 'should get index' do

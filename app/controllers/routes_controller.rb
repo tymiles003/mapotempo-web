@@ -21,8 +21,10 @@ require 'value_to_boolean'
 require 'zip'
 
 class RoutesController < ApplicationController
-  load_and_authorize_resource
+  before_action :authenticate_user!
   before_action :set_route, only: [:update]
+
+  load_and_authorize_resource
 
   include PlanningExport
 

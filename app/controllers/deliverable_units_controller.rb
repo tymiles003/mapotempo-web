@@ -18,9 +18,11 @@
 require 'font_awesome'
 
 class DeliverableUnitsController < ApplicationController
-  load_and_authorize_resource
+  before_action :authenticate_user!
   before_action :set_deliverable_unit, only: [:edit, :update, :destroy]
   before_action :icons_table, except: [:index]
+
+  load_and_authorize_resource
 
   def index
     @deliverable_units = current_user.customer.deliverable_units

@@ -17,7 +17,9 @@
 #
 
 class StopsController < ApplicationController
+  before_action :authenticate_user!
   before_action :set_stop, only: :show # Before load_and_authorize_resource
+
   load_and_authorize_resource # Load resource except for show action
 
   def show

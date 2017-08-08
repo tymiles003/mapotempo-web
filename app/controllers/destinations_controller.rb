@@ -19,11 +19,13 @@ require 'csv'
 require 'importer_destinations'
 
 class DestinationsController < ApplicationController
-  include LinkBack
-
-  load_and_authorize_resource
+  before_action :authenticate_user!
   before_action :set_destination, only: [:show, :edit, :update, :destroy]
   after_action :warnings, only: [:create, :update]
+
+  load_and_authorize_resource
+
+  include LinkBack
 
   def index
     @customer = current_user.customer

@@ -16,6 +16,8 @@
 # <http://www.gnu.org/licenses/agpl.html>
 #
 class VisitsController < ApplicationController
+  before_action :authenticate_user!
+
   load_and_authorize_resource
 
   def show

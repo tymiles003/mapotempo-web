@@ -18,8 +18,10 @@
 require 'csv'
 
 class OrderArraysController < ApplicationController
-  load_and_authorize_resource
+  before_action :authenticate_user!
   before_action :set_order_array, only: [:show, :edit, :update, :destroy, :duplicate]
+
+  load_and_authorize_resource
 
   def index
     @order_arrays = current_user.customer.order_arrays

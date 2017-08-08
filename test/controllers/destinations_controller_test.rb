@@ -21,7 +21,7 @@ class DestinationsControllerTest < ActionController::TestCase
     assert ability.cannot? :manage, @destination
 
     get :edit, id: destinations(:destination_four)
-    assert_response :redirect
+    assert_response :not_found
   end
 
   test 'should get index' do

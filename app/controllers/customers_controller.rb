@@ -16,9 +16,10 @@
 # <http://www.gnu.org/licenses/agpl.html>
 #
 class CustomersController < ApplicationController
-  load_and_authorize_resource
-
+  before_action :authenticate_user!
   before_action :set_customer, only: [:edit, :update, :delete_vehicle]
+
+  load_and_authorize_resource
 
   include Devices::Helpers
 
@@ -87,7 +88,12 @@ class CustomersController < ApplicationController
   private
 
   def set_customer
-    @customer = current_user.admin? ? current_user.reseller.customers.find(params[:id]) : current_user.customer
+    @customer = if current_user.admin?
+                  current_user.reseller.customers.find(params[:id])
+                else
+                  raise(ActiveRecord::RecordNotFound) if params[:id].to_s != current_user.customer.id.to_s
+                  current_user.customer
+                end
   end
 
   def customer_params

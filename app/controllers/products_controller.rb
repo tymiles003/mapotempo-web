@@ -16,8 +16,10 @@
 # <http://www.gnu.org/licenses/agpl.html>
 #
 class ProductsController < ApplicationController
-  load_and_authorize_resource
+  before_action :authenticate_user!
   before_action :set_product, only: [:edit, :update, :destroy]
+
+  load_and_authorize_resource
 
   def index
     @products = current_user.customer.products

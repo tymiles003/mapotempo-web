@@ -15,7 +15,7 @@ class StoresControllerTest < ActionController::TestCase
     assert ability.cannot? :manage, @store
 
     get :edit, id: stores(:store_two)
-    assert_response :redirect
+    assert_response :not_found
   end
 
   test 'should get index' do

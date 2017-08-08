@@ -16,7 +16,7 @@ class DeliverableUnitsControllerTest < ActionController::TestCase
     assert ability.cannot? :manage, @deliverable_unit
 
     get :edit, id: deliverable_units(:deliverable_unit_two_one)
-    assert_response :redirect
+    assert_response :not_found
   end
 
   test 'should get index' do
