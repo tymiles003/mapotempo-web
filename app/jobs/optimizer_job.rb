@@ -65,7 +65,7 @@ class OptimizerJob < Struct.new(:planning_id, :route_id, :global, :active_only)
             @job.save
             Delayed::Worker.logger.info "OptimizerJob planning_id=#{planning_id} #{@job.progress}"
           }
-          @job.progress = '100;100;'
+          @job.progress = '100;100;-1'
           @job.save
           Delayed::Worker.logger.info "OptimizerJob planning_id=#{planning_id} #{@job.progress}"
           optimum
