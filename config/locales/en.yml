@@ -817,8 +817,7 @@ en:
       replace_yes: Delete previous destinations
       replace_yes_help: Delete and replace destinations with import ones. Overwrite
         all destinations. Plans will also be lost.
-      replace_confirm: Delete all clients with their amendments and replace them with
-        imported ones?
+      replace_confirm: Deleting all clients will affect your old plannings which will contain only new unplanned clients. Are you sure ?
       plannings: Plans
       delete_plannings: Delete previous plans
       delete_plannings_help: Delete previously created plans (allows better performances).

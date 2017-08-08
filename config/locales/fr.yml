@@ -826,8 +826,7 @@ fr:
       replace_yes: Supprimer anciens clients
       replace_yes_help: Efface et remplace tous les anciens clients par ceux de l'import.
         Les plannings seront également perdus.
-      replace_confirm: Supprimer tous les clients et leurs modifications pour les
-        remplacer par ceux importés ?
+      replace_confirm: Le fait de supprimer les clients affectera vos anciens plannings qui ne comporteront plus que des nouveaux clients non planifiés. Êtes-vous sûr ?
       plannings: Plannings
       delete_plannings: Supprimer anciens plannings
       delete_plannings_help: Supprime les anciens plannings (permet notamment d'améliorer
