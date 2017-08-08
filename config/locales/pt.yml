@@ -191,362 +191,371 @@ pt:
         street: Rua
         detail: Detalhe
         postalcode: Código postal
-        city:
-        state:
-        country:
-        lat:
-        lng:
-        comment:
-        comment_small:
-        phone_number:
-        phone_number_small:
-        geocoding_accuracy:
-        geocoding_accuracy_small:
-        geocoding_level:
-        tags:
-        tag_ids:
-        visits:
+        city: Cidade
+        state: Estado
+        country: País
+        lat: Latitude
+        lng: Longitude
+        comment: Comentário
+        comment_small: Comentário
+        phone_number: Telefone Nr
+        phone_number_small: Tel.
+        geocoding_accuracy: Precisão da geocodificação
+        geocoding_accuracy_small: Geoc.
+        geocoding_level: Nível de geocodificação
+        tags: Marcadores
+        tag_ids: Marcadores
+        visits: Visitas
       destinations:
-        name:
-        address:
-        street:
-        detail:
-        postalcode:
-        city:
-        country:
-        comment:
-        phone_number:
-        geocoding_accuracy:
-        geocoding_level:
+        name: Nome
+        address: Morada
+        street: Rua
+        detail: Detalhe
+        postalcode: Cód. Postal
+        city: Cidade
+        country: País
+        comment: Comentário
+        phone_number: Telefone Nr
+        geocoding_accuracy: Precisão da geocodificação
+        geocoding_level: Nível de geocodificação
       layer:
-        name:
-        url:
-        attribution:
+        name: Nome
+        url: URL
+        attribution: Atribuição
       order:
-        date:
-        destination_id:
-        order_array_id:
+        date: Data
+        destination_id: Ponto
+        order_array_id: Lista de pedidos
       order_array:
-        name:
-        base_date:
-        length:
-        customer_id:
+        name: Nome
+        base_date: Data de Base
+        length: Período
+        customer_id: Cliente
       planning:
-        name:
-        ref:
-        ref_small:
-        active:
-        tag_ids:
-        tags:
-        zoning_id:
-        created_at:
-        updated_at:
-        order_array_id:
-        date:
-        begin_date:
-        end_date:
-        vehicle_usage_set:
-        vehicle_usage_set_id:
-        vehicle_usage_set_small:
+        name: Nome
+        ref: Referencia
+        ref_small: Ref.
+        active: Ativo
+        tag_ids: Marcadores
+        tags: Marcadores
+        zoning_id: Zoneamento
+        created_at: Criado
+        updated_at: Atualizado
+        order_array_id: Lista de pedidos
+        date: Data
+        begin_date: Início de validade
+        end_date: Fim de validade
+        vehicle_usage_set: Configuração de veículos
+        vehicle_usage_set_id: Configuração de veículos
+        vehicle_usage_set_small: Conf.
         tag_operation:
-          and:
-          or:
+          and: todos
+          or: ou
       profile:
-        name:
-        layers:
-        routers:
+        name: Nome
+        layers: Mapa base
+        routers: Calculador de Itinerário
       product:
-        code:
-        name:
+        code: Código
+        name: Nome
       reseller:
-        host:
-        name:
-        welcome_url:
-        help_url:
-        contact_url:
-        logo_large:
-        logo_small:
-        favicon:
-        website_url:
-        url_protocol:
+        host: Host
+        name: Nome
+        welcome_url: URL de acolhimento
+        help_url: URL de ajuda
+        contact_url: URL de contacto
+        logo_large: Logo grande
+        logo_small: Logo pequeno
+        favicon: Favicon
+        website_url: URL do sítio web
+        url_protocol: Tipo de conexão
       route:
-        distance:
-        emission:
-        out_of_date:
-        start:
-        end:
-        hidden:
-        locked:
-        ref:
+        distance: Distância
+        emission: Emissões
+        outdated: Desatualizado
+        start: Início
+        end: Fim
+        hidden: Escondido
+        locked: Fechado
+        ref: Referência
       router:
         router_dimensions:
-          time:
-          distance:
+          time: O mais rápido
+          distance: O mais curto
         options:
-          hazardous_goods_none:
+          hazardous_goods_none: Nenhuma
           hazardous_goods:
-            explosive:
-            gas:
-            flammable:
-            combustible:
-            organic:
-            poison:
-            radio_active:
-            corrosive:
-            poisonous_inhalation:
-            harmful_to_water:
-            other:
+            explosive: Explosivo
+            gas: Gás
+            flammable: Inflamável
+            combustible: Combustível
+            organic: Orgânico
+            poison: Veneno
+            radio_active: Radioativo
+            corrosive: Corrosivo
+            poisonous_inhalation: Toxico
+            harmful_to_water: Nocivo para a água
+            other: Outro
       stop:
-        active:
-        begin:
-        end:
-        distance:
-        time:
-        wait_time:
+        active: Ativo
+        begin: Início
+        end: Fim
+        distance: Distância
+        time: Duração
+        wait_time: Tempo de espera
       store:
-        name:
-        address:
-        street:
-        detail:
-        postalcode:
-        city:
-        state:
-        country:
-        customised_color:
-        lat:
-        lng:
-        open:
-        close:
-        store_start:
-        store_end:
-        color:
-        icon:
-        icon_size:
+        name: Nome
+        address: Morada
+        street: Rua
+        detail: Detalhe
+        postalcode: Cód. Postal
+        city: Cidade
+        state: Estado
+        country: País
+        customised_color: Selecionar cor
+        lat: Latitude
+        lng: Longitude
+        open: Hora de abertura
+        close: Hora de fecho
+        store_start: Início armazém
+        store_end: Fim armazém
+        color: Cor
+        icon: Icon
+        icon_size: Tamanho de icon
       stores:
-        name:
-        address:
-        street:
-        postalcode:
-        city:
-        country:
-        geocoding_accuracy:
-        geocoding_level:
+        name: Nome
+        address: Morada
+        street: Rua
+        postalcode: Código Postal
+        city: Cidade
+        country: País
+        geocoding_accuracy: Precisão da geocodificação
+        geocoding_level: Nível da geocodificação
       tag:
-        label:
-        color:
-        icon:
-        ref:
+        label: Marcador
+        color: Cor
+        icon: Icon
+        icon_size: Tamanho do icon
+        ref: Referência
       user:
-        email:
-        customer:
-        customer_id:
-        layer:
-        layer_id:
-        password:
-        password_confirmation:
-        current_password:
-        api_key:
-        url_click2call:
-        sign_in_count:
-        sign_in_at:
-        ref:
-        confirmed_at:
-        prefered_unit:
+        email: E-mail
+        customer: Cliente
+        customer_id: Cliente
+        layer: Mapa base
+        layer_id: Mapa base
+        password: Password
+        password_confirmation: Confirmar password
+        current_password: Password atual
+        api_key: Chave da API
+        url_click2call: URL Click2Call
+        sign_in_count: Numero de conexões
+        sign_in_at: Última conexão
+        ref: Referência
+        confirmed_at: Data de confirmação
+        prefered_unit: Unidade escolhida
       vehicle:
-        name:
-        emission:
-        consumption:
-        color:
-        router:
-        router_id:
-        router_dimension:
-        speed_multiplicator:
-        customised_color:
-        ref:
-        contact_email:
-        capacities:
+        name: Nome
+        emission: Emissão
+        consumption: Consumo
+        color: Cor
+        router: Calculador de itinerário
+        router_id: Calculador de itinerário
+        router_dimension: Objetivo do calculador
+        speed_multiplicator: Ajuste da velocidade
+        customised_color: Personalização da cor
+        ref: Referência
+        contact_email: E-mail
+        capacities: Capacidades
       vehicle_usage:
-        vehicle_id:
-        open:
-        close:
-        store_start:
-        store_start_id:
-        store_stop:
-        store_stop_id:
-        rest_start:
-        rest_stop:
-        rest_duration:
-        store_rest:
-        store_rest_id:
-        service_time_start:
-        service_time_end:
-        vehicle:
+        vehicle_id: Veículo
+        open: Hora de início
+        close: Hora de fim
+        store_start: Partida do armazém
+        store_start_id: Partida do armazém
+        store_stop: Chegada ao armazém
+        store_stop_id: Chegada ao Armazém
+        rest_start: Período de repouso início
+        rest_stop: Período de repouso fim
+        rest_duration: Duração do repouso
+        store_rest: Local de repouso
+        store_rest_id: Local de repouso
+        service_time_start: Duração do serviço anterior
+        service_time_end: Duração do serviço posterior
+        vehicle: Veículo
       vehicle_usage_set:
-        name:
-        open:
-        close:
-        store_start:
-        store_start_id:
-        store_stop:
-        store_stop_id:
-        rest_start:
-        rest_stop:
-        rest_duration:
-        store_rest:
-        store_rest_id:
-        service_time_start:
-        service_time_end:
+        name: Nome
+        open: Abertura
+        close: Fecho
+        store_start: Partida do armazém
+        store_start_id: Partida do Armazém
+        store_stop: Chegada ao armazém
+        store_stop_id: Chegada ao Armazém
+        rest_start: Início do período de repouso
+        rest_stop: Fim do período de repouso
+        rest_duration: Duração do repouso
+        store_rest: Local de repouso
+        store_rest_id: Local de repouso
+        service_time_start: Duração de serviço anterior
+        service_time_end: Duração de serviço posterior
       visit:
-        ref:
-        ref_small:
-        take_over:
-        take_over_small:
-        open1:
-        open1_small:
-        close1:
-        close1_small:
-        open_close1_small:
-        open1_close1_days:
-        open2:
-        open2_small:
-        close2:
-        close2_small:
-        open_close2_small:
-        open2_close2_days:
-        multi_visit:
-        tags:
-        tag_ids:
-        quantities:
+        ref: Referência
+        ref_small: Ref.
+        take_over: Duração da visita
+        take_over_small: Duração
+        open1: Início de período 1
+        open1_small: Início 1
+        close1: Fim de período 1
+        close1_small: Fim 1
+        open_close1_small: Início/Fim 1
+        open1_close1_days: D+
+        open2: Início de período 2
+        open2_small: Início 2
+        close2: Fim de período 2
+        close2_small: Fim 2
+        open_close2_small: Início/Fim 2
+        open2_close2_days: D+
+        multi_visit: Multi
+        tags: Marcadores
+        tag_ids: Marcadores
+        quantities: Quantidades
       visits:
-        ref:
-        ref_small:
-        take_over:
-        take_over_small:
-        open1:
-        open1_small:
-        close1:
-        close1_small:
-        open_close1_small:
-        open1_close1_days:
-        open2:
-        open2_small:
-        close2:
-        close2_small:
-        open_close2_small:
-        open2_close2_days:
-        multi_visit:
-        tags:
-        tag_ids:
+        ref: Referência
+        ref_small: Ref.
+        take_over: Duração da visita
+        take_over_small: Duração
+        open1: Início de período 1
+        open1_small: Início 1
+        close1: Fim de período 1
+        close1_small: Fim 1
+        open_close1_small: Início/Fim 1
+        open1_close1_days: D+
+        open2: Início de período 2
+        open2_small: Início 2
+        close2: Fim de período 2
+        close2_small: Fim 2
+        open_close2_small: Início/Fim 2
+        open2_close2_days: D+
+        multi_visit: Multi
+        tags: Marcadores
+        tag_ids: Marcadores
         quantities:
-          one:
-          other:
+          one: Quantidade
+          other: Quantidades
       zoning:
-        name:
+        name: Nome
       zone:
-        vehicle:
-        name:
+        vehicle: Veículo
+        name: Nome
     successful:
       messages:
-        created:
-        updated:
+        created: '%{model} foi criado com sucesso'
+        updated: '%{model} foi atualizado com sucesso'
     errors:
       attributes:
-        inconsistent_customer:
-        visits:
+        inconsistent_customer: não autorizado para este cliente
       models:
         location:
-          missing_address_or_latlng:
-          lat_outside_range:
-          lng_outside_range:
-          geocoding_accuracy_outside_range:
+          missing_address_or_latlng: O código postal e a cidade não podem estar vazios
+            se lat/lng estiverem vazios
+          lat_outside_range: deverá estar compreendido entre -90..90
+          lng_outside_range: deverá estar compreendido entre -180..180
+          geocoding_accuracy_outside_range: deverá estar compreendido entre 0..1
         vehicle:
           attributes:
             capacities:
-              not_float:
-              negative_value:
+              not_float: deverá ser um número
+              negative_value: deverá ser um valor positivo (%{value})
         vehicles:
-          at_least_one:
+          at_least_one: Necessário pelo menos um veículo
         vehicle_usage:
           attributes:
             close:
-              after:
+              after: deve ser posterior à hora de abertura
             rest_stop:
-              after:
-          missing_rest_window:
-          missing_rest_duration:
-          rest_range:
-          service_range:
+              after: deve ser posterior à hora de abertura
+          missing_rest_window: deve ser preenchido se a duração do repouso for preenchida
+          missing_rest_duration: deve ser preenchido se um período de repouso for
+            preenchido
+          rest_range: O período de repouso deve estar compreendido entre %{start}
+            e %{end}
+          service_range: não pode ser igual ou superior ao tempo de trabalho
         vehicle_usage_set:
           attributes:
             close:
-              after:
+              after: deve ser após a hora de abertura
             rest_stop:
-              after:
-          at_least_one:
-          missing_rest_window:
-          missing_rest_duration:
+              after: deve ser após a hora de fecho
+          at_least_one: É obrigatória, no mínimo, uma configuração de veículo
+          missing_rest_window: deve ser preenchido se a duração do repouso for preenchida
+          missing_rest_duration: deve ser preenchido se um período de repouso for
+            preenchido
         visit:
           attributes:
             close1:
-              after:
-              blank:
+              after: deve ser após %{s}
+              blank: deve ser preenchido se um início ou fim de período 2 for definido
             open2:
-              after:
+              after: deve ser após %{s}
             close2:
-              after:
+              after: deve ser após %{s}
             quantities:
-              not_float:
-              negative_value:
+              not_float: deve ser um número
+              negative_value: deve ser um valor positivo (%{value})
         zone:
           attributes:
             vehicle:
-              bad_customer:
+              bad_customer: não associado com uma conta cliente
             polygon:
-              invalid_json:
+              invalid_json: não é uma string json válida
         customer:
           attributes:
             destinations:
-              over_max_limit:
+              over_max_limit: Ultrapassado o numero máximo de pontos
             stores:
-              over_max_limit:
+              over_max_limit: Ultrapassado o número máximo de armazéns
         store:
-          at_least_one:
-          icon_unknown:
-          icon_size_invalid:
+          at_least_one: Necessário, no mínimo, um armazém
+          icon_unknown: não é um ícone font-awesome autorizado
+          icon_size_invalid: não é um tamanho válido
         route:
           attributes:
             stops:
-              bad_index:
+              bad_index: Mau índice %{n}
         planning:
           attributes:
             ref:
-              invalid_format:
-              ref_value:
+              invalid_format: não pode conter os caracteres ".", "\" or "/"
+              ref_value: 'Rota de referência '
             begin_date:
-              blank:
+              blank: Deve ser preenchido se uma data de fim de validade foi introduzida
             end_date:
-              blank:
-              after:
+              blank: Deve ser preenchido se uma data de início de validade foi introduzida
+              after: deve ser posterior à data de início de validade
+        tag:
+          icon_unknown: não é um ícone font-awesomer autorizado
+          icon_size_invalid: não é um tamanho válido
   errors:
     management:
-      title:
-      description:
+      title: Impossível aceder à página
+      description: A página a que tentou aceder provocou um erro
       status:
         title:
-          default:
-          '404':
-          '422':
-          '500':
+          default: Ocorreu um erro na aplicação
+          '404': Página não encontrada
+          '422': Ação impossível
+          '500': Ocorreu um erro interno
         explanation:
-          default:
-          '404':
-          '422':
-          '500':
-      back_button:
-      home_button:
+          default: Ocorreu um erro interno. O problema foi reportado, por favor tente
+            outra ação. Contacte o suporte se urgente.
+          '404': Página não encontrada no servidor. Poderá ter sido removida.
+          '422': Não está autorizado a executar esta ação.
+          '500': Ocorreu um erro interno. O problema foi reportado, por favor tente
+            outra ação. Contacte o suporte se urgente.
+      back_button: Página anterior
+      home_button: Regressar à página inicial
     messages:
-      taken:
-    connection_refused:
+      taken: já utilizado
+    connection_refused: Impossível ligar à base de dados
     location:
       geocoding_fail:
       reversegeocoding_fail:
@@ -980,6 +989,8 @@ pt:
   plannings:
     menu:
       plannings:
+      plannings_limit:
+        menu_message:
     index:
       title:
       new:
@@ -989,6 +1000,7 @@ pt:
         icalendar_email:
         spreadsheet:
         none_planning:
+      list_message:
     edit:
       vehicles:
       current_position:
@@ -1004,6 +1016,9 @@ pt:
       last_sent_to:
       title:
       stops:
+      without_stops_title:
+      load_stops_out_of_route:
+      load_stops:
       optimized_at:
       optimize_global:
         title:
@@ -1076,7 +1091,7 @@ pt:
       collapse_planning_panel:
       refresh:
       refresh_help:
-      out_of_date_zoning:
+      outdated_zoning:
       stops_help:
       duration_help:
       distance_help:
@@ -1125,6 +1140,7 @@ pt:
         visit:
         status:
         eta:
+        day:
       error:
         no_geolocalization:
         no_geolocalization_help:
@@ -1176,6 +1192,8 @@ pt:
           download:
     new:
       title:
+      dialog:
+        new_planning:
     export_file:
       ref_planning:
       planning:
@@ -1363,12 +1381,16 @@ pt:
       title:
     form:
       color_default:
-      icon_default:
       color_help:
       customised_color:
-      icon_help:
       ref:
       ref_help:
+      icon_size:
+        small:
+        medium:
+        large:
+      prefered_icons:
+      other_icons:
   users:
     menu:
       sign_out:
@@ -1393,6 +1415,43 @@ pt:
     emissions_light_petrol:
     emissions_light_diesel:
     emissions_light_lgp:
+    import:
+      ref_vehicle:
+      ref_desc:
+      name_vehicle:
+      name_desc:
+      contact_email:
+      contact_email_desc:
+      emission:
+      emission_desc:
+      consumption:
+      consumption_desc:
+      capacities:
+      capacities_desc:
+      router_mode:
+      router_mode_desc:
+      router_dimension:
+      router_dimension_desc:
+      router_options:
+      router_options_desc:
+      speed_multiplicator:
+      speed_multiplicator_desc:
+      color:
+      color_desc:
+      devices:
+      devices_desc:
+      missing_name:
+      format:
+        string:
+        integer:
+        float:
+        hour:
+        second:
+        yes_no:
+        required:
+        advisable:
+        optionnal:
+        deprecated:
     form:
       ref:
         help:
@@ -1487,6 +1546,7 @@ pt:
       name:
     menu:
       vehicle_usage_sets:
+      import_vehicle_usage_sets:
       deliverable_units:
     edit:
       title:
@@ -1498,6 +1558,73 @@ pt:
       service_time:
     new:
       title:
+    import:
+      title:
+      vehicle_usage_set:
+      replace_yes:
+      replace_yes_help:
+      replace_no:
+      replace_no_help:
+      vehicles:
+      replace_vehicles:
+      replace_vehicles_help:
+      csv:
+        title:
+        help:
+        file_help:
+      import_template_help:
+      dialog:
+        replace_vehicles_confirm:
+        import:
+          title:
+          in_progress:
+        help:
+          title:
+          desc:
+          columns_vehicle_usage_set:
+          columns_vehicle:
+      name_vehicle_usage_set:
+      name_desc:
+      open:
+      open_desc:
+      close:
+      close_desc:
+      store_start_ref:
+      store_start_desc:
+      store_stop_ref:
+      store_stop_desc:
+      rest_start:
+      rest_start_desc:
+      rest_stop:
+      rest_stop_desc:
+      rest_duration:
+      rest_duration_desc:
+      store_rest_ref:
+      store_rest_desc:
+      service_time_start:
+      service_time_start_desc:
+      service_time_end:
+      service_time_end_desc:
+      format:
+        string:
+        integer:
+        float:
+        hour:
+        second:
+        yes_no:
+        required:
+        required_for_default:
+        advisable:
+        optional:
+        deprecated:
+      not_csv:
+      empty_file:
+      too_many_lines:
+      none_column:
+      missing_name:
+      missing_open_close:
+      invalid_numeric_value:
+      check_custom_columns:
     form:
       open_close:
       open_close_help:
@@ -1611,6 +1738,9 @@ pt:
       empty_result:
   api_web:
     v01:
+      plannings:
+        print:
+          button:
       destinations:
         index:
           none_destinations:
@@ -1619,6 +1749,8 @@ pt:
           none_routes:
           departure:
           arrival:
+        print:
+          button:
       stores:
         index:
           none_stores:
@@ -1636,6 +1768,10 @@ pt:
       list:
       show:
       edit:
+      export:
+        button:
+        csv:
+        excel:
       send:
       destroy:
       destroy_selection:
