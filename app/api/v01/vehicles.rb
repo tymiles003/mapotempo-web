@@ -50,7 +50,7 @@ class V01::Vehicles < Grape::API
         end
       end
 
-      p.permit(:contact_email, :ref, :name, :emission, :consumption, :color, :router_id, :router_dimension, :speed_multiplicator, router_options: [:time, :distance, :isochrone, :isodistance, :avoid_zones, :motorway, :toll, :trailers, :weight, :weight_per_axle, :height, :width, :length, :hazardous_goods, :max_walk_distance, :approach, :snap, :truck_restriction_penalty], capacities: (current_customer || @current_user.reseller.customers.where(id: params[:customer_id]).first!).deliverable_units.map{ |du| du.id.to_s }, devices: permit_devices)
+      p.permit(:contact_email, :ref, :name, :emission, :consumption, :color, :router_id, :router_dimension, :speed_multiplicator, router_options: [:time, :distance, :isochrone, :isodistance, :avoid_zones, :motorway, :toll, :trailers, :weight, :weight_per_axle, :height, :width, :length, :hazardous_goods, :max_walk_distance, :approach, :snap, :strict_restriction], capacities: (current_customer || @current_user.reseller.customers.where(id: params[:customer_id]).first!).deliverable_units.map{ |du| du.id.to_s }, devices: permit_devices)
     end
 
     def permit_devices
@@ -173,7 +173,7 @@ class V01::Vehicles < Grape::API
         optional :max_walk_distance, type: Float
         optional :approach, type: String
         optional :snap, type: Float
-        optional :truck_restriction_penalty, type: Boolean
+        optional :strict_restriction, type: Boolean
       end
     end
     put ':id' do

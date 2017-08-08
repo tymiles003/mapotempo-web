@@ -29,7 +29,7 @@ router_one:
     max_walk_distance: true
     approach: true
     snap: true
-    truck_restriction_penalty: true
+    strict_restriction: true
 
 router_two:
   mode: car

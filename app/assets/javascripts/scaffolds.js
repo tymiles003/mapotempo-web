@@ -313,7 +313,7 @@ var routerOptionsSelect = function(selectId, params) {
         // Car
         checkInputFieldState($('#router_options_approach_input'), routerOptions.approach);
         checkInputFieldState($('#router_options_snap_input'), routerOptions.snap);
-        checkInputFieldState($('#router_options_truck_restriction_penalty_input'), routerOptions.truck_restriction_penalty);
+        checkInputFieldState($('#router_options_strict_restriction_input'), routerOptions.strict_restriction);
 
         // Car and Truck
         checkInputFieldState($('#router_options_motorway_input'), routerOptions.motorway);

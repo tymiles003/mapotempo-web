@@ -146,9 +146,9 @@ fr:
         router_options_length: Longueur du véhicule
         router_options_hazardous_goods: Type de matière dangeureuse
         router_options_max_walk_distance: Distance maximum à pied
-        router_options_approach: Arriver/Partir avec le point de visite à droite
+        router_options_approach: Arriver/Partir dans le sens de circulation
         router_options_snap: Reporter l'arrêt au carrefour
-        router_options_truck_restriction_penalty: Respect strict des limitations poids lourd
+        router_options_strict_restriction: Respect strict des limitations poids lourd
         print_planning_annotating: Inclure un émargement client
         print_header: Entête des tournées
         print_stop_time: Inclure les horaires de passage
@@ -302,8 +302,8 @@ fr:
             other: Autre
           approach_none: Non défini
           approach:
-            unrestricted: Désactivé
-            curb: Activé
+            unrestricted: Indifférent
+            curb: Côté de circulation sur la voie
       stop:
         active: Actif
         begin: Début
@@ -698,8 +698,9 @@ fr:
       router_options_width_range: Largeur entre %{from} et %{to} mètres
       router_options_length_range: Longueur entre %{from} et %{to} mètres
       router_options_max_walk_distance_range: Distance maximum à pied avant de prendre les transports en commun
+      router_options_approach_help: Arriver/partir avec le point de visite du côté de circulation sur la voie
       router_options_snap_range: Distance maximale pour s'arrêter à un carrefour sinon arrêt devant le point de livraison
-      router_options_truck_restriction_penalty: Si non coché le calculateur essaiera de respecter les interdictions au plus près et passera outre l'interdiction uniquement s'il ne peut pas faire autrement.
+      router_options_strict_restriction: Si non coché le calculateur essaiera de respecter les interdictions au plus près et passera outre l'interdiction uniquement s'il ne peut pas faire autrement.
       take_over_help: Durée de visite moyenne par client
       optimization_cluster_size_default: '%{n} (valeur par défaut)'
       optimization_cluster_size_help: Valeur en secondes séparant les points à regrouper

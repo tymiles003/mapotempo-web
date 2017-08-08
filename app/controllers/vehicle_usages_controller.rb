@@ -113,7 +113,7 @@ class VehicleUsagesController < ApplicationController
                                                                :max_walk_distance,
                                                                :approach,
                                                                :snap,
-                                                               :truck_restriction_penalty
+                                                               :strict_restriction
                                                            ],
                                                            devices: permit_devices
                                                        ])

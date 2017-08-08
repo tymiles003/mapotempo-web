@@ -154,7 +154,7 @@ class CustomersController < ApplicationController
                                                         :max_walk_distance,
                                                         :approach,
                                                         :snap,
-                                                        :truck_restriction_penalty
+                                                        :strict_restriction
                                                     ],
                                                     devices: permit_recursive_params(params[:customer][:devices]))
       parameters[:end_subscription] = Date.strptime(parameters[:end_subscription], I18n.t('time.formats.datepicker')).strftime(ACTIVE_RECORD_DATE_MASK) unless parameters[:end_subscription].blank?
@@ -191,7 +191,7 @@ class CustomersController < ApplicationController
           :max_walk_distance,
           :approach,
           :snap,
-          :truck_restriction_penalty
+          :strict_restriction
         ],
         devices: permit_recursive_params(params[:customer][:devices])
       ]
@@ -202,7 +202,7 @@ class CustomersController < ApplicationController
   end
 
   def permit_recursive_params(params)
-    if !params.nil?
+    unless params.nil?
       params.map do |key, value|
         if value.is_a?(Array)
           { key => [permit_recursive_params(value.first)] }

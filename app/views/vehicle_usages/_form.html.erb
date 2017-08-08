@@ -227,6 +227,7 @@
 
           <div class="col-md-6">
             <%= select_tag 'vehicle_usage[vehicle][router_options][approach]', options_for_select(t('activerecord.attributes.router.options.approach').invert, current_router_options(@vehicle_usage.vehicle)['approach']), include_blank: t('vehicles.form.router.default') + ' (' + (!!@vehicle_usage.vehicle.customer.approach ? t("activerecord.attributes.router.options.approach.#{@vehicle_usage.vehicle.customer.approach}") : t('activerecord.attributes.router.options.approach_none')) + ')', class: 'form-control' %>
+            <p class="help-block"><%=  t('customers.form.router_options_approach_help') %></p>
           </div>
         </div>
 
@@ -244,13 +245,14 @@
           </div>
         </div>
 
-        <div id="router_options_truck_restriction_penalty_input" class="form-group <%= @vehicle_usage.vehicle.default_router.truck_restriction_penalty? ? '' : 'router-option-disabled' %>">
-          <label class="col-md-2 control-label" for="vehicle_usage_vehicle_router_options_truck_restriction_penalty">
-            <%= t('activerecord.attributes.customer.router_options_truck_restriction_penalty') %>
+        <div id="router_options_strict_restriction_input" class="form-group <%= @vehicle_usage.vehicle.default_router.strict_restriction? ? '' : 'router-option-disabled' %>">
+          <label class="col-md-2 control-label" for="vehicle_usage_vehicle_router_options_strict_restriction">
+            <%= t('activerecord.attributes.customer.router_options_strict_restriction') %>
           </label>
 
           <div class="col-md-6 input-append form-inline">
-            <%= check_box_tag 'vehicle_usage[vehicle][router_options][truck_restriction_penalty]', @vehicle_usage.vehicle.router_options['truck_restriction_penalty'], !!@vehicle_usage.vehicle.router_options['truck_restriction_penalty'] %>
+            <%= check_box_tag 'vehicle_usage[vehicle][router_options][strict_restriction]', current_router_options(@vehicle_usage.vehicle)['strict_restriction'], !!current_router_options(@vehicle_usage.vehicle)['strict_restriction'] %>
+            <p class="help-block"><%=  t('customers.form.router_options_strict_restriction') %></p>
           </div>
         </div>
 

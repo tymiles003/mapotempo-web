@@ -195,43 +195,43 @@ class CustomerTest < ActiveSupport::TestCase
         max_walk_distance: 200,
         approach: 'curb',
         snap: 50,
-        truck_restriction_penalty: false
+        strict_restriction: false
     }
 
     customer.save!
 
-    assert customer.time, true
-    assert customer.time?, true
+    assert_equal customer.time, true
+    assert_equal customer.time?, true
 
-    assert customer.distance, true
-    assert customer.distance?, true
+    assert_equal customer.distance, true
+    assert_equal customer.distance?, true
 
-    assert customer.isochrone, true
-    assert customer.isochrone?, true
+    assert_equal customer.isochrone, true
+    assert_equal customer.isochrone?, true
 
-    assert customer.isodistance, true
-    assert customer.isodistance?, true
+    assert_equal customer.isodistance, true
+    assert_equal customer.isodistance?, true
 
-    assert customer.avoid_zones, true
-    assert customer.avoid_zones?, true
+    assert_equal customer.avoid_zones, true
+    assert_equal customer.avoid_zones?, true
 
-    assert customer.motorway, true
-    assert customer.motorway?, true
+    assert_equal customer.motorway, true
+    assert_equal customer.motorway?, true
 
-    assert customer.toll, true
-    assert customer.toll?, true
+    assert_equal customer.toll, true
+    assert_equal customer.toll?, true
 
-    assert customer.trailers, 2
-    assert customer.weight, 10
-    assert customer.weight_per_axle, 5
-    assert customer.height, 5
-    assert customer.width, 6
-    assert customer.length, 30
-    assert customer.hazardous_goods, 'gas'
-    assert customer.max_walk_distance, 200
-    assert customer.approach, 'curb'
-    assert customer.snap, 50
-    assert customer.truck_restriction_penalty, false
+    assert_equal customer.trailers, '2'
+    assert_equal customer.weight, '10'
+    assert_equal customer.weight_per_axle, '5'
+    assert_equal customer.height, '5'
+    assert_equal customer.width, '6'
+    assert_equal customer.length, '30'
+    assert_equal customer.hazardous_goods, 'gas'
+    assert_equal customer.max_walk_distance, '200'
+    assert_equal customer.approach, 'curb'
+    assert_equal customer.snap, '50'
+    assert_equal customer.strict_restriction, false
   end
 
 

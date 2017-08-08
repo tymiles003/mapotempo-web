@@ -146,9 +146,9 @@ en:
         router_options_length: Vehicle length
         router_options_hazardous_goods: Hazardous goods
         router_options_max_walk_distance: Max walk distance
-        router_options_approach: Arrive/Leave with checkpoint at right
+        router_options_approach: Arrive/Leave in the traffic direction
         router_options_snap: Snap checkpoint to junction
-        router_options_truck_restriction_penalty: Strict compliance with truck limitations
+        router_options_strict_restriction: Strict compliance with truck limitations
         print_planning_annotating: Include plan annotating
         print_header: Routes header
         print_stop_time: Include stop time
@@ -301,8 +301,8 @@ en:
             other: Other
           approach_none: Undefined
           approach:
-            unrestricted: Disabled
-            curb: Enabled
+            unrestricted: Indifferent
+            curb: Side of the current traffic direction
       stop:
         active: Active
         begin: Begin
@@ -693,8 +693,9 @@ en:
       router_options_width_range: Width between %{from} and %{to} meters
       router_options_length_range: Length between %{from} and %{to} meters
       router_options_max_walk_distance_range: Max walking distance before taking public transport
+      router_options_approach_help: Arrive/Leave with checkpoint in the current traffic direction
       router_options_snap_range: Max distance to stop to a junction otherwise stop at the place of delivering
-      router_options_truck_restriction_penalty: If not checked the router will try to strictly respect the limitations and override limitations only if it's the only way.
+      router_options_strict_restriction: If not checked the router will try to strictly respect the limitations and override limitations only if it's the only way.
       take_over_help: Average time per account
       optimization_cluster_size_default: '%{n} (default value)'
       optimization_cluster_size_help: Value in seconds between points to group before

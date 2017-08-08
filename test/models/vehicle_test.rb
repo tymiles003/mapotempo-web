@@ -43,43 +43,43 @@ class VehicleTest < ActiveSupport::TestCase
         max_walk_distance: 200,
         approach: 'curb',
         snap: 50,
-        truck_restriction_penalty: false
+        strict_restriction: false
     }
 
     vehicle.save!
 
-    assert vehicle.time, true
-    assert vehicle.time?, true
+    assert_equal vehicle.time, true
+    assert_equal vehicle.time?, true
 
-    assert vehicle.distance, true
-    assert vehicle.distance?, true
+    assert_equal vehicle.distance, true
+    assert_equal vehicle.distance?, true
 
-    assert vehicle.isochrone, true
-    assert vehicle.isochrone?, true
+    assert_equal vehicle.isochrone, true
+    assert_equal vehicle.isochrone?, true
 
-    assert vehicle.isodistance, true
-    assert vehicle.isodistance?, true
+    assert_equal vehicle.isodistance, true
+    assert_equal vehicle.isodistance?, true
 
-    assert vehicle.avoid_zones, true
-    assert vehicle.avoid_zones?, true
+    assert_equal vehicle.avoid_zones, true
+    assert_equal vehicle.avoid_zones?, true
 
-    assert vehicle.motorway, true
-    assert vehicle.motorway?, true
+    assert_equal vehicle.motorway, true
+    assert_equal vehicle.motorway?, true
 
-    assert vehicle.toll, true
-    assert vehicle.toll?, true
+    assert_equal vehicle.toll, true
+    assert_equal vehicle.toll?, true
 
-    assert vehicle.trailers, 2
-    assert vehicle.weight, 10
-    assert vehicle.weight_per_axle, 5
-    assert vehicle.height, 5
-    assert vehicle.width, 6
-    assert vehicle.length, 30
-    assert vehicle.hazardous_goods, 'gas'
-    assert vehicle.max_walk_distance, 200
-    assert vehicle.approach, 'curb'
-    assert vehicle.snap, 50
-    assert vehicle.truck_restriction_penalty, false
+    assert_equal vehicle.trailers, '2'
+    assert_equal vehicle.weight, '10'
+    assert_equal vehicle.weight_per_axle, '5'
+    assert_equal vehicle.height, '5'
+    assert_equal vehicle.width, '6'
+    assert_equal vehicle.length, '30'
+    assert_equal vehicle.hazardous_goods, 'gas'
+    assert_equal vehicle.max_walk_distance, '200'
+    assert_equal vehicle.approach, 'curb'
+    assert_equal vehicle.snap, '50'
+    assert_equal vehicle.strict_restriction, false
   end
 
   test 'should use default router options' do
@@ -100,13 +100,13 @@ class VehicleTest < ActiveSupport::TestCase
     }
     vehicle.save!
 
-    assert vehicle.default_router_options['motorway'], 'false'
-    assert vehicle.default_router_options['trailers'], '2'
-    assert vehicle.default_router_options['weight'], '10'
-    assert vehicle.default_router_options['weight_per_axle'], '3'
-    assert vehicle.default_router_options['length'], '30'
-    assert vehicle.default_router_options['hazardous_goods'], 'gas'
-    assert vehicle.default_router_options['max_walk_distance'], '200'
+    assert_equal vehicle.default_router_options['motorway'], 'false'
+    assert_equal vehicle.default_router_options['trailers'], '2'
+    assert_equal vehicle.default_router_options['weight'], '10'
+    assert_equal vehicle.default_router_options['weight_per_axle'], '3'
+    assert_equal vehicle.default_router_options['length'], '30'
+    assert_equal vehicle.default_router_options['hazardous_goods'], 'gas'
+    assert_equal vehicle.default_router_options['max_walk_distance'], '200'
   end
 
   test 'should update outdated for capacity' do
