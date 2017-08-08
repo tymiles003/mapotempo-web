@@ -35,6 +35,7 @@ class ApplicationController < ActionController::Base
   before_action :set_locale
   before_action :customer_payment_period, if: :current_user
   around_action :set_time_zone, if: :current_user
+  around_action :track_sub_api_time
 
   rescue_from CanCan::AccessDenied do |exception|
     redirect_to root_url, alert: exception.message
@@ -60,6 +61,10 @@ class ApplicationController < ActionController::Base
     super
     # More info for Lograge
     payload[:customer_id] = current_user && current_user.customer && current_user.customer.id
+    if @sub_api_time
+      payload[:sub_api_time] = @sub_api_time[Thread.current.object_id]
+      @sub_api_time[Thread.current.object_id] = nil
+    end
   end
 
   protected
@@ -70,6 +75,14 @@ class ApplicationController < ActionController::Base
 
   def set_locale
     I18n.locale = http_accept_language.compatible_language_from(I18n.available_locales) || I18n.default_locale
+  end
+
+  def track_sub_api_time(&block)
+    RestClient::Request.start_capture_duration
+    ret = block.call
+    @sub_api_time ||= {}
+    @sub_api_time[Thread.current.object_id] = RestClient::Request.end_capture_duration * 1000
+    ret
   end
 
   def devise_parameter_sanitizer
