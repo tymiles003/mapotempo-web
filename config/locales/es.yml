@@ -27,7 +27,7 @@ es:
       datepicker:
   schedule_type:
     invalid:
-  default_time_zone:
+  default_time_zone: Madrid
   activemodel:
     models:
       import_csv:

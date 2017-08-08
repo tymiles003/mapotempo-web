@@ -27,7 +27,7 @@ pt:
       datepicker: '%d-%m-%Y'
   schedule_type:
     invalid: Valor de hora inválido
-  default_time_zone: Lisboa
+  default_time_zone: Lisbon
   activemodel:
     models:
       import_csv: CSV Import

@@ -25,7 +25,7 @@ he:
       complete: '%m-%d-%Y %H:%M:%S'
       date: '%Y-%m-%d'
       datepicker: '%m-%d-%Y'
-  default_time_zone: לונדון
+  default_time_zone: Jerusalem
   activemodel:
     models:
       import_csv: CSV יבוא

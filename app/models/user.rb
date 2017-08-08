@@ -104,7 +104,6 @@ class User < ApplicationRecord
   end
 
   def assign_defaults
-    set_default_time_zone
     self.api_key || self.api_key_random
   end
 
