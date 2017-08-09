@@ -363,9 +363,6 @@ class PlanningsController < ApplicationController
                   # current_user.customer.plannings.includes(routes: {stops: :visit}).find(params[:id] || params[:planning_id])
                   current_user.customer.plannings.includes(:routes).find(params[:id] || params[:planning_id])
                 else
-
-                  w current_user.customer.plannings
-
                   current_user.customer.plannings.find(params[:id] || params[:planning_id])
                 end
   end
