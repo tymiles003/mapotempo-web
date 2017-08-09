@@ -3,7 +3,7 @@ class RestClient::Request
     def execute_with_capture_duration(args, &block)
       started = Time.now
       res = execute_without_capture_duration(args, &block)
-      @@duration += Time.now - started
+      @@duration = (@@duration || 0) + Time.now - started
       return res
     end
 
