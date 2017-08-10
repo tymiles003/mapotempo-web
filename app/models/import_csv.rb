@@ -87,14 +87,14 @@ class ImportCsv
           last_row = last_line = nil
           rows
         end
-      rescue => e
+      rescue StandardError => e
         message = e.is_a?(ImportInvalidRow) ? I18n.t('import.data_erroneous.csv', s: last_line) + ', ' : (last_line && !e.is_a?(ImportBaseError)) ? I18n.t('import.csv.line', s: last_line) + ', ' : ''
         message += e.message
         message += ' ' + I18n.t('destinations.import_file.check_custom_columns') if column_def && !column_def.values.compact.empty?
         # format error to be human friendly with row content (take into account customized column names)
         errors[:base] << error_and_format_row(message, last_row)
-        Rails.logger.error e.message
-        Rails.logger.error e.backtrace.join("\n")
+        Rails.logger.warn e.message
+        Rails.logger.warn e.backtrace.join("\n")
         return false
       end
     end

@@ -67,7 +67,7 @@ class ImporterBase
             dest.delay_geocode
           end
           dest
-        rescue ImportBaseError
+        rescue ImportBaseError => e
           if options[:ignore_errors]
             @warnings << e unless @warnings.include?(e)
           else
