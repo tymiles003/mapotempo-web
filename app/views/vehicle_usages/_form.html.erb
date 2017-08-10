@@ -226,7 +226,7 @@
           </label>
 
           <div class="col-md-6">
-            <%= select_tag 'vehicle_usage[vehicle][router_options][approach]', options_for_select(t('activerecord.attributes.router.options.approach').invert, current_router_options(@vehicle_usage.vehicle)['approach']), include_blank: t('vehicles.form.router.default') + ' (' + (!!@vehicle_usage.vehicle.customer.approach ? t("activerecord.attributes.router.options.approach.#{@vehicle_usage.vehicle.customer.approach}") : t('activerecord.attributes.router.options.approach_none')) + ')', class: 'form-control' %>
+            <%= select_tag 'vehicle_usage[vehicle][router_options][approach]', options_for_select(t('activerecord.attributes.router.options.approach').invert, @vehicle_usage.vehicle.router_options['approach']), include_blank: t('vehicles.form.router.default') + ' (' + (!!@vehicle_usage.vehicle.customer.approach ? t("activerecord.attributes.router.options.approach.#{@vehicle_usage.vehicle.customer.approach}") : t('activerecord.attributes.router.options.approach_none')) + ')', class: 'form-control' %>
             <p class="help-block"><%=  t('customers.form.router_options_approach_help') %></p>
           </div>
         </div>

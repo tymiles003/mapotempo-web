@@ -198,7 +198,7 @@
       </label>
 
       <div class="col-md-6">
-        <%= select_tag 'customer[router_options][approach]', options_for_select(t('activerecord.attributes.router.options.approach').invert, @customer.router_options['approach']), include_blank: true, class: 'form-control' %>
+        <%= select_tag 'customer[router_options][approach]', options_for_select(t('activerecord.attributes.router.options.approach').invert, selected: @customer.router_options['approach']), include_blank: false, class: 'form-control' %>
         <p class="help-block"><%=  t('customers.form.router_options_approach_help') %></p>
       </div>
     </div>
