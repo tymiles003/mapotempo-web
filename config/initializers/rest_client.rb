@@ -5,7 +5,7 @@ class RestClient::Request
     def execute_with_capture_duration(args, &block)
       started = Time.now
       res = execute_without_capture_duration(args, &block)
-      @@duration[Thread.current.object_id] = (@@duration[Thread.current.object_id] || 0) + Time.now - started
+      @@duration[Thread.current.object_id] = (@@duration[Thread.current.object_id] || 0) + (Time.now - started)
       return res
     end
 
