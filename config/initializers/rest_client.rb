@@ -1,18 +1,20 @@
 class RestClient::Request
+  @@duration = {}
+
   class << self
     def execute_with_capture_duration(args, &block)
       started = Time.now
       res = execute_without_capture_duration(args, &block)
-      @@duration = (@@duration || 0) + Time.now - started
+      @@duration[Thread.current.object_id] = (@@duration[Thread.current.object_id] || 0) + Time.now - started
       return res
     end
 
     def start_capture_duration
-      @@duration = 0
+      @@duration[Thread.current.object_id] = 0
     end
 
     def end_capture_duration
-      @@duration
+      @@duration[Thread.current.object_id]
     end
 
     alias_method_chain :execute, :capture_duration
