@@ -8,7 +8,7 @@ pt:
       other: km
   distance_miles:
     unit:
-      one: mi
+      one: mi.
       other: mi
     thousand:
       one: mi
@@ -176,6 +176,10 @@ pt:
         description_help: Detalhes do cliente e utilizadores
         enable_vehicle_position: Ativar posicionamento do veículo
         enable_stop_status: Ativar status das visitas
+        router_options_approach: Chegada/Partida com o ponto de visita à direita
+        router_options_snap: Ligar a paragem ao cruzamento
+        router_options_truck_restriction_penalty: Respeito estrito das limitações
+          de pesados
       deliverable_unit:
         label: Etiqueta
         ref: Referência
@@ -296,6 +300,10 @@ pt:
             poisonous_inhalation: Toxico
             harmful_to_water: Nocivo para a água
             other: Outro
+          approach_none: Não definido
+          approach:
+            unrestricted: Desativado
+            curb: Ativado
       stop:
         active: Ativo
         begin: Início
@@ -557,140 +565,163 @@ pt:
       taken: já utilizado
     connection_refused: Impossível ligar à base de dados
     location:
-      geocoding_fail:
-      reversegeocoding_fail:
+      geocoding_fail: 'A geocodificação falhou:'
+      reversegeocoding_fail: 'A geocodificação inversa falhou:'
     planning:
-      import_too_routes:
-      already_optimizing:
+      import_too_routes: Tentativa de importar mais rotas que veículos disponíveis
+      already_optimizing: Já se encontra em curso uma otimização de plano
   import:
     csv:
-      line:
+      line: Linha %{s}
     tomtom:
-      record:
-    empty:
-    data:
+      record: Registo %{s}
+    empty: Nada para importar, verifique os seus dados.
+    data: 'Verifique os seus dados:'
     data_erroneous:
-      csv:
-      json:
-      tomtom:
-    template_csv:
-    template_excel:
+      csv: Ficheiro inválido, linha %{s}
+      json: Ficheiro inválido
+      tomtom: Dados tomtom inválidos, registo %{s}
+    template_csv: Modelo de importação de folha de cálculo standard
+    template_excel: Modelo de importação de folha de cálculo Excel
   admin:
     profiles:
       menu:
-        profiles:
+        profiles: Perfis
       index:
-        title:
-        avoid_zones:
-        speed_multiplicator_zones:
+        title: Listagem de perfis
+        avoid_zones: Zonas de bypass
+        speed_multiplicator_zones: Zonas de abrandamento
     resellers:
       menu:
-        reseller:
+        reseller: Revendedor
       edit:
-        title:
+        title: Alterar revendedor
       form:
-        host_help:
-        name_help:
-        welcome_url_help:
-        help_url_help:
-        contact_url_help:
-        logo_large_help:
-        logo_small_help:
-        favicon_help:
-        website_url_help:
-        protocol_url_http:
-        protocol_url_https:
+        host_help: Hostname e porta de URL web utilizados para deteção deste revendedor
+        name_help: Marca do revendedor
+        welcome_url_help: 'Endereço da página web html incluído como  "iframe" na
+          página de boas-vindas. Poderá utilizar "{LG}" o qual será substituído  pela
+          língua como « en », « fr » (ie: http://mapotempo.com/{LG}/page.html).'
+        help_url_help: 'Endereço da página web da ajuda. Poderá utilizar "{LG}" o
+          qual será substituído  pela língua como « en », « fr » (ie: http://mapotempo.com/{LG}/page.html).'
+        contact_url_help: 'Endereço da página web com o formulário de contacto. Poderá
+          utilizar "{LG}" o qual será substituído  pela língua como « en », « fr »
+          (ie: http://mapotempo.com/{LG}/page.html).'
+        logo_large_help: Logo de página inteira redimensionável, preferencialmente
+          em formato SVG ou, alternativamente, em PNG.
+        logo_small_help: Logo do menu, 150x40 pixels em SVG ou PNG.
+        favicon_help: Icon do website , 16x16 pixels em formato PNG ou ICO.
+        website_url_help: 'Endereço do website. Poderá utilizar "{LG}" o qual será
+          substituído  pela língua como « en », « fr » (ie: http://mapotempo.com/{LG}/page.html).'
+        protocol_url_http: HTTP
+        protocol_url_https: HTTPS
     users:
       menu:
-        users:
-        send_email:
+        users: Utilizadores
+        send_email: Enviar email de confirmação
       index:
-        title:
-        new:
+        title: Alterar utilizadores
+        new: Novo utilizador
       new:
-        title:
+        title: Novo utilizador
       create:
-        success:
+        success: Utilizador criado com sucesso
       edit:
-        title:
-        connect_as:
+        title: Alterar utilizador
+        connect_as: Ligar como…
       update:
-        success:
+        success: Utilizador atualizado com sucesso
       destroy:
-        success:
+        success: Utilizador suprimido com sucesso
       destroy_multiple:
-        success:
+        success: Utilizadores suprimidos com sucesso
       send_email:
-        success:
+        success: Email enviado ao utilizador com sucesso
   customers:
     duplicate:
-      success:
+      success: Conta cliente duplicada com sucesso
     default:
-      country:
+      country: Portugal
     menu:
-      customer:
-      user_settings:
-      customers:
+      customer: Parâmetros globais
+      user_settings: Parâmetros de utilizador
+      customers: Contas cliente
     edit:
-      title:
-      send_email:
-      password:
+      title: Modificar parâmetros gliobais
+      send_email: Enviar email de confirmação
+      password: Alterar palavra passe
       user:
-        connect_as:
-        list:
-        new:
+        connect_as: Ligar como…
+        list: Lista de utilizadores
+        new: Novo utilizador
       vehicles:
-        list:
-      time_zone:
-      devices:
+        list: Lista de veículos
+      time_zone: Fuso horário
+      devices: Exportações GPS & Móveis
     index:
-      title:
-      new:
-      map:
-      no_test:
-      status:
-      status_no_user:
-      status_no_sign_in_user:
-      status_inactive_user:
-      created_end_subscription:
+      title: Lista de contas cliente
+      new: Nova conta cliente
+      map: Mapa
+      no_test: fora do teste
+      status: Status
+      status_no_user: Sem utilizadores
+      status_no_sign_in_user: Utilizador nunca se ligou
+      status_inactive_user: Utilizador inativo
+      created_end_subscription: (Criada) Fim de subscrição
     new:
-      title:
+      title: Nova conta cliente
     destroy:
-      success:
+      success: Cliente suprimido com sucesso
     destroy_multiple:
-      success:
+      success: Clientes suprimidos com sucesso
     delete_vehicle:
-      success:
+      success: Veículo suprimido com sucesso
     form:
-      name:
-      default_value:
-      outputs:
-      options:
-      optimization_parameters:
-      router_help:
-      router_options_default:
-      router_options_motorway_yes:
-      router_options_motorway_no:
-      router_options_motorway_default:
-      router_options_toll_yes:
-      router_options_toll_no:
-      router_options_toll_default:
-      router_options_trailers_range:
-      router_options_weight_range:
-      router_options_weight_per_axle_range:
-      router_options_height_range:
-      router_options_width_range:
-      router_options_length_range:
-      router_options_max_walk_distance_range:
-      take_over_help:
-      optimization_cluster_size_default:
-      optimization_cluster_size_help:
-      optimization_time_default:
-      optimization_time_help:
-      optimization_soft_upper_bound_default:
-      optimization_stop_soft_upper_bound_help:
-      optimization_vehicle_soft_upper_bound_help:
-      cost_waiting_time_default:
+      name: Conta cliente
+      default_value: Valores por defeito
+      outputs: Apresentação das rotas
+      options: Opções
+      optimization_parameters: Parâmetros de otimização
+      router_help: Perfil utilizado pelo processamento de rotas, por defeito
+      router_options_default: '%{n} (valor por defeito)'
+      router_options_motorway_yes: Sim
+      router_options_motorway_no: Não
+      router_options_motorway_default: Por defeito (%{value})
+      router_options_toll_yes: Sim
+      router_options_toll_no: Não
+      router_options_toll_default: Por defeito (%{value})
+      router_options_trailers_range: Entre %{from} e %{to} reboques
+      router_options_weight_range: Peso (com reboque e mercadoria) entre %{from} e
+        %{to} toneladas
+      router_options_weight_per_axle_range: Peso por eixo entre %{from} e %{to} toneladas
+      router_options_height_range: Altura entre %{from} e %{to} metros
+      router_options_width_range: Largura entre %{from} e %{to} metros
+      router_options_length_range: Comprimento entre %{from} e %{to} metros
+      router_options_max_walk_distance_range: Distância máxima a pé até aos transportes
+        públicos
+      router_options_snap_range: Distância máxima para parar junto a um cruzamento
+        em vez de parar no local de entrega
+      router_options_truck_restriction_penalty: Se não selecionado, o calculador tentará
+        respeitar estritamente as limitações, ignorando estas caso não exista outra
+        forma.
+      take_over_help: Duração média da visita por cliente
+      optimization_cluster_size_default: '%{n} (valor por defeito)'
+      optimization_cluster_size_help: Valor em segundos entre pontos a agrupar antes
+        da otimização. Um valor demasiado alto afetará a qualidade da otimização (30
+        segundos é já um valor expressivo). Considerar apenas para a otimização de
+        uma única rota, com atrasos.
+      optimization_time_default: '%{n} (valor por defeito)'
+      optimization_time_help: A otimização pára automaticamente, por defeito. No entanto,
+        poderá especificar aqui um valor limite por veículo, a não ultrapassar.
+      optimization_soft_upper_bound_default: '%{n} (valor por defeito)'
+      optimization_stop_soft_upper_bound_help: 'Quanto maior for o valor, mais penalizadores
+        serão os atrasos (0 para impedir estritamente os atrasos: neste caso desativa
+        os clusters).'
+      optimization_vehicle_soft_upper_bound_help: 'Para uma otimização global, permitir
+        a gestão da repartição pelos veículos. Quanto maior for o valor mais os atrasos
+        serão penalizadores (0 para impedir estritamente os atrasos: neste caso desativa
+        os clusters).'
+      cost_waiting_time_default: '%{n} (valor por defeito)'
       cost_waiting_time_help:
       optimization_force_start_help:
       print_header_help:
