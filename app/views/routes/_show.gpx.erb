@@ -86,7 +86,7 @@ route.stops.each{ |stop|
         <%= route.vehicle_usage.default_store_stop.name %>
       </name>
       <desc><%= route.end_time %>
-<%= [route.vehicle_usage.default_store_stop.street, route.vehicle_usage.default_store_stop.postalcode, route.vehicle_usage.default_store_stop.city, route.vehicle_usage.default_store_start.state, route.vehicle_usage.default_store_stop.country].select{ |i| !i.blank? }.join(', ') %>.
+<%= [route.vehicle_usage.default_store_stop.street, route.vehicle_usage.default_store_stop.postalcode, route.vehicle_usage.default_store_stop.city, route.vehicle_usage.default_store_stop.state, route.vehicle_usage.default_store_stop.country].select{ |i| !i.blank? }.join(', ') %>.
       <% if route.stop_out_of_drive_time %>
 <%= t 'plannings.edit.error.out_of_drive_time' %>
       <% end %>
