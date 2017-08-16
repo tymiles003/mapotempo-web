@@ -65,7 +65,7 @@ class UsersController < ApplicationController
   end
 
   def set_user
-    @user = current_user if current_user.id == Integer(params[:id])
+    @user = current_user if current_user && current_user.id == Integer(params[:id])
   end
 
   def set_user_from_token
