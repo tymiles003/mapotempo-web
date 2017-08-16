@@ -147,7 +147,8 @@ class ImporterVehicleUsageSets < ImporterBase
         vehicle_attributes[:name] = vehicle_attributes.delete(:name_vehicle)
         vehicle_attributes[:color] = vehicle_attributes.delete(:color) || vehicle.color
         vehicle_attributes[:router] = Router.where(mode: vehicle_attributes.delete(:router_mode)).first
-        vehicle_attributes[:router_options] = vehicle_attributes[:router_options] ? ActiveSupport::JSON.decode(vehicle_attributes.delete(:router_options)) : {}
+        # TODO: use typed options to automatically convert to the correct format
+        vehicle_attributes[:router_options] = vehicle_attributes[:router_options] ? ActiveSupport::JSON.decode(vehicle_attributes.delete(:router_options).gsub(/(\d),(\d)/, '\1.\2')) : {}
         vehicle_attributes[:devices] = vehicle_attributes[:devices] ? ActiveSupport::JSON.decode(vehicle_attributes.delete(:devices)) : {}
         vehicle.assign_attributes(vehicle_attributes)
         vehicle.save!
