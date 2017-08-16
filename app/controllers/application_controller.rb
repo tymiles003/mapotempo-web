@@ -27,6 +27,7 @@ class ApplicationController < ActionController::Base
   rescue_from ActionController::RoutingError, with: :not_found_error
   rescue_from AbstractController::ActionNotFound, with: :not_found_error
   rescue_from ActionController::UnknownController, with: :not_found_error
+  rescue_from ActiveRecord::StatementInvalid, ActiveRecord::StaleObjectError, with: :deadlock
 
   layout :layout_by_resource
 
@@ -162,6 +163,16 @@ class ApplicationController < ActionController::Base
       format.html { render 'errors/show', layout: 'full_page', locals: { status: 500 }, status: 500 }
       format.json { render json: { error: t('errors.management.status.explanation.default') }, status: :internal_server_error }
       format.all { render body: nil, status: :internal_server_error }
+    end
+  end
+
+  def deadlock(exception)
+    # Display in logger
+    Rails.logger.warn(exception.class.to_s + ' : ' + exception.to_s)
+    Rails.logger.warn(exception.backtrace.join("\n"))
+
+    respond_to do |format|
+      format.json { render json: { error: I18n.t('errors.planning.deadlock') }, status: :unprocessable_entity }
     end
   end
 

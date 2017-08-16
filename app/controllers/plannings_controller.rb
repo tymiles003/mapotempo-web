@@ -155,9 +155,6 @@ class PlanningsController < ApplicationController
               format.json { render json: @planning.errors, status: :unprocessable_entity }
             end
           end
-        rescue ActiveRecord::StatementInvalid, ActiveRecord::StaleObjectError => e
-          @planning.errors[:base] = I18n.t('errors.planning.deadlock')
-          format.json { render json: @planning.errors, status: :unprocessable_entity }
         rescue ActiveRecord::RecordInvalid => e
           format.json { render json: @planning.errors, status: :unprocessable_entity }
         end
