@@ -97,11 +97,11 @@
     <% end %>
   </fieldset>
   <div id="visits">
-    <% ((@destination.visits.empty? && @destination.visits) || [@destination.visits.build]).each_with_index do |visit, i| %>
+    <% ((!@destination.visits.empty? && @destination.visits) || [@destination.visits.build]).each_with_index do |visit, i| %>
       <%= render 'visits/form', visit: visit, i: i+1 %>
     <% end %>
   </div>
-  <% if !@destination.visits.empty? || @destination.customer.enable_multi_visits %>
+  <% if @destination.visits.empty? || @destination.customer.enable_multi_visits %>
     <button id="visit-new" type="button" class="btn btn-default btn-sm" title="<%= t('destinations.form.visit.new_help') %>"><i class="fa fa-plus fa-fw"></i> <%= t('destinations.form.visit.new') %></button>
   <% end %>
   <% unless @destination.customer.enable_multi_visits %>
