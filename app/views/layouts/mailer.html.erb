@@ -1,8 +1,257 @@
-<!DOCTYPE html>
-<html lang="<%= I18n.locale %>">
-  <head>
-  </head>
-  <body>
-    <%= yield %>
-  </body>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="<%= I18n.locale %>">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+  <% if @title %>
+    <title><%= @title %></title>
+  <% end %>
+
+  <style type="text/css">
+    @media screen and (max-width: 600px) {
+      table[class="container"] {
+        width: 95% !important;
+      }
+    }
+
+    #outlook a {
+      padding: 0;
+    }
+
+    body {
+      width: 100% !important;
+      -webkit-text-size-adjust: 100%;
+      -ms-text-size-adjust: 100%;
+      margin: 0;
+      padding: 0;
+    }
+
+    .ExternalClass {
+      width: 100%;
+    }
+
+    .ExternalClass, .ExternalClass p, .ExternalClass span, .ExternalClass font, .ExternalClass td, .ExternalClass div {
+      line-height: 100%;
+    }
+
+    #backgroundTable {
+      margin: 0;
+      padding: 0;
+      width: 100% !important;
+      line-height: 100% !important;
+      background-color: #f7f7f7;
+    }
+
+    img {
+      outline: none;
+      text-decoration: none;
+      -ms-interpolation-mode: bicubic;
+    }
+
+    a img {
+      border: none;
+    }
+
+    .image_fix {
+      display: block;
+    }
+
+    p {
+      margin: 1em 0;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+      color: black !important;
+    }
+
+    h1 a, h2 a, h3 a, h4 a, h5 a, h6 a {
+      color: blue !important;
+    }
+
+    h1 a:active, h2 a:active, h3 a:active, h4 a:active, h5 a:active, h6 a:active {
+      color: red !important;
+    }
+
+    h1 a:visited, h2 a:visited, h3 a:visited, h4 a:visited, h5 a:visited, h6 a:visited {
+      color: purple !important;
+    }
+
+    table td {
+      border-collapse: collapse;
+    }
+
+    table {
+      border-collapse: collapse;
+      mso-table-lspace: 0;
+      mso-table-rspace: 0;
+    }
+
+    a {
+      color: #000000;
+    }
+
+    @media only screen and (max-device-width: 480px) {
+
+      a[href^="tel"], a[href^="sms"] {
+        text-decoration: none;
+        color: black; /* or whatever your want */
+        pointer-events: none;
+        cursor: default;
+      }
+
+      .mobile_link a[href^="tel"], .mobile_link a[href^="sms"] {
+        text-decoration: initial;
+        color: orange !important; /* or whatever your want */
+        pointer-events: auto;
+        cursor: default;
+      }
+    }
+
+    @media only screen and (min-device-width: 768px) and (max-device-width: 1024px) {
+      a[href^="tel"], a[href^="sms"] {
+        text-decoration: none;
+        color: blue; /* or whatever your want */
+        pointer-events: none;
+        cursor: default;
+      }
+
+      .mobile_link a[href^="tel"], .mobile_link a[href^="sms"] {
+        text-decoration: initial;
+        color: orange !important;
+        pointer-events: auto;
+        cursor: default;
+      }
+    }
+
+    /* end Android targeting */
+    h2 {
+      color: #181818;
+      font-family: Helvetica, Arial, sans-serif;
+      font-size: 22px;
+      line-height: 22px;
+      font-weight: normal;
+    }
+
+    a.link1 {
+
+    }
+
+    a.link2 {
+      text-decoration: none;
+      font-family: Helvetica, Arial, sans-serif;
+      font-size: 16px;
+      color: #ffffff;
+      border-radius: 4px;
+    }
+
+    p {
+      color: #555555;
+      font-family: Helvetica, Arial, sans-serif;
+      font-size: 16px;
+      line-height: 160%;
+    }
+
+    p.block-blue {
+      background-color: #141B45;
+      padding: 20px;
+      min-width: 80%;
+      text-align: center;
+      color: white;
+      margin-top: 30px;
+      margin-bottom: 35px;
+      font-weight: 800;
+    }
+
+    #StyleForText, p {
+      line-height: 28px;
+    }
+
+    .signature {
+      font-weight: 800;
+    }
+
+    .btn-blue {
+      text-decoration: none;
+      padding: 10px;
+      background-color: #13b0ca;
+      color: white;
+      text-align: center;
+      font-size: 18px;
+      font-weight: 800;
+    }
+
+    .btn-blue:hover {
+      background-color: #018da5;
+    }
+
+    .btn-green {
+      text-decoration: none;
+      padding: 10px;
+      background-color: #5ea507;
+      color: white;
+      text-align: center;
+      font-size: 18px;
+      font-weight: 800;
+    }
+
+    .btn-green:hover {
+      background-color: #468000;
+    }
+
+    table {
+      background-color: white;
+    }
+
+    li {
+      color: #555555;
+      margin-bottom: 12px;
+    }
+
+    .vertigo {
+      display: flex;
+      border-collapse: collapse;
+      margin-top: 10px;
+    }
+
+    .childvertigo {
+      margin: 4px;
+      font-size: 12px;
+      white-space: nowrap;
+    }
+  </style>
+
+  <script type="colorScheme" class="swatch active">
+  {
+    "name":"Default",
+    "bgBody":"ffffff",
+    "link":"fff",
+    "color":"555555",
+    "bgItem":"ffffff",
+    "title":"181818"
+  }
+  </script>
+</head>
+
+<body>
+<table cellpadding="0" width="100%" cellspacing="0" border="0" id="backgroundTable" class='bgBody'>
+  <tr>
+    <td>
+      <table cellpadding="0" width="620" class="container" align="center" cellspacing="0" border="0">
+        <tr>
+          <td>
+            <table cellpadding="0" cellspacing="0" border="0" align="center" width="700" class="container">
+              <tr>
+                <td class='movableContentContainer bgItem'>
+                  <%= yield %>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+</table>
+</body>
 </html>

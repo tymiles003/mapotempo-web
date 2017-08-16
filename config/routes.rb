@@ -1,6 +1,7 @@
 Rails.application.routes.draw do
   get '/api/0.1/swagger_doc.json/:all(*format)' => redirect('/api/0.1/swagger_doc/%{all}%{format}') # Workaround for silly swagger-codegen
   mount ApiRoot => '/api'
+  mount LetterOpenerWeb::Engine, at: '/letter_opener' if Rails.env.development?
 
   devise_for :users, :controllers => {:registrations => "registrations"}
   devise_scope :user do

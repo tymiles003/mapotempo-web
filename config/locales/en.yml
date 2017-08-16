@@ -1054,15 +1054,32 @@ en:
       link: Download link
   user_mailer:
     welcome:
-      title: Your %{s} account
-      content: "<p>Hello and welcome to %{s},</p>\n \n <p>You can set your password\
-        \ with the following link: <a href=\"%{l}\" target=\"_blank\" title=\"I change\
-        \ my password %{s}\">Set password</a>  <br/> or copy/paste following url in\
-        \ your browser : %{l} </p>\n \n <p>You will be able to connect our service\
-        \ online %{s} with click on following URL: <a href=\"%{a}\" target=\"_blank\"\
-        \ title=\"I log in %{s}\">%{a}<a> </p>\n \n <p>If you need to contact us,\
-        \ please use the following link: <a href=\"%{c}\" target=\"_blank\" title=\"\
-        I contact support\">%{c}</a> </p>\n \n <p>Best regards,</p>\n \n <p>%{s} team</p>"
+      subject: Your %{name} account
+      title: "Thank you for choosing to try the Mapotempo Web route planning. Our team is mobilized to ensure its success."
+      content:
+        welcome: "Welcome to Mapotempo!"
+        connection: "Thank you for choosing to try the Mapotempo Web route planning and optimization solution for <b>%{days} days</b>. <b>Please initialize your password by clicking on the following link:"
+        connection_link: "Log in"
+        help: "In order to offer you the best experience you can rely on our team which will support you during these %{days} jours. Also, <b>if you face any difficulties you can contact the Customer Success team through our online form: </b><br/>"
+        help_link: "Contact Customer Success"
+        staff: "For you the Mapotempo experience starts right now! Our team is mobilized to ensure its success.<br/><br/>Kind regards,"
+        staff_greetings: "Customer Success Team Mapotempo"
+        ressources:
+          title: "GET STARTED WITH THE GOOD RESOURCES"
+          description: "To get started with Mapotempo Web <b>we invite you to discover the structure of our Help Center</b> thanks to this article:<br/><br/>"
+          description_link: "Discover the Help Center"
+          objectives: "Goals: <ul><li><i>How to browse the Help Center</i></li><li><i>Know what resources are available online</i></li></ul>"
+        documentation:
+          title: '	Secondly, <b>you can rely on the following sections of the <a target="blank" href="https://www.mapotempo.com/fr/centre-aide/manual/index.html">documentation</a></b>:<br/><br/>'
+          before: "Before starting"
+          start: "Start with Mapotempo"
+          parameters: "Global and user settings"
+          objectives: "Goals: <ul><li><i>Before startting: learn which browser to use, about vehicles average speed. How open mapping, geocoding and optimization algorithms run,</i></li><li><i>Start with Mapotempo: Learn how to log in to Mapotempo software and its principles: data importation, route optimization and data exportation,</i></li><li><i>Global and user settings: password and login, type of fleet, average visits duration, export optimized plans to GPS devices, export optimized plans as roadmaps.</i></li></ul>"
+        links:
+          title: "Follow us!"
+          facebook: "Facebook link"
+          twitter: "Twitter link"
+          linkedin: "LinkedIn link"
   plannings:
     menu:
       plannings: Plans

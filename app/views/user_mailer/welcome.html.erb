@@ -1,15 +1,149 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
-  </head>
-  <body>
-    <%= t('.content',
-      s: user.customer.reseller.name,
-      l: user.customer.reseller.url_protocol + "://" + user.customer.reseller.host + password_user_path(user, token: user.confirmation_token),
-      a: user.customer.reseller.url_protocol + "://" + user.customer.reseller.host,
-      c: (user.customer.reseller.contact_url && user.customer.reseller.contact_url.gsub('{LG}', I18n.locale.to_s))
-    ).html_safe
-    %>
-  </body>
-</html>
+<div class='movableContent'>
+  <table cellpadding="0" cellspacing="0" border="0" align="center" width="600" class="container">
+    <tr height="5">
+      <td width="200">&nbsp;</td>
+      <td width="200">&nbsp;</td>
+      <td width="200">&nbsp;</td>
+    </tr>
+    <tr>
+      <td width="200" valign="top">&nbsp;</td>
+      <td width="200" valign="top" align="center">
+        <div class="vertigo">
+          <div>
+            <%= image_tag 'logo-mapotempo.png', alt: 'Logo Mapotempo', width: '100%', height: '100%' %>
+          </div>
+        </div>
+      </td>
+      <td width="200" valign="top">&nbsp;</td>
+    </tr>
+  </table>
+</div>
+<div class='movableContent'>
+  <table cellpadding="0" cellspacing="0" border="0" align="center" width="600" class="container">
+    <tr>
+      <td width="100%" colspan="3" align="center" style="padding-bottom:10px;padding-top:5px;">
+      </td>
+    </tr>
+    <tr>
+      <td width="50">&nbsp;</td>
+      <td width="1000" align="center">
+        <div class="contentEditableContainer contentTextEditable">
+          <div class="contentEditable" align='justify'>
+            <div id="StyleForText">
+              <p><%= I18n.t('user_mailer.welcome.content.welcome') %></p>
+
+              <p><%= I18n.t('user_mailer.welcome.content.connection', days: @subscription_duration).html_safe %><br/><br/></p>
+
+              <div style="text-align:center;">
+                <a class="btn-blue" target="blank" href="<%= @confirmation_link %>"><%= I18n.t('user_mailer.welcome.content.connection_link') %></a>
+              </div>
+              <br/>
+
+              <p><%= I18n.t('user_mailer.welcome.content.help', days: @subscription_duration).html_safe %></p><br/>
+
+              <div style="text-align:center;">
+                <a class="btn-green" target="blank" href="<%= @contact_link %>"><%= I18n.t('user_mailer.welcome.content.help_link').html_safe %></a>
+              </div>
+              <br/>
+
+              <p>
+                <%= I18n.t('user_mailer.welcome.content.staff').html_safe %>
+              </p>
+              <p class="signature">
+                <%= I18n.t('user_mailer.welcome.content.staff_greetings').html_safe %>
+              </p>
+
+              <p class="block-blue"><%= I18n.t('user_mailer.welcome.content.ressources.title').html_safe %></p>
+
+              <p>
+                <%= I18n.t('user_mailer.welcome.content.ressources.description').html_safe %>
+
+              <div style="text-align:center;">
+                <a class="btn-green" target="blank" href="https://www.mapotempo.com/decouvrir-centre-aide-mapotempo/"><%= I18n.t('user_mailer.welcome.content.ressources.description_link').html_safe %></a>
+              </div>
+
+              <p>
+                <%= I18n.t('user_mailer.welcome.content.ressources.objectives').html_safe %>
+              </p>
+
+              <hr/>
+              <p>
+                <%= I18n.t('user_mailer.welcome.content.documentation.title').html_safe %>
+              <div class="vertigo">
+                <div style="text-align:center;">
+                  <a class="btn-green childvertigo" target="blank" href="https://www.mapotempo.com/fr/centre-aide/manual/00-before_start.html"><%= I18n.t('user_mailer.welcome.content.documentation.before').html_safe %></a></div>
+                <div style="text-align:center;">
+                  <a class="btn-green childvertigo" target="blank" href="https://www.mapotempo.com/fr/centre-aide/manual/01-start.html"><%= I18n.t('user_mailer.welcome.content.documentation.start').html_safe %></a></div>
+                <div style="text-align:center;">
+                  <a class="btn-green childvertigo" target="blank" href="https://www.mapotempo.com/fr/centre-aide/manual/02-global_settings_users.html"><%= I18n.t('user_mailer.welcome.content.documentation.parameters').html_safe %></a></div>
+              </div>
+              <br/>
+              <p>
+                <%= I18n.t('user_mailer.welcome.content.documentation.objectives').html_safe %>
+              </p>
+            </div>
+          </div>
+        </div>
+      </td>
+      <td width="50">&nbsp;</td>
+    </tr>
+  </table>
+</div>
+<div class='movableContent'>
+  <table cellpadding="0" cellspacing="0" border="0" align="center" width="600" class="container">
+    <tr>
+      <td width="100%" colspan="2" style="padding-top:65px;">
+        <hr style="height:1px;border:none;color:#333;background-color:#ddd;"/>
+      </td>
+    </tr>
+    <tr>
+      <td width="60%" height="70" valign="middle" style="padding-bottom:20px;">
+        <div class="contentEditableContainer contentTextEditable">
+          <div class="contentEditable" align='left'>
+            <p style="margin-right:60px;"><%= I18n.t('user_mailer.welcome.content.links.title').html_safe %></p>
+          </div>
+        </div>
+      </td>
+      <td width="40%" height="70" align="right" valign="top" style="padding-bottom:20px;">
+        <table width="100%" border="0" cellspacing="0" cellpadding="0" align='right'>
+          <tr>
+            <td width='57%'></td>
+            <td valign="top" width='34'>
+              <div class="contentEditableContainer contentFacebookEditable" style='display:inline;'>
+                <div class="contentEditable">
+                  <a target='_blank' href="https://www.facebook.com/mapotempo" data-default="placeholder" style="text-decoration:none;">
+                    <div>
+                      <%= image_tag 'icon-facebook.png', alt: I18n.t('user_mailer.welcome.content.links.facebook'), width: '30', height: '30', style: 'margin-right:30px;' %>
+                    </div>
+                  </a>
+                </div>
+              </div>
+            </td>
+            <td valign="top" width='34'>
+              <div class="contentEditableContainer contentTwitterEditable" style='display:inline;'>
+                <div class="contentEditable">
+                  <a target='_blank' href="https://twitter.com/Mapotempo" data-default="placeholder" style="text-decoration:none;">
+                    <div>
+                      <%= image_tag 'icon-twitter.png', alt: I18n.t('user_mailer.welcome.content.links.twitter'), width: '30', height: '30', style: 'margin-right:30px;' %>
+                    </div>
+                  </a>
+                </div>
+              </div>
+            </td>
+            <td valign="top" width='34'>
+              <div class="contentEditableContainer contentImageEditable" style='display:inline;'>
+                <div class="contentEditable">
+                  <a target='_blank' href="https://www.linkedin.com/company/mapotempo" data-default="placeholder" style="text-decoration:none;">
+                    <div>
+                      <%= image_tag 'icon-linkedin.png', alt: I18n.t('user_mailer.welcome.content.links.linkedin'), width: '30', height: '30', style: 'margin-right:30px;' %>
+                    </div>
+                  </a>
+                </div>
+              </div>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+</div>

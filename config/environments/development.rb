@@ -40,6 +40,9 @@ Rails.application.configure do
   config.action_view.raise_on_missing_translations = true
 
   # Application config
+  # Display sent email at http://localhost:3000/letter_opener
+  # Use :letter_opener to automatically open email in browser
+  config.action_mailer.delivery_method = :letter_opener_web
 
   config.action_mailer.default_url_options = {host: 'localhost'}
 

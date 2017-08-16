@@ -40,11 +40,6 @@ class User < ApplicationRecord
 
   after_create :send_welcome_email, if: ->(user) { user.send_email.to_i == 1 }
 
-  def send_welcome_email
-    Mapotempo::Application.config.delayed_job_use ? UserMailer.delay.welcome_message(self, I18n.locale) : UserMailer.welcome_message(self, I18n.locale).deliver_now
-    self.update! confirmation_sent_at: Time.now
-  end
-
   include RefSanitizer
 
   include Confirmable
@@ -91,6 +86,11 @@ class User < ApplicationRecord
 
   def api_key_random
     self.api_key = SecureRandom.hex
+  end
+
+  def send_welcome_email
+    Mapotempo::Application.config.delayed_job_use ? UserMailer.delay.welcome_message(self, I18n.locale) : UserMailer.welcome_message(self, I18n.locale).deliver_now
+    self.update! confirmation_sent_at: Time.now
   end
 
   private

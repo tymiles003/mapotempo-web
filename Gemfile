@@ -31,6 +31,9 @@ group :development do
   gem 'better_errors'
   gem 'binding_of_caller'
 
+  # Preview emails
+  gem 'letter_opener_web'
+
   if respond_to?(:install_if)
     # Install only for ruby >=2.2
     install_if lambda { Gem::Version.new(RUBY_VERSION) >= Gem::Version.new('2.2') } do
@@ -166,6 +169,9 @@ gem 'pnotify-rails', github: 'ngonzalez/pnotify-rails', branch: 'remove-material
 gem 'nokogiri'
 gem 'addressable'
 gem 'icalendar'
+
+# Format emails, nokogiri is required for premailer
+gem 'premailer-rails'
 
 gem 'chronic_duration'
 
