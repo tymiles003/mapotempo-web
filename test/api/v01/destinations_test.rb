@@ -595,7 +595,7 @@ class V01::DestinationsTest < ActiveSupport::TestCase
           }]}.to_json,
           'CONTENT_TYPE' => 'application/json'
           assert_not last_response.ok?, last_response.body
-          error_message = I18n.t('destinations.import_file.refs_duplicate', refs: "z|v1")
+          error_message = I18n.t('destinations.import_file.refs_duplicate', refs: "z | v1")
           assert_equal error_message, JSON.parse(last_response.body)["error"][0].scan(error_message)[0]
         end
       end

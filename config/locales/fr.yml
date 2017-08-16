@@ -894,7 +894,8 @@ fr:
     new:
       title: Nouveau client
     import_file:
-      refs_duplicate: 'La référence : %{refs} est présente en double dans le fichier'
+      refs_duplicate: 'La "référence" : "%{refs}" est présente en double dans le fichier.'
+      refs_visit_duplicate: 'La "référence visite" : "%{refs}" est présente en double dans le fichier.'
       ref: référence
       ref_desc: un identifiant stable, constant et unique permettant la mise à jour
         non-destructrice de cet élément lors du prochain import

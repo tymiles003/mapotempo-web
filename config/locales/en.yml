@@ -882,7 +882,8 @@ en:
     new:
       title: New destination
     import_file:
-      refs_duplicate: 'The reference : (%{refs}) is duplicated'
+      refs_duplicate: 'The reference : "%{refs}" is duplicated.'
+      refs_visit_duplicate: 'The "visit reference" : "%{refs}" is duplicated.'
       ref: reference
       ref_desc: a stable, unique, constant reference id, allowing non-destructive
         update of this item when the next import happens
