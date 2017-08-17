@@ -61,7 +61,7 @@ class OptimizerJob < Struct.new(:planning_id, :route_id, :global, :active_only)
                 bars[bar] = bar == 1 && (@@optimize_time_force || planning.customer.optimization_time) ? "#{(@@optimize_time_force || optimize_time) * 1000}ms0" : -1
               end
             end
-            @job.progress = bars.join(';') + ';'
+            @job.progress = bars.join(';')
             @job.save
             Delayed::Worker.logger.info "OptimizerJob planning_id=#{planning_id} #{@job.progress}"
           }

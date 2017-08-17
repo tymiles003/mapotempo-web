@@ -125,6 +125,7 @@ var progressDialog = function(delayedJob, dialog, url, callback, options) {
     dialog.modal(modal_options());
     freezeProgressDialog(dialog);
 
+    isProgressing = false;
     var progress = delayedJob.progress && delayedJob.progress.split(';');
     $(".progress-bar", dialog).each(function(i, e) {
       // hide or show dialog-progress class
