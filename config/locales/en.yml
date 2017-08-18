@@ -1246,7 +1246,7 @@ en:
           in_progress: Please wait, processing.
           matrix: Distance matrix
           optimize: Optimizing
-          routes: Refreshing planning / route
+          routes: Refreshing planning
           attempts: 'Attempts:'
           inqueue: Optimization task queued
           no_solution: No solution found for your problem

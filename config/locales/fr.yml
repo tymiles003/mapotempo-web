@@ -1274,7 +1274,7 @@ fr:
           in_progress: Processus en cours, merci de patienter.
           matrix: Calcul du distancier
           optimize: Optimisation
-          routes: Actualisation du planning / de la tournée
+          routes: Actualisation du planning
           attempts: 'Tentatives :'
           inqueue: Tâche d'optimisation en file d'attente
           no_solution: Pas de solution trouvée pour votre problème

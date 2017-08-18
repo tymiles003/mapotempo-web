@@ -169,7 +169,7 @@ class PlanningsControllerTest < ActionController::TestCase
         after_initialize :after_init
         def after_init
           # TODO: stop are now loaded by size_active
-          # raise
+          raise
         end
       end
       get :show, format: :json, id: @planning, with_stops: false

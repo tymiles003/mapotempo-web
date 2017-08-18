@@ -380,7 +380,7 @@ class Planning < ApplicationRecord
       flat_stop_ids = stop_ids.flatten.compact
       inactive_stop_ids = []
 
-      routes.map do |route|
+      routes.each do |route|
         inactive_stop_ids += route.stops.reject(&:active).map(&:id)
       end
 
@@ -397,23 +397,22 @@ class Planning < ApplicationRecord
           if stop.is_a?(StopRest) && !route.vehicle_usage
             flat_stop_ids.delete stop.id
           else
-            stop.route_id = route.id
+            stop.active = true if route.vehicle_usage && inactive_stop_ids.exclude?(stop.id)
             stop.index = i += 1
-            if route.vehicle_usage
-              stop.active = true if !inactive_stop_ids.include?(stop.id)
-              stop.out_of_window = false
-            else
-              stop.time = stop.distance = stop.drive_time = nil
-              stop.out_of_window = stop.out_of_capacity = stop.out_of_drive_time = false
+            stop.time = stop.distance = stop.drive_time = stop.out_of_window = stop.out_of_capacity = stop.out_of_drive_time = nil
+            if stop.route_id != route.id
+              stop.route_id = route.id
+              stop.save!
             end
           end
         }
 
         # 2. Set index and active for other stops (inactive or not in optim for instance)
-        other_inactive_stops = ((stops_[true] ? stops_[true].select{ |s| s.route_id == route.id && flat_stop_ids.exclude?(s.id) }.sort_by(&:index) : []) - ordered_stops + (stops_[false] ? stops_[false].sort_by(&:index) : []))
+        other_inactive_stops = (stops_[true] ? stops_[true].select{ |s| s.route_id == route.id && flat_stop_ids.exclude?(s.id) }.sort_by(&:index) : []) - ordered_stops + (stops_[false] ? stops_[false].sort_by(&:index) : [])
         other_inactive_stops.each{ |stop|
           stop.active = false if route.vehicle_usage
           stop.index = i += 1
+          stop.time = stop.distance = stop.drive_time = stop.out_of_window = stop.out_of_capacity = stop.out_of_drive_time = nil
         }
       }
 
@@ -421,7 +420,7 @@ class Planning < ApplicationRecord
       routes.each{ |route|
         route.outdated = true
         (route.no_stop_index_validation = true) && route.save!
-        route.reload # Refresh route.stops collection if stops have been moved
+        route.stops.reload # Refresh route.stops collection if stops have been moved
       }
       raise 'Invalid stops count' unless routes.collect{ |r| r.stops.size }.reduce(&:+) == stops_count
       self.reload # Refresh route.stops collection if stops have been moved
@@ -560,7 +559,7 @@ class Planning < ApplicationRecord
       [[visit_route_index[1], visit_route_index[2]], [visit_route_index[1], visit_route_index[2] + 1]]
     }.uniq.map { |ri|
       ri[0].class.amoeba do
-        clone :stops # No need to duplicate stop juste for compute evaluation
+        clone :stops # Only duplicate 10 stops just for compute evaluation
         nullify :planning_id
       end
 

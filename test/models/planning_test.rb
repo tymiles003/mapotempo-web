@@ -658,10 +658,10 @@ class PlanningTest < ActiveSupport::TestCase
     planning = plannings(:planning_one)
     unassigned = planning.routes.flat_map{ |r| r.stops.map(&:id) }
     planning.set_stops(planning.routes, [unassigned] + [[]] * (planning.routes.size - 1))
-    assert planning.routes.flat_map{ |r| r.stops.select{ |s| s.is_a? StopRest }.map{ |s| s.route.vehicle_usage_id } }.compact.size == planning.vehicle_usage_set.vehicle_usages.map(&:default_rest_duration?).size
+    assert planning.routes.flat_map{ |r| r.stops.select{ |s| s.is_a? StopRest }.map{ |s| s.route.vehicle_usage.id } }.size == planning.vehicle_usage_set.vehicle_usages.map(&:default_rest_duration?).size
     planning.save!
     planning.reload
-    assert planning.routes.flat_map{ |r| r.stops.select{ |s| s.is_a? StopRest }.map{ |s| s.route.vehicle_usage_id } }.compact.size == planning.vehicle_usage_set.vehicle_usages.map(&:default_rest_duration?).size
+    assert planning.routes.flat_map{ |r| r.stops.select{ |s| s.is_a? StopRest }.map{ |s| s.route.vehicle_usage.id } }.size == planning.vehicle_usage_set.vehicle_usages.map(&:default_rest_duration?).size
   end
 
   require Rails.root.join('test/lib/devices/tomtom_base')

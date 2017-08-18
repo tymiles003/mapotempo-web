@@ -397,7 +397,7 @@ class Route < ApplicationRecord
 
   def force_reindex
     # Force reindex after customers.destination.destroy_all
-    stops.each_with_index{ |stop, index|
+    stops.sort_by(&:index).each_with_index{ |stop, index|
       stop.index = index + 1
     }
   end
@@ -428,7 +428,7 @@ class Route < ApplicationRecord
   end
 
   def size_active
-    vehicle_usage_id ? stops.select(&:active).size : 0
+    vehicle_usage_id ? (stops.loaded? ? stops.select(&:active).size : stops.select(:active).count) : 0
   end
 
   def no_geolocalization
@@ -573,7 +573,7 @@ class Route < ApplicationRecord
   def stops_to_geojson_points(options = {})
     unless stops.empty?
       inactive_stops = 0
-      stops.map do |stop|
+      stops.sort_by(&:index).map do |stop|
         inactive_stops += 1 unless stop.active
         if stop.position?
           feat = {
@@ -613,14 +613,14 @@ class Route < ApplicationRecord
 
   def shift_index(from, by = 1, to = nil)
     stops.partition{ |stop|
-      stop.index.nil? || stop.index < from || (to && stop.index > to)
+      stop.index < from || (to && stop.index > to)
     }[1].each{ |stop|
       stop.index += by
     }
   end
 
   def stop_index_validation
-    if !@no_stop_index_validation && vehicle_usage_id && @stops_updated && !stops.empty? && stops.collect(&:index).sum != (stops.length * (stops.length + 1)) / 2
+    if !@no_stop_index_validation && @stops_updated && !stops.empty? && stops.collect(&:index).sum != (stops.length * (stops.length + 1)) / 2
       bad_index = nil
       (1..stops.length).each{ |index|
         if stops[0..(index - 1)].collect(&:index).sum != (index * (index + 1)) / 2
