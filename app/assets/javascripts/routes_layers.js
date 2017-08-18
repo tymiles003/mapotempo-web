@@ -444,11 +444,13 @@ var RoutesLayer = L.FeatureGroup.extend({
 
   focus: function(options) {
     if (options.routeId && options.stopIndex) {
-      var markers = this.clustersByRoute[options.routeId].getLayers();
-      for (var i = 0; i < markers.length; i++) {
-        if (markers[i].properties['index'] == options.stopIndex) {
-          this._setViewForMarker(options.routeId, markers[i]);
-          break;
+      if (this.clustersByRoute[options.routeId]) {
+        var markers = this.clustersByRoute[options.routeId].getLayers();
+        for (var i = 0; i < markers.length; i++) {
+          if (markers[i].properties['index'] == options.stopIndex) {
+            this._setViewForMarker(options.routeId, markers[i]);
+            break;
+          }
         }
       }
     } else if (options.storeId) {
