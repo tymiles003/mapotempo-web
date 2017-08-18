@@ -380,7 +380,7 @@ class Planning < ApplicationRecord
       flat_stop_ids = stop_ids.flatten.compact
       inactive_stop_ids = []
 
-      routes.each do |route|
+      routes.select(&:vehicle_usage).each do |route|
         inactive_stop_ids += route.stops.reject(&:active).map(&:id)
       end
 

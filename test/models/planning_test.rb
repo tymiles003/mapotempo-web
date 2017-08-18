@@ -632,6 +632,19 @@ class PlanningTest < ActiveSupport::TestCase
     assert_not_equal active_stops, active_only
   end
 
+  test 'should set stops from unaffected route to active after optimization' do
+    planning = plannings(:planning_one)
+    initial_inactive_stop = planning.routes.first.stops.first
+    initial_inactive_stop.update_attribute(:active, false)
+
+    active_optim = planning.optimize(planning.routes, false, false) { |*a|
+      optimizer_global(*a)
+    }
+    planning.set_stops(planning.routes, active_optim)
+
+    assert initial_inactive_stop.reload.active
+  end
+
   test 'should set stops for one route' do
     route = routes(:route_one_one)
     original_order = route.stops.map(&:id)
