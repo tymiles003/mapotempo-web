@@ -313,5 +313,27 @@ class V01::Zonings < Grape::API
       present zoning, with: V01::Entities::Zoning
     end
 
+    desc 'Find the zone where a point belongs to.',
+         detail: 'Find the closest zone for the specified coordinates.',
+         nickname: 'polygonByPoint',
+         success: V01::Entities::Zoning
+    params do
+      requires :lat, type: Float, desc: 'Latitude.'
+      requires :lng, type: Float, desc: 'Longitude.'
+    end
+    get ':id/polygon_by_point' do
+      zoning = current_customer.zonings.where(id: params[:id]).first
+
+      zone, pip_distance = zoning.zones.map{ |zone|
+        [zone, zone.inside_distance(params[:lat], params[:lng]) || 0]
+      }.max_by{ |_zone, pip_distance|
+        pip_distance
+      }
+
+      if zone && pip_distance > 0
+        present zone, with: V01::Entities::Zone
+      end
+    end
+
   end
 end
