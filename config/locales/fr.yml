@@ -1118,7 +1118,7 @@ fr:
     menu:
       plannings: Plannings
       plannings_limit:
-        menu_message: Nombre limite de plannings atteint
+        menu_message: Nombre limite de plannings atteinte
     index:
       title: Liste plannings
       new: Nouveau planning

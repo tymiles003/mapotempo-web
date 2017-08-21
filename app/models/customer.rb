@@ -245,7 +245,7 @@ class Customer < ApplicationRecord
 
   def too_many_plannings?
     if !Rails.configuration.plannings_limitation.nil?
-      Rails.configuration.plannings_limitation <= self.plannings.length
+      Rails.configuration.plannings_limitation < self.plannings.length
     else
       false
     end
