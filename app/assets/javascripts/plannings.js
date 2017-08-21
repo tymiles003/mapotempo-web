@@ -590,7 +590,7 @@ var plannings_edit = function(params) {
       }, 1500);
     }
 
-    if (target.offset().top < 0 || target.offset().top > $(".sidebar-content").height()) {
+    if (target.offset() && (target.offset().top < 0 || target.offset().top > $(".sidebar-content").height())) {
       $(".sidebar-content").animate({
         scrollTop: target.offset().top + $(".sidebar-content").scrollTop() - 100
       });
