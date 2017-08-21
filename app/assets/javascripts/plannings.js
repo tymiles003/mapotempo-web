@@ -1177,6 +1177,18 @@ var plannings_edit = function(params) {
           stop.color = route.color;
         }
       });
+      if (route.vehicle_usage_id) {
+        var vehicle_usage = {};
+        $.each(vehicles_usages_map, function(i, v) {
+          if (v.vehicle_usage_id == route.vehicle_usage_id) {
+            vehicle_usage = v;
+          }
+        });
+        route.name = (route.ref ? (route.ref + ' ') : '') + vehicle_usage.name;
+        if (!route.color) {
+          route.color = vehicle_usage.color;
+        }
+      }
     };
 
     if (data.routes.length === 0) {
