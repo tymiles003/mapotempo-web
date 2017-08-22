@@ -98,6 +98,10 @@ var popupModule = (function() {
   };
 
   var createPopupForLayer = function(layer) {
+    if (_previousMarker) {
+      _previousMarker.closePopup();
+    }
+
     layer.bindPopup(L.responsivePopup({
       offset: layer.options.icon.options.iconSize.divideBy(2)
     }), {
