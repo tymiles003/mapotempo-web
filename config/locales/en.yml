@@ -1088,7 +1088,7 @@ en:
     menu:
       plannings: Plans
       plannings_limit:
-        menu_message: Planning limit reached
+        menu_message: Advised limit of plannings reached
     index:
       title: Listing plans
       new: New Plan
@@ -1098,7 +1098,7 @@ en:
         icalendar_email: Calendar iCal by E-Mail
         spreadsheet: Spreadsheet CSV / Excel
         none_planning: Please select at least one plannning to export
-      list_message: "You have reached the maximum number of planning allowed for your account (Account Limit: %{limit})"
+      list_message: "You have reached the advised number of plannings for your account (Account Limit: %{limit})"
     edit:
       vehicles: Vehicles
       current_position: 'Vehicle position:'

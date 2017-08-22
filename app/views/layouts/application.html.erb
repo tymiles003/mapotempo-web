@@ -41,13 +41,13 @@
                     <% if Rails.configuration.plannings_limitation %>
                       <li>
                         <div class="planning-count">
-                          <% unless current_user.customer.too_many_plannings? %>
-                            <i class="fa fa-calendar-check-o" aria-hidden="true"></i>
-                            <span><%= current_user.customer.plannings.length %></span> /
+                          <% if current_user.customer.too_many_plannings? %>
+                            <i class="fa text-warning fa-calendar-times-o" aria-hidden="true"></i>
+                            <span class="text-warning"><%= current_user.customer.plannings.length %></span> /
                             <span><%= Rails.configuration.plannings_limitation %></span> - <%= t 'plannings.menu.plannings' %>
                           <% else %>
-                            <i class="fa text-danger fa-calendar-times-o" aria-hidden="true"></i>
-                            <span class="text-danger"><%= current_user.customer.plannings.length %></span> /
+                            <i class="fa fa-calendar-check-o" aria-hidden="true"></i>
+                            <span><%= current_user.customer.plannings.length %></span> /
                             <span><%= Rails.configuration.plannings_limitation %></span> - <%= t 'plannings.menu.plannings' %>
                           <% end %>
                         </div>
@@ -55,7 +55,7 @@
                     <% end %>
                     <li>
                       <% if Rails.configuration.plannings_limitation && current_user.customer.too_many_plannings? %>
-                        <p class="padding-list" href=""><i class="fa fa-fw text-danger fa-exclamation-triangle"></i> <span class="text-danger"><%= t 'plannings.menu.plannings_limit.menu_message' %></span> </p>
+                        <p class="padding-list" href=""><i class="fa fa-fw text-warning fa-exclamation-triangle"></i> <span class="text-warning"><%= t 'plannings.menu.plannings_limit.menu_message' %></span> </p>
                       <% else %>
                         <% current_user.customer.plannings.select(&:id).each do |planning| %>
                           <%= link_to edit_planning_path(planning) do %><i class="fa fa-calendar fa-fw"></i> <%= planning.name %><% end %>

@@ -1120,7 +1120,7 @@ fr:
     menu:
       plannings: Plannings
       plannings_limit:
-        menu_message: Nombre limite de plannings atteinte
+        menu_message: Nombre conseillé de plannings atteint
     index:
       title: Liste plannings
       new: Nouveau planning
@@ -1130,8 +1130,7 @@ fr:
         icalendar_email: Agenda iCal par email
         spreadsheet: Tableur CSV / Excel
         none_planning: Veuillez sélectionner au moins un planning à exporter
-      list_message: 'Vous avez atteint le nombre maximum de plannings pouvant être
-        associés à votre compte (Limite: %{limit})'
+      list_message: "Vous avez atteint la limite conseillée de plannings associés à votre compte (Limite: %{limit})"
     edit:
       vehicles: Véhicules
       current_position: 'Position véhicle :'

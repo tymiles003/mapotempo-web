@@ -15,7 +15,7 @@
 <% if Rails.configuration.plannings_limitation && current_user.customer.too_many_plannings? %>
   <div class="row">
     <div class="col-md-12">
-      <p class="border-warning"><i class="fa fa-fw fa-2x text-danger fa-exclamation-triangle"></i> <%= t 'plannings.index.list_message', limit: Rails.configuration.plannings_limitation %></p>
+      <p class="border-warning"><i class="fa fa-fw fa-2x text-warning fa-exclamation-triangle"></i> <%= t 'plannings.index.list_message', limit: Rails.configuration.plannings_limitation %></p>
     </div>
   </div>
 <% end %>
