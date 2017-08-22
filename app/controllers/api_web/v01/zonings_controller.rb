@@ -19,6 +19,7 @@ class ApiWeb::V01::ZoningsController < ApiWeb::V01::ApiWebController
   skip_before_filter :verify_authenticity_token # because rails waits for a form token with POST
   load_and_authorize_resource
   before_action :manage_zoning
+  around_action :includes_destinations
 
   swagger_controller :zonings, 'Zonings'
 
@@ -54,6 +55,12 @@ class ApiWeb::V01::ZoningsController < ApiWeb::V01::ApiWebController
   # rights should be checked before thanks to CanCan::Ability
   def manage_zoning
     @manage_zoning = [:edit, :organize]
+  end
+
+  def includes_destinations
+    Route.includes_destinations.scoping do
+      yield
+    end
   end
 
   # Never trust parameters from the scary internet, only allow the white list through.

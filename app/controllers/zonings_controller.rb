@@ -19,6 +19,7 @@ class ZoningsController < ApplicationController
   before_action :authenticate_user!
   before_action :set_zoning, only: [:show, :edit, :update, :destroy, :duplicate, :automatic, :from_planning, :isochrone, :isodistance]
   before_action :manage_zoning
+  around_action :includes_destinations, only: [:show, :edit, :update, :automatic, :from_planning]
 
   load_and_authorize_resource
 
@@ -158,6 +159,12 @@ class ZoningsController < ApplicationController
   # Use callbacks to share common setup or constraints between actions.
   def set_zoning
     @zoning = current_user.customer.zonings.includes(customer: [vehicle_usage_sets: [vehicle_usages: :vehicle]]).find(params[:id] || params[:zoning_id])
+  end
+
+  def includes_destinations
+    Route.includes_destinations.scoping do
+      yield
+    end
   end
 
   def manage_zoning

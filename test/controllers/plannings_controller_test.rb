@@ -414,15 +414,41 @@ class PlanningsControllerTest < ActionController::TestCase
   end
 
   test 'should update stop' do
-    patch :update_stop, planning_id: @planning, format: :json, route_id: routes(:route_one_one).id, stop_id: stops(:stop_one_one).id, stop: { active: false }
-    assert_response :success
-    assert_equal 1, JSON.parse(response.body)['routes'].size
+    begin
+      Stop.class_eval do
+        after_initialize :after_init
+        def after_init
+          raise if self.route.ref != 'route_one'
+        end
+      end
+      patch :update_stop, planning_id: @planning, format: :json, route_id: routes(:route_one_one).id, stop_id: stops(:stop_one_one).id, stop: { active: false }
+      assert_response :success
+      assert_equal 1, JSON.parse(response.body)['routes'].size
+    ensure
+      Stop.class_eval do
+        def after_init
+        end
+      end
+    end
   end
 
   test 'should optimize one route in planning' do
-    get :optimize_route, planning_id: @planning, format: :json, route_id: routes(:route_one_one).id
-    assert_response :success
-    assert_equal 1, JSON.parse(response.body)['routes'].size
+    begin
+      Stop.class_eval do
+        after_initialize :after_init
+        def after_init
+          raise if self.route.ref != 'route_one'
+        end
+      end
+      get :optimize_route, planning_id: @planning, format: :json, route_id: routes(:route_one_one).id
+      assert_response :success
+      assert_equal 1, JSON.parse(response.body)['routes'].size
+    ensure
+      Stop.class_eval do
+        def after_init
+        end
+      end
+    end
   end
 
   test 'should optimize all routes in planning' do
