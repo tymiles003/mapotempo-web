@@ -1,0 +1,86 @@
+<div class='movableContent'>
+  <table cellpadding="0" cellspacing="0" border="0" align="center" width="600" class="container">
+    <tr height="5">
+      <td width="200">&nbsp;</td>
+      <td width="200">&nbsp;</td>
+      <td width="200">&nbsp;</td>
+    </tr>
+    <tr>
+      <td width="200" valign="top">&nbsp;</td>
+      <td width="200" valign="top" align="center">
+        <div class="vertigo">
+          <div>
+            <%= image_tag 'logo-mapotempo.png', alt: '', width: '100%', height: '100%' %>
+          </div>
+        </div>
+      </td>
+      <td width="200" valign="top">&nbsp;</td>
+    </tr>
+  </table>
+</div>
+<div class='movableContent'>
+  <table cellpadding="0" cellspacing="0" border="0" align="center" width="600" class="container">
+    <tr>
+      <td width="100%" colspan="3" align="center" style="padding-bottom:10px;padding-top:5px;">
+      </td>
+    </tr>
+    <tr>
+      <td width="50">&nbsp;</td>
+      <td width="1000" align="center">
+        <div class="contentEditableContainer contentTextEditable">
+          <div class="contentEditable" align='justify'>
+            <div id="StyleForText">
+              <p><%= t('.hello') + ',' %></p>
+
+              <p><%= t('.content', s: user.customer.reseller.name) %></p>
+
+              <br/>
+
+              <% unless infos.nil? %>
+                <% infos.each do |info| %>
+                  <ul>
+                    <li>
+                      <%= t('.vehicle', name: info[:vehicle].name) %>
+                    </li>
+
+                    <% info[:routes].each do |route_details| %>
+                      <li>
+                        <%= t('.planning', name: route_details[:route].planning.name, date: route_details[:route].planning.date ? "(#{l(route_details[:route].planning.date)})" : '') %>
+                      </li>
+                      <li>
+                        <%= t('.link', link: user.customer.reseller.url_protocol + '://' + user.customer.reseller.host + route_details[:url]).html_safe %>
+                      </li>
+                      <% if route_details[:route].planning.ref %>
+                        <li>
+                          <%= t('.planning_ref', ref: route_details[:route].planning.ref) %>
+                        </li>
+                      <% end %>
+                      <% if route_details[:route].ref %>
+                        <li>
+                          <%= t('.route_ref', ref: route_details[:route].ref) %>
+                        </li>
+                      <% end %>
+                      <% if route_details[:route].planning.customer.enable_orders && route_details[:route].planning.order_array %>
+                        <li>
+                          <%= t('.order_array', name: route_details[:route].planning.order_array.name) %>
+                        </li>
+                      <% end %>
+                    <% end %>
+                  </ul>
+                <% end %>
+              <% end %>
+
+              <br/>
+
+              <p>
+                <%= t('.greetings').html_safe %>
+              </p>
+
+            </div>
+          </div>
+        </div>
+      </td>
+      <td width="50">&nbsp;</td>
+    </tr>
+  </table>
+</div>

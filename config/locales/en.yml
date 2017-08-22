@@ -1035,32 +1035,35 @@ en:
       total: total
   route_mailer:
     send_kmz_route:
+      hello: Bonjour
       content: A KMZ file containing route informations has been attached to this
         E-Mail from %{s}.
-      vehicle: Vehicle
-      planning: Plan
-      planning_ref: Plan Ref.
-      route_ref: Route Ref.
-      order_array: Orders
+      vehicle: "Vehicle : %{name}"
+      planning: "Plan : %{name} (date)"
+      planning_ref: "Plan reference: %{ref}"
+      route_ref: "Route reference: %{ref}"
+      order_array: "Orders: %{name}"
+      greetings: "Kind regards"
     send_computed_ics_route:
-      content: "An iCalendar has been sent from %{s}\n you can copy-paste the following\
-        \ link to be able to use it as a source in your personnal calendar (update\
-        \ will be automatic)\n or you can click on this link to download file (no\
-        \ update in this case)."
-      vehicle: Vehicle
-      planning: Plan
-      planning_ref: Plan Ref.
-      route_ref: Route Ref.
-      order_array: Orders
-      link: Download link
+      hello: Bonjour
+      content: "An iCalendar has been sent from %{s} you can copy-paste the following link to be able to use it as a source in your personal calendar (update will be automatic) or you can click on this link to download file (no update in this case)."
+      vehicle: "Vehicle: %{name}"
+      planning: "Plan : %{name} (date)"
+      planning_ref: "Plan reference: %{ref}"
+      route_ref: "Route reference: %{ref}"
+      order_array: "Orders: %{name}"
+      link: "Download link: <a href=%{link}>iCalendar Plan</a>"
+      greetings: "Kind regards"
   user_mailer:
     welcome:
       subject: Your %{name} account
       title: "Thank you for choosing to try the Mapotempo Web route planning. Our team is mobilized to ensure its success."
       content:
         welcome: "Welcome to Mapotempo!"
-        connection: "Thank you for choosing to try the Mapotempo Web route planning and optimization solution for <b>%{days} days</b>. <b>Please initialize your password by clicking on the following link:"
+        connection: "Thank you for choosing to try the Mapotempo Web route planning and optimization solution for <b>%{days} days</b>. <b>Before to log in to your test account, please generate your password:"
         connection_link: "Log in"
+        subscribe: "Then, you can log in to the application using the generated password and your ID: %{email}"
+        subscribe_link: "Log in to Mapotempo Web"
         help: "In order to offer you the best experience you can rely on our team which will support you during these %{days} jours. Also, <b>if you face any difficulties you can contact the Customer Success team through our online form: </b><br/>"
         help_link: "Contact Customer Success"
         staff: "For you the Mapotempo experience starts right now! Our team is mobilized to ensure its success.<br/><br/>Kind regards,"
@@ -1942,10 +1945,8 @@ en:
     subscribe:
       planning_unavailable: Planning can’t be changed. Your subscription period is
         expired | Contact your reseller to get a contrat extension.
-      expiration_date: 'Only few days to renew your subscription, please contact your
-        dealer to renew your offer. End date : '
-      expiration_date_over: 'The date of use is exceeded, please contact your dealer.
-        Expiration date : '
+      expiration_date: "Only few days to renew your subscription. The end date is %{date}. If you want to renew your subscription, please contact %{reseller}."
+      expiration_date_over: "The date of use is exceeded the %{date}. If you want to renew your subscription, please contact %{reseller}."
   helpers:
     submit:
       create: Create %{model}

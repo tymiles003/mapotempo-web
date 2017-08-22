@@ -39,6 +39,13 @@
               </div>
               <br/>
 
+              <p><b><%= I18n.t('user_mailer.welcome.content.subscribe', email: @email).html_safe %></b><br/><br/></p>
+
+              <div style="text-align:center;">
+                <a class="btn-blue" target="blank" href="<%= @home_link %>"><%= I18n.t('user_mailer.welcome.content.subscribe_link') %></a>
+              </div>
+              <br/>
+
               <p><%= I18n.t('user_mailer.welcome.content.help', days: @subscription_duration).html_safe %></p><br/>
 
               <div style="text-align:center;">

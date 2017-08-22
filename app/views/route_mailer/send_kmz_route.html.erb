@@ -1,0 +1,75 @@
+<div class='movableContent'>
+  <table cellpadding="0" cellspacing="0" border="0" align="center" width="600" class="container">
+    <tr height="5">
+      <td width="200">&nbsp;</td>
+      <td width="200">&nbsp;</td>
+      <td width="200">&nbsp;</td>
+    </tr>
+    <tr>
+      <td width="200" valign="top">&nbsp;</td>
+      <td width="200" valign="top" align="center">
+        <div class="vertigo">
+          <div>
+            <%= image_tag 'logo-mapotempo.png', alt: '', width: '100%', height: '100%' %>
+          </div>
+        </div>
+      </td>
+      <td width="200" valign="top">&nbsp;</td>
+    </tr>
+  </table>
+</div>
+<div class='movableContent'>
+  <table cellpadding="0" cellspacing="0" border="0" align="center" width="600" class="container">
+    <tr>
+      <td width="100%" colspan="3" align="center" style="padding-bottom:10px;padding-top:5px;">
+      </td>
+    </tr>
+    <tr>
+      <td width="50">&nbsp;</td>
+      <td width="1000" align="center">
+        <div class="contentEditableContainer contentTextEditable">
+          <div class="contentEditable" align='justify'>
+            <div id="StyleForText">
+              <p><%= t('.hello') + ',' %></p>
+
+              <p><%= t '.content', s: vehicle.customer.reseller.name %></p>
+
+              <br/>
+
+              <ul>
+                <li>
+                  <%= t('.vehicle', name: vehicle.name) %>
+                </li>
+                <li>
+                  <%= t('.planning', name: route.planning.name, date: route.planning.date ? "(#{l(route.planning.date)})" : '') %>
+                </li>
+                <% if route.planning.ref %>
+                  <li>
+                    <%= t('.planning_ref', ref: route.planning.ref) %>
+                  </li>
+                <% end %>
+                <% if route.ref %>
+                  <li>
+                    <%= t('.route_ref', ref: route.ref) %>
+                  </li>
+                <% end %>
+                <% if route.planning.customer.enable_orders && route.planning.order_array %>
+                  <li>
+                    <%= t('.order_array', name: route.planning.order_array.name) %>
+                  </li>
+                <% end %>
+              </ul>
+
+              <br/>
+
+              <p>
+                <%= t('.greetings').html_safe %>
+              </p>
+            </div>
+          </div>
+        </div>
+      </td>
+      <td width="50">&nbsp;</td>
+    </tr>
+  </table>
+</div>

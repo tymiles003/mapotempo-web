@@ -107,7 +107,7 @@ class ApplicationController < ActionController::Base
       customer = current_user.customer
       @unsubscribed = customer.end_subscription && Time.now >= customer.end_subscription
       if @unsubscribed
-        flash.now[:error] = I18n.t('subscribe.expiration_date_over', scope: :all) + I18n.l((customer.end_subscription - 1.second), format: :long)
+        flash.now[:error] = I18n.t('all.subscribe.expiration_date_over', date: I18n.l((customer.end_subscription - 1.second), format: :long), reseller: request.env['reseller'] && request.env['reseller'].name)
       end
     end
   end

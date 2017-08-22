@@ -1067,33 +1067,35 @@ fr:
       total: total
   route_mailer:
     send_kmz_route:
+      hello: Bonjour
       content: Un export au format KMZ vient de vous être envoyé depuis %{s} en pièce
-        jointe à cet email.
-      vehicle: Véhicule
-      planning: Planning
-      planning_ref: Réf. planning
-      route_ref: Réf. de la tournée
-      order_array: Commandes
+        jointe à cet e-mail.
+      vehicle: "Véhicule : %{name}"
+      planning: "Planning : %{name} %{date}"
+      planning_ref: "Référence du planning : %{ref}"
+      route_ref: "Référence de la tournée : %{ref}"
+      order_array: "Commandes : %{name}"
+      greetings: "Bien à vous"
     send_computed_ics_route:
-      content: "Un export au format agenda iCalendar vient de vous être envoyé depuis\
-        \ %{s}, vous pouvez :\n - Copier-coller le lien et l'importer dans votre agenda\
-        \ personnel (la mise à jour de votre agenda se fera de manière automatique\
-        \ à l'avenir)\n - Cliquer sur le lien pour télécharger le contenu de l'agenda\
-        \ (pas de mise à jour automatique)."
-      vehicle: Véhicule
-      planning: Planning
-      planning_ref: Réf. planning
-      route_ref: Référence de la tournée
-      order_array: Commandes
-      link: Lien de téléchargement
+      hello: Bonjour
+      content: "Un export au format agenda iCalendar vient de vous être envoyé depuis %{s}, vous pouvez : Copier-coller le lien et l'importer dans votre agenda personnel (la mise à jour de votre agenda se fera de manière automatique à l'avenir) ou Cliquer sur le lien pour télécharger le contenu de l'agenda (pas de mise à jour automatique)."
+      vehicle: "Véhicule : %{name}"
+      planning: "Planning : %{name} %{date}"
+      planning_ref: "Référence du planning : %{ref}"
+      route_ref: "Référence de la tournée : %{ref}"
+      order_array: "Commandes : %{name}"
+      link: "Lien de téléchargement : <a href=%{link}>Planning iCalendar</a>"
+      greetings: "Bien à vous"
   user_mailer:
     welcome:
       subject: Votre compte %{name}
       title: "Merci d’avoir choisi de tester Mapotempo Web. Notre équipe est à votre écoute pour vous accompagner"
       content:
         welcome: "Bienvenue chez Mapotempo !"
-        connection: "Merci d'avoir choisi de tester la solution de planification et d'optimisation de tournées Mapotempo Web pour une période de <b>%{days} jours</b>. <b>Merci de bien vouloir initialiser votre mot de passe en cliquant sur le lien suivant : "
+        connection: "Merci d'avoir choisi de tester la solution de planification et d'optimisation de tournées Mapotempo Web pour une période de <b>%{days} jours</b>. <b>Avant de vous connecter à votre compte de test, veuillez générer votre mot de passe : "
         connection_link: "Se connecter"
+        subscribe: "Vous pouvez ensuite vous connecter à l'application en utilisant le mot de passe généré et votre identifiant : %{email}"
+        subscribe_link: "Me connecter à Mapotempo Web"
         help: "Afin de vous offrir la meilleure expérience qui soit vous pouvez compter sur notre équipe qui vous accompagnera durant ces 15 jours. Aussi, <b>si vous rencontrez des difficultés vous pouvez contacter l’équipe Customer Success par le biais de notre formulaire en ligne :</b><br/>"
         help_link: "Contacter le support"
         staff: "Pour vous l'expérience Mapotempo démarre dès maintenant ! Notre équipe est mobilisée pour garantir son succès.<br/><br/>Bien à vous,"
@@ -2013,11 +2015,8 @@ fr:
       planning_unavailable: Le planning n’est pas modifiable pour le moment, la date
         de votre abonnement a expiré. Veuillez contacter votre revendeur afin de renouveler
         votre abonnement.
-      expiration_date: 'Il ne vous reste que quelques jours pour renouveler votre
-        adhésion, n''hésitez pas à contacter votre revendeur afin de renouveler votre
-        offre. Date de fin : '
-      expiration_date_over: 'La date d''utilisation est dépassée, veuillez contacter
-        votre revendeur. Date d''expiration : '
+      expiration_date: "Votre période d'utilisation expire bientôt. Date de fin le %{date}. Si vous souhaitez le renouveler vous pouvez contacter %{reseller}."
+      expiration_date_over: "Votre période d'utilisation a expiré le %{date}. Si vous souhaitez le renouveler vous pouvez contacter %{reseller}."
   helpers:
     submit:
       create: Créer %{model}
