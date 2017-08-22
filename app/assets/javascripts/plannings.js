@@ -731,7 +731,8 @@ var plannings_edit = function(params) {
           },
           success: function() {
             notice(I18n.t('plannings.edit.optimize_complete'));
-          }
+          },
+          skipCallbacks: true
         });
       },
       complete: completeAjaxMap,
@@ -1127,7 +1128,7 @@ var plannings_edit = function(params) {
     return url;
   };
 
-  // Depending 'options.partial' this function is called for initilization or for pieces of planning
+  // Depending 'options.partial' this function is called for initialization or for pieces of planning
   var displayPlanning = function(data, options) {
 
     if (!progressDialog(data.optimizer, dialog_optimizer, '/plannings/' + planning_id + '.json', displayPlanning, options)) {
@@ -1210,7 +1211,7 @@ var plannings_edit = function(params) {
       data.callback_button = params.callback_button;
       $("#planning").html(SMT['plannings/edit'](data));
 
-      initRoutes($('#edit-planning'), data);
+      initRoutes($('#edit-planning'), data, options);
 
       if (options.firstTime) {
         routesLayer.showAllRoutes({stores: true}, function() {
@@ -1243,7 +1244,7 @@ var plannings_edit = function(params) {
       });
     }
     // 2nd case: several routes needs to be displayed (header and map), for instance by switching vehicles
-    else if (typeof options === 'object' && options.partial == 'routes') {
+    else if (typeof options === 'object' && options.partial === 'routes') {
       // update allRoutesWithVehicle
       $.each(data.routes, function(i, route) {
         var vehicle_usage = {};
