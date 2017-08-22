@@ -75,9 +75,11 @@ class V01::Plannings < Grape::API
       requires :id, type: String, desc: ID_DESC
     end
     delete ':id' do
-      id = ParseIdsRefs.read(params[:id])
-      current_customer.plannings.where(id).first!.destroy
-      nil
+      Route.includes_destinations.scoping do
+        id = ParseIdsRefs.read(params[:id])
+        current_customer.plannings.where(id).first!.destroy
+        nil
+      end
     end
 
     desc 'Delete multiple plannings.',
@@ -86,11 +88,13 @@ class V01::Plannings < Grape::API
       requires :ids, type: Array[String], desc: 'Ids separated by comma. You can specify ref (not containing comma) instead of id, in this case you have to add "ref:" before each ref, e.g. ref:ref1,ref:ref2,ref:ref3.', coerce_with: CoerceArrayString
     end
     delete do
-      Planning.transaction do
-        current_customer.plannings.select{ |planning|
-          params[:ids].any?{ |s| ParseIdsRefs.match(s, planning) }
-        }.each(&:destroy)
-        nil
+      Route.includes_destinations.scoping do
+        Planning.transaction do
+          current_customer.plannings.select{ |planning|
+            params[:ids].any?{ |s| ParseIdsRefs.match(s, planning) }
+          }.each(&:destroy)
+          nil
+        end
       end
     end
 
@@ -103,11 +107,13 @@ class V01::Plannings < Grape::API
       optional :geojson, type: Symbol, values: [:true, :false, :point, :polyline], default: :false, desc: 'Fill the geojson field with route geometry: `point` to return only points, `polyline` to return with encoded linestring.'
     end
     get ':id/refresh' do
-      id = ParseIdsRefs.read(params[:id])
-      planning = current_customer.plannings.where(id).first!
-      planning.compute
-      planning.save!
-      present planning, with: V01::Entities::Planning, geojson: params[:geojson]
+      Route.includes_destinations.scoping do
+        id = ParseIdsRefs.read(params[:id])
+        planning = current_customer.plannings.where(id).first!
+        planning.compute
+        planning.save!
+        present planning, with: V01::Entities::Planning, geojson: params[:geojson]
+      end
     end
 
     desc 'Switch two vehicles.',
@@ -121,20 +127,22 @@ class V01::Plannings < Grape::API
       optional :geojson, type: Symbol, values: [:true, :false, :point, :polyline], default: :false, desc: 'Fill the geojson field with route geometry: `point` to return only points, `polyline` to return with encoded linestring.'
     end
     patch ':id/switch' do
-      planning_id = ParseIdsRefs.read(params[:id])
-      planning = current_customer.plannings.where(planning_id).first!
-      route = planning.routes.find{ |route| route.id == Integer(params[:route_id]) }
-      vehicle_usage = planning.vehicle_usage_set.vehicle_usages.find(params[:vehicle_usage_id])
+      Route.includes_destinations.scoping do
+        planning_id = ParseIdsRefs.read(params[:id])
+        planning = current_customer.plannings.where(planning_id).first!
+        route = planning.routes.find{ |route| route.id == Integer(params[:route_id]) }
+        vehicle_usage = planning.vehicle_usage_set.vehicle_usages.find(params[:vehicle_usage_id])
 
-      Planning.transaction do
-        if route && vehicle_usage && planning.switch(route, vehicle_usage) && planning.save! && planning.compute && planning.save!
-          if params[:details]
-            present planning, with: V01::Entities::Planning, geojson: params[:geojson]
+        Planning.transaction do
+          if route && vehicle_usage && planning.switch(route, vehicle_usage) && planning.save! && planning.compute && planning.save!
+            if params[:details]
+              present planning, with: V01::Entities::Planning, geojson: params[:geojson]
+            else
+              status 204
+            end
           else
-            status 204
+            status 400
           end
-        else
-          status 400
         end
       end
     end
@@ -151,11 +159,13 @@ class V01::Plannings < Grape::API
       optional :out_of_zone, type: Boolean, desc: 'Take into account points out of zones.', default: true
     end
     patch ':id/automatic_insert' do
-      planning_id = ParseIdsRefs.read params[:id]
-      planning = current_customer.plannings.where(planning_id).first!
-      stops = planning.routes.flat_map{ |r| r.stops }.select{ |stop| params[:stop_ids].include?(stop.id) }
-      stops.each{ |stop| planning.automatic_insert(stop, max_time: params[:max_time], max_distance: params[:max_distance], out_of_zone: params[:out_of_zone], active_only: params[:active_only]) }
-      planning.save!
+      Route.includes_destinations.scoping do
+        planning_id = ParseIdsRefs.read params[:id]
+        planning = current_customer.plannings.where(planning_id).first!
+        stops = planning.routes.flat_map{ |r| r.stops }.select{ |stop| params[:stop_ids].include?(stop.id) }
+        stops.each{ |stop| planning.automatic_insert(stop, max_time: params[:max_time], max_distance: params[:max_distance], out_of_zone: params[:out_of_zone], active_only: params[:active_only]) }
+        planning.save!
+      end
     end
 
     desc 'Apply zonings.',
@@ -167,15 +177,17 @@ class V01::Plannings < Grape::API
       optional :geojson, type: Symbol, values: [:true, :false, :point, :polyline], default: :false, desc: 'Fill the geojson field with route geometry: `point` to return only points, `polyline` to return with encoded linestring.'
     end
     get ':id/apply_zonings' do
-      id = ParseIdsRefs.read params[:id]
-      planning = current_customer.plannings.where(id).first!
-      planning.zoning_outdated = true
-      planning.compute
-      planning.save! && planning.reload
-      if params[:details]
-        present planning, with: V01::Entities::Planning, geojson: params[:geojson]
-      else
-        status 204
+      Route.includes_destinations.scoping do
+        id = ParseIdsRefs.read params[:id]
+        planning = current_customer.plannings.where(id).first!
+        planning.zoning_outdated = true
+        planning.compute
+        planning.save! && planning.reload
+        if params[:details]
+          present planning, with: V01::Entities::Planning, geojson: params[:geojson]
+        else
+          status 204
+        end
       end
     end
 
@@ -192,18 +204,20 @@ class V01::Plannings < Grape::API
       optional :geojson, type: Symbol, values: [:true, :false, :point, :polyline], default: :false, desc: 'Fill the geojson field with route geometry: `point` to return only points, `polyline` to return with encoded linestring.'
     end
     get ':id/optimize' do
-      id = ParseIdsRefs.read params[:id]
-      planning = current_customer.plannings.where(id).first!
-      begin
-        Optimizer.optimize(planning, nil, params[:global], params[:synchronous], params[:all_stops].nil? ? params[:active_only] : !params[:all_stops])
-      rescue NoSolutionFoundError
-        status 304
-      end
+      Route.includes_destinations.scoping do
+        id = ParseIdsRefs.read params[:id]
+        planning = current_customer.plannings.where(id).first!
+        begin
+          Optimizer.optimize(planning, nil, params[:global], params[:synchronous], params[:all_stops].nil? ? params[:active_only] : !params[:all_stops])
+        rescue NoSolutionFoundError
+          status 304
+        end
 
-      if params[:details]
-        present planning, with: V01::Entities::Planning, geojson: params[:geojson]
-      else
-        status 204
+        if params[:details]
+          present planning, with: V01::Entities::Planning, geojson: params[:geojson]
+        else
+          status 204
+        end
       end
     end
 
@@ -215,11 +229,13 @@ class V01::Plannings < Grape::API
       optional :geojson, type: Symbol, values: [:true, :false, :point, :polyline], default: :false, desc: 'Fill the geojson field with route geometry: `point` to return only points, `polyline` to return with encoded linestring.'
     end
     patch ':id/duplicate' do
-      id = ParseIdsRefs.read(params[:id])
-      planning = current_customer.plannings.where(id).first!
-      planning = planning.duplicate
-      planning.save!(validate: false)
-      present planning, with: V01::Entities::Planning, geojson: params[:geojson]
+      Route.includes_destinations.scoping do
+        id = ParseIdsRefs.read(params[:id])
+        planning = current_customer.plannings.where(id).first!
+        planning = planning.duplicate
+        planning.save!(validate: false)
+        present planning, with: V01::Entities::Planning, geojson: params[:geojson]
+      end
     end
 
     desc 'Use order_array in the planning.',
@@ -233,13 +249,15 @@ class V01::Plannings < Grape::API
       optional :geojson, type: Symbol, values: [:true, :false, :point, :polyline], default: :false, desc: 'Fill the geojson field with route geometry: `point` to return only points, `polyline` to return with encoded linestring.'
     end
     patch ':id/order_array' do
-      id = ParseIdsRefs.read(params[:id])
-      planning = current_customer.plannings.where(id).first!
-      order_array = current_customer.order_arrays.find(params[:order_array_id])
-      shift = Integer(params[:shift])
-      planning.apply_orders(order_array, shift)
-      planning.save!
-      present planning, with: V01::Entities::Planning, geojson: params[:geojson]
+      Route.includes_destinations.scoping do
+        id = ParseIdsRefs.read(params[:id])
+        planning = current_customer.plannings.where(id).first!
+        order_array = current_customer.order_arrays.find(params[:order_array_id])
+        shift = Integer(params[:shift])
+        planning.apply_orders(order_array, shift)
+        planning.save!
+        present planning, with: V01::Entities::Planning, geojson: params[:geojson]
+      end
     end
 
     desc 'Update routes visibility and lock.',
@@ -256,24 +274,24 @@ class V01::Plannings < Grape::API
       routes = planning.routes.find params[:route_ids]
       routes.each do |route|
         case params[:action].to_sym
-        when :toggle
-          case params[:selection].to_sym
-          when :all
-            route.update! hidden: false
-          when :reverse
-            route.update! hidden: !route.hidden
-          when :none
-            route.update! hidden: true
-          end
-        when :lock
-          case params[:selection].to_sym
-          when :all
-            route.update! locked: true
-          when :reverse
-            route.update! locked: !route.locked
-          when :none
-            route.update! locked: false
-          end
+          when :toggle
+            case params[:selection].to_sym
+              when :all
+                route.update! hidden: false
+              when :reverse
+                route.update! hidden: !route.hidden
+              when :none
+                route.update! hidden: true
+            end
+          when :lock
+            case params[:selection].to_sym
+              when :all
+                route.update! locked: true
+              when :reverse
+                route.update! locked: !route.locked
+              when :none
+                route.update! locked: false
+            end
         end
       end
 
@@ -289,14 +307,16 @@ class V01::Plannings < Grape::API
       optional :details, type: Boolean, desc: 'Output route details', default: false
     end
     patch ':id/update_stops_status' do
-      id = ParseIdsRefs.read params[:id]
-      planning = current_customer.plannings.where(id).first!
-      planning.fetch_stops_status
-      planning.save!
-      if params[:details]
-        present planning.routes.includes_stops, with: V01::Entities::RouteStatus
-      else
-        status 204
+      Route.includes_destinations.scoping do
+        id = ParseIdsRefs.read params[:id]
+        planning = current_customer.plannings.where(id).first!
+        planning.fetch_stops_status
+        planning.save!
+        if params[:details]
+          present planning.routes.includes_stops, with: V01::Entities::RouteStatus
+        else
+          status 204
+        end
       end
     end
   end
