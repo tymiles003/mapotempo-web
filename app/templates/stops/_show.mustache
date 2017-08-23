@@ -1,9 +1,9 @@
 <div class="stop-popup"{{#route_id}} data-route_id="{{route_id}}" data-stop_id="{{stop_id}}"{{/route_id}}>
-  {{#close_popup}}
+  {{#popover}}
     <a class="close-popover pull-right">
       <i class="fa fa-times" aria-hidden="true"></i>
     </a>
-  {{/close_popup}}
+  {{/popover}}
 {{#route_id}}
 <div{{#planning_id}}{{^store}}{{^vehicle_name}} class="ui-state-error"{{/vehicle_name}}{{/store}}{{/planning_id}}>
   {{#planning_id}}
@@ -68,7 +68,7 @@
     </div>
   {{/rest}}
   {{^store}}{{#color}}<span class="number label label-default" style="background-color: {{color}};">{{#number}}{{number}}{{/number}}{{^number}}-{{/number}}</span>{{/color}}{{/store}}
-  {{#manage_organize}}{{#vehicle_name}}{{^store}}<input type="checkbox" class="stop_active"{{#active}} checked="checked"{{/active}} title="{{#i18n}}plannings.edit.active_help{{/i18n}}"/>{{/store}}{{/vehicle_name}}{{/manage_organize}}
+  {{^popover}}{{#manage_organize}}{{#vehicle_name}}{{^store}}<input type="checkbox" class="stop_active"{{#active}} checked="checked"{{/active}} title="{{#i18n}}plannings.edit.active_help{{/i18n}}"/>{{/store}}{{/vehicle_name}}{{/manage_organize}}{{/popover}}
   <b>{{#ref}}{{^visits}}{{ref}} {{/visits}}{{/ref}}{{name}}</b><br/>
   {{#street}}{{street}}<br/>{{/street}}
   {{#detail}}

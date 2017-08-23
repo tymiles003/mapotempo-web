@@ -1130,7 +1130,6 @@ var plannings_edit = function(params) {
 
   // Depending 'options.partial' this function is called for initialization or for pieces of planning
   var displayPlanning = function(data, options) {
-
     if (!progressDialog(data.optimizer, dialog_optimizer, '/plannings/' + planning_id + '.json', displayPlanning, options)) {
       return;
     }
@@ -1168,7 +1167,7 @@ var plannings_edit = function(params) {
       route.colors = $.map(empty_colors, function(color) {
         return {
           color: color,
-          selected: route.color == color
+          selected: route.color === color
         };
       });
       $.each(route.stops, function(i, stop) {
@@ -1192,15 +1191,10 @@ var plannings_edit = function(params) {
       }
     };
 
-    if (data.routes.length === 0) {
-      setRouteVariables(null, $.first(data.routes));
-      updateColorsForRoutesAndStops(null, $.first(data.routes));
-    } else {
-      $.each(data.routes, function(i, route) {
-        setRouteVariables(i, route);
-        updateColorsForRoutesAndStops(i, route);
-      });
-    }
+    $.each(data.routes, function(i, route) {
+      setRouteVariables(i, route);
+      updateColorsForRoutesAndStops(i, route);
+    });
 
     // 1st case: the whole planning needs to be initialized and displayed
     if (typeof options !== 'object' || !options.partial) {
@@ -1245,7 +1239,7 @@ var plannings_edit = function(params) {
     }
     // 2nd case: several routes needs to be displayed (header and map), for instance by switching vehicles
     else if (typeof options === 'object' && options.partial === 'routes') {
-      // update allRoutesWithVehicle
+      // update allRoutesWithVehicle and global routes
       $.each(data.routes, function(i, route) {
         var vehicle_usage = {};
         $.each(vehicles_usages_map, function(i, v) {
@@ -1344,7 +1338,6 @@ var plannings_edit = function(params) {
           }
         }
       }).disableSelection();
-
       $(".route[data-route_id='" + route.route_id + "'] li[data-stop_id]")
         .mouseover(function() {
           $('span.number', this).css({
@@ -1366,13 +1359,21 @@ var plannings_edit = function(params) {
           var $this = $(this);
           var stops = $.grep(route.stops, function(e) { return e.stop_id === $this.data('stop_id'); });
           if (stops.length > 0) {
+            var stopData = $.extend(stops[0], {
+              number: $('.number', $this).text(),
+              i18n: mustache_i18n,
+              planning_id: data.planning_id,
+              routes: allRoutesWithVehicle,
+              route_id: route.route_id,
+              vehicle_name: route.vehicle && route.vehicle.name,
+              popover: true,
+              manage_organize: true,
+              manage_destination: true,
+              manage_store: false
+            });
+
             $this.popover({
-              content: SMT['stops/show'](
-                {
-                  stop: stops[0],
-                  close_popup: true
-                }
-              ),
+              content: SMT['stops/show'](stopData),
               html: true,
               placement: 'auto',
               trigger: 'manual',
@@ -1381,36 +1382,20 @@ var plannings_edit = function(params) {
                 padding: $('#wrapper').height() * 2 || 0
               }
             });
+
+            $('.close-popover').click(function() {
+              $(lastPopover).popover('hide');
+            });
           }
         })
         .click(function() {
           // Stack the last element activated
           lastPopover = $(this);
           $("li[data-stop_id!='" + $(this).data('stop_id') + "']").popover('hide');
-
-          if ($('.sidebar').hasClass('extended')) {
-            var $this = $(this);
-            var stop_id = $this.data('stop_id');
-            popupModule.getPopupContent('stop', stop_id, function(content) {
-              $this.popover({
-                content: SMT['stops/show']($.extend(content, {
-                  number: $('.number', $this).text(),
-                  close_popup: true
-                })),
-                html: true,
-                placement: 'auto',
-                trigger: 'manual',
-                viewport: {
-                  selector: (i <= 4) ? '#planning' : '#wrapper',
-                  padding: $('#wrapper').height()
-                }
-              }).popover('show');
-
-              $('.close-popover').click(function() {
-                $(lastPopover).popover('hide');
-              });
-            });
-          }
+          $(this).popover($('.sidebar').hasClass('extended') ? 'toggle' : 'hide');
+          $('.close-popover').click(function() {
+            $(lastPopover).popover('hide');
+          });
         });
     });
 

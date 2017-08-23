@@ -68,10 +68,9 @@ var popupModule = (function() {
       beforeSend: beforeSendWaiting,
       success: function(data) {
         var popup = marker.getPopup();
-
         if (popup) {
           data.i18n = mustache_i18n;
-          data.routes = _context.options.allRoutesWithVehicle; // unecessary to load all for each stop
+          data.routes = _context.options.allRoutesWithVehicle; // unnecessary to load all for each stop
           data.out_of_route_id = _context.options.outOfRouteId;
           data.number = marker.properties.number;
           if (marker.properties.tomtom) {
@@ -81,7 +80,6 @@ var popupModule = (function() {
             phoneNumberCall(data, _context.options.url_click2call);
           }
           $.extend(data, _context.options.popupOptions);
-
           popup.setContent(SMT['stops/show'](data));
         }
 
