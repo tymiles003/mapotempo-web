@@ -1111,7 +1111,7 @@ en:
       last_sent_to: Sent to
       title: Editing plan
       stops: stops
-      without_stops_title: Stops from this sizeable planning were not loaded to improve performance
+      without_stops_title: Stops from this sizeable planning were not loaded to improve display performance
       load_stops_out_of_route: Load unplanned stops
       load_stops: Load stops in this route
       optimized_at: Optimized

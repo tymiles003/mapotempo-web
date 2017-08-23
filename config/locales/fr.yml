@@ -1146,7 +1146,7 @@ fr:
       title: Modifier planning
       stops: arrêts
       without_stops_title: Les arrêts de ce planning volumineux n'ont pas été chargés
-        pour améliorer l'affichage
+        pour améliorer les performances de l'affichage
       load_stops_out_of_route: Charger les arrêts non planifiés
       load_stops: Charger les arrêts de cette tournée
       optimized_at: Optimisé
