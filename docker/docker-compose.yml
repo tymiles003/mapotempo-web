@@ -37,7 +37,7 @@ services:
     ports: []
     volumes:
       - ./mapotempo.rb:/srv/app/config/initializers/mapotempo.rb
-      - ./uploads:/srv/app/public/uploads
+      - /dev/null:/srv/app/public/uploads
     links:
       - db
       - redis-cache
