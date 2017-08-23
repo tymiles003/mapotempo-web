@@ -26,7 +26,7 @@
     </div>
   <% end %>
   <span>
-    <i class="fa fa-check-square fa-fw"></i> <%= route.size_active %>&nbsp;<%= I18n.t 'plannings.edit.stops' %>
+    <i class="fa fa-check-square fa-fw"></i> <%= route.size_active %> <%= I18n.t 'plannings.edit.stops' %>
     <i class="fa fa-clock-o fa-fw"></i> <%= ('%i:%02i' % [(route.end - route.start)/60/60, (route.end - route.start)/60%60]) if route.start && route.end %>
     <i class="fa fa-road fa-fw"></i> <%= number_to_human(route.distance, units: :distance, precision: 3, format: '%n %u') %>
     <% if !route.planning.customer.enable_orders %>
@@ -51,9 +51,11 @@
 
           <div class="title col-md-2 col-sm-2 col-xs-3">
             <span class="time">
-              <%= route.start_time %>
+              <% if route.start_time %>
+                <%= route.start_time + (number_of_days(route.start) ? " (+#{number_of_days(route.start)})" : '') %>
+              <% end %>
               <% if display_start_time(route) %>
-                - <%= Time.at(display_start_time(route)).utc.strftime('%H:%M') %>
+                - <%= Time.at(display_start_time(route)).utc.strftime('%H:%M') + (number_of_days(display_start_time(route)) ? "(+#{number_of_days(display_start_time(route))})" : '') %>
               <% end %>
             </span>
           </div>
@@ -97,17 +99,17 @@
 
         <div class="title col-md-2 col-sm-2 col-xs-3">
           <% if route.planning.customer.print_stop_time %>
-            <span class="time"><%= stop.time_time %></span>
+            <span class="time"><%= stop.time_time + (number_of_days(stop.time) ? " (+#{number_of_days(stop.time)})" : '') %></span>
           <% end %>
           <% if stop.open1 || stop.close1 %>
             <span class="window">
-              <%= stop.open1_time %>-<%= stop.close1_time %>
+              <%= stop.open1_time + (number_of_days(stop.open1) ? " (+#{number_of_days(stop.open1)})" : '') %>-<%= stop.close1_time + (number_of_days(stop.close1) ? " (+#{number_of_days(stop.close1)})" : '') %>
             </span>
           <% end %>
           <% if (stop.open1 || stop.close1) && (stop.open2 || stop.close2) %><span>/</span><% end %>
           <% if stop.open2 || stop.close2 %>
             <span class="window">
-              <%= stop.open2_time %>-<%= stop.close2_time %>
+              <%= stop.open2_time + (number_of_days(stop.open2) ? " (+#{number_of_days(stop.open2)})" : '') %>-<%= stop.close2_time + (number_of_days(stop.close2) ? " (+#{number_of_days(stop.close2)})" : '') %>
             </span>
           <% end %>
           <% if stop.is_a?(StopVisit) %>
@@ -204,9 +206,11 @@
             <% if route.planning.customer.print_stop_time %>
               <span class="time">
                 <% if display_end_time(route) %>
-                  <%= Time.at(display_end_time(route)).utc.strftime('%H:%M') %> -
+                  <%= Time.at(display_end_time(route)).utc.strftime('%H:%M') + (number_of_days(display_end_time(route)) ? "(+#{number_of_days(display_end_time(route))})" : '') %> -
                 <% end %>
-                <%= route.end_time %>
+                <% if route.end_time %>
+                  <%= route.end_time + (number_of_days(route.end) ? " (+#{number_of_days(route.end)})" : '') %>
+                <% end %>
               </span>
             <% end %>
           </div>
