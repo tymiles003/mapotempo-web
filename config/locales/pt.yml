@@ -1297,9 +1297,9 @@ pt:
   stores:
     default:
       name:
-      lat:
-      lng:
-      city:
+      lat: '38.78280'
+      lng: '-9.12521'
+      city: 'Lisboa'
     geocoding:
       geocoding_in_progress:
     form:

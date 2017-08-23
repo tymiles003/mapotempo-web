@@ -1260,9 +1260,9 @@ es:
   stores:
     default:
       name:
-      lat:
-      lng:
-      city:
+      lat: '40.35977'
+      lng: '-3.66242'
+      city: Madrid
     geocoding:
       geocoding_in_progress:
     form:
