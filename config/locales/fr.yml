@@ -463,7 +463,8 @@ fr:
         inconsistent_customer: n'est pas une valeur autorisée pour ce compte client
       models:
         location:
-          missing_address_or_latlng: Le code postal et la ville ne peuvent pas être vides si lat/lng sont vides
+          missing_address_or_latlng: Le code postal et la ville ne peuvent pas être
+            vides si lat/lng sont vides
           lat_outside_range: doit être comprise entre -90..90
           lng_outside_range: doit être comprise entre -180..180
           geocoding_accuracy_outside_range: doit être comprise entre 0..1
@@ -496,12 +497,13 @@ fr:
         visit:
           attributes:
             close1:
-              after: "doit être après le %{s}"
-              blank: doit être rempli(e) si un début ou une fin de Plage horaire 2 est renseigné
+              after: doit être après le %{s}
+              blank: doit être rempli(e) si un début ou une fin de Plage horaire 2
+                est renseigné
             open2:
-              after: "doit être après la fin de %{s}"
+              after: doit être après la fin de %{s}
             close2:
-              after: "doit être après le %{s}"
+              after: doit être après le %{s}
             quantities:
               not_float: doit être un nombre
               negative_value: doit être une valeur positive (%{value})
@@ -697,10 +699,15 @@ fr:
       router_options_height_range: Hauteur entre %{from} et %{to} mètres
       router_options_width_range: Largeur entre %{from} et %{to} mètres
       router_options_length_range: Longueur entre %{from} et %{to} mètres
-      router_options_max_walk_distance_range: Distance maximum à pied avant de prendre les transports en commun
-      router_options_approach_help: Arriver/partir avec le point de visite du côté de circulation sur la voie
-      router_options_snap_range: Distance maximale pour s'arrêter à un carrefour sinon arrêt devant le point de livraison
-      router_options_strict_restriction: Si non coché le calculateur essaiera de respecter les interdictions au plus près et passera outre l'interdiction uniquement s'il ne peut pas faire autrement.
+      router_options_max_walk_distance_range: Distance maximum à pied avant de prendre
+        les transports en commun
+      router_options_approach_help: Arriver/partir avec le point de visite du côté
+        de circulation sur la voie
+      router_options_snap_range: Distance maximale pour s'arrêter à un carrefour sinon
+        arrêt devant le point de livraison
+      router_options_strict_restriction: Si non coché le calculateur essaiera de respecter
+        les interdictions au plus près et passera outre l'interdiction uniquement
+        s'il ne peut pas faire autrement.
       take_over_help: Durée de visite moyenne par client
       optimization_cluster_size_default: '%{n} (valeur par défaut)'
       optimization_cluster_size_help: Valeur en secondes séparant les points à regrouper
@@ -709,7 +716,8 @@ fr:
         le cas d'une optimisation d'une seule tournée avec retards.
       optimization_time_default: '%{n} (valeur par défaut)'
       optimization_time_help: L'optimisation s'arrête par défaut automatiquement.
-        Néanmoins vous pouvez préciser ici une valeur limite, par véhicule, à ne pas dépasser.
+        Néanmoins vous pouvez préciser ici une valeur limite, par véhicule, à ne pas
+        dépasser.
       optimization_soft_upper_bound_default: '%{n} (valeur par défaut)'
       optimization_stop_soft_upper_bound_help: 'Plus la valeur est grande plus les
         retards seront pénalisants (0 pour empêcher les retards de manière stricte :
@@ -722,7 +730,8 @@ fr:
       cost_waiting_time_help: Permet d'évaluer l'importance des temps d'attente. Plus
         la valeur est grande, plus l'attente avant l'ouverture d'un créneau horaire
         sera pénalisée (0 pour ne pas considérer l'attente dans l'optimisation).
-      optimization_force_start_help: Forcer le départ du véhicule à son horaire de début.
+      optimization_force_start_help: Forcer le départ du véhicule à son horaire de
+        début.
       print_header_help: Bloc de texte ajouté avant chaque tournée
       print:
         title: Impressions
@@ -827,7 +836,9 @@ fr:
       replace_yes: Supprimer anciens clients
       replace_yes_help: Efface et remplace tous les anciens clients par ceux de l'import.
         Les plannings seront également perdus.
-      replace_confirm: Le fait de supprimer les clients affectera vos anciens plannings qui ne comporteront plus que des nouveaux clients non planifiés. Êtes-vous sûr ?
+      replace_confirm: Le fait de supprimer les clients affectera vos anciens plannings
+        qui ne comporteront plus que des nouveaux clients non planifiés. Êtes-vous
+        sûr ?
       plannings: Plannings
       delete_plannings: Supprimer anciens plannings
       delete_plannings_help: Supprime les anciens plannings (permet notamment d'améliorer
@@ -911,9 +922,9 @@ fr:
       name: nom
       name_desc: nom du client ou de la destination visitée
       street: voie
-      street_desc: "numéro de l'immeuble, type de voie et nom de la voie (l'orthographe
-        doit être correcte pour un géocodage fiable). Note : les détails d'accès
-        doivent eux être posés dans le champ « complément »"
+      street_desc: 'numéro de l''immeuble, type de voie et nom de la voie (l''orthographe
+        doit être correcte pour un géocodage fiable). Note : les détails d''accès
+        doivent eux être posés dans le champ « complément »'
       detail: complément
       detail_desc: détails d'accès complémentaires à la voie permettant à l'agent
         de terrain d'atteindre le seuil de porte de sa destination. Ex. Bâtiment d'un
@@ -925,8 +936,8 @@ fr:
       city_desc: nom de la ville ou commune (l'orthographe doit être correcte pour
         un géocodage fiable)
       state: état
-      state_desc: nom de l'état (l'orthographe doit être correcte pour
-        un géocodage fiable)
+      state_desc: nom de l'état (l'orthographe doit être correcte pour un géocodage
+        fiable)
       country: pays
       country_desc: nom du pays (l'orthographe doit être correcte pour un géocodage
         fiable)
@@ -1117,7 +1128,8 @@ fr:
         icalendar_email: Agenda iCal par email
         spreadsheet: Tableur CSV / Excel
         none_planning: Veuillez sélectionner au moins un planning à exporter
-      list_message: "Vous avez atteint le nombre maximum de plannings pouvant être associés à votre compte (Limite: %{limit})"
+      list_message: 'Vous avez atteint le nombre maximum de plannings pouvant être
+        associés à votre compte (Limite: %{limit})'
     edit:
       vehicles: Véhicules
       current_position: 'Position véhicle :'
@@ -1133,24 +1145,34 @@ fr:
       last_sent_to: Envoi
       title: Modifier planning
       stops: arrêts
-      without_stops_title: Les arrêts de ce planning volumineux n'ont pas été chargés pour améliorer l'affichage
+      without_stops_title: Les arrêts de ce planning volumineux n'ont pas été chargés
+        pour améliorer l'affichage
       load_stops_out_of_route: Charger les arrêts non planifiés
       load_stops: Charger les arrêts de cette tournée
       optimized_at: Optimisé
       optimize_global:
         title: Optimisation globale
-        all_help: Optimiser le planning dans son ensemble, pour tous les arrêts, excepté les tournées verrouillées (vos arrêts pourront être attribués à une autre tournée qu'actuellement)
-        active_help: Optimiser le planning dans son ensemble, uniquement pour les arrêts actifs, excepté les tournées verrouillées (vos arrêts pourront être attribués à une autre tournée qu'actuellement)
+        all_help: Optimiser le planning dans son ensemble, pour tous les arrêts, excepté
+          les tournées verrouillées (vos arrêts pourront être attribués à une autre
+          tournée qu'actuellement)
+        active_help: Optimiser le planning dans son ensemble, uniquement pour les
+          arrêts actifs, excepté les tournées verrouillées (vos arrêts pourront être
+          attribués à une autre tournée qu'actuellement)
         all_stops: Optimiser avec les arrêts inactifs
         active_stops: Uniquement les arrêts actifs
-        confirm: Optimiser l'ensemble du planning ? (vos arrêts pourront être attribués à une autre tournée qu'actuellement)
+        confirm: Optimiser l'ensemble du planning ? (vos arrêts pourront être attribués
+          à une autre tournée qu'actuellement)
       optimize_each:
         title: Optimisation de chaque tournée
-        all_help: Optimiser les tournées, pour tous les arrêts, non verrouillées du planning une à une (vos arrêts resteront dans chaque tournée initiale)
-        active_help: Optimiser les tournées, uniquement pour les arrêts actifs, non verrouillées du planning une à une (vos arrêts resteront dans chaque tournée initiale)
+        all_help: Optimiser les tournées, pour tous les arrêts, non verrouillées du
+          planning une à une (vos arrêts resteront dans chaque tournée initiale)
+        active_help: Optimiser les tournées, uniquement pour les arrêts actifs, non
+          verrouillées du planning une à une (vos arrêts resteront dans chaque tournée
+          initiale)
         all_stops: Optimiser avec les arrêts inactifs
         active_stops: Uniquement les arrêts actifs
-        confirm: Lancer un calcul d'optimisation pour chacune des tournées ? (vos arrêts resteront dans chaque tournée initiale)
+        confirm: Lancer un calcul d'optimisation pour chacune des tournées ? (vos
+          arrêts resteront dans chaque tournée initiale)
       optimize_all: Optimiser avec les arrêts inactifs
       optimize_actives: Optimiser les arrêts actifs
       optimize_help: Optimiser la tournée
@@ -1266,7 +1288,7 @@ fr:
         visit: Visite
         status: 'Statut :'
         eta: 'ETA :'
-        day: 'J+'
+        day: J+
       error:
         no_geolocalization: Pas de géolocalisation
         no_geolocalization_help: Pas de coordonnée géographique renseignée, ou l'adresse
@@ -1384,7 +1406,7 @@ fr:
   routes:
     show:
       print: Imprimer
-      wait: "Temps d'attente :"
+      wait: 'Temps d''attente :'
       annotating:
         hour: 'Heure de passage :'
         signature: 'Signature :'
@@ -1477,8 +1499,8 @@ fr:
       city_desc: nom de la ville ou commune (l'orthographe doit être correcte pour
         un géocodage fiable).
       state: état
-      state_desc: nom de l'état (l'orthographe doit être correcte pour
-        un géocodage fiable)
+      state_desc: nom de l'état (l'orthographe doit être correcte pour un géocodage
+        fiable)
       country: pays
       country_desc: nom du pays (l'orthographe doit être correcte pour un géocodage
         fiable).
@@ -1499,10 +1521,9 @@ fr:
       geocoding_level_desc: niveau de précision atteint lors de la conversion de l'adresse
         postale en coordonnées géographiques, exprimé de manière sémantique
       missing_name: « nom » manquant.
-      missing_location: « ville » ou « code postal » ou
-        « lat » et « lng » manquant.
-      invalid_numeric_value: valeur numérique « %{value} »
-        invalide à l''enregistrement %{line}.
+      missing_location: « ville » ou « code postal » ou « lat » et « lng » manquant.
+      invalid_numeric_value: valeur numérique « %{value} » invalide à l''enregistrement
+        %{line}.
       format:
         string: texte
         integer: nombre
@@ -1590,7 +1611,8 @@ fr:
       router_options: Options du calculateur
       router_options_desc: Forcer l'utilisation les options du calculateur d'itinéraire
       speed_multiplicator: Ajustement de la vitesse
-      speed_multiplicator_desc: Une valeur supérieure à 100% signifie une vitesse plus élevée.
+      speed_multiplicator_desc: Une valeur supérieure à 100% signifie une vitesse
+        plus élevée.
       color: Couleur
       color_desc: Couleur associée au véhicule
       devices: Appareils
@@ -1721,26 +1743,34 @@ fr:
       title: Importer une nouvelle configuration de véhicules
       vehicle_usage_set: Configuration de véhicules
       replace_yes: Remplacer la configuration existante
-      replace_yes_help: La configuration existante sera supprimée et remplacée par la configuration importée.
+      replace_yes_help: La configuration existante sera supprimée et remplacée par
+        la configuration importée.
       replace_no: Ajouter la nouvelle configuration
-      replace_no_help: Une nouvelle configuration de véhicules sera ajouté sans modifier les anciennes.
+      replace_no_help: Une nouvelle configuration de véhicules sera ajouté sans modifier
+        les anciennes.
       vehicles: Véhicules
       replace_vehicles: Remplacer les véhicules existants
-      replace_vehicles_help: Tous les véhicules dans l'application seront mise à jour avec les données importées (les véhicules avec le même référence seront rempalcés par les données correspondantes).
+      replace_vehicles_help: Tous les véhicules dans l'application seront mise à jour
+        avec les données importées (les véhicules avec le même référence seront remplacés
+        par les données correspondantes).
       csv:
         title: Fichier CSV
-        help: Importe la configuration de véhicules depuis un fichier CSV. Les fichiers CSV peuvent être exportés à partir de tableurs ou depuis d'autres logiciels.
+        help: Importe la configuration de véhicules depuis un fichier CSV. Les fichiers
+          CSV peuvent être exportés à partir de tableurs ou depuis d'autres logiciels.
         file_help: Import de fichier CSV uniquement
       import_template_help: Aide
       dialog:
-        replace_vehicles_confirm: Êtes-vous sûr de vouloir remplacer toutes les propriétés de tous les véhicules par celle du fichier d'import ?
+        replace_vehicles_confirm: Êtes-vous sûr de vouloir remplacer toutes les propriétés
+          de tous les véhicules par celle du fichier d'import ?
         import:
           title: Import d'une configuration des véhicules
           in_progress: Import de la configuration en cours, merci de patienter
         help:
           title: Liste des colonnes de votre fichier
-          desc: "Votre fichier d'import peut contenir l'ensemble des colonnes et types de valeurs suivants :"
-          columns_vehicle_usage_set: Colonnes de la configuration des véhicules (et si besoin pour les véhicules)
+          desc: 'Votre fichier d''import peut contenir l''ensemble des colonnes et
+            types de valeurs suivants :'
+          columns_vehicle_usage_set: Colonnes de la configuration des véhicules (et
+            si besoin pour les véhicules)
           columns_vehicle: Colonnes des véhicules
       name_vehicle_usage_set: Nom configuration
       name_desc: nom de la configuration par défaut
@@ -1759,11 +1789,14 @@ fr:
       rest_duration: Durée de repos
       rest_duration_desc: Durée du repos pris par le livreur
       store_rest_ref: Lieu de repos
-      store_rest_desc: Référence du dépôt pour la pause du livreur / requise si plage de repos renseigné
+      store_rest_desc: Référence du dépôt pour la pause du livreur / requise si plage
+        de repos renseigné
       service_time_start: Durée de service avant
-      service_time_start_desc: Durée de service avant et sans tenir compte de la durée de pause
+      service_time_start_desc: Durée de service avant et sans tenir compte de la durée
+        de pause
       service_time_end: Durée de service après
-      service_time_end_desc: Durée de service après et sans tenir compte de la durée de pause
+      service_time_end_desc: Durée de service après et sans tenir compte de la durée
+        de pause
       format:
         string: texte
         integer: nombre
@@ -1781,7 +1814,8 @@ fr:
       too_many_lines: 'Import stoppé, trop de lignes (max: %{n}).'
       none_column: Aucune colonne trouvée
       missing_name: « nom » de la configuration par défaut manquant
-      missing_open_close: heure de début ou de fin de la configuration par défaut manquantes
+      missing_open_close: heure de début ou de fin de la configuration par défaut
+        manquantes
       invalid_numeric_value: valeur numérique « %{value} » invalide.
       check_custom_columns: Vérifiez votre définition des colonnes à importer.
     form:
@@ -1804,7 +1838,8 @@ fr:
   visits:
     form:
       legend: 'Visite #%{n}'
-      destroy: Si coché, la visite sera supprimée après validation. Cliquez-ici pour annuler.
+      destroy: Si coché, la visite sera supprimée après validation. Cliquez-ici pour
+        annuler.
       ref_help: Référence libre. IMPORTANTE si vous souhaitez ne pas écraser vos visites
         avec l'import/export notamment
       quantities:
