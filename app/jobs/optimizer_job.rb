@@ -17,7 +17,7 @@
 #
 require 'optim/ort'
 
-class OptimizerJob < Struct.new(:planning_id, :route_id, :global, :active_only)
+class OptimizerJob < Job.new(:planning_id, :route_id, :global, :active_only)
   @@optimize_time = Mapotempo::Application.config.optimize_time
   @@optimize_time_force = Mapotempo::Application.config.optimize_time_force
   @@stop_soft_upper_bound = Mapotempo::Application.config.optimize_stop_soft_upper_bound
@@ -25,10 +25,6 @@ class OptimizerJob < Struct.new(:planning_id, :route_id, :global, :active_only)
   @@optimization_cluster_size = Mapotempo::Application.config.optimize_cluster_size
   @@cost_waiting_time = Mapotempo::Application.config.cost_waiting_time
   @@force_start = Mapotempo::Application.config.optimize_force_start
-
-  def before(job)
-    @job = job
-  end
 
   def perform
     return true if @job.progress == 'no_solution' && @job.attempts > 0
@@ -61,18 +57,15 @@ class OptimizerJob < Struct.new(:planning_id, :route_id, :global, :active_only)
                 bars[bar] = bar == 1 && (@@optimize_time_force || planning.customer.optimization_time) ? "#{(@@optimize_time_force || optimize_time) * 1000}ms0" : -1
               end
             end
-            @job.progress = bars.join(';')
-            @job.save
+            job_progress_save bars.join(';')
             Delayed::Worker.logger.info "OptimizerJob planning_id=#{planning_id} #{@job.progress}"
           }
-          @job.progress = '100;100;-1'
-          @job.save
+          job_progress_save '100;100;-1'
           Delayed::Worker.logger.info "OptimizerJob planning_id=#{planning_id} #{@job.progress}"
           optimum
         end
       rescue NoSolutionFoundError => e
-        @job.progress = 'no_solution'
-        @job.save
+        job_progress_save 'no_solution'
         Delayed::Worker.logger.info "OptimizerJob planning_id=#{planning_id} #{@job.progress}"
         raise e
       end

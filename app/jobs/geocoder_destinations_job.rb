@@ -15,12 +15,7 @@
 # along with Mapotempo. If not, see:
 # <http://www.gnu.org/licenses/agpl.html>
 #
-class GeocoderDestinationsJob < Struct.new(:customer_id, :planning_id)
-
-  def before(job)
-    @job = job
-  end
-
+class GeocoderDestinationsJob < Job.new(:customer_id, :planning_id)
   def perform
     customer = Customer.find(customer_id)
     Delayed::Worker.logger.info "GeocoderDestinationsJob customer_id=#{customer_id} perform"
@@ -39,8 +34,7 @@ class GeocoderDestinationsJob < Struct.new(:customer_id, :planning_id)
           }
         rescue GeocodeError # avoid stop import because of geocoding job
         end
-        @job.progress = Integer(i * 100 / count).to_s
-        @job.save
+        job_progress_save Integer(i * 100 / count).to_s
         Delayed::Worker.logger.info "GeocoderDestinationsJob customer_id=#{customer_id} #{@job.progress}%"
       end
     }
