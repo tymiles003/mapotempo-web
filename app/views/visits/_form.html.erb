@@ -48,7 +48,7 @@
         <label class="col-md-2 control-label"><%= t '.open_close1' %></label>
         <div class="col-md-6">
           <div class="input-group">
-            <span class="input-group-addon"><%= t 'web.form.to_time' %></span>
+            <span class="input-group-addon"><%= t 'web.form.from_time' %></span>
             <%= text_field "destination[visits_attributes][#{i}]", :open1, class: 'form-control', placeholder: t('all.unit.hour_minute'), value: visit.open1_time %>
             <span class="input-group-addon input-group-borderless"><%= t 'web.form.days' %></span>
             <%= number_field "destination[visits_attributes][#{i}]", :open1_day,
