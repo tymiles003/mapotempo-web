@@ -235,4 +235,16 @@ class RouteTest < ActiveSupport::TestCase
     geojson = o.to_geojson(true, true, true)
     assert_equal geojson, '{"type":"FeatureCollection","features":[]}'
   end
+
+  test 'should set time for all stops after plan' do
+    # Store start without geo
+    o = routes(:route_three_one)
+    # Move rest at first position
+    o.move_stop(o.stops.find{ |s| s.is_a?(StopRest) }, 1)
+
+    o.plan
+    o.stops.each { |stop|
+      assert stop.time
+    }
+  end
 end
