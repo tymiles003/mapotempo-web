@@ -635,7 +635,7 @@ class Route < ApplicationRecord
   end
 
   def update_stops_track(_stop)
-    self.outdated = true
+    self.outdated = true unless new_record?
     @stops_updated = true
   end
 

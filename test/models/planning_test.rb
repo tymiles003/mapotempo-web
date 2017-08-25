@@ -135,6 +135,9 @@ class PlanningTest < ActiveSupport::TestCase
 
     assert_equal planning_dup, planning_dup.routes[0].planning
     planning_dup.save!
+    planning_dup.routes.each{ |r|
+      assert_not r.outdated
+    }
   end
 
   test 'should set_routes' do
