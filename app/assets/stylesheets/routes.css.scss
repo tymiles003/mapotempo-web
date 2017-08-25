@@ -29,6 +29,7 @@
     }
 
     .route-print {
+      word-wrap: break-word;
       page-break-after: always;
 
       &:last-of-type {

@@ -154,6 +154,16 @@ a.disabled {
   border-radius: 0;
 }
 
+/* Tables */
+.table {
+  word-wrap: break-word;
+
+  td {
+    // Define a max width for all tables to make word wrap working
+    max-width: 260px;
+  }
+}
+
 /* Colors */
 
 .color_small {
