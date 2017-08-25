@@ -176,12 +176,16 @@
       width: 6em;
     }
 
+    .form-control {
+      background: transparent;
+    }
+
     span.form-control {
       overflow: hidden;
       word-break: break-all;
       // white-space: nowrap;
       // text-overflow: ellipsis;
-      border: 0px;
+      border: 0;
     }
 
     .select2-container {
