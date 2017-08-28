@@ -1092,11 +1092,13 @@ fr:
       title: "Merci d’avoir choisi de tester Mapotempo Web. Notre équipe est à votre écoute pour vous accompagner"
       content:
         welcome: "Bienvenue chez Mapotempo !"
-        connection: "Merci d'avoir choisi de tester la solution de planification et d'optimisation de tournées Mapotempo Web pour une période de <b>%{days} jours</b>. <b>Avant de vous connecter à votre compte de test, veuillez générer votre mot de passe : "
-        connection_link: "Se connecter"
+        connection: "Merci d'avoir choisi de tester la solution de planification et d'optimisation de tournées Mapotempo Web%{limit}. <b>Avant de vous connecter à votre compte%{test}, veuillez générer votre mot de passe : "
+        connection_limit: " pour une période de <b>%{days} jours</b>"
+        connection_test: " de test"
+        connection_link: "Initialiser votre mot de passe"
         subscribe: "Vous pouvez ensuite vous connecter à l'application en utilisant le mot de passe généré et votre identifiant : %{email}"
         subscribe_link: "Me connecter à Mapotempo Web"
-        help: "Afin de vous offrir la meilleure expérience qui soit vous pouvez compter sur notre équipe qui vous accompagnera durant ces 15 jours. Aussi, <b>si vous rencontrez des difficultés vous pouvez contacter l’équipe Customer Success par le biais de notre formulaire en ligne :</b><br/>"
+        help: "Afin de vous offrir la meilleure expérience qui soit vous pouvez compter sur notre équipe qui vous accompagnera durant ces 15 jours. Aussi, <b>pour toute question, vous pouvez contacter l’équipe Customer Success par le biais de notre formulaire en ligne :</b><br/>"
         help_link: "Contacter le support"
         staff: "Pour vous l'expérience Mapotempo démarre dès maintenant ! Notre équipe est mobilisée pour garantir son succès.<br/><br/>Bien à vous,"
         staff_greetings: "L'équipe Customer Success Mapotempo"
@@ -1104,7 +1106,7 @@ fr:
           title: "LES RESSOURCES POUR BIEN DÉMARRER"
           description: "Afin de bien débuter avec Mapotempo Web <b>nous vous invitons dans un premier temps à découvrir la structure de notre Centre d'Aide</b> grâce à cet article :<br/><br/>"
           description_link: "Découvrir le Centre d'Aide"
-          objectives: "Objectifs : <ul><li><i>savoir comment naviguer sur le Centre d'Aide</i></li><li><i>connaître quelles sont les ressources disponibles en ligne</i></li></ul>"
+          objectives: "Objectifs : <ul><li><i>savoir comment naviguer sur le Centre d'Aide</i></li><li><i>connaître les ressources disponibles en ligne</i></li></ul>"
         documentation:
           title: 'Dans un second temps, <b>vous pourrez vous appuyer sur les sections suivantes de la <a target="blank" href="https://www.mapotempo.com/fr/centre-aide/manual/index.html">documentation</a> </b>:<br/><br/>'
           before: "Avant de commencer"
@@ -1133,7 +1135,7 @@ fr:
       list_message: "Vous avez atteint la limite conseillée de plannings associés à votre compte (Limite: %{limit})"
     edit:
       vehicles: Véhicules
-      current_position: 'Position véhicle :'
+      current_position: 'Position véhicule :'
       lock_routes: Verrouiller les tournées
       toggle_routes: Masquer les tournées
       zonings:
