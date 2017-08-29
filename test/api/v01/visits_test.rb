@@ -29,13 +29,13 @@ class V01::VisitsTest < ActiveSupport::TestCase
     "/api/0.1/destinations/#{destination_id}/visits#{part}.json?api_key=testkey1&" + param.collect{ |k, v| "#{k}=#{v}" }.join('&')
   end
 
-  test 'should return destination''s visits' do
+  test "should return destination's visits" do
     get api_destination(@destination.id)
     assert last_response.ok?, last_response.body
     assert_equal @destination.visits.size, JSON.parse(last_response.body).size
   end
 
-  test 'should return destination''s visits by ids' do
+  test "should return destination's visits by ids" do
     get api_destination(@destination.id, nil, 'ids' => @visit.id)
     assert last_response.ok?, last_response.body
     assert_equal 1, JSON.parse(last_response.body).size
@@ -62,12 +62,12 @@ class V01::VisitsTest < ActiveSupport::TestCase
     ].each do |tags|
       assert_difference('Visit.count', 1) do
         assert_difference('Stop.count', 2) do
-          post api_destination(@destination.id), @visit.attributes.merge({tag_ids: tags, 'quantities' => [{deliverable_unit_id: 1, quantity: 3.5}]}).except('id'), as: :json
+          post api_destination(@destination.id), @visit.attributes.merge({tag_ids: tags, 'quantities' => [{deliverable_unit_id: 1, quantity: 3.5}]}).except('id').to_json, 'CONTENT_TYPE' => 'application/json'
+
           assert last_response.created?, last_response.body
           visit = JSON.parse last_response.body
           assert_equal 2, visit['tag_ids'].size
           assert_equal 3.5, visit['quantities'][0]['quantity']
-
           assert_equal '10:00:00', visit['open']
           assert_equal '11:00:00', visit['close']
           assert_equal '10:00:00', visit['open1']
@@ -112,6 +112,20 @@ class V01::VisitsTest < ActiveSupport::TestCase
     end
   end
 
+  test 'should update a visit with quantities or return parse error' do
+    put api_destination(@destination.id, @visit.id), { quantities: [{ deliverable_unit_id: 1, quantity: 10 }] }.to_json, 'CONTENT_TYPE' => 'application/json'
+    assert last_response.ok?, last_response.body
+
+    visit = JSON.parse(last_response.body)
+    assert visit['quantities'][0]['deliverable_unit_id'], 1
+    assert visit['quantities'][0]['quantity'], 10
+
+    put api_destination(@destination.id, @visit.id), { quantities: [{ deliverable_unit: 1, quantity: 'aaa' }] }.to_json, 'CONTENT_TYPE' => 'application/json'
+    assert last_response.bad_request?
+    response = JSON.parse(last_response.body)
+    assert_equal response['message'], 'quantities[0][deliverable_unit_id] is missing, quantities[0][quantity] is invalid'
+  end
+
   test 'should destroy a visit' do
     assert_difference('Visit.count', -1) do
       delete api_destination(@destination.id, @visit.id)
@@ -119,8 +133,8 @@ class V01::VisitsTest < ActiveSupport::TestCase
     end
   end
 
-  test 'should return customer''s visits' do
-    get api
+  test "should return customer's visits" do
+    get api()
     assert last_response.ok?, last_response.body
     assert_equal @destination.customer.visits.size, JSON.parse(last_response.body).size
   end

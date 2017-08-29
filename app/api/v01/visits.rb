@@ -24,7 +24,7 @@ class V01::Visits < Grape::API
     def visit_params
       p = ActionController::Parameters.new(params)
       p = p[:visit] if p.key?(:visit)
-      p[:quantities] = Hash[p[:quantities].map{ |q| [q[:deliverable_unit_id].to_s, q[:quantity]] }] if p[:quantities] && p[:quantities].is_a?(Array)
+      p[:quantities] = Hash[p[:quantities].map{ |q| [q[:deliverable_unit_id].to_s, q[:quantity]] }] if p[:quantities]
 
       # Deals with deprecated open and close
       p[:open1] = p.delete(:open) unless p[:open1]
@@ -99,6 +99,11 @@ class V01::Visits < Grape::API
 
           optional :tag_ids, type: Array[Integer], desc: 'Ids separated by comma.', coerce_with: CoerceArrayInteger, documentation: { param_type: 'form' }
 
+          optional :quantities, type: Array do
+            requires :deliverable_unit_id, type: Integer
+            requires :quantity, type: Float
+          end
+
           optional :open1, type: Integer, documentation: { type: 'string', desc: 'Schedule time (HH:MM)' }, coerce_with: ->(value) { ScheduleType.new.type_cast(value) }
           optional :close1, type: Integer, documentation: { type: 'string', desc: 'Schedule time (HH:MM)' }, coerce_with: ->(value) { ScheduleType.new.type_cast(value) }
           optional :take_over, type: Integer, documentation: { type: 'string', desc: 'Schedule time (HH:MM)' }, coerce_with: ->(value) { ScheduleType.new.type_cast(value) }
@@ -131,6 +136,11 @@ class V01::Visits < Grape::API
               :close2)
 
           optional :tag_ids, type: Array[Integer], desc: 'Ids separated by comma.', coerce_with: CoerceArrayInteger, documentation: { param_type: 'form' }
+
+          optional :quantities, type: Array do
+            requires :deliverable_unit_id, type: Integer
+            requires :quantity, type: Float
+          end
 
           optional :open1, type: Integer, documentation: { type: 'string', desc: 'Schedule time (HH:MM)' }, coerce_with: ->(value) { ScheduleType.new.type_cast(value) }
           optional :close1, type: Integer, documentation: { type: 'string', desc: 'Schedule time (HH:MM)' }, coerce_with: ->(value) { ScheduleType.new.type_cast(value) }

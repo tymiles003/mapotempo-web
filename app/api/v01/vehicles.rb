@@ -36,10 +36,10 @@ class V01::Vehicles < Grape::API
     def vehicle_params
       p = ActionController::Parameters.new(params)
       p = p[:vehicle] if p.key?(:vehicle)
-      p[:capacities] = Hash[p[:capacities].map{ |q| [q[:deliverable_unit_id].to_s, q[:quantity]] }] if p[:capacities] && p[:capacities].is_a?(Array)
+      p[:capacities] = Hash[p[:capacities].map { |q| [q[:deliverable_unit_id].to_s, q[:quantity]] }] if p[:capacities]
 
       # Deals with deprecated capacity
-      if !p[:capacities]
+      unless p[:capacities]
         customer = current_customer || @current_user.admin? && @current_user.reseller.customers.where(id: params[:customer_id]).first!
         # p[:capacities] keys must be string here because of permit below
         p[:capacities] = { customer.deliverable_units[0].id.to_s => p.delete(:capacity) } if p[:capacity] && customer.deliverable_units.size > 0
@@ -160,6 +160,11 @@ class V01::Vehicles < Grape::API
           :router_options
       )
 
+      optional :quantities, type: Array do
+        requires :deliverable_unit_id, type: Integer
+        requires :quantity, type: Float
+      end
+
       optional :router_options, type: Hash do
         optional :motorway, type: Boolean
         optional :toll, type: Boolean
@@ -211,6 +216,11 @@ class V01::Vehicles < Grape::API
           :rest_stop,
           :rest_duration
       ).except(:vehicle_usage_set))
+
+      optional :capacities, type: Array do
+        requires :deliverable_unit_id, type: Integer
+        requires :quantity, type: Float
+      end
 
       optional :router_options, type: Hash do
         optional :motorway, type: Boolean

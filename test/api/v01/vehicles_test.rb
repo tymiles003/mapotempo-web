@@ -27,13 +27,13 @@ class V01::VehiclesTest < ActiveSupport::TestCase
     "/api/0.1/vehicles#{part}.json?api_key=adminkey&" + param.collect{ |k, v| "#{k}=" + URI.escape(v.to_s) }.join('&')
   end
 
-  test 'should return customer''s vehicles' do
+  test "should return customer's vehicles" do
     get api()
     assert last_response.ok?, last_response.body
     assert_equal @vehicle.customer.vehicles.size, JSON.parse(last_response.body).size
   end
 
-  test 'should return customer''s vehicles by ids' do
+  test "should return customer's vehicles by ids" do
     get api(nil, 'ids' => @vehicle.id)
     assert last_response.ok?, last_response.body
     assert_equal 1, JSON.parse(last_response.body).size
@@ -71,6 +71,20 @@ class V01::VehiclesTest < ActiveSupport::TestCase
     assert vehicle['router_options']['max_walk_distance'] = '600'
     assert vehicle['router_options']['approach'] = 'curb'
     assert vehicle['router_options']['snap'] = '50'
+  end
+
+  test 'should update vehicle with capacities or return parse error' do
+    put api(@vehicle.id), { capacities: [{ deliverable_unit_id: 1, quantity: 10 }] }.to_json, 'CONTENT_TYPE' => 'application/json'
+    assert last_response.ok?, last_response.body
+
+    vehicle = JSON.parse(last_response.body)
+    assert vehicle['capacities'][0]['deliverable_unit_id'], 1
+    assert vehicle['capacities'][0]['quantity'], 10
+
+    put api(@vehicle.id), { quantities: [{ deliverable_unit: 1, quantity: 'aaa' }] }.to_json, 'CONTENT_TYPE' => 'application/json'
+    assert last_response.bad_request?
+    response = JSON.parse(last_response.body)
+    assert_equal response['message'], 'quantities[0][deliverable_unit_id] is missing, quantities[0][quantity] is invalid'
   end
 
   test 'should create a vehicle' do
