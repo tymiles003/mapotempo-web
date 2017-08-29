@@ -509,7 +509,8 @@ var plannings_edit = function(params) {
     allRoutesWithVehicle: allRoutesWithVehicle,
     colorsByRoute: params.colors_by_route,
     appBaseUrl: params.apiWeb ? '/api-web/0.1/' : '/',
-    popupOptions: popupOptions
+    popupOptions: popupOptions,
+    disableClusters: params.disable_clusters
   }).on('clickStop', function(stop) {
     enlightenStop({index: stop.index, routeId: stop.routeId});
   }).addTo(map);

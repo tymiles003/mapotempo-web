@@ -235,7 +235,8 @@ var RoutesLayer = L.FeatureGroup.extend({
     unit: 'km',
     appBaseUrl: '/',
     withPolylines: true,
-    withQuantities: false
+    withQuantities: false,
+    disableClusters: false
   },
 
   // Clusters for each route
@@ -253,6 +254,7 @@ var RoutesLayer = L.FeatureGroup.extend({
       return currentZoom > defaultMapZoom ? 1 : nbRoutes < 4 ? 30 * nbRoutes : 100;
     },
     spiderfyDistanceMultiplier: 0.5,
+    // Updated in initialize
     // disableClusteringAtZoom: 12,
     iconCreateFunction: function(cluster) {
       if (cluster._map.getZoom() > cluster._map.defaultMapZoom) {
@@ -314,6 +316,10 @@ var RoutesLayer = L.FeatureGroup.extend({
     L.FeatureGroup.prototype.initialize.call(this);
     this.planningId = planningId;
     this.options = $.extend({}, this.defaultOptions, options); // Don't modify defaultOptions which can be reinitialized by turbolinks
+
+    if (this.options.disableClusters) {
+      this.markerOptions.disableClusteringAtZoom = this.options.disableClusters ? 0 : 19;
+    }
 
     // Clear layers if page is reloaded with turbolinks
     // this.hideAllRoutes();

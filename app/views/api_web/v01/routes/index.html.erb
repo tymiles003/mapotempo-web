@@ -34,5 +34,6 @@ controller.js(
   map_lat: @planning.vehicle_usage_set.vehicle_usages.collect(&:default_store_start).compact.find{ |s| s.lat }.try(:lat) || @planning.customer.default_position[:lat],
   map_lng: @planning.vehicle_usage_set.vehicle_usages.collect(&:default_store_start).compact.find{ |s| s.lng }.try(:lng) || @planning.customer.default_position[:lng],
   map_attribution: current_user.layer.map_attribution,
+  disable_clusters: @disable_clusters
 )
 %>

@@ -41,7 +41,8 @@ var api_web_v01_routes_index = function(params) {
     appBaseUrl: '/api-web/0.1/',
     popupOptions: {
       isoline: false
-    }
+    },
+    disableClusters: params.disable_clusters
   }).addTo(map);
 
   var caption = L.DomUtil.get('routes-caption');
@@ -63,13 +64,15 @@ var api_web_v01_routes_index = function(params) {
   var fitBounds = !window.location.hash;
   // FIXME when turbolinks get updated
   // Must be placed after caption, otherwise hash is override
-  if (navigator.userAgent.indexOf('Edge') === -1) {
-    map.addHash();
-    var removeHash = function() {
-      map.removeHash();
-      $(document).off('page:before-change', removeHash);
-    };
-    $(document).on('page:before-change', removeHash);
+  if (!params.disable_clusters) {
+    if (navigator.userAgent.indexOf('Edge') === -1) {
+      map.addHash();
+      var removeHash = function() {
+        map.removeHash();
+        $(document).off('page:before-change', removeHash);
+      };
+      $(document).on('page:before-change', removeHash);
+    }
   }
 
   routesLayer.showRoutesWithStore(route_ids, null, function() {

@@ -8,6 +8,7 @@
 
 <%
 controller.js(
-  print_map: @route.planning.customer.print_map
+  print_map: @route.planning.customer.print_map,
+  disable_clusters: !!@route.planning.customer.print_map
 )
 %>

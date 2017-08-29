@@ -36,6 +36,7 @@ class ApiWeb::V01::RoutesController < ApiWeb::V01::ApiWebController
       @planning.routes.includes_destinations
     end
     @layer = current_user.customer.profile.layers.find_by(id: params[:layer_id]) if params[:layer_id]
+    @disable_clusters = ValueToBoolean.value_to_boolean(params[:disable_clusters], false)
   end
 
   def print
