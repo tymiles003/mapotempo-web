@@ -1130,7 +1130,7 @@ var plannings_edit = function(params) {
 
   // Depending 'options.partial' this function is called for initialization or for pieces of planning
   var displayPlanning = function(data, options) {
-    if (!progressDialog(data.optimizer, dialog_optimizer, '/plannings/' + planning_id + '.json', displayPlanning, options)) {
+    if (!progressDialog(data.optimizer, dialog_optimizer, '/plannings/' + planning_id + '.json' + (options.firstTime ? '?with_stops=' + withStopsInSidePanel : ''), displayPlanning, options)) {
       return;
     }
 

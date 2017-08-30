@@ -63,6 +63,7 @@ var mustache_i18n = function() {
   };
 };
 
+var needCbAfterDeletingJob = true;
 var progressDialogFrozen = false;
 var freezeProgressDialog = function(dialog) {
   if (!progressDialogFrozen) {
@@ -83,7 +84,7 @@ var unfreezeProgressDialog = function(dialog, delayedJob, url, callback) {
       type: 'DELETE',
       url: '/api/0.1/customers/' + delayedJob.customer_id + '/job/' + delayedJob.id + '.json',
       success: function() {
-        $.ajax({
+        if (needCbAfterDeletingJob) $.ajax({
           type: 'GET',
           url: url,
           beforeSend: beforeSendWaiting,
@@ -120,7 +121,6 @@ var progressDialog = function(delayedJob, dialog, url, callback, options) {
   if (delayedJob !== undefined) {
     var timeout = 2000;
     var duration;
-    if (delayedJob.dispatch_params_delayed_job) url += '?' + $.param(delayedJob.dispatch_params_delayed_job);
 
     dialog.modal(modal_options());
     freezeProgressDialog(dialog);
@@ -212,7 +212,7 @@ var progressDialog = function(delayedJob, dialog, url, callback, options) {
       isProgressing = true;
       $(".dialog-no-solution", dialog).show();
       $(".dialog-progress", dialog).hide();
-      unfreezeProgressDialog(dialog, delayedJob, url, callback);
+      unfreezeProgressDialog(dialog, delayedJob, url, callback); // url should not contain dispatch_params_delayed_job
 
       return true;
     }
@@ -230,10 +230,12 @@ var progressDialog = function(delayedJob, dialog, url, callback, options) {
       isProgressing = true;
       $(".dialog-progress", dialog).hide();
       $(".dialog-error", dialog).show();
-      unfreezeProgressDialog(dialog, delayedJob, url, callback);
+      unfreezeProgressDialog(dialog, delayedJob, url, callback); // url should not contain dispatch_params_delayed_job
     } else {
       progressDialogTimerId = setTimeout(function() {
         $.ajax({
+          method: 'GET',
+          data: delayedJob.dispatch_params_delayed_job,
           url: url,
           success: function(data) {
             data.dispatch_params_delayed_job = delayedJob.dispatch_params_delayed_job;
@@ -252,6 +254,7 @@ var progressDialog = function(delayedJob, dialog, url, callback, options) {
     return false;
   } else {
     // Called when job has ended or when delayedjob is not active
+    needCbAfterDeletingJob = false;
     iteration = null;
     progressDialogFrozen = false;
     if (dialog.is(':visible')) {
