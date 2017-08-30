@@ -72,7 +72,7 @@ var api_web_v01_routes_index = function(params) {
     $(document).on('page:before-change', removeHash);
   }
 
-  routesLayer.showRoutes(route_ids, null, function() {
+  routesLayer.showRoutesWithStore(route_ids, null, function() {
     if (fitBounds) {
       progressBar && progressBar.done();
       var bounds = routesLayer.getBounds();

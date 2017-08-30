@@ -423,6 +423,10 @@ var RoutesLayer = L.FeatureGroup.extend({
     this._load(routeIds, false, geojson, callback);
   },
 
+  showRoutesWithStore: function(routeIds, geojson, callback) {
+    this._load(routeIds, true, geojson, callback);
+  },
+
   hideRoutes: function(routeIds) {
     this._removeRoutes(routeIds);
   },
