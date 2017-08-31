@@ -43,7 +43,7 @@ Next, install Postgrsql environement :
 
 You need some others libs :
 
-    libz-dev libicu-dev build-essential g++ libgeos++-dev
+    libz-dev libicu-dev build-essential g++ libgeos-dev libgeos++-dev
 
 __It's important to have all of this installed packages before installing following gems.__
 
