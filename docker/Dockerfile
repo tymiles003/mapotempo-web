@@ -12,7 +12,7 @@ ADD . /srv/app/
 
 # Install dependencies
 RUN apt-get update && \
-    apt-get install -y git build-essential zlib1g-dev libicu-dev g++ libgeos++-dev libpq-dev\
+    apt-get install -y git build-essential zlib1g-dev libicu-dev g++ libgeos-dev libgeos++-dev libpq-dev\
     zlib1g libicu52 libgeos-3.4.2 libpq5 postgresql-client && \
     \
 # Install app
