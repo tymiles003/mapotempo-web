@@ -98,18 +98,18 @@
 
 Turbolinks.enableProgressBar();
 // bug in Firefox 40 when printing multi pages with progress bar
-window.onbeforeprint = function () {
+window.onbeforeprint = function() {
   Turbolinks.enableProgressBar(false);
 };
-window.onafterprint = function () {
+window.onafterprint = function() {
   Turbolinks.enableProgressBar();
 };
 
-$(document).ready(function () {
-  var startSpinner = function () {
+$(document).ready(function() {
+  var startSpinner = function() {
     $('body').addClass('turbolinks_waiting');
   };
-  var stopSpinner = function () {
+  var stopSpinner = function() {
     $('body').removeClass('turbolinks_waiting');
   };
   $(document).on("page:fetch", startSpinner);
@@ -118,6 +118,6 @@ $(document).ready(function () {
   Paloma.start();
 });
 
-$(document).on('page:restore', function () {
-  Paloma.start();
-});
+// $(document).on('page:restore', function() {
+//   Paloma.start();
+// });

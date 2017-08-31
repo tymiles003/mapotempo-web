@@ -310,7 +310,7 @@ var RoutesLayer = L.FeatureGroup.extend({
     this.options = $.extend({}, this.defaultOptions, options); // Don't modify defaultOptions which can be reinitialized by turbolinks
 
     // Clear layers if page is reloaded with turbolinks
-    this.hideAllRoutes();
+    // this.hideAllRoutes();
   },
 
   onAdd: function(map) {

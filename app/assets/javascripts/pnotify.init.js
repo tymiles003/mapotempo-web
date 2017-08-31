@@ -22,9 +22,9 @@ PNotify.prototype.options.buttons.labels = {
 };
 
 // Turbolinks hack to display notify on previous page
-$(document).on('page:restore', function () {
-  PNotify.prototype.options.stack.context = $('body');
-});
+// $(document).on('page:restore', function () {
+//   PNotify.prototype.options.stack.context = $('body');
+// });
 
 var isWindowVisible = (function() {
   var stateKey, eventKey, keys = {
