@@ -78,7 +78,7 @@ class V01::Plannings < Grape::API
       Route.includes_destinations.scoping do
         id = ParseIdsRefs.read(params[:id])
         current_customer.plannings.where(id).first!.destroy
-        nil
+        status 204
       end
     end
 
@@ -93,7 +93,7 @@ class V01::Plannings < Grape::API
           current_customer.plannings.select{ |planning|
             params[:ids].any?{ |s| ParseIdsRefs.match(s, planning) }
           }.each(&:destroy)
-          nil
+          status 204
         end
       end
     end

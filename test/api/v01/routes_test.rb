@@ -29,6 +29,11 @@ class V01::RoutesTest < V01::RoutesBaseTest
     end
   end
 
+  test 'should return 404 with invalid ids' do
+    put api(plannings(:planning_two).id, @route.id), @route.attributes
+    assert_equal 404, last_response.status
+  end
+
   test 'should return customer\'s routes' do
     get api(@route.planning.id)
     assert last_response.ok?, last_response.body
@@ -96,8 +101,8 @@ class V01::RoutesTest < V01::RoutesBaseTest
   test 'should move visits in routes' do
     assert_no_difference('Stop.count') do
       r = routes(:route_three_one)
-      patch api(@route.planning.id, "#{r.id}/visits/moves"), visit_ids: [visits(:visit_two).id, visits(:visit_one).id]
-      assert_equal 200, last_response.status, last_response.body
+      patch api(@route.planning.id, "#{r.id}/visits/moves").gsub('.json', '.xml'), visit_ids: [visits(:visit_two).id, visits(:visit_one).id]
+      assert_equal 204, last_response.status, last_response.body
       stops_visit = r.stops.select{ |s| s.is_a? StopVisit }
       assert_equal visits(:visit_two).ref, stops_visit[0].visit.ref
       assert_equal visits(:visit_one).ref, stops_visit[1].visit.ref

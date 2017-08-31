@@ -157,11 +157,9 @@ class V01::Visits < Grape::API
           destination_id = ParseIdsRefs.read(params[:destination_id])
           id = ParseIdsRefs.read(params[:id])
           destination = current_customer.destinations.where(destination_id).first!
-          if destination
-            destination.visits.where(id).first!.destroy
-            destination.customer.save!
-            nil
-          end
+          destination.visits.where(id).first!.destroy
+          destination.customer.save!
+          status 204
         end
       end
     end
@@ -178,7 +176,7 @@ class V01::Visits < Grape::API
         current_customer.visits.select{ |visit|
           params[:ids].any?{ |s| ParseIdsRefs.match(s, visit) }
         }.each(&:destroy)
-        nil
+        status 204
       end
     end
   end

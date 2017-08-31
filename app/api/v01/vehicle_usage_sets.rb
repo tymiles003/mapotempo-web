@@ -126,7 +126,7 @@ class V01::VehicleUsageSets < Grape::API
     end
     delete ':id' do
       current_customer.vehicle_usage_sets.find(params[:id]).destroy
-      nil
+      status 204
     end
 
     desc 'Delete multiple vehicle_usage_sets.',
@@ -138,7 +138,7 @@ class V01::VehicleUsageSets < Grape::API
       VehicleUsageSet.transaction do
         current_customer.vehicle_usage_sets.select{ |vehicle_usage_set| params[:ids].include?(vehicle_usage_set.id) }.each(&:destroy)
       end
-      nil
+      status 204
     end
 
     desc 'Import vehicle usage set by upload a CSV file or by JSON.',

@@ -29,12 +29,10 @@ class V01::Routes < Grape::API
 
     def get_route
       unless @route
-        planning_id = ParseIdsRefs.read(params[:planning_id])
-        id          = ParseIdsRefs.read(params[:id])
-        planning    = current_customer.plannings.find{ |planning| planning_id[:ref] ? planning.ref == planning_id[:ref] : planning.id == planning_id[:id] }
-        r           = planning.routes.find{ |route| id[:ref] ? route.ref == id[:ref] : route.id == id[:id] }
+        planning = current_customer.plannings.where(ParseIdsRefs.read(params[:planning_id])).first!
+        @route ||= planning.routes.find{ |route| ParseIdsRefs.match(params[:id], route) }
       end
-      @route ||= r
+      @route || raise(ActiveRecord::RecordNotFound.new)
     end
 
     ID_DESC = 'Id or the ref field value, then use "ref:[value]".'.freeze
@@ -91,6 +89,7 @@ class V01::Routes < Grape::API
               visits_ordered.each{ |visit| get_route.planning.move_visit(get_route, visit, params[:automatic_insert] ? nil : -1) }
               get_route.planning.compute
               get_route.planning.save!
+              status 204
             end
           end
         end

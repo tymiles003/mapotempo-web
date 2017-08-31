@@ -92,7 +92,7 @@ class V01::DeliverableUnits < Grape::API
     delete ':id' do
       id = ParseIdsRefs.read(params[:id])
       current_customer.deliverable_units.where(id).first!.destroy
-      nil
+      status 204
     end
 
     desc 'Delete multiple deliverable units.',
@@ -105,7 +105,7 @@ class V01::DeliverableUnits < Grape::API
         current_customer.deliverable_units.select do |deliverable_unit|
           params[:ids].any?{ |s| ParseIdsRefs.match(s, deliverable_unit) }
         end.each(&:destroy)
-        nil
+        status 204
       end
     end
   end

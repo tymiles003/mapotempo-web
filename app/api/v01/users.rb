@@ -117,7 +117,7 @@ class V01::Users < Grape::API
         id = ParseIdsRefs.read(params[:id])
         user = (User.for_reseller_id(@current_user.reseller_id).where(id) + User.from_customers_for_reseller_id(@current_user.reseller_id).where(id)).first
         user.destroy!
-        nil
+        status 204
       else
         error! 'Forbidden', 403
       end
@@ -136,7 +136,7 @@ class V01::Users < Grape::API
             params[:ids].any?{ |s| ParseIdsRefs.match(s, user) }
           }.each(&:destroy)
         end
-        nil
+        status 204
       else
         error! 'Forbidden', 403
       end

@@ -93,7 +93,7 @@ class V01::Zonings < Grape::API
     end
     delete ':id' do
       current_customer.zonings.find(params[:id]).destroy
-      nil
+      status 204
     end
 
     desc 'Delete multiple zonings.',
@@ -104,7 +104,7 @@ class V01::Zonings < Grape::API
     delete do
       Zoning.transaction do
         current_customer.zonings.select{ |zoning| params[:ids].include?(zoning.id) }.each(&:destroy)
-        nil
+        status 204
       end
     end
 

@@ -125,7 +125,7 @@ class V01::Stores < Grape::API
     delete ':id' do
       id = ParseIdsRefs.read(params[:id])
       current_customer.stores.where(id).first!.destroy!
-      nil
+      status 204
     end
 
     desc 'Delete multiple stores.',
@@ -140,7 +140,7 @@ class V01::Stores < Grape::API
           params[:ids].any?{ |s| ParseIdsRefs.match(s, store) }
         }.each(&:destroy)
       end
-      nil
+      status 204
     end
 
     desc 'Geocode store.',

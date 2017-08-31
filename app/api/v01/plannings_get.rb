@@ -113,16 +113,16 @@ class V01::PlanningsGet < Grape::API
         end
       elsif env['api.format'] == :geojson
         planning.to_geojson(
-            true,
-            params[:stores],
-            if params[:geojson] == :polyline
-              :polyline
-            elsif params[:geojson] == :point
-              false
-            else
-              true
-            end,
-            params[:quantities]
+          true,
+          params[:stores],
+          if params[:geojson] == :polyline
+            :polyline
+          elsif params[:geojson] == :point
+            false
+          else
+            true
+          end,
+          params[:quantities]
         )
       else
         present planning, with: V01::Entities::Planning, geojson: params[:geojson]

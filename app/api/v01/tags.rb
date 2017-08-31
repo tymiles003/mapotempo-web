@@ -94,7 +94,7 @@ class V01::Tags < Grape::API
     delete ':id' do
       id = ParseIdsRefs.read(params[:id])
       current_customer.tags.where(id).first!.destroy
-      nil
+      status 204
     end
 
     desc 'Delete multiple tags.',
@@ -107,7 +107,7 @@ class V01::Tags < Grape::API
         current_customer.tags.select do |tag|
           params[:ids].any?{ |s| ParseIdsRefs.match(s, tag) }
         end.each(&:destroy)
-        nil
+        status 204
       end
     end
   end

@@ -268,13 +268,13 @@ class V01::Vehicles < Grape::API
         if @current_user.admin?
           vehicle = Vehicle.for_reseller_id(@current_user.reseller.id).where(id).first!
           vehicle.destroy!
-          nil
+          status 204
         else
           error! 'Forbidden', 403
         end
       else
         current_customer.vehicles.where(id).first!.destroy!
-        nil
+        status 204
       end
     end
 
@@ -291,7 +291,7 @@ class V01::Vehicles < Grape::API
             Vehicle.for_reseller_id(@current_user.reseller.id).select{ |vehicle|
               params[:ids].any?{ |s| ParseIdsRefs.match(s, vehicle) }
             }.each(&:destroy!)
-            nil
+            status 204
           else
             error! 'Forbidden', 403
           end
@@ -299,7 +299,7 @@ class V01::Vehicles < Grape::API
           current_customer.vehicles.select{ |vehicle|
             params[:ids].any?{ |s| ParseIdsRefs.match(s, vehicle) }
           }.each(&:destroy!)
-          nil
+          status 204
         end
       end
     end

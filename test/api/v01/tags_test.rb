@@ -77,7 +77,6 @@ class V01::TagsTest < ActiveSupport::TestCase
     assert_difference('Tag.count', -1) do
       delete api(@tag.id)
       assert_equal 204, last_response.status, last_response.body
-      assert_equal '', last_response.body
     end
   end
 
