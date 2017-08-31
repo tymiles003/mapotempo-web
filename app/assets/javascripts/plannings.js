@@ -232,7 +232,7 @@ var plannings_edit = function(params) {
     nbBackgroundTaskErrors = 0,
     backgroundTaskIntervalId,
     currentZoom = 17,
-    needUpdateStopStatus = params.update_stop_status,
+    needUpdateStopStatus = params.update_stop_status && withStopsInSidePanel,
     enableStopStatus = params.enable_stop_status,
     outOfRouteId = params.routes_array.filter(function(route) {
       return !route.vehicle_usage_id;
@@ -341,6 +341,41 @@ var plannings_edit = function(params) {
     });
   };
 
+  var requestVehiclePositionPending = false;
+  var requestVehiclePosition = function() {
+    if (!requestVehiclePositionPending) {
+      $.ajax({
+        type: 'GET',
+        url: '/api/0.1/vehicles/current_position.json',
+        data: {
+          ids: vehicleIdsPosition
+        },
+        dataType: 'json',
+        beforeSend: function() {
+          requestVehiclePositionPending = true;
+        },
+        complete: function() {
+          requestVehiclePositionPending = false;
+        },
+        success: function(data) {
+          if (data && data.errors) {
+            nbBackgroundTaskErrors++;
+            if (nbBackgroundTaskErrors > 1) clearInterval(backgroundTaskIntervalId);
+            $.each(data.errors, function(i, error) {
+              stickyError(I18n.t('plannings.edit.current_position') + ' ' + error);
+            });
+          } else {
+            displayVehicles(data);
+          }
+        },
+        error: function() {
+          nbBackgroundTaskErrors++;
+          if (nbBackgroundTaskErrors > 1) clearInterval(backgroundTaskIntervalId);
+        }
+      });
+    }
+  };
+
   var updateStopsStatus = function(data) {
 
     var updateStopStatusContent = function(content, stop) {
@@ -403,50 +438,31 @@ var plannings_edit = function(params) {
     }
   };
 
+  var requestUpdateStopsStatusPending = false;
   var requestUpdateStopsStatus = function() {
-    $.ajax({
-      type: 'PATCH',
-      url: '/api/0.1/plannings/' + planning_id + '/update_stops_status.json',
-      dataType: 'json',
-      data: {
-        details: true
-      },
-      success: function(data) {
-        if (data && data.errors) {
-          nbBackgroundTaskErrors++;
-          if (nbBackgroundTaskErrors > 1) clearInterval(backgroundTaskIntervalId);
-          $.each(data.errors, function(i, error) {
-            stickyError(I18n.t('plannings.edit.update_stops_status') + ' ' + error);
-          });
-        } else {
-          updateStopsStatus(data);
-        }
-      },
-      error: function() {
-        nbBackgroundTaskErrors++;
-        if (nbBackgroundTaskErrors > 1) clearInterval(backgroundTaskIntervalId);
-      }
-    });
-  };
-
-  var backgroundTask = function() {
-    if (vehicleIdsPosition.length) {
+    if (!requestUpdateStopsStatusPending) {
       $.ajax({
-        type: 'GET',
-        url: '/api/0.1/vehicles/current_position.json',
-        data: {
-          ids: vehicleIdsPosition
-        },
+        type: 'PATCH',
+        url: '/api/0.1/plannings/' + planning_id + '/update_stops_status.json',
         dataType: 'json',
+        data: {
+          details: true
+        },
+        beforeSend: function() {
+          requestUpdateStopsStatusPending = true;
+        },
+        complete: function() {
+          requestUpdateStopsStatusPending = false;
+        },
         success: function(data) {
           if (data && data.errors) {
             nbBackgroundTaskErrors++;
             if (nbBackgroundTaskErrors > 1) clearInterval(backgroundTaskIntervalId);
             $.each(data.errors, function(i, error) {
-              stickyError(I18n.t('plannings.edit.current_position') + ' ' + error);
+              stickyError(I18n.t('plannings.edit.update_stops_status') + ' ' + error);
             });
           } else {
-            displayVehicles(data);
+            updateStopsStatus(data);
           }
         },
         error: function() {
@@ -454,6 +470,12 @@ var plannings_edit = function(params) {
           if (nbBackgroundTaskErrors > 1) clearInterval(backgroundTaskIntervalId);
         }
       });
+    }
+  };
+
+  var backgroundTask = function() {
+    if (vehicleIdsPosition.length) {
+      requestVehiclePosition();
     }
     if (needUpdateStopStatus) {
       requestUpdateStopsStatus();
