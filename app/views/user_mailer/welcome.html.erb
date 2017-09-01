@@ -109,7 +109,6 @@
       <td width="60%" height="70" valign="middle" style="padding-bottom:20px;">
         <div class="contentEditableContainer contentTextEditable">
           <div class="contentEditable" align='left'>
-            <p style="margin-right:60px;"><%= I18n.t('user_mailer.welcome.content.links.title').html_safe %></p>
           </div>
         </div>
       </td>
@@ -117,39 +116,47 @@
         <table width="100%" border="0" cellspacing="0" cellpadding="0" align='right'>
           <tr>
             <td width='57%'></td>
-            <td valign="top" width='34'>
-              <div class="contentEditableContainer contentFacebookEditable" style='display:inline;'>
-                <div class="contentEditable">
-                  <a target='_blank' href="https://www.facebook.com/mapotempo" data-default="placeholder" style="text-decoration:none;">
-                    <div>
-                      <%= email_image_tag('icon_facebook.png', alt: I18n.t('user_mailer.welcome.content.links.facebook'), width: '30', height: '30', style: 'margin-right:30px;') %>
-                    </div>
-                  </a>
+            <% if @facebook_link %>
+              <td valign="top" width='34'>
+                <div class="contentEditableContainer contentFacebookEditable" style='display:inline;'>
+                  <div class="contentEditable">
+                    <a target='_blank' href="<%= @facebook_link %>" data-default="placeholder" style="text-decoration:none;">
+                      <div>
+                        <%= email_image_tag('icon_facebook.png', alt: I18n.t('user_mailer.welcome.content.links.facebook'), width: '30', height: '30', style: 'margin-right:30px;') %>
+                      </div>
+                    </a>
+                  </div>
                 </div>
-              </div>
-            </td>
-            <td valign="top" width='34'>
-              <div class="contentEditableContainer contentTwitterEditable" style='display:inline;'>
-                <div class="contentEditable">
-                  <a target='_blank' href="https://twitter.com/Mapotempo" data-default="placeholder" style="text-decoration:none;">
-                    <div>
-                      <%= email_image_tag('icon_twitter.png', alt: I18n.t('user_mailer.welcome.content.links.twitter'), width: '30', height: '30', style: 'margin-right:30px;') %>
-                    </div>
-                  </a>
+              </td>
+            <% end %>
+
+            <% if @twitter_link %>
+              <td valign="top" width='34'>
+                <div class="contentEditableContainer contentTwitterEditable" style='display:inline;'>
+                  <div class="contentEditable">
+                    <a target='_blank' href="<%= @twitter_link %>" data-default="placeholder" style="text-decoration:none;">
+                      <div>
+                        <%= email_image_tag('icon_twitter.png', alt: I18n.t('user_mailer.welcome.content.links.twitter'), width: '30', height: '30', style: 'margin-right:30px;') %>
+                      </div>
+                    </a>
+                  </div>
                 </div>
-              </div>
-            </td>
-            <td valign="top" width='34'>
-              <div class="contentEditableContainer contentImageEditable" style='display:inline;'>
-                <div class="contentEditable">
-                  <a target='_blank' href="https://www.linkedin.com/company/mapotempo" data-default="placeholder" style="text-decoration:none;">
-                    <div>
-                      <%= email_image_tag('icon_linkedin.png', alt: I18n.t('user_mailer.welcome.content.links.linkedin'), width: '30', height: '30', style: 'margin-right:30px;') %>
-                    </div>
-                  </a>
+              </td>
+            <% end %>
+
+            <% if @linkedin_link %>
+              <td valign="top" width='34'>
+                <div class="contentEditableContainer contentImageEditable" style='display:inline;'>
+                  <div class="contentEditable">
+                    <a target='_blank' href="<%= @linkedin_link %>" data-default="placeholder" style="text-decoration:none;">
+                      <div>
+                        <%= email_image_tag('icon_linkedin.png', alt: I18n.t('user_mailer.welcome.content.links.linkedin'), width: '30', height: '30', style: 'margin-right:30px;') %>
+                      </div>
+                    </a>
+                  </div>
                 </div>
-              </div>
-            </td>
+              </td>
+            <% end %>
           </tr>
         </table>
       </td>

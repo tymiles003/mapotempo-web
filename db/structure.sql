@@ -2,8 +2,8 @@
 -- PostgreSQL database dump
 --
 
--- Dumped from database version 9.6.3
--- Dumped by pg_dump version 9.6.3
+-- Dumped from database version 9.6.4
+-- Dumped by pg_dump version 9.6.4
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -526,7 +526,10 @@ CREATE TABLE resellers (
     favicon character varying,
     contact_url character varying,
     website_url character varying,
-    url_protocol character varying DEFAULT 'http'::character varying
+    url_protocol character varying DEFAULT 'http'::character varying,
+    facebook_url character varying,
+    twitter_url character varying,
+    linkedin_url character varying
 );
 
 
@@ -1082,168 +1085,168 @@ ALTER SEQUENCE zonings_id_seq OWNED BY zonings.id;
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: customers id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY customers ALTER COLUMN id SET DEFAULT nextval('customers_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: delayed_jobs id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY delayed_jobs ALTER COLUMN id SET DEFAULT nextval('delayed_jobs_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: deliverable_units id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY deliverable_units ALTER COLUMN id SET DEFAULT nextval('deliverable_units_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: destinations id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY destinations ALTER COLUMN id SET DEFAULT nextval('destinations_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: layers id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY layers ALTER COLUMN id SET DEFAULT nextval('layers_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: order_arrays id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY order_arrays ALTER COLUMN id SET DEFAULT nextval('order_arrays_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: orders id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY orders ALTER COLUMN id SET DEFAULT nextval('orders_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: plannings id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY plannings ALTER COLUMN id SET DEFAULT nextval('plannings_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: products id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY products ALTER COLUMN id SET DEFAULT nextval('products_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: profiles id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY profiles ALTER COLUMN id SET DEFAULT nextval('profiles_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: resellers id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY resellers ALTER COLUMN id SET DEFAULT nextval('resellers_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: routers id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY routers ALTER COLUMN id SET DEFAULT nextval('routers_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: routes id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY routes ALTER COLUMN id SET DEFAULT nextval('routes_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: stops id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY stops ALTER COLUMN id SET DEFAULT nextval('stops_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: stores id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY stores ALTER COLUMN id SET DEFAULT nextval('stores_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: tags id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY tags ALTER COLUMN id SET DEFAULT nextval('tags_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: users id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY users ALTER COLUMN id SET DEFAULT nextval('users_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: vehicle_usage_sets id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY vehicle_usage_sets ALTER COLUMN id SET DEFAULT nextval('vehicle_usage_sets_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: vehicle_usages id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY vehicle_usages ALTER COLUMN id SET DEFAULT nextval('vehicle_usages_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: vehicles id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY vehicles ALTER COLUMN id SET DEFAULT nextval('vehicles_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: visits id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY visits ALTER COLUMN id SET DEFAULT nextval('visits_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: zones id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY zones ALTER COLUMN id SET DEFAULT nextval('zones_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: zonings id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY zonings ALTER COLUMN id SET DEFAULT nextval('zonings_id_seq'::regclass);
 
 
 --
--- Name: customers_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: customers customers_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY customers
@@ -1251,7 +1254,7 @@ ALTER TABLE ONLY customers
 
 
 --
--- Name: delayed_jobs_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: delayed_jobs delayed_jobs_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY delayed_jobs
@@ -1259,7 +1262,7 @@ ALTER TABLE ONLY delayed_jobs
 
 
 --
--- Name: deliverable_units_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: deliverable_units deliverable_units_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY deliverable_units
@@ -1267,7 +1270,7 @@ ALTER TABLE ONLY deliverable_units
 
 
 --
--- Name: destinations_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: destinations destinations_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY destinations
@@ -1275,7 +1278,7 @@ ALTER TABLE ONLY destinations
 
 
 --
--- Name: layers_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: layers layers_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY layers
@@ -1283,7 +1286,7 @@ ALTER TABLE ONLY layers
 
 
 --
--- Name: order_arrays_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: order_arrays order_arrays_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY order_arrays
@@ -1291,7 +1294,7 @@ ALTER TABLE ONLY order_arrays
 
 
 --
--- Name: orders_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: orders orders_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY orders
@@ -1299,7 +1302,7 @@ ALTER TABLE ONLY orders
 
 
 --
--- Name: plannings_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: plannings plannings_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY plannings
@@ -1307,7 +1310,7 @@ ALTER TABLE ONLY plannings
 
 
 --
--- Name: products_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: products products_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY products
@@ -1315,7 +1318,7 @@ ALTER TABLE ONLY products
 
 
 --
--- Name: profiles_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: profiles profiles_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY profiles
@@ -1323,7 +1326,7 @@ ALTER TABLE ONLY profiles
 
 
 --
--- Name: resellers_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: resellers resellers_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY resellers
@@ -1331,7 +1334,7 @@ ALTER TABLE ONLY resellers
 
 
 --
--- Name: routers_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: routers routers_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY routers
@@ -1339,7 +1342,7 @@ ALTER TABLE ONLY routers
 
 
 --
--- Name: routes_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: routes routes_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY routes
@@ -1347,7 +1350,7 @@ ALTER TABLE ONLY routes
 
 
 --
--- Name: stops_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: stops stops_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY stops
@@ -1355,7 +1358,7 @@ ALTER TABLE ONLY stops
 
 
 --
--- Name: stores_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: stores stores_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY stores
@@ -1363,7 +1366,7 @@ ALTER TABLE ONLY stores
 
 
 --
--- Name: tags_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: tags tags_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY tags
@@ -1371,7 +1374,7 @@ ALTER TABLE ONLY tags
 
 
 --
--- Name: users_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: users users_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY users
@@ -1379,7 +1382,7 @@ ALTER TABLE ONLY users
 
 
 --
--- Name: vehicle_usage_sets_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: vehicle_usage_sets vehicle_usage_sets_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY vehicle_usage_sets
@@ -1387,7 +1390,7 @@ ALTER TABLE ONLY vehicle_usage_sets
 
 
 --
--- Name: vehicle_usages_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: vehicle_usages vehicle_usages_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY vehicle_usages
@@ -1395,7 +1398,7 @@ ALTER TABLE ONLY vehicle_usages
 
 
 --
--- Name: vehicles_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: vehicles vehicles_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY vehicles
@@ -1403,7 +1406,7 @@ ALTER TABLE ONLY vehicles
 
 
 --
--- Name: visits_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: visits visits_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY visits
@@ -1411,7 +1414,7 @@ ALTER TABLE ONLY visits
 
 
 --
--- Name: zones_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: zones zones_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY zones
@@ -1419,7 +1422,7 @@ ALTER TABLE ONLY zones
 
 
 --
--- Name: zonings_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: zonings zonings_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY zonings
@@ -1812,7 +1815,7 @@ CREATE UNIQUE INDEX unique_schema_migrations ON schema_migrations USING btree (v
 
 
 --
--- Name: fk_destinations_customer_id; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: destinations fk_destinations_customer_id; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY destinations
@@ -1820,7 +1823,7 @@ ALTER TABLE ONLY destinations
 
 
 --
--- Name: fk_order_arrays_customer_id; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: order_arrays fk_order_arrays_customer_id; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY order_arrays
@@ -1828,7 +1831,7 @@ ALTER TABLE ONLY order_arrays
 
 
 --
--- Name: fk_orders_order_array_id; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: orders fk_orders_order_array_id; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY orders
@@ -1836,7 +1839,7 @@ ALTER TABLE ONLY orders
 
 
 --
--- Name: fk_orders_products_order_id; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: orders_products fk_orders_products_order_id; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY orders_products
@@ -1844,7 +1847,7 @@ ALTER TABLE ONLY orders_products
 
 
 --
--- Name: fk_orders_products_product_id; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: orders_products fk_orders_products_product_id; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY orders_products
@@ -1852,7 +1855,7 @@ ALTER TABLE ONLY orders_products
 
 
 --
--- Name: fk_plannings_customer_id; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: plannings fk_plannings_customer_id; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY plannings
@@ -1860,7 +1863,7 @@ ALTER TABLE ONLY plannings
 
 
 --
--- Name: fk_plannings_order_array_id; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: plannings fk_plannings_order_array_id; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY plannings
@@ -1868,7 +1871,7 @@ ALTER TABLE ONLY plannings
 
 
 --
--- Name: fk_plannings_tags_planning_id; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: plannings_tags fk_plannings_tags_planning_id; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY plannings_tags
@@ -1876,7 +1879,7 @@ ALTER TABLE ONLY plannings_tags
 
 
 --
--- Name: fk_plannings_tags_tag_id; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: plannings_tags fk_plannings_tags_tag_id; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY plannings_tags
@@ -1884,7 +1887,7 @@ ALTER TABLE ONLY plannings_tags
 
 
 --
--- Name: fk_products_customer_id; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: products fk_products_customer_id; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY products
@@ -1892,7 +1895,7 @@ ALTER TABLE ONLY products
 
 
 --
--- Name: fk_rails_16cc08e76b; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: vehicle_usage_sets fk_rails_16cc08e76b; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY vehicle_usage_sets
@@ -1900,7 +1903,7 @@ ALTER TABLE ONLY vehicle_usage_sets
 
 
 --
--- Name: fk_rails_19ac2e0237; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: vehicle_usage_sets fk_rails_19ac2e0237; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY vehicle_usage_sets
@@ -1908,7 +1911,7 @@ ALTER TABLE ONLY vehicle_usage_sets
 
 
 --
--- Name: fk_rails_1f597e3fbf; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: layers_profiles fk_rails_1f597e3fbf; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY layers_profiles
@@ -1916,7 +1919,7 @@ ALTER TABLE ONLY layers_profiles
 
 
 --
--- Name: fk_rails_2494c76b6d; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: vehicle_usages fk_rails_2494c76b6d; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY vehicle_usages
@@ -1924,7 +1927,7 @@ ALTER TABLE ONLY vehicle_usages
 
 
 --
--- Name: fk_rails_2d0f95c20f; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: layers_profiles fk_rails_2d0f95c20f; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY layers_profiles
@@ -1932,7 +1935,7 @@ ALTER TABLE ONLY layers_profiles
 
 
 --
--- Name: fk_rails_31b67ddbf0; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: vehicle_usages fk_rails_31b67ddbf0; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY vehicle_usages
@@ -1940,7 +1943,7 @@ ALTER TABLE ONLY vehicle_usages
 
 
 --
--- Name: fk_rails_35ea0987c7; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: profiles_routers fk_rails_35ea0987c7; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY profiles_routers
@@ -1948,7 +1951,7 @@ ALTER TABLE ONLY profiles_routers
 
 
 --
--- Name: fk_rails_39e8ec541b; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: deliverable_units fk_rails_39e8ec541b; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY deliverable_units
@@ -1956,7 +1959,7 @@ ALTER TABLE ONLY deliverable_units
 
 
 --
--- Name: fk_rails_5095b21bc2; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: customers fk_rails_5095b21bc2; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY customers
@@ -1964,7 +1967,7 @@ ALTER TABLE ONLY customers
 
 
 --
--- Name: fk_rails_5699cfb483; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: routes fk_rails_5699cfb483; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY routes
@@ -1972,7 +1975,7 @@ ALTER TABLE ONLY routes
 
 
 --
--- Name: fk_rails_5966cbef79; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: visits fk_rails_5966cbef79; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY visits
@@ -1980,7 +1983,7 @@ ALTER TABLE ONLY visits
 
 
 --
--- Name: fk_rails_596f74dea1; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: orders fk_rails_596f74dea1; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY orders
@@ -1988,7 +1991,7 @@ ALTER TABLE ONLY orders
 
 
 --
--- Name: fk_rails_598cb67a2e; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: users fk_rails_598cb67a2e; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY users
@@ -1996,7 +1999,7 @@ ALTER TABLE ONLY users
 
 
 --
--- Name: fk_rails_6652f557f6; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: stops fk_rails_6652f557f6; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY stops
@@ -2004,7 +2007,7 @@ ALTER TABLE ONLY stops
 
 
 --
--- Name: fk_rails_6b54d8ec86; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: vehicle_usages fk_rails_6b54d8ec86; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY vehicle_usages
@@ -2012,7 +2015,7 @@ ALTER TABLE ONLY vehicle_usages
 
 
 --
--- Name: fk_rails_7067840dd6; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: vehicle_usage_sets fk_rails_7067840dd6; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY vehicle_usage_sets
@@ -2020,7 +2023,7 @@ ALTER TABLE ONLY vehicle_usage_sets
 
 
 --
--- Name: fk_rails_75896d65fc; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: vehicle_usages fk_rails_75896d65fc; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY vehicle_usages
@@ -2028,7 +2031,7 @@ ALTER TABLE ONLY vehicle_usages
 
 
 --
--- Name: fk_rails_87008b08a3; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: plannings_zonings fk_rails_87008b08a3; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY plannings_zonings
@@ -2036,7 +2039,7 @@ ALTER TABLE ONLY plannings_zonings
 
 
 --
--- Name: fk_rails_921d431096; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: tags_visits fk_rails_921d431096; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY tags_visits
@@ -2044,7 +2047,7 @@ ALTER TABLE ONLY tags_visits
 
 
 --
--- Name: fk_rails_b3c8f2f3d5; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: customers fk_rails_b3c8f2f3d5; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY customers
@@ -2052,7 +2055,7 @@ ALTER TABLE ONLY customers
 
 
 --
--- Name: fk_rails_c4685d96c0; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: plannings_zonings fk_rails_c4685d96c0; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY plannings_zonings
@@ -2060,7 +2063,7 @@ ALTER TABLE ONLY plannings_zonings
 
 
 --
--- Name: fk_rails_cdf3e8f319; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: vehicle_usages fk_rails_cdf3e8f319; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY vehicle_usages
@@ -2068,7 +2071,7 @@ ALTER TABLE ONLY vehicle_usages
 
 
 --
--- Name: fk_rails_d5309e7b50; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: tags_visits fk_rails_d5309e7b50; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY tags_visits
@@ -2076,7 +2079,7 @@ ALTER TABLE ONLY tags_visits
 
 
 --
--- Name: fk_rails_d7d57d2bd1; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: destinations_tags fk_rails_d7d57d2bd1; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY destinations_tags
@@ -2084,7 +2087,7 @@ ALTER TABLE ONLY destinations_tags
 
 
 --
--- Name: fk_rails_d7ffafb662; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: vehicle_usage_sets fk_rails_d7ffafb662; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY vehicle_usage_sets
@@ -2092,7 +2095,7 @@ ALTER TABLE ONLY vehicle_usage_sets
 
 
 --
--- Name: fk_rails_e3b080944e; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: customers fk_rails_e3b080944e; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY customers
@@ -2100,7 +2103,7 @@ ALTER TABLE ONLY customers
 
 
 --
--- Name: fk_rails_f0e748b80c; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: plannings fk_rails_f0e748b80c; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY plannings
@@ -2108,7 +2111,7 @@ ALTER TABLE ONLY plannings
 
 
 --
--- Name: fk_rails_fde8fb742c; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: destinations_tags fk_rails_fde8fb742c; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY destinations_tags
@@ -2116,7 +2119,7 @@ ALTER TABLE ONLY destinations_tags
 
 
 --
--- Name: fk_rails_fe7ed969d2; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: profiles_routers fk_rails_fe7ed969d2; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY profiles_routers
@@ -2124,7 +2127,7 @@ ALTER TABLE ONLY profiles_routers
 
 
 --
--- Name: fk_routes_planning_id; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: routes fk_routes_planning_id; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY routes
@@ -2132,7 +2135,7 @@ ALTER TABLE ONLY routes
 
 
 --
--- Name: fk_stops_route_id; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: stops fk_stops_route_id; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY stops
@@ -2140,7 +2143,7 @@ ALTER TABLE ONLY stops
 
 
 --
--- Name: fk_stores_customer_id; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: stores fk_stores_customer_id; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY stores
@@ -2148,7 +2151,7 @@ ALTER TABLE ONLY stores
 
 
 --
--- Name: fk_stores_vehicules_store_id; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: stores_vehicules fk_stores_vehicules_store_id; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY stores_vehicules
@@ -2156,7 +2159,7 @@ ALTER TABLE ONLY stores_vehicules
 
 
 --
--- Name: fk_stores_vehicules_vehicle_id; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: stores_vehicules fk_stores_vehicules_vehicle_id; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY stores_vehicules
@@ -2164,7 +2167,7 @@ ALTER TABLE ONLY stores_vehicules
 
 
 --
--- Name: fk_tags_customer_id; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: tags fk_tags_customer_id; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY tags
@@ -2172,7 +2175,7 @@ ALTER TABLE ONLY tags
 
 
 --
--- Name: fk_users_customer_id; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: users fk_users_customer_id; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY users
@@ -2180,7 +2183,7 @@ ALTER TABLE ONLY users
 
 
 --
--- Name: fk_users_layer_id; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: users fk_users_layer_id; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY users
@@ -2188,7 +2191,7 @@ ALTER TABLE ONLY users
 
 
 --
--- Name: fk_vehicles_customer_id; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: vehicles fk_vehicles_customer_id; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY vehicles
@@ -2196,7 +2199,7 @@ ALTER TABLE ONLY vehicles
 
 
 --
--- Name: fk_vehicles_router_id; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: vehicles fk_vehicles_router_id; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY vehicles
@@ -2204,7 +2207,7 @@ ALTER TABLE ONLY vehicles
 
 
 --
--- Name: fk_zones_vehicle_id; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: zones fk_zones_vehicle_id; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY zones
@@ -2212,7 +2215,7 @@ ALTER TABLE ONLY zones
 
 
 --
--- Name: fk_zones_zoning_id; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: zones fk_zones_zoning_id; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY zones
@@ -2220,7 +2223,7 @@ ALTER TABLE ONLY zones
 
 
 --
--- Name: fk_zonings_customer_id; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: zonings fk_zonings_customer_id; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY zonings
@@ -2630,3 +2633,6 @@ INSERT INTO schema_migrations (version) VALUES ('20170614151617');
 INSERT INTO schema_migrations (version) VALUES ('20170615092505');
 
 INSERT INTO schema_migrations (version) VALUES ('20170630083809');
+
+INSERT INTO schema_migrations (version) VALUES ('20170901101949');
+

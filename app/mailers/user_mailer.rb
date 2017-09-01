@@ -8,6 +8,9 @@ class UserMailer < ApplicationMailer
       @title = t('user_mailer.welcome.title')
       @confirmation_link = user.customer.reseller.url_protocol + "://" + user.customer.reseller.host + password_user_path(user, token: user.confirmation_token)
       @home_link = user.customer.reseller.url_protocol + "://" + user.customer.reseller.host
+      @facebook_link = user.customer.reseller.facebook_url if user.customer.reseller.facebook_url.present?
+      @twitter_link = user.customer.reseller.twitter_url if user.customer.reseller.twitter_url.present?
+      @linkedin_link = user.customer.reseller.linkedin_url if user.customer.reseller.linkedin_url.present?
       @contact_link = (user.customer.reseller.contact_url && user.customer.reseller.contact_url.gsub('{LG}', I18n.locale.to_s))
       @subscription_duration = user.customer.end_subscription && (user.customer.end_subscription - Date.today).to_i > 1 ? (user.customer.end_subscription - Date.today).to_i : nil
 
