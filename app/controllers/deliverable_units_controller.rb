@@ -78,15 +78,6 @@ class DeliverableUnitsController < ApplicationController
     end
   end
 
-  def duplicate
-    respond_to do |format|
-      @deliverable_unit = @deliverable_unit.duplicate
-      @deliverable_unit.save!(validate: false)
-      @deliverable_unit.customer.save
-      format.html { redirect_to edit_deliverable_unit_path(@deliverable_unit), notice: t('activerecord.successful.messages.updated', model: @deliverable_unit.class.model_name.human) }
-    end
-  end
-
   private
 
   # Use callbacks to share common setup or constraints between actions.

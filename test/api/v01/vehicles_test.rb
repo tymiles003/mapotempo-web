@@ -97,6 +97,20 @@ class V01::VehiclesTest < ActiveSupport::TestCase
     end
   end
 
+  test 'should not create a vehicle' do
+    begin
+      manage_vehicles_only_admin = Mapotempo::Application.config.manage_vehicles_only_admin
+      Mapotempo::Application.config.manage_vehicles_only_admin = true
+
+      assert_no_difference('Vehicle.count') do
+        post api, { ref: 'new', name: 'Vh1', open: '10:00', store_start_id: stores(:store_zero).id, store_stop_id: stores(:store_zero).id, customer_id: customers(:customer_one).id, color: '#bebeef', capacities: [{deliverable_unit_id: 1, quantity: 30}] }, as: :json
+        assert_equal 403, last_response.status, 'Bad response: ' + last_response.body
+      end
+    ensure
+      Mapotempo::Application.config.manage_vehicles_only_admin = manage_vehicles_only_admin
+    end
+  end
+
   test 'should create a vehicle with admin key' do
     begin
       manage_vehicles_only_admin = Mapotempo::Application.config.manage_vehicles_only_admin
@@ -122,6 +136,10 @@ class V01::VehiclesTest < ActiveSupport::TestCase
   end
 
   test 'should create a vehicle with time exceeding one day' do
+    begin
+      manage_vehicles_only_admin = Mapotempo::Application.config.manage_vehicles_only_admin
+      Mapotempo::Application.config.manage_vehicles_only_admin = false
+
       customer = customers(:customer_one)
 
       # test creation and callbacks
@@ -143,6 +161,9 @@ class V01::VehiclesTest < ActiveSupport::TestCase
           end
         end
       end
+    ensure
+      Mapotempo::Application.config.manage_vehicles_only_admin = manage_vehicles_only_admin
+    end
   end
 
   test 'should create and destroy a vehicle' do
@@ -216,6 +237,36 @@ class V01::VehiclesTest < ActiveSupport::TestCase
           end
         end
       }
+    ensure
+      Mapotempo::Application.config.manage_vehicles_only_admin = manage_vehicles_only_admin
+    end
+  end
+
+  test 'should not destroy a vehicle' do
+    begin
+      manage_vehicles_only_admin = Mapotempo::Application.config.manage_vehicles_only_admin
+      Mapotempo::Application.config.manage_vehicles_only_admin = true
+
+      assert_no_difference('Vehicle.count') do
+        delete api("/#{@vehicle.id}")
+        assert_equal 403, last_response.status, 'Bad response: ' + last_response.body
+
+        delete api + "&ids=#{vehicles(:vehicle_one).id}"
+        assert_equal 403, last_response.status, 'Bad response: ' + last_response.body
+
+        delete api("/#{vehicles(:vehicle_two).id}")
+        assert_equal 403, last_response.status, 'Bad response: ' + last_response.body
+
+        delete api_admin("/#{vehicles(:vehicle_two).id}") + "&customer_id=#{@vehicle.customer.id}"
+        assert_equal 404, last_response.status, 'Bad response: ' + last_response.body
+      end
+
+      Mapotempo::Application.config.manage_vehicles_only_admin = false
+
+      assert_no_difference('Vehicle.count') do
+        delete api("/#{vehicles(:vehicle_two).id}")
+        assert_equal 404, last_response.status, 'Bad response: ' + last_response.body
+      end
     ensure
       Mapotempo::Application.config.manage_vehicles_only_admin = manage_vehicles_only_admin
     end

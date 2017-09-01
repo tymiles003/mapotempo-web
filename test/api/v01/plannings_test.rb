@@ -295,9 +295,18 @@ class V01::PlanningsTest < V01::PlanningsBaseTest
 
       planning = plannings :planning_one
       route = routes :route_one_one
+
       patch api("#{planning.id}/update_routes"), { route_ids: [route.id], selection: 'none', action: 'toggle' }
       assert last_response.ok?
-      assert true, JSON.parse(last_response.body)[0]['hidden']
+      assert_equal true, JSON.parse(last_response.body)[0]['hidden']
+      patch api("#{planning.id}/update_routes"), { route_ids: [route.id], selection: 'reverse', action: 'toggle' }
+      assert_equal false, JSON.parse(last_response.body)[0]['hidden']
+
+      patch api("#{planning.id}/update_routes"), { route_ids: [route.id], selection: 'all', action: 'lock' }
+      assert last_response.ok?
+      assert_equal true, JSON.parse(last_response.body)[0]['locked']
+      patch api("#{planning.id}/update_routes"), { route_ids: [route.id], selection: 'reverse', action: 'lock' }
+      assert_equal false, JSON.parse(last_response.body)[0]['locked']
     ensure
       Stop.class_eval do
         def after_init

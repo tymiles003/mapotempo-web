@@ -92,6 +92,14 @@ class StoresControllerTest < ActionController::TestCase
     assert_redirected_to stores_path
   end
 
+  test 'should destroy multiple stores' do
+    assert_difference('Store.count', -2) do
+      delete :destroy_multiple, stores: { stores(:store_one).id => 1, stores(:store_one_bis).id => 1 }
+    end
+
+    assert_redirected_to stores_path
+  end
+
   test 'should show import template' do
     [:csv, :excel].each{ |format|
       get :import_template, format: format

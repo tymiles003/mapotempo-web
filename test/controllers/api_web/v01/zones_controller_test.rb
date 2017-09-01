@@ -30,9 +30,18 @@ class ApiWeb::V01::ZonesControllerTest < ActionController::TestCase
   end
 
   test 'should get zones' do
-    get :index, zoning_id: @zone.zoning_id
+    get :index, zoning_id: @zone.zoning_id, destinations: true, planning_id: plannings(:planning_one).id
     assert_response :success
     assert_not_nil assigns(:zones)
+    assert_not_nil assigns(:destinations)
+    assert_equal vehicle_usage_sets(:vehicle_usage_set_one).id, assigns(:vehicle_usage_set).id
+    assert_valid response
+
+    get :index, zoning_id: @zone.zoning_id, destination_ids: destinations(:destination_one), vehicle_usage_set_id: vehicle_usage_sets(:vehicle_usage_set_one).id
+    assert_response :success
+    assert_not_nil assigns(:zones)
+    assert_equal 1, assigns(:destinations).size
+    assert_equal vehicle_usage_sets(:vehicle_usage_set_one).id, assigns(:vehicle_usage_set).id
     assert_valid response
   end
 end

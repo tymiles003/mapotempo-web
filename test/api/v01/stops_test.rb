@@ -22,13 +22,21 @@ class V01::StopsTest < ActiveSupport::TestCase
     "/api/0.1/plannings/#{planning_id}/routes/#{route_id}/stops#{part}.json?api_key=testkey1&" + param.collect{ |k, v| "#{k}=" + URI.escape(v.to_s) }.join('&')
   end
 
-  test 'should return customer''s routes' do
-    put api(@stop.route.planning.id, @stop.route.id, @stop.id)
+  test 'should fetch stop' do
+    get api(@stop.route.planning.id, @stop.route.id, @stop.id)
+    assert last_response.ok?, last_response.body
+    assert_equal @stop.id, JSON.parse(last_response.body)['id']
+  end
+
+  test 'should update stop' do
+    put api(@stop.route.planning.id, @stop.route.id, @stop.id, active: false)
     assert_equal 204, last_response.status, last_response.body
+    assert_equal false, @stop.reload.active
   end
 
   test 'should move stop position in routes' do
     patch api(@stop.route.planning.id, @stop.route.id, "#{@stop.route.planning.routes[0].stops[0].id}/move/1")
     assert_equal 204, last_response.status, last_response.body
+    assert_equal 2, @stop.reload.index
   end
 end

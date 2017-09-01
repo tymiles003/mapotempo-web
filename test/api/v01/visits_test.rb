@@ -120,9 +120,25 @@ class V01::VisitsTest < ActiveSupport::TestCase
   end
 
   test 'should return customer''s visits' do
-    get api()
+    get api
     assert last_response.ok?, last_response.body
     assert_equal @destination.customer.visits.size, JSON.parse(last_response.body).size
+  end
+
+  test 'should return customer''s visits geojson' do
+    get api.gsub('.json', '.geojson') + '&quantities=true'
+    assert last_response.ok?, last_response.body
+    features = JSON.parse(last_response.body)['features']
+    assert_equal @destination.customer.visits.size, features.size
+    features.each{ |feat|
+      assert feat['properties']['quantities'].size > 0
+    }
+  end
+
+  test 'should return specific visits' do
+    get api(nil, ids: "ref:#{visits(:visit_one).ref},#{visits(:visit_two).id}")
+    assert last_response.ok?, last_response.body
+    assert_equal 2, JSON.parse(last_response.body).size
   end
 
   test 'should destroy multiple destinations' do
