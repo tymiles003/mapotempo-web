@@ -9,11 +9,13 @@ class I18nTest < ActiveSupport::TestCase
     # unused_keys = translation.unused_keys
 
     if missing_keys.leaves.count > 0
-      require 'i18n/tasks/cli'
+      # require 'i18n/tasks/cli'
+      #
+      # I18n.with_locale 'en' do
+      #   I18n::Tasks::CLI.new.run(['health'])
+      # end
 
-      I18n.with_locale 'en' do
-        I18n::Tasks::CLI.new.run(['health'])
-      end
+      ap missing_keys.leaves
     end
 
     assert_equal missing_keys.leaves.count, 0
