@@ -520,6 +520,19 @@ input.form-control.number-of-days {
   }
 }
 
+// Form
+.form-group {
+  &.has-error {
+    .help-inline {
+      color: #a94442;
+    }
+
+    .help-block {
+      color: inherit;
+    }
+  }
+}
+
 // Error pages
 .error-panel {
   border-color: #ebccd1;

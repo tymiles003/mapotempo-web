@@ -138,6 +138,12 @@ class VehicleUsageSetsControllerTest < ActionController::TestCase
     assert_redirected_to edit_vehicle_usage_set_path(assigns(:vehicle_usage_set))
   end
 
+  test 'should import' do
+    get :import
+    assert_response :success
+    assert_valid response
+  end
+
   test 'should show import template' do
     [:csv, :excel].each { |format|
       get :import_template, format: format
@@ -145,10 +151,13 @@ class VehicleUsageSetsControllerTest < ActionController::TestCase
     }
   end
 
-  test 'should import' do
-    get :import
-    assert_response :success
-    assert_valid response
+  test 'should export vehicle usage set to csv or excel' do
+    [:csv, :excel].each { |format|
+      get :show, id: @vehicle_usage_set, format: format
+      assert_response :success
+      assert_valid response
+      assert_equal response.content_type, 'text/csv'
+    }
   end
 
   test 'should upload' do
@@ -157,24 +166,10 @@ class VehicleUsageSetsControllerTest < ActionController::TestCase
     )
     file.original_filename = 'import_vehicle_usage_sets_one.csv'
 
-    assert_difference('VehicleUsageSet.count') do
+    assert_no_difference('VehicleUsageSet.count') do
       post :upload_csv, import_csv: { replace_vehicles: true, file: file }
     end
 
     assert_redirected_to vehicle_usage_sets_path
-  end
-
-  test 'should not upload' do
-    file = ActionDispatch::Http::UploadedFile.new(
-        tempfile: File.new(Rails.root.join('test/fixtures/files/import_vehicle_usage_sets_without_conf_name.csv')),
-    )
-    file.original_filename = 'import_vehicle_usage_sets_without_conf_name.csv'
-
-    assert_difference('VehicleUsageSet.count', 0) do
-      post :upload_csv, import_csv: { replace_vehicles: true, file: file }
-    end
-
-    assert_template :import
-    assert_valid response
   end
 end

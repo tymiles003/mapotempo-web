@@ -156,7 +156,7 @@ class V01::VehicleUsageSets < Grape::API
                end
 
       if import && import.valid? && (vehicles_usages_with_conf = import.import)
-        present vehicles_usages_with_conf[0], with: V01::Entities::VehicleUsageSet
+        present vehicles_usages_with_conf, with: V01::Entities::Vehicle
       else
         error!({error: import.errors.full_messages}, 422)
       end

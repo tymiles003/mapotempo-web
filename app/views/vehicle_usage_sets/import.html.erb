@@ -20,24 +20,19 @@
             <a data-toggle="modal" data-target="#import-help-modal" data-keyboard="true" href="#help" title="<%= t('.import_template_help') %>"><i class="fa fa-info-circle fa-fw"></i> <%= t('.import_template_help') %>
             </a>
           </p>
-        <% end %>
 
-        <%- if @customer.enable_multi_vehicle_usage_sets %>
-          <%= f.toggles t '.vehicle_usage_set' do %>
-            <%= f.radio_button :add, t('.replace_no'), 1, checked: true %>
-            <p class="help-block"><%= t '.replace_no_help' %></p>
+          <% unless @customer.enable_multi_vehicle_usage_sets %>
+            <p>
+              <b><%= t('.default_configuration_replaced') %></b>
+            </p>
           <% end %>
-        <% else %>
-          <%= f.toggles t '.vehicle_usage_set' do %>
-            <%= f.radio_button :replace, t('.replace_yes'), 1, checked: true %>
-            <p class="help-block"><%= t '.replace_yes_help' %></p>
-          <% end %>
-        <% end -%>
+        <% end %>
 
         <%= f.toggles t '.vehicles' do %>
-          <%= f.check_box :replace_vehicles, t('.replace_vehicles') %>
+          <%= f.check_box :replace_vehicles, t('.replace_vehicles'), checked: !@customer.enable_multi_vehicle_usage_sets %>
           <p class="help-block"><%= t '.replace_vehicles_help' %></p>
         <% end %>
+
         <%= f.actions do %>
           <%= f.submit t('all.verb.import'), {}, 'fa-upload' %>
         <% end %>
@@ -60,7 +55,6 @@
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal">&times;</button>
-        filestyle
         <h4 class="modal-title"><%= t '.dialog.help.title' %></h4>
       </div>
       <div class="modal-body">
@@ -68,8 +62,19 @@
           <div class="row">
             <%= t '.dialog.help.desc' %>
             <table id="columns-table">
-              <% [:columns_vehicle_usage_set, :columns_vehicle].each do |columns| %>
-                <tr class="column-heading"><td colspan="3"><h5><%= t(".dialog.help.#{columns.to_s}") %></h5></td></tr>
+              <% [:columns_vehicle, :columns_vehicle_usage_set].each do |columns| %>
+                <tr class="column-heading">
+                  <td colspan="3">
+                    <h5><%= t(".dialog.help.#{columns.to_s}") %></h5>
+                  </td>
+                </tr>
+
+                <% if columns == :columns_vehicle_usage_set %>
+                  <tr class="column">
+                    <td><b><%= t('.dialog.help.columns_vehicle_usage_set_default') %></b><br/></td>
+                  </tr>
+                <% end %>
+
                 <% ImporterVehicleUsageSets.new(current_user.customer).send(columns).values.each do |column| %>
                   <tr class="column">
                     <td>&bull; <b><%= column[:title] %></b></td>

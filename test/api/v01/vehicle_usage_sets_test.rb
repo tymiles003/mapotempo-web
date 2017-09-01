@@ -9,6 +9,7 @@ class V01::VehicleUsageSetsTest < ActiveSupport::TestCase
   end
 
   setup do
+    @customer = customers(:customer_one)
     @vehicle_usage_set = vehicle_usage_sets(:vehicle_usage_set_one)
   end
 
@@ -85,25 +86,40 @@ class V01::VehicleUsageSetsTest < ActiveSupport::TestCase
     end
   end
 
-  test 'should import vehicle usage set from csv' do
-    assert_difference('VehicleUsageSet.count', 1) do
+  test 'should import vehicle usage set from csv without replacing vehicles' do
+    assert_difference('VehicleUsageSet.count', 0) do
       put api(), replace_vehicles: false, file: fixture_file_upload('files/import_vehicle_usage_sets_one.csv', 'text/csv')
       assert last_response.ok?, last_response.body
       json = JSON.parse(last_response.body)
 
-      assert_equal 'Test', json['name']
-      assert_equal '08:00:00', json['open']
-      assert_equal '16:00:00', json['close']
+      assert_equal '001', json[0]['ref']
+      assert_not_equal 'Véhicule 1', json[0]['name']
+      assert_equal '08:00:00', json[0]['vehicle_usages'][0]['open']
+      assert_nil json[0]['vehicle_usages'][0]['close']
     end
   end
 
   test 'should import vehicle usage set from csv and replace vehicles' do
+    @customer.update_attribute(:enable_multi_vehicle_usage_sets, true)
+
     assert_difference('VehicleUsageSet.count', 1) do
       put api(), replace_vehicles: true, file: fixture_file_upload('files/import_vehicle_usage_sets_one.csv', 'text/csv')
       assert last_response.ok?, last_response.body
+      json = JSON.parse(last_response.body)
 
-      assert_equal Vehicle.where(name: 'Véhicule 1').first.contact_email, 'vehicle1@mapotempo.com'
-      assert_equal Vehicle.where(name: 'Véhicule 1').first.consumption, 10
+      assert_equal 'Véhicule 1', json[0]['name']
+      assert_equal 'vehicle1@mapotempo.com', json[0]['contact_email']
+      assert_equal 10, json[0]['consumption']
+      assert_equal '08:00:00', json[0]['vehicle_usages'][2]['open']
+      assert_nil json[0]['vehicle_usages'][2]['close']
+
+      assert_equal 'Véhicule 2', json[1]['name']
+      assert_equal 'vehicle2@mapotempo.com', json[1]['contact_email']
+      assert_equal 15, json[1]['consumption']
+      assert_nil json[1]['vehicle_usages'][2]['open']
+      assert_nil json[1]['vehicle_usages'][2]['close']
+
+      assert_equal 57600, @customer.vehicle_usage_sets.last.close
     end
   end
 end

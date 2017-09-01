@@ -1542,33 +1542,34 @@ en:
     emissions_light_diesel: Light - Diesel - %{n}
     emissions_light_lgp: Light - LGP - %{n}
     import:
-      ref_vehicle: Reference vehicle
-      ref_desc: Vehicle reference
-      name_vehicle: Name vehicle
-      name_desc: Vehicle name
-      contact_email: E-Mail
-      contact_email_desc: Driver's device E-Mail
-      emission: Emission
-      emission_desc: Fuel Type
-      consumption: Consumption
-      consumption_desc: Average fuel consumption in liters per 100 km
-      capacities: Capacities
-      capacities_desc: Maximun vehicle's capacities
-      router_mode: Routing Engine
-      router_mode_desc: Force use of a specific routing engine
-      router_dimension: Router objective
-      router_dimension_desc: Force use of a specific routing dimension
-      router_options: Router options
-      router_options_desc: Force use of specific routing options
-      speed_multiplicator: Speed multiplier
-      speed_multiplicator_desc: A value higher than 100% means higher speed.
-      color: Color
-      color_desc: Color associated to vehicle
-      devices: Devices
-      devices_desc: Reference or ID of devices associated to vehicle
-      missing_name: « nom » of the vehicle missing
+      ref_vehicle: reference vehicle
+      ref_desc: vehicle reference
+      name_vehicle: name vehicle
+      name_desc: vehicle name
+      contact_email: e-mail
+      contact_email_desc: driver's device e-mail
+      emission: emission
+      emission_desc: fuel type
+      consumption: consumption
+      consumption_desc: average fuel consumption in liters per 100 km
+      capacities: capacities
+      capacities_desc: maximun vehicle's capacities
+      router_mode: routing engine
+      router_mode_desc: force use of a specific routing engine
+      router_dimension: router objective
+      router_dimension_desc: force use of a specific routing dimension
+      router_options: router options
+      router_options_desc: force use of specific routing options
+      speed_multiplicator: speed multiplier
+      speed_multiplicator_desc: a value higher than 100% means higher speed
+      color: color
+      color_desc: color associated to vehicle
+      devices: devices
+      devices_desc: reference or ID of devices associated to vehicle
+      missing_name: « name » of the vehicle missing
       format:
         string: text
+        json: json
         integer: integer
         float: '0.123'
         hour: HH:MM
@@ -1693,6 +1694,7 @@ en:
     import:
       title: Import vehicles configuration
       vehicle_usage_set: Vehicles configuration
+      default_configuration_replaced: The default configuration for all vehicles will be replaced by imported data
       replace_yes: Replace existing configuration
       replace_yes_help: The current configuration will be replaced by the new one.
       replace_no: Add vheicles configuration
@@ -1713,30 +1715,31 @@ en:
         help:
           title: Column names in your file
           desc: "Your import file can use the following column names:"
-          columns_vehicle_usage_set: Vehicles configuration columns (and if needed for vehicles)
           columns_vehicle: Vehicles columns
-      name_vehicle_usage_set: Name configuration
+          columns_vehicle_usage_set: Vehicles configuration columns
+          columns_vehicle_usage_set_default: If a column has the same data for all vehicles so this data will be used for the default cinfiguration and removed for each vehicle
+      name_vehicle_usage_set: name configuration
       name_desc: default configuration name
-      open: Open
-      open_desc: Start time for delivery man
-      close: Close
-      close_desc: End time for delivery man
-      store_start_ref: Store start
-      store_start_desc: Store start reference for delivery man
-      store_stop_ref: Store stop
-      store_stop_desc: Store end reference for delivery man
-      rest_start: Rest time start
-      rest_start_desc: Begin of the rest start window
-      rest_stop: Rest time end
-      rest_stop_desc: End of the rest start window
-      rest_duration: Rest duration
-      rest_duration_desc: Rest duration time for delivery man
-      store_rest_ref: Rest store
-      store_rest_desc: Store rest reference for delivery man
-      service_time_start: Service Time Before
-      service_time_start_desc: Durations added before the first stop
-      service_time_end: Service Time After
-      service_time_end_desc: Durations added before the last stop
+      open: open
+      open_desc: start time for delivery man
+      close: close
+      close_desc: end time for delivery man
+      store_start_ref: store start reference
+      store_start_desc: store start reference for delivery man
+      store_stop_ref: store stop reference
+      store_stop_desc: store end reference for delivery man
+      rest_start: rest time start
+      rest_start_desc: begin of the rest start window
+      rest_stop: rest time end
+      rest_stop_desc: end of the rest start window
+      rest_duration: rest duration
+      rest_duration_desc: rest duration time for delivery man
+      store_rest_ref: rest store reference
+      store_rest_desc: store rest reference for delivery man
+      service_time_start: service Time Before
+      service_time_start_desc: durations added before the first stop
+      service_time_end: service Time After
+      service_time_end_desc: durations added before the last stop
       format:
         string: text
         integer: integer
@@ -1753,7 +1756,7 @@ en:
       empty_file: content is blank
       too_many_lines: 'Stop import, too many lines (max: %{n}).'
       none_column: None found column
-      missing_name: « nom » of the default configuration missing
+      missing_name: « name » of the default configuration missing
       missing_open_close: begin or end time of the default configuration missing
       invalid_numeric_value: 'Invalid numeric value "%{value}".'
       check_custom_columns: Check your columns definition.

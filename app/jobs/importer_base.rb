@@ -78,6 +78,8 @@ class ImporterBase
       raise ImportEmpty.new I18n.t('import.empty') if dests.all?(&:nil?)
       yield(nil)
 
+      options[:dests] = dests
+
       after_import(name, options)
 
       finalize_import(name, options)

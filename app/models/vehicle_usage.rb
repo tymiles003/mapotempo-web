@@ -71,12 +71,20 @@ class VehicleUsage < ApplicationRecord
     open_time || vehicle_usage_set.open_time
   end
 
+  def default_open_absolute_time
+    open_absolute_time || vehicle_usage_set.open_absolute_time
+  end
+
   def default_close
     close || vehicle_usage_set.close
   end
 
   def default_close_time
     close_time || vehicle_usage_set.close_time
+  end
+
+  def default_close_absolute_time
+    close_absolute_time || vehicle_usage_set.close_absolute_time
   end
 
   def default_store_start
@@ -87,12 +95,20 @@ class VehicleUsage < ApplicationRecord
     store_start_time || vehicle_usage_set.store_start_time
   end
 
+  def default_store_start_absolute_time
+    store_start_absolute_time || vehicle_usage_set.store_start_absolute_time
+  end
+
   def default_store_stop
     store_stop || vehicle_usage_set.store_stop
   end
 
   def default_store_stop_time
     store_stop_time || vehicle_usage_set.store_stop_time
+  end
+
+  def default_store_stop_absolute_time
+    store_stop_absolute_time || vehicle_usage_set.store_stop_absolute_time
   end
 
   def default_store_rest

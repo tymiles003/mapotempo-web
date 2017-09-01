@@ -1595,34 +1595,35 @@ fr:
     emissions_light_diesel: VL - Gazole - %{n}
     emissions_light_lgp: VL - GPL - %{n}
     import:
-      ref_vehicle: Référence véhicule
-      ref_desc: Référence du véhicule
-      name_vehicle: Nom véhicule
-      name_desc: Nom du véhicule
-      contact_email: Email
-      contact_email_desc: Email du terminal du chauffeur
-      emission: Émission
-      emission_desc: Émission du véhicule
-      consumption: Consommation
-      consumption_desc: Consommation du véhicule
-      capacities: Capacités
-      capacities_desc: Capacités maximales du véhicule
-      router_mode: Calculateur d'itinéraire
-      router_mode_desc: Forcer l'utilisation d'un calculateur d'itinéraire
-      router_dimension: Objectif du calculateur
-      router_dimension_desc: Forcer l'utilisation d'un calculateur d'objectif du calculateur
-      router_options: Options du calculateur
-      router_options_desc: Forcer l'utilisation les options du calculateur d'itinéraire
-      speed_multiplicator: Ajustement de la vitesse
-      speed_multiplicator_desc: Une valeur supérieure à 100% signifie une vitesse
+      ref_vehicle: référence véhicule
+      ref_desc: référence du véhicule
+      name_vehicle: nom véhicule
+      name_desc: nom du véhicule
+      contact_email: email
+      contact_email_desc: email du terminal du chauffeur
+      emission: émission
+      emission_desc: émission du véhicule
+      consumption: consommation
+      consumption_desc: consommation du véhicule
+      capacities: capacités
+      capacities_desc: capacités maximales du véhicule
+      router_mode: calculateur d'itinéraire
+      router_mode_desc: forcer l'utilisation d'un calculateur d'itinéraire
+      router_dimension: objectif du calculateur
+      router_dimension_desc: forcer l'utilisation d'un calculateur d'objectif du calculateur
+      router_options: options du calculateur
+      router_options_desc: forcer l'utilisation les options du calculateur d'itinéraire
+      speed_multiplicator: ajustement de la vitesse
+      speed_multiplicator_desc: une valeur supérieure à 100% signifie une vitesse
         plus élevée.
-      color: Couleur
-      color_desc: Couleur associée au véhicule
-      devices: Appareils
-      devices_desc: Référence ou ID des appareils associée au véhicule
+      color: couleur
+      color_desc: couleur associée au véhicule
+      devices: appareils
+      devices_desc: référence ou ID de votre GPS associé aux véhicules
       missing_name: « nom » du véhicule manquant
       format:
         string: texte
+        json: json
         integer: nombre
         float: nombre décimal
         hour: HH:MM
@@ -1745,16 +1746,17 @@ fr:
     import:
       title: Importer une nouvelle configuration de véhicules
       vehicle_usage_set: Configuration de véhicules
+      default_configuration_replaced: La configuration par défaut de tous les véhicules sera remplacée par les données importées
       replace_yes: Remplacer la configuration existante
       replace_yes_help: La configuration existante sera supprimée et remplacée par
         la configuration importée.
       replace_no: Ajouter la nouvelle configuration
-      replace_no_help: Une nouvelle configuration de véhicules sera ajouté sans modifier
+      replace_no_help: Une nouvelle configuration de véhicules sera ajoutée sans modifier
         les anciennes.
       vehicles: Véhicules
       replace_vehicles: Remplacer les véhicules existants
-      replace_vehicles_help: Tous les véhicules dans l'application seront mise à jour
-        avec les données importées (les véhicules avec le même référence seront remplacés
+      replace_vehicles_help: Tous les véhicules dans l'application seront mis à jour
+        avec les données importées (les véhicules avec la même référence seront remplacés
         par les données correspondantes).
       csv:
         title: Fichier CSV
@@ -1772,33 +1774,33 @@ fr:
           title: Liste des colonnes de votre fichier
           desc: 'Votre fichier d''import peut contenir l''ensemble des colonnes et
             types de valeurs suivants :'
-          columns_vehicle_usage_set: Colonnes de la configuration des véhicules (et
-            si besoin pour les véhicules)
           columns_vehicle: Colonnes des véhicules
-      name_vehicle_usage_set: Nom configuration
+          columns_vehicle_usage_set: Colonnes de la configuration des véhicules
+          columns_vehicle_usage_set_default: Si une colonne contient des données identiques pour tous les véhicules alors elle sera utilisée comme configuration par défaut et enlevée pour chaque véhicule
+      name_vehicle_usage_set: nom configuration
       name_desc: nom de la configuration par défaut
-      open: Horaire début
-      open_desc: Début de l'horaire de travail du livreur
-      close: Horaire fin
-      close_desc: Fin de l'horaire de travail du livreur
-      store_start_ref: Dépôt départ
-      store_start_desc: Référence du dépôt de départ du livreur
-      store_stop_ref: Dépôt arrivée
-      store_stop_desc: Référence du dépôt d'arrivé du livreur
-      rest_start: Début plage repos
-      rest_start_desc: Heure du début de la plage de repos
-      rest_stop: Fin plage repos
-      rest_stop_desc: Heure de fin de la plage de repos
-      rest_duration: Durée de repos
-      rest_duration_desc: Durée du repos pris par le livreur
-      store_rest_ref: Lieu de repos
-      store_rest_desc: Référence du dépôt pour la pause du livreur / requise si plage
+      open: horaire début
+      open_desc: début de l'horaire de travail du livreur
+      close: horaire fin
+      close_desc: fin de l'horaire de travail du livreur
+      store_start_ref: référence dépôt départ
+      store_start_desc: référence du dépôt de départ du livreur
+      store_stop_ref: référence dépôt arrivée
+      store_stop_desc: référence du dépôt d'arrivé du livreur
+      rest_start: début plage repos
+      rest_start_desc: heure du début de la plage de repos
+      rest_stop: fin plage repos
+      rest_stop_desc: heure de fin de la plage de repos
+      rest_duration: durée de repos
+      rest_duration_desc: durée du repos pris par le livreur
+      store_rest_ref: référence dépôt repos
+      store_rest_desc: référence du dépôt pour la pause du livreur / requise si plage
         de repos renseigné
-      service_time_start: Durée de service avant
-      service_time_start_desc: Durée de service avant et sans tenir compte de la durée
+      service_time_start: durée de service avant
+      service_time_start_desc: durée de service avant et sans tenir compte de la durée
         de pause
-      service_time_end: Durée de service après
-      service_time_end_desc: Durée de service après et sans tenir compte de la durée
+      service_time_end: durée de service après
+      service_time_end_desc: durée de service après et sans tenir compte de la durée
         de pause
       format:
         string: texte

@@ -1,17 +1,5 @@
 CSV.generate { |csv|
   csv << [
-    I18n.t('vehicle_usage_sets.import.name_vehicle_usage_set'),
-    I18n.t('vehicle_usage_sets.import.open'),
-    I18n.t('vehicle_usage_sets.import.close'),
-    I18n.t('vehicle_usage_sets.import.store_start_ref'),
-    I18n.t('vehicle_usage_sets.import.store_stop_ref'),
-    I18n.t('vehicle_usage_sets.import.rest_start'),
-    I18n.t('vehicle_usage_sets.import.rest_stop'),
-    I18n.t('vehicle_usage_sets.import.rest_duration'),
-    I18n.t('vehicle_usage_sets.import.store_rest_ref'),
-    I18n.t('vehicle_usage_sets.import.service_time_start'),
-    I18n.t('vehicle_usage_sets.import.service_time_end'),
-
     I18n.t('vehicles.import.ref_vehicle'),
     I18n.t('vehicles.import.name_vehicle'),
     I18n.t('vehicles.import.contact_email'),
@@ -27,21 +15,18 @@ CSV.generate { |csv|
     I18n.t('vehicles.import.router_options'),
     I18n.t('vehicles.import.speed_multiplicator'),
     I18n.t('vehicles.import.color'),
-    I18n.t('vehicles.import.devices')
-  ]
+    I18n.t('vehicles.import.devices'),
 
-  csv << [
-    @vehicle_usage_set.name,
-    @vehicle_usage_set.open,
-    @vehicle_usage_set.close,
-    @vehicle_usage_set.store_start.try(:ref),
-    @vehicle_usage_set.store_stop.try(:ref),
-    @vehicle_usage_set.rest_start,
-    @vehicle_usage_set.rest_stop,
-    @vehicle_usage_set.rest_duration,
-    @vehicle_usage_set.store_rest.try(:ref),
-    @vehicle_usage_set.service_time_start,
-    @vehicle_usage_set.service_time_end
+    I18n.t('vehicle_usage_sets.import.open'),
+    I18n.t('vehicle_usage_sets.import.close'),
+    I18n.t('vehicle_usage_sets.import.store_start_ref'),
+    I18n.t('vehicle_usage_sets.import.store_stop_ref'),
+    I18n.t('vehicle_usage_sets.import.rest_start'),
+    I18n.t('vehicle_usage_sets.import.rest_stop'),
+    I18n.t('vehicle_usage_sets.import.rest_duration'),
+    I18n.t('vehicle_usage_sets.import.store_rest_ref'),
+    I18n.t('vehicle_usage_sets.import.service_time_start'),
+    I18n.t('vehicle_usage_sets.import.service_time_end')
   ]
 
   device_keys = {}
@@ -55,20 +40,6 @@ CSV.generate { |csv|
   }
 
   @vehicle_usage_set.vehicle_usages.each { |vehicle_usage|
-    vehicle_usage_columns = [
-      '',
-      vehicle_usage.open,
-      vehicle_usage.close,
-      vehicle_usage.store_start.try(:ref),
-      vehicle_usage.store_stop.try(:ref),
-      vehicle_usage.rest_start,
-      vehicle_usage.rest_stop,
-      vehicle_usage.rest_duration,
-      vehicle_usage.store_rest.try(:ref),
-      vehicle_usage.service_time_start,
-      vehicle_usage.service_time_end
-    ]
-
     vehicle_columns = [
       vehicle_usage.vehicle.ref,
       vehicle_usage.vehicle.name,
@@ -91,9 +62,21 @@ CSV.generate { |csv|
     @vehicle_usage_set.customer.device.enableds.keys.each { |device_key|
       enabled_devices.merge!(vehicle_usage.vehicle.devices.slice(*device_keys[device_key]))
     }
-
     vehicle_columns << enabled_devices.select { |key, value| !value.to_s.empty? }.to_json
 
-    csv << vehicle_usage_columns + vehicle_columns
+    vehicle_usage_columns = [
+      vehicle_usage.default_open_absolute_time,
+      vehicle_usage.default_close_absolute_time,
+      vehicle_usage.default_store_start.try(:ref),
+      vehicle_usage.default_store_stop.try(:ref),
+      vehicle_usage.default_rest_start_absolute_time,
+      vehicle_usage.default_rest_stop_absolute_time,
+      vehicle_usage.default_rest_duration_time,
+      vehicle_usage.default_store_rest.try(:ref),
+      vehicle_usage.default_service_time_start,
+      vehicle_usage.default_service_time_end
+    ]
+
+    csv << vehicle_columns + vehicle_usage_columns
   }
 }
