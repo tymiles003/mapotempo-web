@@ -56,32 +56,43 @@ var popupModule = (function() {
       getPopupContent(url, marker);
 
       _currentAjaxRequested.done(function() {
+        _previousPopup = marker.getPopup();
         marker.openPopup();
       });
     }
   };
 
   var getPopupContent = function(url, marker) {
+    if (marker.getPopup())
+      return;
+
+    if (_currentAjaxRequested && _currentAjaxRequested.readyState !== 4)
+      return;
 
     _currentAjaxRequested = $.ajax({
       url: url,
       beforeSend: beforeSendWaiting,
       success: function(data) {
-        var popup = marker.getPopup();
-        if (popup) {
-          data.i18n = mustache_i18n;
-          data.routes = _context.options.allRoutesWithVehicle; // unnecessary to load all for each stop
-          data.out_of_route_id = _context.options.outOfRouteId;
-          data.number = marker.properties.number;
-          if (marker.properties.tomtom) {
-            data.tomtom = marker.properties.tomtom;
-          }
-          if (_context.options.url_click2call) {
-            phoneNumberCall(data, _context.options.url_click2call);
-          }
-          $.extend(data, _context.options.popupOptions);
-          popup.setContent(SMT['stops/show'](data));
+        var popup = marker.bindPopup(L.responsivePopup({
+          offset: marker.options.icon.options.iconSize.divideBy(2)
+        }), {
+          minWidth: 200,
+          autoPan: false,
+          closeOnClick: false
+        }).getPopup();
+
+        data.i18n = mustache_i18n;
+        data.routes = _context.options.allRoutesWithVehicle; // unnecessary to load all for each stop
+        data.out_of_route_id = _context.options.outOfRouteId;
+        data.number = marker.properties.number;
+        if (marker.properties.tomtom) {
+          data.tomtom = marker.properties.tomtom;
         }
+        if (_context.options.url_click2call) {
+          phoneNumberCall(data, _context.options.url_click2call);
+        }
+        $.extend(data, _context.options.popupOptions);
+        popup.setContent(SMT['stops/show'](data));
 
         $('#isochrone_lat').val(data.lat);
         $('#isochrone_lng').val(data.lng);
@@ -96,17 +107,12 @@ var popupModule = (function() {
   };
 
   var createPopupForLayer = function(layer) {
-    if (_previousMarker) {
+    if (_previousMarker)
       _previousMarker.closePopup();
-    }
 
-    layer.bindPopup(L.responsivePopup({
-      offset: layer.options.icon.options.iconSize.divideBy(2)
-    }), {
-      minWidth: 200,
-      autoPan: false,
-      closeOnClick: false
-    });
+    if (_previousPopup instanceof L.Popup)
+      _previousPopup.closePopup();
+
     _buildContentForPopup(layer);
   };
 
@@ -330,8 +336,6 @@ var RoutesLayer = L.FeatureGroup.extend({
           e.layer.click = false; // Don't forget to re-init e.layer.click
 
         popupModule.createPopupForLayer(e.layer);
-        popupModule.previousPopup = e.layer.getPopup();
-
       } else if (e.layer instanceof L.Path) {
         e.layer.setStyle({
           opacity: 0.9,
@@ -369,12 +373,13 @@ var RoutesLayer = L.FeatureGroup.extend({
               popupModule.activeClickMarker.closePopup();
               popupModule.createPopupForLayer(e.layer);
             } else if (popupModule.previousPopup) {
-              e.layer._popup = popupModule.previousPopup;
-              popupModule.previousPopup.addTo(this.map);
+              if (popupModule.previousPopup instanceof L.Popup && popupModule.previousPopup._source._leaflet_id === e.layer._leaflet_id) {
+                e.layer._popup = popupModule.previousPopup;
+                popupModule.previousPopup.addTo(this.map);
+              }
             }
             e.layer.click = true;
             popupModule.activeClickMarker = e.layer;
-            popupModule.previousPopup = e.layer.getPopup();
           }
         } else if (e.layer instanceof L.Path) {
           var distance = e.layer.properties.distance / 1000;
@@ -640,7 +645,7 @@ var RoutesLayer = L.FeatureGroup.extend({
         });
 
         if (geoJsonPoint.properties.number) {
-          (lowIndex) ? marker.setZIndexOffset(-999): marker.setZIndexOffset(500);
+          (lowIndex) ? marker.setZIndexOffset(-999) : marker.setZIndexOffset(500);
         }
 
         marker.properties = geoJsonPoint.properties;
@@ -677,7 +682,7 @@ var RoutesLayer = L.FeatureGroup.extend({
   _removeRoutes: function(routeIds) {
     routeIds.forEach(function(routeId) {
       if (routeId in this.layersByRoute) {
-        this.layersByRoute[routeId].forEach(function (layer) {
+        this.layersByRoute[routeId].forEach(function(layer) {
           this.map.removeLayer(layer);
         }.bind(this));
         delete this.layersByRoute[routeId];
