@@ -10,7 +10,6 @@ services:
     volumes:
       - ./mapotempo.rb:/srv/app/config/initializers/mapotempo.rb
       - ./uploads:/srv/app/public/uploads
-    restart: always
     links:
       - db
       - redis-cache
