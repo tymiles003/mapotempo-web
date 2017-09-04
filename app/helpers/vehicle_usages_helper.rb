@@ -72,18 +72,20 @@ module VehicleUsagesHelper
     capture do
       if vehicle_usage.open
         concat vehicle_usage.open_time
+        concat ('&nbsp;(+' + number_of_days(vehicle_usage.open).to_s + ')').html_safe if number_of_days(vehicle_usage.open)
         concat ' - '
       elsif vehicle_usage.vehicle_usage_set.open
         concat span_tag(vehicle_usage.vehicle_usage_set.open_time)
+        concat span_tag(('&nbsp;(+' + number_of_days(vehicle_usage.vehicle_usage_set.open).to_s + ')').html_safe) if number_of_days(vehicle_usage.vehicle_usage_set.open)
         concat span_tag(' - ')
       end
 
       if vehicle_usage.close
         concat vehicle_usage.close_time
-        concat ('&nbsp;(J+' + number_of_days(vehicle_usage.close).to_s + ')').html_safe if number_of_days(vehicle_usage.close)
+        concat ('&nbsp;(+' + number_of_days(vehicle_usage.close).to_s + ')').html_safe if number_of_days(vehicle_usage.close)
       elsif vehicle_usage.vehicle_usage_set.close
         concat span_tag(vehicle_usage.vehicle_usage_set.close_time)
-        concat span_tag(('&nbsp;(J+' + number_of_days(vehicle_usage.vehicle_usage_set.close).to_s + ')').html_safe) if number_of_days(vehicle_usage.vehicle_usage_set.close)
+        concat span_tag(('&nbsp;(+' + number_of_days(vehicle_usage.vehicle_usage_set.close).to_s + ')').html_safe) if number_of_days(vehicle_usage.vehicle_usage_set.close)
       end
     end
   end

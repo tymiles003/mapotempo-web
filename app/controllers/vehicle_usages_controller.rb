@@ -29,7 +29,7 @@ class VehicleUsagesController < ApplicationController
   def update
     respond_to do |format|
       p = vehicle_usage_params
-      time_with_day_params(params, p, [:open, :close, :rest_start, :rest_stop])
+      time_with_day_params(params, p, [:open, :close], [:rest_start, :rest_stop])
       @vehicle_usage.assign_attributes(p)
 
       if @vehicle_usage.save
@@ -50,9 +50,9 @@ class VehicleUsagesController < ApplicationController
 
   private
 
-  def time_with_day_params(params, local_params, times)
+  def time_with_day_params(params, local_params, times_with_default, times)
     # Convert each time field into integer from hour and day value
-    times.each do |time|
+    times_with_default.each do |time|
       if !params[:vehicle_usage]["#{time}_day".to_sym].to_s.empty? && !local_params[time].to_s.empty?
         local_params[time] = ChronicDuration.parse("#{params[:vehicle_usage]["#{time}_day".to_sym]} days and #{local_params[time].tr(':', 'h')}min", keep_zero: true)
       elsif !params[:vehicle_usage]["#{time}_day".to_sym].to_s.empty? && local_params[time].to_s.empty?
@@ -61,6 +61,12 @@ class VehicleUsagesController < ApplicationController
         if default_time_value && !default_time_value.empty?
           local_params[time] = ChronicDuration.parse("#{params[:vehicle_usage]["#{time}_day".to_sym]} days and #{default_time_value.tr(':', 'h')}min", keep_zero: true)
         end
+      end
+    end
+
+    times.each do |time|
+      if !params[:vehicle_usage]["#{time}_day".to_sym].to_s.empty? && !local_params[time].to_s.empty?
+        local_params[time] = ChronicDuration.parse("#{params[:vehicle_usage]["#{time}_day".to_sym]} days and #{local_params[time].tr(':', 'h')}min", keep_zero: true)
       end
     end
   end
