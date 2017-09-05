@@ -31,6 +31,7 @@ class Destination < Location
   validate_consistency :tags
 
   before_save :update_tags
+  after_save -> { @tag_ids_changed = false }
 
   include RefSanitizer
 
@@ -70,6 +71,14 @@ class Destination < Location
 
   private
 
+  def update_outdated
+    if @tag_ids_changed
+      outdated
+    else
+      super
+    end
+  end
+
   def update_tags_track(_tag)
     @tag_ids_changed = true
   end
@@ -80,8 +89,6 @@ class Destination < Location
 
   def update_tags
     if customer && (@tag_ids_changed || new_record?)
-      @tag_ids_changed = false
-
       # Don't use local collection here, not set when save new record
       customer.plannings.each do |planning|
         visits.select(&:id).each do |visit|

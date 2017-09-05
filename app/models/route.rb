@@ -586,7 +586,7 @@ class Route < ApplicationRecord
               route_id: self.id,
               index: stop.index,
               active: stop.active,
-              number: stop.number(inactive_stops),
+              number: vehicle_usage ? stop.number(inactive_stops) : nil,
               color: stop.default_color,
               icon: stop.icon,
               icon_size: stop.icon_size

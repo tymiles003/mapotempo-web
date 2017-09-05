@@ -193,4 +193,11 @@ class VisitTest < ActiveSupport::TestCase
     assert visit.stop_visits[-1].route.reload.outdated # Reload route because it not updated in main scope
     assert_nil Visit.find(visit.id).quantities[customers(:customer_one).deliverable_units[0].id]
   end
+
+  test 'should outdate route after tag changed' do
+    route = routes(:route_zero_one)
+    assert !route.outdated
+    visits(:visit_unaffected_one).update tags: [tags(:tag_one), tags(:tag_two)]
+    assert route.reload.outdated
+  end
 end

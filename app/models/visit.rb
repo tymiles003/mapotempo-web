@@ -48,6 +48,7 @@ class Visit < ApplicationRecord
 
   before_save :update_tags, :create_orders
   before_update :update_outdated
+  after_save -> { @tag_ids_changed = false }
 
   include RefSanitizer
 
@@ -159,7 +160,7 @@ class Visit < ApplicationRecord
   private
 
   def update_outdated
-    if open1_changed? || close1_changed? || open2_changed? || close2_changed? || quantities_changed? || take_over_changed?
+    if @tag_ids_changed || open1_changed? || close1_changed? || open2_changed? || close2_changed? || quantities_changed? || take_over_changed?
       outdated
     end
   end
@@ -174,8 +175,6 @@ class Visit < ApplicationRecord
 
   def update_tags
     if destination.customer && (@tag_ids_changed || new_record?)
-      @tag_ids_changed = false
-
       # Don't use local collection here, not set when save new record
       destination.customer.plannings.each do |planning|
         if !new_record? && planning.visits.include?(self)
