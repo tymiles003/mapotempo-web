@@ -525,16 +525,7 @@ var plannings_edit = function(params) {
     imperial: false
   }).addTo(map);
 
-  var fitBounds = (window.location.hash) ? false : true;
-  // FIXME when turbolinks get updated
-  if (navigator.userAgent.indexOf("Edge") == -1) {
-    map.addHash();
-    var removeHash = function() {
-      map.removeHash();
-      $(document).off('page:before-change page:restore', removeHash);
-    };
-    $(document).on('page:before-change page:restore', removeHash);
-  }
+  var fitBounds = initializeMapHash(map);
 
   sidebar.addTo(map);
 

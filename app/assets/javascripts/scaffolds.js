@@ -163,6 +163,27 @@ var mapInitialize = function(params) {
   return map;
 };
 
+// FIXME initOnly used for api-web because Firefox doesn't support hash replace (in Leaflet Hash) within an iframe. A new url is fetched by Turbolinks. Chrome works.
+var initializeMapHash = function(map, initOnly) {
+  if (initOnly) {
+    var urlParams = L.Hash.parseHash(window.location.hash);
+    if (urlParams) {
+      map.setView(urlParams.center, urlParams.zoom);
+    }
+  }
+  // FIXME when turbolinks get updated to work with Edge
+  else if (navigator.userAgent.indexOf('Edge') === -1) {
+    map.addHash();
+    var removeHash = function () {
+      map.removeHash();
+      $(document).off('page:before-change', removeHash);
+    };
+    $(document).on('page:before-change', removeHash);
+  }
+
+  return !window.location.hash;
+};
+
 var customColorInitialize = function(selecter) {
   $('#customised_color_picker').click(function() {
     var colorPicker = $('#color_picker'),

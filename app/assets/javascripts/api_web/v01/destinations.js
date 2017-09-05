@@ -101,16 +101,7 @@ var api_web_v01_destinations_index = function(params, api) {
   });
   map.addLayer(markersLayers);
 
-  var fitBounds = !window.location.hash;
-  // FIXME when turbolinks get updated
-  if (navigator.userAgent.indexOf('Edge') === -1) {
-    map.addHash();
-    var removeHash = function() {
-      map.removeHash();
-      $(document).off('page:before-change', removeHash);
-    };
-    $(document).on('page:before-change', removeHash);
-  }
+  var fitBounds = initializeMapHash(map, true);
 
   if (api === 'destinations') {
     var storesLayers = map.storesLayers = L.featureGroup();

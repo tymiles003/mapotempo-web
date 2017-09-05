@@ -61,19 +61,8 @@ var api_web_v01_routes_index = function(params) {
     map.addControl(new control_caption());
   }
 
-  var fitBounds = !window.location.hash;
-  // FIXME when turbolinks get updated
   // Must be placed after caption, otherwise hash is override
-  if (!params.disable_clusters) {
-    if (navigator.userAgent.indexOf('Edge') === -1) {
-      map.addHash();
-      var removeHash = function() {
-        map.removeHash();
-        $(document).off('page:before-change', removeHash);
-      };
-      $(document).on('page:before-change', removeHash);
-    }
-  }
+  var fitBounds = initializeMapHash(map, true);
 
   routesLayer.showRoutesWithStore(route_ids, null, function() {
     if (fitBounds) {

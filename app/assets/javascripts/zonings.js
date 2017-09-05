@@ -115,16 +115,7 @@ var zonings_edit = function(params) {
     }
   }).addTo(map);
 
-  var fitBounds = window.location.hash ? false : true;
-  // FIXME when turbolinks get updated
-  if (navigator.userAgent.indexOf("Edge") == -1) {
-    map.addHash();
-    var removeHash = function() {
-      map.removeHash();
-      $(document).off('page:before-change', removeHash);
-    };
-    $(document).on('page:before-change', removeHash);
-  }
+  var fitBounds = initializeMapHash(map);
 
   function checkZoningChanges(e) {
     var zones_changed;
