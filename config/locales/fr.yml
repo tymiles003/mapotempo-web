@@ -569,9 +569,7 @@ fr:
     planning:
       import_too_routes: Tentative d'importer plus de tournées que de véhicules disponibles
       already_optimizing: Une optimisation de planning est déjà en cours
-      deadlock: 'Attention : Échec de la mise à jour des données. Une autre mise a
-        été effectuée en simultané, vous avez peut-être réalisé plusieurs opérations
-        trop rapidement.'
+      deadlock: "Attention : Échec de la mise à jour des données. Une autre mise a jour été effectuée en simultané, vous avez peut-être réalisé plusieurs opérations trop rapidement."
   import:
     csv:
       line: Ligne %{s}
