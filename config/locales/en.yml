@@ -825,8 +825,8 @@ en:
       replace_yes: Delete previous destinations
       replace_yes_help: Delete and replace destinations with import ones. Overwrite
         all destinations. Plans will also be lost.
-      replace_confirm: Deleting all clients will affect your old plannings which will
-        contain only new unplanned clients. Are you sure ?
+      replace_confirm: Deleting all destinations will affect your old plannings which will
+        contain only new unplanned destinations. Are you sure?
       plannings: Plans
       delete_plannings: Delete previous plans
       delete_plannings_help: Delete previously created plans (allows better performances).
@@ -1214,7 +1214,7 @@ en:
       distance_help: Total distance
       emission_help: Emission
       out_of_route: Unaffected
-      toggle_help: Toggle clients on map
+      toggle_help: Toggle stops on map
       locked_unplanned_help: Lock the out of route on global plan operations
       locked_help: Lock the route on global plan operations
       vehicle_help: Vehicle parameters
