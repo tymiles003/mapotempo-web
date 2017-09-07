@@ -1064,32 +1064,30 @@ en:
       greetings: "Kind regards"
   user_mailer:
     welcome:
-      subject: Your %{name} account
-      title: Thank you for choosing to try the Mapotempo Web route planning. Our team
-        is mobilized to ensure its success.
+      subject: "Your %{name} account"
+      title: "Thank you for choosing to try the %{name} Web route planning. Our team is mobilized to ensure its success."
       content:
-        welcome: "Welcome to Mapotempo!"
-        connection: "Thank you for choosing to try the Mapotempo Web route planning and optimization solution%{limit}. <b>Before to log in to your%{test} account, please generate your password:"
+        welcome: "Welcome to %{name}!"
+        connection: "Thank you for choosing to try the %{name} Web route planning and optimization solution%{limit}. <b>Before to log in to your%{test} account, please generate your password:"
         connection_limit: " for <b>%{days} jours</b>"
         connection_test: " test"
         connection_link: "Initialize your password"
         subscribe: "Then, you can log in to the application using the generated password and your ID: %{email}"
-        subscribe_link: "Log in to Mapotempo Web"
-        help: "In order to offer you the best experience you can rely on our team which will support you during these %{days} jours. Also, <b>if you any questions, you can contact the Customer Success team through our online form: </b><br/>"
+        subscribe_link: "Log in to %{name} Web"
+        help: "In order to offer you the best experience you can rely on our team which will support you during our product using. "
+        help_contact: "Also, <b>if you any questions, you can contact the Customer Success team through our online form: </b><br/>"
         help_link: "Contact Customer Success"
-        staff: "For you the Mapotempo experience starts right now! Our team is mobilized to ensure its success.<br/><br/>Kind regards,"
-        staff_greetings: "Customer Success Team Mapotempo"
+        staff: "For you the %{name} experience starts right now! Our team is mobilized to ensure its success.<br/><br/>Kind regards,"
+        staff_greetings: "Customer Success Team %{name}"
         ressources:
           title: "GET STARTED WITH THE GOOD RESOURCES"
-          description: "To get started with Mapotempo Web <b>we invite you to discover the structure of our Help Center</b> thanks to this article:<br/><br/>"
-          description_link: "Discover the Help Center"
-          objectives: "Goals: <ul><li><i>How to browse the Help Center</i></li><li><i>Know available online resources</i></li></ul>"
         documentation:
-          title: '	Secondly, <b>you can rely on the following sections of the <a target="blank" href="https://www.mapotempo.com/fr/centre-aide/manual/index.html">documentation</a></b>:<br/><br/>'
+          subtitle: 'You can rely on the following sections of the '
+          documentation: 'documentation'
           before: "Before starting"
-          start: "Start with Mapotempo"
+          start: "Start with %{name}"
           parameters: "Global and user settings"
-          objectives: "Goals: <ul><li><i>Before startting: learn which browser to use, about vehicles average speed. How open mapping, geocoding and optimization algorithms run,</i></li><li><i>Start with Mapotempo: Learn how to log in to Mapotempo software and its principles: data importation, route optimization and data exportation,</i></li><li><i>Global and user settings: password and login, type of fleet, average visits duration, export optimized plans to GPS devices, export optimized plans as roadmaps.</i></li></ul>"
+          objectives: "Goals: <ul><li><i>Before starting: learn which browser to use, about vehicles average speed. How open mapping, geocoding and optimization algorithms run,</i></li><li><i>Start with %{name}: Learn how to log in to %{name} software and its principles: data importation, route optimization and data exportation,</i></li><li><i>Global and user settings: password and login, type of fleet, average visits duration, export optimized plans to GPS devices, export optimized plans as roadmaps.</i></li></ul>"
         links:
           title: "Follow us!"
           facebook: "Facebook link"
