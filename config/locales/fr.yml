@@ -569,7 +569,9 @@ fr:
     planning:
       import_too_routes: Tentative d'importer plus de tournées que de véhicules disponibles
       already_optimizing: Une optimisation de planning est déjà en cours
-      deadlock: "Attention : Échec de la mise à jour des données. Une autre mise a été effectuée en simultané, vous avez peut-être réalisé plusieurs opérations trop rapidement."
+      deadlock: 'Attention : Échec de la mise à jour des données. Une autre mise a
+        été effectuée en simultané, vous avez peut-être réalisé plusieurs opérations
+        trop rapidement.'
   import:
     csv:
       line: Ligne %{s}
@@ -906,7 +908,8 @@ fr:
       title: Nouveau client
     import_file:
       refs_duplicate: 'La "référence" : "%{refs}" est présente en double dans le fichier.'
-      refs_visit_duplicate: 'La "référence visite" : "%{refs}" est présente en double dans le fichier.'
+      refs_visit_duplicate: 'La "référence visite" : "%{refs}" est présente en double
+        dans le fichier.'
       ref: référence
       ref_desc: un identifiant stable, constant et unique permettant la mise à jour
         non-destructrice de cet élément lors du prochain import
@@ -1089,7 +1092,8 @@ fr:
   user_mailer:
     welcome:
       subject: Votre compte %{name}
-      title: "Merci d’avoir choisi de tester Mapotempo Web. Notre équipe est à votre écoute pour vous accompagner"
+      title: Merci d’avoir choisi de tester Mapotempo Web. Notre équipe est à votre
+        écoute pour vous accompagner
       content:
         welcome: "Bienvenue chez Mapotempo !"
         connection: "Merci d'avoir choisi de tester la solution de planification et d'optimisation de tournées Mapotempo Web%{limit}. <b>Avant de vous connecter à votre compte%{test}, veuillez générer votre mot de passe : "
@@ -1843,7 +1847,7 @@ fr:
   visits:
     form:
       legend: 'Visite #%{n}'
-      destroy: Si coché, la visite sera supprimée après validation. Cliquez-ici pour
+      destroy: Si coché, la visite sera supprimée après validation. Décochez pour
         annuler.
       ref_help: Référence libre. IMPORTANTE si vous souhaitez ne pas écraser vos visites
         avec l'import/export notamment

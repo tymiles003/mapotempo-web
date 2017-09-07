@@ -496,12 +496,12 @@ en:
         visit:
           attributes:
             close1:
-              after: "must be after %{s}"
+              after: must be after %{s}
               blank: can't be blank when Time window 2 open or close is set
             open2:
-              after: "must be after %{s}"
+              after: must be after %{s}
             close2:
-              after: "must be after %{s}"
+              after: must be after %{s}
             quantities:
               not_float: must be a number
               negative_value: must be positive value (%{value})
@@ -540,21 +540,23 @@ en:
           icon_size_invalid: is not a valid size
   errors:
     management:
-      title: "An error occurred"
-      description: "The page you want to access raised an error"
+      title: An error occurred
+      description: The page you want to access raised an error
       status:
         title:
-          default: "An error occurred in the application"
-          '404': "Cannot find the page"
-          '422': "Unauthorized request"
-          '500': "Internal error occurred"
+          default: An error occurred in the application
+          '404': Cannot find the page
+          '422': Unauthorized request
+          '500': Internal error occurred
         explanation:
-          default: "An internal error occurred. The problem was reported, please try another action. Contact support if urgent."
-          '404': "This page was not found on server, perhaps it was deleted."
-          '422': "You are not authorized to perform this action."
-          '500': "An internal error occurred. The problem was reported, please try another action. Contact support if urgent."
-      back_button: "Previous page"
-      home_button: "Back home"
+          default: An internal error occurred. The problem was reported, please try
+            another action. Contact support if urgent.
+          '404': This page was not found on server, perhaps it was deleted.
+          '422': You are not authorized to perform this action.
+          '500': An internal error occurred. The problem was reported, please try
+            another action. Contact support if urgent.
+      back_button: Previous page
+      home_button: Back home
     messages:
       taken: is already used
     connection_refused: Cannot connect database
@@ -564,7 +566,8 @@ en:
     planning:
       import_too_routes: Tried to import more routes than available vehicles
       already_optimizing: A plan optimization is already in progress
-      deadlock: "Warning: Failed to update data. Another update was realized simultaneously, you may performed several operations too fast."
+      deadlock: 'Warning: Failed to update data. Another update was realized simultaneously,
+        you may performed several operations too fast.'
   import:
     csv:
       line: Line %{s}
@@ -692,10 +695,14 @@ en:
       router_options_height_range: Height between %{from} and %{to} meters
       router_options_width_range: Width between %{from} and %{to} meters
       router_options_length_range: Length between %{from} and %{to} meters
-      router_options_max_walk_distance_range: Max walking distance before taking public transport
-      router_options_approach_help: Arrive/Leave with checkpoint in the current traffic direction
-      router_options_snap_range: Max distance to stop to a junction otherwise stop at the place of delivering
-      router_options_strict_restriction: If not checked the router will try to strictly respect the limitations and override limitations only if it's the only way.
+      router_options_max_walk_distance_range: Max walking distance before taking public
+        transport
+      router_options_approach_help: Arrive/Leave with checkpoint in the current traffic
+        direction
+      router_options_snap_range: Max distance to stop to a junction otherwise stop
+        at the place of delivering
+      router_options_strict_restriction: If not checked the router will try to strictly
+        respect the limitations and override limitations only if it's the only way.
       take_over_help: Average time per account
       optimization_cluster_size_default: '%{n} (default value)'
       optimization_cluster_size_help: Value in seconds between points to group before
@@ -703,8 +710,8 @@ en:
         an important value). Take into account only for a single route optimization
         with delays.
       optimization_time_default: '%{n} (default value)'
-      optimization_time_help: The optimization stops automatically by default.
-        Nevertheless you can specify here a maximum time, per vehicle, for optimization.
+      optimization_time_help: The optimization stops automatically by default. Nevertheless
+        you can specify here a maximum time, per vehicle, for optimization.
       optimization_soft_upper_bound_default: '%{n} (default value)'
       optimization_stop_soft_upper_bound_help: 'More the value is important, more
         delays are detrimental (0 to disallow delays strictly: turn clusters off in
@@ -818,7 +825,8 @@ en:
       replace_yes: Delete previous destinations
       replace_yes_help: Delete and replace destinations with import ones. Overwrite
         all destinations. Plans will also be lost.
-      replace_confirm: Deleting all clients will affect your old plannings which will contain only new unplanned clients. Are you sure ?
+      replace_confirm: Deleting all clients will affect your old plannings which will
+        contain only new unplanned clients. Are you sure ?
       plannings: Plans
       delete_plannings: Delete previous plans
       delete_plannings_help: Delete previously created plans (allows better performances).
@@ -984,7 +992,7 @@ en:
       none_column: No matched column found
       missing_name: '"name" missing.'
       missing_location: '"city / postalcode" or "lat / lng" missing.'
-      invalid_numeric_value: 'Invalid numeric value "%{value}".'
+      invalid_numeric_value: Invalid numeric value "%{value}".
       check_custom_columns: Check your columns definition.
     reverse_geocoding:
       apply: Apply new address
@@ -1057,7 +1065,8 @@ en:
   user_mailer:
     welcome:
       subject: Your %{name} account
-      title: "Thank you for choosing to try the Mapotempo Web route planning. Our team is mobilized to ensure its success."
+      title: Thank you for choosing to try the Mapotempo Web route planning. Our team
+        is mobilized to ensure its success.
       content:
         welcome: "Welcome to Mapotempo!"
         connection: "Thank you for choosing to try the Mapotempo Web route planning and optimization solution%{limit}. <b>Before to log in to your%{test} account, please generate your password:"
@@ -1116,24 +1125,31 @@ en:
       last_sent_to: Sent to
       title: Editing plan
       stops: stops
-      without_stops_title: Stops from this sizeable planning were not loaded to improve display performance
+      without_stops_title: Stops from this sizeable planning were not loaded to improve
+        display performance
       load_stops_out_of_route: Load unplanned stops
       load_stops: Load stops in this route
       optimized_at: Optimized
       optimize_global:
         title: Optimize the whole
-        all_help: Optimize the whole planning (for all stops) except locked routes (stops can be reallocated to a different route)
-        active_help: Optimize the whole planning (only for active stops) except locked routes (stops can be reallocated to a different route)
+        all_help: Optimize the whole planning (for all stops) except locked routes
+          (stops can be reallocated to a different route)
+        active_help: Optimize the whole planning (only for active stops) except locked
+          routes (stops can be reallocated to a different route)
         all_stops: All stops
         active_stops: Only active stops
-        confirm: Optimize the whole planning? (stops can be reallocated to a different route)
+        confirm: Optimize the whole planning? (stops can be reallocated to a different
+          route)
       optimize_each:
         title: Optimize each route
-        all_help: Optimize each unlocked (for all stops) routes one after one (stops will stay in inital route)
-        active_help: Optimize each unlocked (only for active stops) routes one after one (stops will stay in inital route)
+        all_help: Optimize each unlocked (for all stops) routes one after one (stops
+          will stay in inital route)
+        active_help: Optimize each unlocked (only for active stops) routes one after
+          one (stops will stay in inital route)
         all_stops: All stops
         active_stops: Only active stops
-        confirm: Run an optimization calculation on each route? (stops will stay in inital route)
+        confirm: Run an optimization calculation on each route? (stops will stay in
+          inital route)
       optimize_all: Optimize all stops
       optimize_actives: Optimize all active stops
       optimize_help: Optimize the route
@@ -1245,7 +1261,7 @@ en:
         visit: Visit
         status: 'Status:'
         eta: 'ETA:'
-        day: 'D+'
+        day: D+
       error:
         no_geolocalization: No geolocalization
         no_geolocalization_help: No geographic coordinates or addresses could not
@@ -1348,9 +1364,12 @@ en:
       ref_help: A free reference
       begin_end_date: Validity period
       begin_end_date_help: Period when planning is valid
-      tags_help: Restrict visits/destinations in the plan (visits/destinations should have either all of these tags (ALL), or one of the selected tags (OR), to be taken into account in the plan).
+      tags_help: Restrict visits/destinations in the plan (visits/destinations should
+        have either all of these tags (ALL), or one of the selected tags (OR), to
+        be taken into account in the plan).
       order_array: Orders
-      zonings_help: Allow to automatically assign vehicles to visits/destinations with geographic zones.
+      zonings_help: Allow to automatically assign vehicles to visits/destinations
+        with geographic zones.
       avoid_zones_help: In addition, allow to define zones where vehicle cannot circulate.
       default_date: Current date by default
       default: Default
@@ -1471,9 +1490,8 @@ en:
       geocoding_level_desc: level of precision reached when converting the destination
         street address into geographic coordinates
       missing_name: '"name" missing.'
-      missing_location: '"city" or "postalcode" or "lat" and "lng"
-        missing.'
-      invalid_numeric_value: 'Invalid numeric value "%{value}".'
+      missing_location: '"city" or "postalcode" or "lat" and "lng" missing.'
+      invalid_numeric_value: Invalid numeric value "%{value}".
       format:
         string: text
         integer: integer
@@ -1672,8 +1690,7 @@ en:
         stop
       devices:
         placeholder: Choose a device
-        fieldset : GPS & Mobiles
-
+        fieldset: GPS & Mobiles
   vehicle_usage_sets:
     default:
       name: Default
@@ -1698,17 +1715,21 @@ en:
       replace_yes: Replace existing configuration
       replace_yes_help: The current configuration will be replaced by the new one.
       replace_no: Add vheicles configuration
-      replace_no_help: A new configuration will be added without changing exisiting configurations.
+      replace_no_help: A new configuration will be added without changing exisiting
+        configurations.
       vehicles: Véhicles
       replace_vehicles: Replace existing vehicles
-      replace_vehicles_help: All vehicles in application will be updated with imported data (vehicles with the same reference will be replaced by the relevant data).
+      replace_vehicles_help: All vehicles in application will be updated with imported
+        data (vehicles with the same reference will be replaced by the relevant data).
       csv:
         title: CSV File
-        help: Import vehicles configuration from CSV file. CSV files can be exported from spreadsheet or other softwares.
+        help: Import vehicles configuration from CSV file. CSV files can be exported
+          from spreadsheet or other softwares.
         file_help: Import CSV files only
       import_template_help: Help
       dialog:
-        replace_vehicles_confirm: Are you sure to replace all vehicles properties by data from import file?
+        replace_vehicles_confirm: Are you sure to replace all vehicles properties
+          by data from import file?
         import:
           title: Import vehicles configuration
           in_progress: Configuration import in progress, please wait
@@ -1758,7 +1779,7 @@ en:
       none_column: None found column
       missing_name: « name » of the default configuration missing
       missing_open_close: begin or end time of the default configuration missing
-      invalid_numeric_value: 'Invalid numeric value "%{value}".'
+      invalid_numeric_value: Invalid numeric value "%{value}".
       check_custom_columns: Check your columns definition.
     form:
       open_close: Hours
@@ -1780,8 +1801,8 @@ en:
   visits:
     form:
       legend: 'Visit #%{n}'
-      destroy: If checked, visit will be destroyed by submitting this page. Click
-        here to cancel.
+      destroy: If checked, visit will be destroyed by submitting this page. Unchek to
+        cancel.
       ref_help: A free reference. Important to avoid overwriting visits on import/export
       quantities:
         default: '%{n} (default value)'
