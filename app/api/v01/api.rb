@@ -92,7 +92,7 @@ class V01::Api < Grape::API
     elsif e.is_a?(ActiveRecord::RecordInvalid) || e.is_a?(RangeError) || e.is_a?(Grape::Exceptions::ValidationErrors)
       rack_response(format_message(response, e.backtrace), 400)
     elsif e.is_a?(Grape::Exceptions::MethodNotAllowed)
-      rack_response(format_message(response, nil), 405)
+      rack_response(format_message(response, e.backtrace), 405)
     else
       rack_response(format_message(response, e.backtrace), 500)
     end

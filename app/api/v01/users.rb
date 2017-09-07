@@ -39,9 +39,13 @@ class V01::Users < Grape::API
       nickname: 'getUsers',
       is_array: true,
       success: V01::Entities::User
+    params do
+      optional :email, type: String, desc: "Only available with an admin api_key."
+    end
     get do
       if @current_user.admin?
         users = User.for_reseller_id(@current_user.reseller_id) + User.from_customers_for_reseller_id(@current_user.reseller.id)
+        users.select! { |u| u.email == params[:email] } if params[:email]
       else
         users = @current_customer.users.load
       end
@@ -75,7 +79,7 @@ class V01::Users < Grape::API
     params do
       use :params_from_entity, entity: V01::Entities::User.documentation.except(:id).deep_merge(
         email: { required: true },
-        password: { required: true },
+        password: { required: false },
         customer_id: { required: true },
         layer_id: { required: true }
       )

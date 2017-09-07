@@ -184,7 +184,9 @@ class Customer < ApplicationRecord
     })
   end
 
-  def duplicate
+  def duplicate(exclusion_list = nil)
+    self.class.amoeba { exclude_associations(exclusion_list) } unless exclusion_list.nil?
+
     Customer.transaction do
       copy = self.amoeba_dup
       copy.name += " (#{I18n.l(Time.zone.now, format: :long)})"
