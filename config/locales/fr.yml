@@ -1940,6 +1940,7 @@ fr:
     dialog:
       close: Fermer
     placeholder_filter: filtrer
+    subscription: Abonnement
     help_menu: Aide
     help_search_placeholder: Termes à rechercher...
     help: Aide en ligne

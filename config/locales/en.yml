@@ -1892,6 +1892,7 @@ en:
     dialog:
       close: Close
     placeholder_filter: filter
+    subscription: Subscription
     help_menu: Help
     help_search_placeholder: Keywords to search...
     help: Online help

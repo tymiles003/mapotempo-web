@@ -529,7 +529,8 @@ CREATE TABLE resellers (
     url_protocol character varying DEFAULT 'http'::character varying,
     facebook_url character varying,
     twitter_url character varying,
-    linkedin_url character varying
+    linkedin_url character varying,
+    subscription_url character varying
 );
 
 
@@ -2635,4 +2636,6 @@ INSERT INTO schema_migrations (version) VALUES ('20170615092505');
 INSERT INTO schema_migrations (version) VALUES ('20170630083809');
 
 INSERT INTO schema_migrations (version) VALUES ('20170901101949');
+
+INSERT INTO schema_migrations (version) VALUES ('20170907120124');
 

@@ -121,6 +121,14 @@
 
           <ul class="nav navbar-nav pull-right">
             <% if user_signed_in? %>
+              <% if current_user.customer && request.env['reseller'].subscription_url && current_user.customer.test? %>
+                <li class="subscription">
+                  <%= link_to request.env['reseller'].subscription_url do %>
+                    <i class="fa fa-rocket fa-fw"></i> <span class="menu_label"><%= t 'web.subscription' %></span>
+                  <% end %>
+                </li>
+              <% end %>
+
               <% if [request.env['reseller'].help_url, request.env['reseller'].help_search_url, request.env['reseller'].contact_url].compact.size > 1 %>
                 <li class="dropdown help">
                   <%= link_to request.env['reseller'].help_url.gsub('{LG}', I18n.locale.to_s), class: 'dropdown-toggle', 'data-toggle' => "dropdown" do %>

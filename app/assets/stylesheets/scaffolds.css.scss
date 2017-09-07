@@ -501,6 +501,17 @@ span.color[data-color=''][data-selected]:after {
   color: #428bca;
 }
 
+.subscription {
+  background-color: #13B0CA;
+  margin-left: 10px;
+  margin-right: 15px;
+
+  & > a {
+    color: $focus-font-color !important;
+    font-weight: bold;
+  }
+}
+
 .help {
   background-color: $focus-background-color;
   > a {
