@@ -312,22 +312,22 @@ class PlanningsController < ApplicationController
 
   def apply_zonings
     Route.includes_destinations.scoping do
-    @planning.zonings = params[:planning] && planning_params[:zoning_ids] ? current_user.customer.zonings.find(planning_params[:zoning_ids]) : []
-    @planning.zoning_outdated = true
-    @planning.compute
-    if @planning.save && @planning.reload
-      respond_to do |format|
-        format.json do
-          render action: :show
+      @planning.zonings = params[:planning] && planning_params[:zoning_ids] ? current_user.customer.zonings.find(planning_params[:zoning_ids]) : []
+      @planning.zoning_outdated = true
+      @planning.compute
+      if @planning.save && @planning.reload
+        respond_to do |format|
+          format.json do
+            render action: :show
+          end
+        end
+      else
+        respond_to do |format|
+          format.json do
+            render json: @planning.errors, status: :unprocessable_entity
+          end
         end
       end
-    else
-      respond_to do |format|
-        format.json do
-          render json: @planning.errors, status: :unprocessable_entity
-        end
-      end
-    end
     end
   end
 
