@@ -1,18 +1,22 @@
 class MoveTraceToRoute < ActiveRecord::Migration
   def up
-    add_column :routes, :geojson_tracks, :text, array: true
-    add_column :routes, :geojson_points, :text, array: true
-    add_column :routes, :stop_no_path, :boolean
-    add_column :routes, :quantities, :hstore
+    add_column :routes, :geojson_tracks, :text, array: true unless column_exists? :routes, :geojson_tracks
+    add_column :routes, :geojson_points, :text, array: true unless column_exists? :routes, :geojson_points
+    add_column :routes, :stop_no_path, :boolean unless column_exists? :routes, :stop_no_path
+    add_column :routes, :quantities, :hstore unless column_exists? :routes, :quantities
 
-    add_column :stops, :no_path, :boolean
+    add_column :stops, :no_path, :boolean unless column_exists? :stops, :no_path
 
     Route.connection.schema_cache.clear!
     Route.reset_column_information
 
+    route_updated_at_copy = column_exists? :routes, :updated_at_copy
+    stop_updated_at_copy = column_exists? :stops, :updated_at_copy
+    new_routes = route_updated_at_copy ? "updated_at_copy IS NULL OR (updated_at - interval '10 seconds' > updated_at_copy)" : 'true'
+
     Route.without_callback(:save, :before, :update_vehicle_usage) do
       Route.without_callback(:update, :before, :update_geojson) do
-        Route.includes({stops: {visit: [:tags, {destination: [:visits, :tags, :customer]}]}}).find_each{ |route|
+        Route.where(new_routes).includes({stops: {visit: [:tags, {destination: [:visits, :tags, :customer]}]}}).find_each{ |route|
           previous_with_pos = route.vehicle_usage && route.vehicle_usage.default_store_start.try(&:position?)
 
           geojson_tracks = []
@@ -92,6 +96,9 @@ class MoveTraceToRoute < ActiveRecord::Migration
         }
       end
     end
+
+    remove_column :routes, :updated_at_copy if route_updated_at_copy
+    remove_column :stops, :updated_at_copy if stop_updated_at_copy
 
     change_column :stops, :index, :integer, null: false
     remove_column :stops, :trace
