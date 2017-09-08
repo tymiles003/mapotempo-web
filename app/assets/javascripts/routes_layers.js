@@ -576,7 +576,7 @@ var RoutesLayer = L.FeatureGroup.extend({
       }.bind(this),
       pointToLayer: function(geoJsonPoint, latlng) {
         var icon;
-        var overlapKey = latlng.lat.toString() + latlng.lng.toString();
+        var overlapKey = latlng.lat.toString() + '-' + latlng.lng.toString();
 
         var storeId = geoJsonPoint.properties.store_id;
         var routeId = geoJsonPoint.properties.route_id;
@@ -601,7 +601,7 @@ var RoutesLayer = L.FeatureGroup.extend({
           var pointAnchor = new L.Point(this.map.iconSize[pointIconSize].size / 2, this.map.iconSize[pointIconSize].size / 2);
 
           if (overlappingMarkers[overlapKey]) {
-            if (!overlappingMarkers.routeIds.includes(routeId)) {
+            if (!overlappingMarkers.routeIds.includes(routeId) || this.options.disableClusters) {
               var cycleSize = overlappingMarkers[overlapKey] === (baseMultiplier * Math.pow(overlappingMarkers.modulo, 2));
 
               if ((overlappingMarkers[overlapKey] % overlappingMarkers.multiplier) === 0 && cycleSize) {
