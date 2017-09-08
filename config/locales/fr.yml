@@ -1088,36 +1088,40 @@ fr:
       link: "Lien de téléchargement : <a href=%{link}>Planning iCalendar</a>"
       greetings: "Bien à vous"
   user_mailer:
+    layout:
+      welcome: "Bienvenue chez %{name} !"
+      staff:
+        content: "Pour vous l'expérience %{name} démarre dès maintenant ! Notre équipe est mobilisée pour garantir son succès."
+        greetings: "Bien à vous,"
+        signature: "L'équipe Customer Success %{name}"
+      links:
+        title: "Suivez-nous !"
+        facebook: "Lien Facebook"
+        twitter: "Lien Twitter"
+        linkedin: "Lien LinkedIn"
     welcome:
       subject: "Votre compte %{name}"
       title: "Merci d’avoir choisi de tester %{name} Web. Notre équipe est à votre écoute pour vous accompagner"
-      content:
-        welcome: "Bienvenue chez %{name} !"
-        connection: "Merci d'avoir choisi de tester la solution de planification et d'optimisation de tournées %{name} Web%{limit}. <b>Avant de vous connecter à votre compte%{test}, veuillez générer votre mot de passe : "
-        connection_limit: " pour une période de <b>%{days} jours</b>"
-        connection_test: " de test"
-        connection_link: "Initialiser votre mot de passe"
-        subscribe: "Vous pouvez ensuite vous connecter à l'application en utilisant le mot de passe généré et votre identifiant : %{email}"
-        subscribe_link: "Me connecter à %{name} Web"
-        help: "Afin de vous offrir la meilleure expérience qui soit vous pouvez compter sur notre équipe qui vous accompagnera durant votre utilisation. "
-        help_contact: "Aussi, <b>pour toute question, vous pouvez contacter l’équipe Customer Success par le biais de notre formulaire en ligne :</b><br/>"
-        help_link: "Contacter le support"
-        staff: "Pour vous l'expérience %{name} démarre dès maintenant ! Notre équipe est mobilisée pour garantir son succès.<br/><br/>Bien à vous,"
-        staff_greetings: "L'équipe Customer Success %{name}"
-        ressources:
-          title: "LES RESSOURCES POUR BIEN DÉMARRER"
-        documentation:
-          subtitle: 'Vous pouvez vous appuyer sur les sections suivantes de la '
-          documentation: 'documentation'
-          before: "Avant de commencer"
-          start: "Démarrage avec %{name}"
-          parameters: "Paramétrage global utilisateur"
-          objectives: "Objectifs : <ul><li><i>Avant de commencer : quels sont les navigateurs supportés par %{name} Web ? Les types de véhicules pris en compte au sein de la solution ? Découvrez le fonctionnement de la cartographie Libre OpenStreetMap, du géocodage, des algorithmes d’optimisation,</i></li><li><i>Démarrage avec %{name} : comment se connecter au logiciel %{name} ? La présentation du principe d’utilisation de %{name} : l’import de données, l’optimisation de tournées et l’export de données,</i></li><li><i>Paramétrage global utilisateur : au niveau de votre compte avec votre mot de passe et votre identifiant. Au niveau de votre activité avec le type de véhicules, l’ajustement de la vitesse, la durée moyenne des visites. Enfin, au niveau de l’export vers des GPS ou sous forme de feuilles de route.</i></li></ul>"
-        links:
-          title: "Suivez-nous !"
-          facebook: "Lien Facebook"
-          twitter: "Lien Twitter"
-          linkedin: "Lien LinkedIn"
+      connection:
+        content: "Merci d'avoir choisi de tester la solution de planification et d'optimisation de tournées %{name} Web%{limit}. <b>Avant de vous connecter à votre compte%{test}, veuillez générer votre mot de passe : "
+        limit: " pour une période de <b>%{days} jours</b>"
+        test: " de test"
+        link: "Initialiser votre mot de passe"
+      subscribe:
+        content: "Vous pouvez ensuite vous connecter à l'application en utilisant le mot de passe généré et votre identifiant : %{email}"
+        link: "Me connecter à %{name} Web"
+    documentation:
+      subject: "Documentation pour %{name}"
+      help: "Afin de vous offrir la meilleure expérience qui soit vous pouvez compter sur notre équipe qui vous accompagnera durant votre utilisation. "
+      help_contact: "Aussi, <b>pour toute question, vous pouvez contacter l’équipe Customer Success par le biais de notre formulaire en ligne :</b><br/>"
+      help_link: "Contacter le support"
+      title: "LES RESSOURCES POUR BIEN DÉMARRER"
+      subtitle: 'Vous pouvez vous appuyer sur les sections suivantes de la '
+      documentation: 'documentation'
+      before: "Avant de commencer"
+      start: "Démarrage avec %{name}"
+      parameters: "Paramétrage global utilisateur"
+      objectives: "Objectifs : <ul><li><i>Avant de commencer : quels sont les navigateurs supportés par %{name} Web ? Les types de véhicules pris en compte au sein de la solution ? Découvrez le fonctionnement de la cartographie Libre OpenStreetMap, du géocodage, des algorithmes d’optimisation,</i></li><li><i>Démarrage avec %{name} : comment se connecter au logiciel %{name} ? La présentation du principe d’utilisation de %{name} : l’import de données, l’optimisation de tournées et l’export de données,</i></li><li><i>Paramétrage global utilisateur : au niveau de votre compte avec votre mot de passe et votre identifiant. Au niveau de votre activité avec le type de véhicules, l’ajustement de la vitesse, la durée moyenne des visites. Enfin, au niveau de l’export vers des GPS ou sous forme de feuilles de route.</i></li></ul>"
   plannings:
     menu:
       plannings: Plannings

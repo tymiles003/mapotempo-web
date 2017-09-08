@@ -38,7 +38,8 @@ class User < ApplicationRecord
 
   attr_accessor :send_email
 
-  after_create :send_welcome_email, if: ->(user) { user.send_email.to_i == 1 }
+  after_create :send_welcome_email, if: -> (user) { user.send_email.to_i == 1 }
+  after_save :send_documentation_email, if: -> (user) { user.confirmed_at_changed? && user.confirmed_at_was.nil? }
 
   include RefSanitizer
 
@@ -91,6 +92,10 @@ class User < ApplicationRecord
   def send_welcome_email
     Mapotempo::Application.config.delayed_job_use ? UserMailer.delay.welcome_message(self, I18n.locale) : UserMailer.welcome_message(self, I18n.locale).deliver_now
     self.update! confirmation_sent_at: Time.now
+  end
+
+  def send_documentation_email
+    Mapotempo::Application.config.delayed_job_use ? UserMailer.delay.documentation_message(self, I18n.locale) : UserMailer.documentation_message(self, I18n.locale).deliver_now
   end
 
   private

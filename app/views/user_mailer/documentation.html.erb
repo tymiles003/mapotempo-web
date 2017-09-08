@@ -32,27 +32,54 @@
         <div class="contentEditableContainer contentTextEditable">
           <div class="contentEditable" align='justify'>
             <div id="StyleForText">
-              <p><%= I18n.t('user_mailer.layout.welcome', name: @name) %></p>
+              <p>
+                <%= I18n.t('user_mailer.layout.welcome', name: @name) %>
+              </p>
 
-              <p><%= I18n.t('user_mailer.welcome.connection.content', name: @name, limit: @subscription_duration ? I18n.t('user_mailer.welcome.connection.limit', days: @subscription_duration) : '', test: @test ? I18n.t('user_mailer.welcome.connection.test') : '').html_safe %>
-                <br/><br/></p>
+              <p>
+                <%= I18n.t('user_mailer.documentation.help').html_safe %>
 
-              <div style="text-align:center;">
-                <a class="btn-blue" target="blank" href="<%= @confirmation_link %>"><%= I18n.t('user_mailer.welcome.connection.link') %></a>
-              </div>
-              <br/>
+                <% if @contact_link %>
+                  <%= I18n.t('user_mailer.documentation.help_contact').html_safe %>
+                  <br/>
 
-              <p><b><%= I18n.t('user_mailer.welcome.subscribe.content', email: @email).html_safe %></b><br/><br/></p>
-
-              <div style="text-align:center;">
-                <a class="btn-blue" target="blank" href="<%= @home_link %>"><%= I18n.t('user_mailer.welcome.subscribe.link', name: @name) %></a>
-              </div>
-              <br/>
+                  <div style="text-align:center;">
+                    <a class="btn-green" target="blank" href="<%= @contact_link %>"><%= I18n.t('user_mailer.documentation.help_link').html_safe %></a>
+                  </div>
+                  <br/>
+                <% end %>
+              </p>
 
               <p>
                 <%= I18n.t('user_mailer.layout.staff.content', name: @name).html_safe %>
                 <br />
               </p>
+
+              <% if @contact_link %>
+                <p class="block-blue"><%= I18n.t('user_mailer.documentation.title').html_safe %></p>
+                <p>
+                  <b><%= I18n.t('user_mailer.documentation.subtitle') %>
+                    <a target='_blank' href="<%= @help_link %>">documentation</a> </b>:
+                  <br/>
+                  <br/>
+                </p>
+
+                <div class="vertigo">
+                  <div style="text-align:center;">
+                    <a class="btn-green childvertigo" target="_blank" href="<%= "#{@help_link}/manual/00-before_start.html" %>"><%= I18n.t('user_mailer.documentation.before').html_safe %></a>
+                  </div>
+                  <div style="text-align:center;">
+                    <a class="btn-green childvertigo" target="_blank" href="<%= "#{@help_link}/manual/01-start.html" %>"><%= I18n.t('user_mailer.documentation.start', name: @name).html_safe %></a>
+                  </div>
+                  <div style="text-align:center;">
+                    <a class="btn-green childvertigo" target="_blank" href="<%= "#{@help_link}/manual/02-global_settings_users.html" %>"><%= I18n.t('user_mailer.documentation.parameters').html_safe %></a>
+                  </div>
+                </div>
+                <br/>
+                <p>
+                  <%= I18n.t('user_mailer.documentation.objectives', name: @name).html_safe %>
+                </p>
+              <% end %>
 
               <p>
                 <%= I18n.t('user_mailer.layout.staff.greetings', name: @name).html_safe %>

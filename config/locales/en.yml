@@ -1063,36 +1063,40 @@ en:
       link: "Download link: <a href=%{link}>iCalendar Plan</a>"
       greetings: "Kind regards"
   user_mailer:
+    layout:
+      welcome: "Welcome to %{name}!"
+      staff:
+       content: "For you the %{name} experience starts right now! Our team is mobilized to ensure its success."
+       greetings: "Kind regards,"
+       signature: "Customer Success Team %{name}"
+      links:
+        title: "Follow us!"
+        facebook: "Facebook link"
+        twitter: "Twitter link"
+        linkedin: "LinkedIn link"
     welcome:
       subject: "Your %{name} account"
       title: "Thank you for choosing to try the %{name} Web route planning. Our team is mobilized to ensure its success."
-      content:
-        welcome: "Welcome to %{name}!"
-        connection: "Thank you for choosing to try the %{name} Web route planning and optimization solution%{limit}. <b>Before to log in to your%{test} account, please generate your password:"
-        connection_limit: " for <b>%{days} jours</b>"
-        connection_test: " test"
-        connection_link: "Initialize your password"
-        subscribe: "Then, you can log in to the application using the generated password and your ID: %{email}"
-        subscribe_link: "Log in to %{name} Web"
-        help: "In order to offer you the best experience you can rely on our team which will support you during our product using. "
-        help_contact: "Also, <b>if you any questions, you can contact the Customer Success team through our online form: </b><br/>"
-        help_link: "Contact Customer Success"
-        staff: "For you the %{name} experience starts right now! Our team is mobilized to ensure its success.<br/><br/>Kind regards,"
-        staff_greetings: "Customer Success Team %{name}"
-        ressources:
-          title: "GET STARTED WITH THE GOOD RESOURCES"
-        documentation:
-          subtitle: 'You can rely on the following sections of the '
-          documentation: 'documentation'
-          before: "Before starting"
-          start: "Start with %{name}"
-          parameters: "Global and user settings"
-          objectives: "Goals: <ul><li><i>Before starting: learn which browser to use, about vehicles average speed. How open mapping, geocoding and optimization algorithms run,</i></li><li><i>Start with %{name}: Learn how to log in to %{name} software and its principles: data importation, route optimization and data exportation,</i></li><li><i>Global and user settings: password and login, type of fleet, average visits duration, export optimized plans to GPS devices, export optimized plans as roadmaps.</i></li></ul>"
-        links:
-          title: "Follow us!"
-          facebook: "Facebook link"
-          twitter: "Twitter link"
-          linkedin: "LinkedIn link"
+      connection:
+        content: "Thank you for choosing to try the %{name} Web route planning and optimization solution%{limit}. <b>Before to log in to your%{test} account, please generate your password:"
+        limit: " for <b>%{days} jours</b>"
+        test: " test"
+        link: "Initialize your password"
+      subscribe:
+        content: "Then, you can log in to the application using the generated password and your ID: %{email}"
+        link: "Log in to %{name} Web"
+    documentation:
+      subject: "Documentation for %{name}"
+      help: "In order to offer you the best experience you can rely on our team which will support you during our product using. "
+      help_contact: "Also, <b>if you any questions, you can contact the Customer Success team through our online form: </b><br/>"
+      help_link: "Contact Customer Success"
+      title: "GET STARTED WITH THE GOOD RESOURCES"
+      subtitle: 'You can rely on the following sections of the '
+      documentation: 'documentation'
+      before: "Before starting"
+      start: "Start with %{name}"
+      parameters: "Global and user settings"
+      objectives: "Goals: <ul><li><i>Before starting: learn which browser to use, about vehicles average speed. How open mapping, geocoding and optimization algorithms run,</i></li><li><i>Start with %{name}: Learn how to log in to %{name} software and its principles: data importation, route optimization and data exportation,</i></li><li><i>Global and user settings: password and login, type of fleet, average visits duration, export optimized plans to GPS devices, export optimized plans as roadmaps.</i></li></ul>"
   plannings:
     menu:
       plannings: Plans
