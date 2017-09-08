@@ -85,7 +85,8 @@ var zonings_edit = function(params) {
     withQuantities: deliverableUnits.length > 0,
     popupOptions: {
       isoline: false
-    }
+    },
+    disableClusters: params.disable_clusters
   }).addTo(map);
 
   var zonesMap = {};
