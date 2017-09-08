@@ -146,6 +146,9 @@ es:
         router_options_length: Longitud del vehículo
         router_options_hazardous_goods: Tipo de sustancia peligrosa
         router_options_max_walk_distance: Distancia máxima a pie
+        router_options_approach: Llegar/salir con el punto de visita a la derecha
+        router_options_snap: Posponer la parada al cruce
+        router_options_strict_restriction: Respeto estricto de las limitaciones vehículos pesados
         print_planning_annotating: Incluir una firma cliente
         print_header: Encabezamiento de las giras
         print_stop_time: Incluir los horarios de pasaje
