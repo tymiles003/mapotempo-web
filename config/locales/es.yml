@@ -1,21 +1,21 @@
 es:
   distance:
     unit:
-      one:
-      other:
+      one: m
+      other: m
     thousand:
-      one:
-      other:
+      one: km
+      other: km
   distance_miles:
     unit:
-      one:
-      other:
+      one: mi.
+      other: mi.
     thousand:
-      one:
-      other:
+      one: mi.
+      other: mi.
   time:
-    hour:
-    minute:
+    hour: hora
+    minute: minuto
     formats:
       default:
       long:
@@ -26,144 +26,145 @@ es:
       date:
       datepicker:
   schedule_type:
-    invalid:
+    invalid: Formato de hora no valido
   default_time_zone: Madrid
   activemodel:
     models:
-      import_csv:
+      import_csv: Importación CSV
       import_csvs:
-        one:
-        other:
-      import_tomtom:
+        one: Importación CSV
+        other: Importaciones CSV
+      import_tomtom: Importación TomTom
       import_tomtoms:
-        one:
-        other:
+        one: Importación TomTom
+        other: Importaciones TomTom
     attributes:
       import_csv:
-        file:
-        replace:
-        delete_plannings:
+        file: Fichero
+        replace: Reemplazar
+        delete_plannings: Suprimir viejos planes
       import_tomtom:
-        replace:
+        replace: Reemplazar
   activerecord:
     models:
-      customer:
+      customer: Cuenta cliente
       customers:
-        one:
-        other:
-      deliverable_unit:
+        one: cuenta cliente
+        other: cuentas cliente
+      deliverable_unit: Unidad entregable
       deliverable_units:
-        one:
-        other:
-      destination:
+        one: unidad entregable
+        other: unidades entregables
+      destination: Cliente
       destinations:
-        one:
-        other:
-      layer:
+        one: cliente
+        other: clientes
+      layer: Fondo de mapa
       layers:
-        one:
-        other:
-      order:
+        one: fondo de mapa
+        other: fondos de mapas
+      order: Mando
       orders:
-        one:
-        other:
-      order_array:
+        one: Mando
+        other: Mandos
+      order_array: Cuadro de mandos
       order_arrays:
-        one:
-        other:
-      planning:
+        one: cuadro de mandos
+        other: cuadros de mandos
+      planning: Plan
       plannings:
-        one:
-        other:
-      product:
+        one: plan
+        other: planes
+      product: Producto
       products:
-        one:
-        other:
-      profile:
+        one: producto
+        other: productos
+      profile: Perfil
       profiles:
-        one:
-        other:
-      reseller:
-      resellers:
-      route:
+        one: perfil
+        other: perfiles
+      reseller: Revendedor
+      resellers: Revendedores
+      route: Gira
       routes:
-        one:
-        other:
-      stop:
+        one: gira
+        other: giras
+      stop: Parada
       stops:
-        one:
-        other:
-      store:
+        one: parada
+        other: paradas
+      store: Deposito
       stores:
-        one:
-        other:
-      tag:
+        one: deposito
+        other: depósitos
+      tag: Etiqueta
       tags:
-        one:
-        other:
-      user:
+        one: etiqueta
+        other: etiquetas
+      user: Usuario
       users:
-        one:
-        other:
-      vehicle:
+        one: usuario
+        other: usuarios
+      vehicle: Vehículo
       vehicles:
-        one:
-        other:
-      vehicle_usage:
+        one: vehículo
+        other: vehículos
+      vehicle_usage: Configuración del vehículo
       vehicle_usages:
-        one:
-        other:
-      vehicle_usage_set:
+        one: configuración del vehículo
+        other: configuraciones de vehículos
+      vehicle_usage_set: Configuración de vehículos
       vehicle_usage_sets:
-        one:
-        other:
-      visit:
+        one: configuración de vehículos
+        other: configuraciones de vehículos
+      visit: Visita
       visits:
-        one:
-        other:
-      zoning:
+        one: visita
+        other: visitas
+      zoning: Zonificación
       zonings:
-        one:
-        other:
+        one: Zonificación
+        other: zonificaciones
     attributes:
       customer:
-        enable_external_callback:
-        end_subscription:
-        max_vehicles:
-        take_over:
+        enable_external_callback: Activar URL de recordatorio
+        end_subscription: Fin de suscripción
+        max_vehicles: Paquete
+        take_over: Duración de visita de los clientes
         name:
-        destinations:
-        router:
-        router_id:
-        router_dimension:
-        router_options_motorway:
-        router_options_toll:
-        router_options_trailers:
-        router_options_weight:
-        router_options_weight_per_axle:
-        router_options_height:
-        router_options_width:
-        router_options_length:
-        router_options_hazardous_goods:
-        router_options_max_walk_distance:
-        print_planning_annotating:
-        print_header:
-        print_stop_time:
-        print_map:
-        stores:
-        enable_orders:
-        enable_multi_vehicle_usage_sets:
-        enable_references:
-        enable_multi_visits:
-        enable_global_optimization:
-        test:
-        jobs:
-        optimization_cluster_size:
-        optimization_time:
-        optimization_stop_soft_upper_bound:
-        optimization_vehicle_soft_upper_bound:
-        cost_waiting_time:
-        optimization_force_start:
+        destinations: Clientes
+        router: Calculador de itinerario
+        router_id: Calculador de itinerario
+        router_dimension: objetivo del calculador
+        router_options_motorway: Usar las autopistas
+        router_options_toll: Autorizar las secciones con peaje
+        router_options_trailers: Numero de remolques
+        router_options_weight: Peso del vehículo
+        router_options_weight_per_axle: Peso por eje
+        router_options_height: Altura del vehículo
+        router_options_width: Anchura del vehículo
+        router_options_length: Longitud del vehículo
+        router_options_hazardous_goods: Tipo de sustancia peligrosa
+        router_options_max_walk_distance: Distancia máxima a pie
+        print_planning_annotating: Incluir una firma cliente
+        print_header: Encabezamiento de las giras
+        print_stop_time: Incluir los horarios de pasaje
+        print_map: Incluir el mapa
+        stores: Depósitos
+        enable_orders: Activar los mandos
+        enable_multi_vehicle_usage_sets: Permitir las configuraciones de vehículos
+          múltiples
+        enable_references: Mostrar las referencias
+        enable_multi_visits: Permitir las  visitas múltiples
+        enable_global_optimization: Activar la optimización global
+        test: Prueba
+        jobs: Tareas
+        optimization_cluster_size: Tamaño de los clústeres de optimización
+        optimization_time: Tiempo máximo de optimización por vehículo
+        optimization_stop_soft_upper_bound: Coeficiente retrasos/paros
+        optimization_vehicle_soft_upper_bound: Coeficiente retrasos/vehículos
+        cost_waiting_time: Coeficiente de tiempo de espera
+        optimization_force_start: Forzar la hora de salida del vehículo
         profile:
         profile_id:
         speed_multiplicator:
