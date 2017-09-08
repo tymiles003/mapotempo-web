@@ -81,16 +81,18 @@
           <% end end %>
         </td>
         <td class="center">
-          <span class="disabled">(<%= l customer.created_at, format: :date %>)</span>
+          <%= l customer.created_at, format: :date %> -
           <% if customer.end_subscription %>
             <%= l customer.end_subscription %>
             <% if customer.end_subscription < Time.now + 30.days && customer.end_subscription > Time.now %>
               <i class="fa fa-bell" style="color: orange;"></i>
             <% end %>
+          <% else %>
+            &infin;
           <% end %>
         </td>
         <td><%= customer.destinations.count %></td>
-        <td><%= customer.plannings.count %></td>
+        <td><%= customer_plannings_count customer.plannings.count %></td>
         <td rowspan="2" class="text-right">
           <div class="btn-group" role="group" aria-label="Actions">
             <%= link_to [:duplicate, customer], method: :patch, class: "btn btn-default btn-sm", title: t('all.verb.duplicate'), data: { confirm: t('all.verb.destroy_confirm') } do %>
