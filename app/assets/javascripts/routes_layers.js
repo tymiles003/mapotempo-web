@@ -484,16 +484,21 @@ var RoutesLayer = L.FeatureGroup.extend({
   },
 
   _setViewForMarker: function(routeId, marker) {
+    this.map.closePopup();
+
     if (!this.clustersByRoute[routeId].hasLayer(marker)) {
       marker.addTo(this.clustersByRoute[routeId]);
     }
+
     if (this.map.getBounds().contains(marker.getLatLng()) && marker._map) {
       // _map is actually undefined or null (markerCluster set it on clustered markers)
       popupModule.createPopupForLayer(marker);
+      popupModule.activeClickMarker = marker;
     } else {
       this.map.setView(this.map.getCenter(), this.map.getMaxZoom(), {animate: false, duration: 0});
       this.clustersByRoute[routeId].zoomToShowLayer(marker, function() {
         popupModule.createPopupForLayer(marker);
+        popupModule.activeClickMarker = marker;
       });
     }
   },
