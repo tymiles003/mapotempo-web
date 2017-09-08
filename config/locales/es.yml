@@ -25,6 +25,8 @@ es:
       complete:
       date:
       datepicker:
+    hour: hora
+    minute: minuto
   schedule_type:
     invalid: Formato de hora no valido
   default_time_zone: Madrid
