@@ -33,7 +33,7 @@ services:
     build:
       context: ..
       dockerfile: docker/Dockerfile
-    image: mapotempo/mapotempo-web:${MAPOTEMPO_VERSION:-latest}
+    image: mapotempo/mapotempo-web:${MAPOTEMPO_VERSION:-54.1.0}
     ports: []
     volumes:
       - ./mapotempo.rb:/srv/app/config/initializers/mapotempo.rb
