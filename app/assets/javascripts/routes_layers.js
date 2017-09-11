@@ -251,6 +251,7 @@ var RoutesLayer = L.FeatureGroup.extend({
     spiderfyOnMaxZoom: true,
     animate: false,
     maxClusterRadius: function(currentZoom) {
+      // Markers have to be clustered during map initilization with defaultMapZoom
       return currentZoom > defaultMapZoom ? 1 : nbRoutes < 4 ? 30 * nbRoutes : 100;
     },
     spiderfyDistanceMultiplier: 0.5,
@@ -603,10 +604,12 @@ var RoutesLayer = L.FeatureGroup.extend({
           var pointIcon = geoJsonPoint.properties.icon || 'fa-circle';
           var pointIconSize = geoJsonPoint.properties.icon_size || 'medium';
           var pointColor = geoJsonPoint.properties.color || '#707070';
+          if (!geoJsonPoint.properties.number)
+            pointColor = 'rgba('+parseInt(pointColor.substring(1,3),16)+','+parseInt(pointColor.substring(3,5),16)+','+parseInt(pointColor.substring(5,7),16)+',0.8)';
           var pointAnchor = new L.Point(this.map.iconSize[pointIconSize].size / 2, this.map.iconSize[pointIconSize].size / 2);
 
           if (overlappingMarkers[overlapKey]) {
-            if (!overlappingMarkers.routeIds.includes(routeId) || this.options.disableClusters) {
+            if (overlappingMarkers.routeIds.indexOf(routeId) === -1 || this.options.disableClusters) {
               var cycleSize = overlappingMarkers[overlapKey] === (baseMultiplier * Math.pow(overlappingMarkers.modulo, 2));
 
               if ((overlappingMarkers[overlapKey] % overlappingMarkers.multiplier) === 0 && cycleSize) {

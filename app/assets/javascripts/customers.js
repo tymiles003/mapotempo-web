@@ -135,7 +135,7 @@ var customers_edit = function(params) {
 
   var getLocaleFromCurrentLocale = function () {
     for (var locale in $.fn.wysihtml5.locale) {
-      if (locale.includes(I18n.currentLocale())) {
+      if (locale.indexOf(I18n.currentLocale()) !== -1) {
         return locale;
       }
     }
