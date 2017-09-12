@@ -38,6 +38,36 @@ class Admin::CustomersControllerTest < ActionController::TestCase
     assert_redirected_to edit_customer_path(assigns(:customer))
   end
 
+  test 'should use environment variable for customer test' do
+    begin
+      Mapotempo::Application.config.customer_test_default = true
+      sign_in users(:user_admin)
+      get :new
+      assert_response :success
+      assert_select 'form input' do
+        assert_select "[name='customer[test]']" do
+          assert_select '[value=?]', '1'
+        end
+      end
+    ensure
+      Mapotempo::Application.config.customer_test_default = true
+    end
+
+    begin
+      Mapotempo::Application.config.customer_test_default = false
+      sign_in users(:user_admin)
+      get :new
+      assert_response :success
+      assert_select 'form input' do
+        assert_select "[name='customer[test]']" do
+          assert_select '[value=?]', '0'
+        end
+      end
+    ensure
+      Mapotempo::Application.config.customer_test_default = true
+    end
+  end
+
   test 'should update customer' do
     assert_difference('Vehicle.count', 1) do
       assert_difference('VehicleUsage.count', @customer.vehicle_usage_sets.size) do

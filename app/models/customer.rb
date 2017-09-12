@@ -71,7 +71,7 @@ class Customer < ApplicationRecord
   end
   validates :speed_multiplicator, numericality: { greater_than_or_equal_to: 0.5, less_than_or_equal_to: 1.5 }, if: :speed_multiplicator
 
-  after_initialize :assign_defaults, :update_max_vehicles, if: 'new_record?'
+  after_initialize :assign_defaults, :update_max_vehicles, if: :new_record?
   after_initialize :assign_device
   after_create :create_default_store, :create_default_vehicle_usage_set, :create_default_deliverable_unit
   before_update :update_outdated, :update_max_vehicles, :update_enable_multi_visits
@@ -296,7 +296,6 @@ class Customer < ApplicationRecord
     self.default_country ||= I18n.t('customers.default.country')
     self.enable_references = Mapotempo::Application.config.enable_references
     self.enable_multi_visits = Mapotempo::Application.config.enable_multi_visits
-    self.test = Mapotempo::Application.config.customer_test_default
   end
 
   def create_default_store

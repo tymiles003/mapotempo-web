@@ -26,14 +26,13 @@ class CustomerTest < ActiveSupport::TestCase
             assert_difference('DeliverableUnit.count', 1) do
               assert_difference('Store.count', 1) do
                 reseller.save!
+                assert_equal customer.test, false
               end
             end
           end
         end
       end
     end
-
-    assert customer.test, Mapotempo::Application.config.customer_test_default
   end
 
   test 'should stop job optimizer' do
