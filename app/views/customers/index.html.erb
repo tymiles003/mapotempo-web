@@ -107,7 +107,7 @@
           </div>
         </td>
       </tr>
-      <tr>
+      <tr<% if customer.end_subscription && customer.end_subscription < Time.now %> class="disabled"<% end %>>
         <td></td>
         <td colspan="9">
           <%= render 'job', customer: customer, job: customer.job_optimizer %>
