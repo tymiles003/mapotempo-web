@@ -60,7 +60,7 @@ class Admin::UsersController < ApplicationController
   end
 
   def send_email
-    @user.send_welcome_email
+    @user.send_password_email
     redirect_to_default
   end
 

@@ -1043,7 +1043,7 @@ en:
       total: total
   route_mailer:
     send_kmz_route:
-      hello: Bonjour
+      hello: Hello
       content: A KMZ file containing route informations has been attached to this
         E-Mail from %{s}.
       vehicle: "Vehicle : %{name}"
@@ -1053,7 +1053,8 @@ en:
       order_array: "Orders: %{name}"
       greetings: "Kind regards"
     send_computed_ics_route:
-      hello: Bonjour
+      title: "Planning iCalendar export"
+      hello: Hello
       content: "An iCalendar has been sent from %{s} you can copy-paste the following link to be able to use it as a source in your personal calendar (update will be automatic) or you can click on this link to download file (no update in this case)."
       vehicle: "Vehicle: %{name}"
       planning: "Plan : %{name} (date)"
@@ -1068,35 +1069,33 @@ en:
       staff:
        content: "For you the %{name} experience starts right now! Our team is mobilized to ensure its success."
        greetings: "Kind regards,"
-       signature: "Customer Success Team %{name}"
+       signature: "%{name} Team"
       links:
         title: "Follow us!"
         facebook: "Facebook link"
         twitter: "Twitter link"
         linkedin: "LinkedIn link"
-    welcome:
-      subject: "Your %{name} account"
-      title: "Thank you for choosing to try the %{name} Web route planning. Our team is mobilized to ensure its success."
-      connection:
-        content: "Thank you for choosing to try the %{name} Web route planning and optimization solution%{limit}. <b>Before to log in to your%{test} account, please generate your password:"
+    password:
+      subject: "Set your password for %{name}"
+      title: "Set your password"
+      welcome: "Welcome to %{name}!"
+      detail:
+        content: "Thank you for choosing to try the %{application_name} Web route planning and optimization solution%{limit}."
         limit: " for <b>%{days} jours</b>"
+        define: "Before to log in to your%{test} account, please generate your password:"
         test: " test"
-        link: "Initialize your password"
-      subscribe:
-        content: "Then, you can log in to the application using the generated password and your ID: %{email}"
-        link: "Log in to %{name} Web"
-    documentation:
-      subject: "Documentation for %{name}"
-      help: "In order to offer you the best experience you can rely on our team which will support you during our product using. "
-      help_contact: "Also, <b>if you any questions, you can contact the Customer Success team through our online form: </b><br/>"
-      help_link: "Contact Customer Success"
-      title: "GET STARTED WITH THE GOOD RESOURCES"
-      subtitle: 'You can rely on the following sections of the '
-      documentation: 'documentation'
-      before: "Before starting"
-      start: "Start with %{name}"
-      parameters: "Global and user settings"
-      objectives: "Goals: <ul><li><i>Before starting: learn which browser to use, about vehicles average speed. How open mapping, geocoding and optimization algorithms run,</i></li><li><i>Start with %{name}: Learn how to log in to %{name} software and its principles: data importation, route optimization and data exportation,</i></li><li><i>Global and user settings: password and login, type of fleet, average visits duration, export optimized plans to GPS devices, export optimized plans as roadmaps.</i></li></ul>"
+        link: "Set password"
+      footer:
+        first_step: "⭐ Step 1: Set your password"
+        second_step: "⭐ Step 2: Log in to the application"
+    connection:
+      subject: "Sign in to your %{name} account"
+      title: "Sign in to your account"
+      welcome: "Congratulations! You can now sign in to your account."
+      detail:
+        content: "To log in, "
+        id: "please use the password you defined and your username: %{login} and password"
+        link: "Connection"
   plannings:
     menu:
       plannings: Plans
