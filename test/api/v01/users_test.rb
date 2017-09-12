@@ -16,9 +16,9 @@ class V01::UsersTest < ActiveSupport::TestCase
     "/api/0.1/users#{part}.json?api_key=testkey1"
   end
 
-  def api_admin(part = nil)
+  def api_admin(part = nil, params = {})
     part = part ? '/' + part.to_s : ''
-    "/api/0.1/users#{part}.json?api_key=adminkey"
+    "/api/0.1/users#{part}.json?api_key=adminkey&" + params.collect { |key, value| "#{key}=#{URI.escape(value)}" } .join("&")
   end
 
   test 'should return users' do
@@ -28,9 +28,13 @@ class V01::UsersTest < ActiveSupport::TestCase
   end
 
   test 'should return users from admin key' do
-    get api_admin()
+    get api_admin(nil)
     assert last_response.ok?, last_response.body
     assert_equal 4, JSON.parse(last_response.body).size
+
+    get api_admin(nil, {email: @user.email})
+    assert last_response.ok?, last_response.body
+    assert_equal 1, JSON.parse(last_response.body).size
   end
 
   test 'should return a user' do

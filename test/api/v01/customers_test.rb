@@ -16,9 +16,9 @@ class V01::CustomerTest < ActiveSupport::TestCase
     "/api/0.1/customers#{part}.#{format}?api_key=testkey1&" + param.collect{ |k, v| "#{k}=" + URI.escape(v.to_s) }.join('&')
   end
 
-  def api_admin(part = nil, format = 'json')
+  def api_admin(part = nil, format = 'json', params = {})
     part = part ? '/' + part.to_s : ''
-    "/api/0.1/customers#{part}.#{format}?api_key=adminkey"
+    "/api/0.1/customers#{part}.#{format}?api_key=adminkey&" + params.collect{ |k, v| "#{k}=" + URI.escape(v.to_s) }.join('&')
   end
 
   test 'should list customers' do
@@ -204,6 +204,14 @@ class V01::CustomerTest < ActiveSupport::TestCase
 
       put api(@customer.id.to_s + '/duplicate')
       assert_equal 403, last_response.status, 'Bad response: ' + last_response.body
+    end
+  end
+  
+  test 'Should duplicate customer without users' do
+    assert_difference 'Customer.count', +1 do
+      assert_no_difference 'User.count' do
+        put api_admin(@customer.id.to_s + '/duplicate', 'JSON', {"duplicate_user" => false})
+      end
     end
   end
 
