@@ -58,10 +58,10 @@ class OrderArraysController < ApplicationController
         data = render_to_string.gsub('\n', '\r\n')
         send_data Iconv.iconv('ISO-8859-1//translit//ignore', 'utf-8', data).join(''),
             type: 'text/csv',
-            filename: @order_array.name.delete('"') + '.csv'
+            filename: I18n.transliterate(@order_array.name.delete('"')) + '.csv'
       end
       format.csv do
-        response.headers['Content-Disposition'] = 'attachment; filename="' + @order_array.name.delete('"') + '.csv"'
+        response.headers['Content-Disposition'] = 'attachment; filename="' + I18n.transliterate(@order_array.name.delete('"')) + '.csv"'
       end
     end
   end

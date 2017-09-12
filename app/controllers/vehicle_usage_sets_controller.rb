@@ -35,10 +35,10 @@ class VehicleUsageSetsController < ApplicationController
         data = render_to_string.gsub("\n", "\r\n")
         send_data Iconv.iconv('ISO-8859-1//translit//ignore', 'utf-8', data).join(''),
                   type: 'text/csv',
-                  filename: t('activerecord.models.vehicle_usage_sets.other') + '.csv'
+                  filename: I18n.transliterate(t('activerecord.models.vehicle_usage_sets.other')) + '.csv'
       end
       format.csv do
-        response.headers['Content-Disposition'] = 'attachment; filename="' + t('activerecord.models.vehicle_usage_sets.other') + '.csv"'
+        response.headers['Content-Disposition'] = 'attachment; filename="' + I18n.transliterate(t('activerecord.models.vehicle_usage_sets.other')) + '.csv"'
       end
     end
   end

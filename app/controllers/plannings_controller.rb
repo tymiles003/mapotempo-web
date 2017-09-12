@@ -389,7 +389,7 @@ class PlanningsController < ApplicationController
     if @planning
       export_filename @planning, @planning.ref
     else
-      I18n.t('plannings.menu.plannings') + '_' + I18n.l(Time.now, format: :datepicker)
+      I18n.transliterate(I18n.t('plannings.menu.plannings') + '_' + I18n.l(Time.now, format: :datepicker))
     end
   end
 
