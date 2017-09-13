@@ -210,7 +210,7 @@ class V01::CustomerTest < ActiveSupport::TestCase
   test 'Should duplicate customer without users' do
     assert_difference 'Customer.count', +1 do
       assert_no_difference 'User.count' do
-        put api_admin(@customer.id.to_s + '/duplicate', 'JSON', {"duplicate_user" => false})
+        put api_admin(@customer.id.to_s + '/duplicate', 'JSON', {'exclude_users' => true})
       end
     end
   end

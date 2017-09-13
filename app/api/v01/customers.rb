@@ -246,12 +246,13 @@ class V01::Customers < Grape::API
       nickname: 'duplicateCustomer'
     params do
       requires :id, type: String, desc: ID_DESC
-      optional :duplicate_user, type: Boolean, default: true
+      optional :exclude_users, type: Boolean, default: false
     end
     put ':id/duplicate' do
       if @current_user.admin?
         customer = @current_user.reseller.customers.where(ParseIdsRefs.read(params[:id])).first!
-        customer = params[:duplicate_user] ? customer.duplicate : customer.duplicate([:users])
+        customer.exclude_users = params[:exclude_users]
+        customer.duplicate
 
         present customer, with: V01::Entities::CustomerAdmin
       else

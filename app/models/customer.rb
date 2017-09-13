@@ -41,7 +41,7 @@ class Customer < ApplicationRecord
   has_many :deliverable_units, inverse_of: :customer, autosave: true, dependent: :delete_all, after_add: :update_deliverable_units_track, after_remove: :update_deliverable_units_track
   enum router_dimension: Router::DIMENSION
 
-  attr_accessor :deliverable_units_updated, :device
+  attr_accessor :deliverable_units_updated, :device, :exclude_users
 
   include HashBoolAttr
   store_accessor :router_options, :time, :distance, :avoid_zones, :isochrone, :isodistance, :motorway, :toll, :trailers, :weight, :weight_per_axle, :height, :width, :length, :hazardous_goods, :max_walk_distance, :approach, :snap, :strict_restriction
@@ -93,6 +93,7 @@ class Customer < ApplicationRecord
     exclude_association :products
     exclude_association :order_arrays
     exclude_association :ref
+    exclude_association :users, if: :exclude_users
 
     customize(lambda { |original, copy|
       def copy.assign_defaults; end
@@ -184,9 +185,7 @@ class Customer < ApplicationRecord
     })
   end
 
-  def duplicate(exclusion_list = nil)
-    self.class.amoeba { exclude_associations(exclusion_list) } unless exclusion_list.nil?
-
+  def duplicate()
     Customer.transaction do
       copy = self.amoeba_dup
       copy.name += " (#{I18n.l(Time.zone.now, format: :long)})"
