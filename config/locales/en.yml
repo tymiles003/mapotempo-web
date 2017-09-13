@@ -599,17 +599,17 @@ en:
         name_help: Reseller brand name
         welcome_url_help: 'Web page address included as html as "iframe" on welcome
           page. It''s possible to use "{LG}" which will be replaced by language like
-          « en », « fr » (ie: http://mapotempo.com/{LG}/page.html).'
+          « en », « fr » (ie: https://www.mapotempo.com/{LG}/app-news).'
         help_url_help: 'Web page address with help content. It''s possible to use
-          "{LG}" which will be replaced by language like « en », « fr » (ie: http://mapotempo.com/{LG}/page.html).'
+          "{LG}" which will be replaced by language like « en », « fr » (ie: https://www.mapotempo.com/{LG}/help-center).'
         contact_url_help: 'Web page address with contact form. It''s possible to use
-          "{LG}" which will be replaced by language like « en », « fr » (ie: http://mapotempo.com/{LG}/page.html).'
+          "{LG}" which will be replaced by language like « en », « fr » (ie: https://www.mapotempo.com/{LG}/contact-support/).'
         logo_large_help: Full page resizable logo, preferably in SVG, alternatively
           in PNG format.
         logo_small_help: Head menu logo, 150×40 pixels in SVG or PNG format.
         favicon_help: Website icon, 16×16 pixels in PNG or ICO format.
         website_url_help: 'Website address. It''s possible to use "{LG}" which will
-          be replaced by language like « en », « fr » (ie: http://mapotempo.com/{LG}/page.html).'
+          be replaced by language like « en », « fr » (ie: https://www.mapotempo.com/{LG}/).'
         protocol_url_http: HTTP
         protocol_url_https: HTTPS
     users:
