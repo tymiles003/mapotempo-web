@@ -109,17 +109,17 @@ fr:
           confirm: "Synchroniser les véhicules ?"
           action: "Synchroniser les véhicules"
         alyacom:
-          help: "Permet d'envoyer les plannings vers l'application AlyaCom."
+          help: "Permet d'envoyer les tournées vers l'application AlyaCom."
         tomtom:
-          help: "Permet d'envoyer les plannings vers les GPS TomTom Pro avec WEBFLEET."
+          help: "Permet d'envoyer les tournées vers les GPS TomTom Pro avec WEBFLEET."
         teksat:
-          help: "Permet d'envoyer les plannings vers les GPS Teksat"
+          help: "Permet d'envoyer les tournées vers les GPS Teksat"
         orange:
-          help: "Permet d'envoyer les plannings vers les GPS Orange Fleet Performance"
+          help: "Permet d'envoyer les tournées vers les GPS Orange Fleet Performance"
         masternaut:
-          help: "Permet d'envoyer les plannings vers les GPS Masternaut."
+          help: "Permet d'envoyer les tournées vers les GPS Masternaut."
         notico:
-          help: "Permet d'envoyer les plannings vers l'application Notico."
+          help: "Permet d'envoyer les tournées vers l'application Notico."
   plannings:
     edit:
       teksat_send:

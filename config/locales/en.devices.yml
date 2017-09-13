@@ -107,17 +107,17 @@ en:
           confirm: "Sync Vehicles?"
           action: "Sync Vehicles"
         alyacom:
-          help: "Allows sending plans to AlyaCom application"
+          help: "Allows sending routes to AlyaCom application"
         tomtom:
-          help: "Allows sending plans to TomTom Pro with WEBFLEET."
+          help: "Allows sending routes to TomTom Pro with WEBFLEET."
         teksat:
-          help: "Allows sending plans to Teksat devices"
+          help: "Allows sending routes to Teksat devices"
         orange:
-          help: "Allows sending plans to Orange Fleet Performance devices"
+          help: "Allows sending routes to Orange Fleet Performance devices"
         masternaut:
-          help: "Allows sending plans to Masternaut devices"
+          help: "Allows sending routes to Masternaut devices"
         notico:
-          help: "Allows sending plans to Notico application."
+          help: "Allows sending routes to Notico application."
   plannings:
     edit:
       teksat_send:

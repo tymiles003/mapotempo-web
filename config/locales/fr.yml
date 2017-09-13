@@ -42,7 +42,7 @@ fr:
       import_csv:
         file: Fichier
         replace: Remplacer
-        delete_plannings: Supprimer anciens plannings
+        delete_plannings: Supprimer anciens plans
       import_tomtom:
         replace: Remplacer
   activerecord:
@@ -71,10 +71,10 @@ fr:
       order_arrays:
         one: tableau de commandes
         other: tableaux de commandes
-      planning: Planning
+      planning: Plan
       plannings:
-        one: planning
-        other: plannings
+        one: plan
+        other: plans
       product: Produit
       products:
         one: produit
@@ -568,7 +568,7 @@ fr:
       reversegeocoding_fail: 'Le géocodage inversé a échoué :'
     planning:
       import_too_routes: Tentative d'importer plus de tournées que de véhicules disponibles
-      already_optimizing: Une optimisation de planning est déjà en cours
+      already_optimizing: Une optimisation de plan est déjà en cours
       deadlock: "Attention : Échec de la mise à jour des données. Une autre mise a jour été effectuée en simultané, vous avez peut-être réalisé plusieurs opérations trop rapidement."
   import:
     csv:
@@ -745,7 +745,7 @@ fr:
         name_placeholder: Application externe
         url: URL
         url_placeholder: http://www.example.com?p_id={PLANNING_ID}
-        url_help: 'URL externe à appeler depuis le menu export du Planning
+        url_help: 'URL externe à appeler depuis le menu export du plan des tournées
 
           Les chaînes de caractères suivantes vont etre remplacées : PLANNING_ID,
           PLANNING_REF, ROUTE_ID, ROUTE_REF
@@ -835,16 +835,16 @@ fr:
         est faite et les nouveaux sont ajoutés à l'application.
       replace_yes: Supprimer anciens clients
       replace_yes_help: Efface et remplace tous les anciens clients par ceux de l'import.
-        Les plannings seront également perdus.
-      replace_confirm: Le fait de supprimer les clients affectera vos anciens plannings
+        Les anciennes tournées seront également perdues.
+      replace_confirm: Le fait de supprimer les clients affectera vos plans des anciennes tournées
         qui ne comporteront plus que des nouveaux clients non planifiés. Êtes-vous
         sûr ?
-      plannings: Plannings
-      delete_plannings: Supprimer anciens plannings
-      delete_plannings_help: Supprime les anciens plannings (permet notamment d'améliorer
+      plannings: Plans
+      delete_plannings: Supprimer anciens plans
+      delete_plannings_help: Supprime les anciens plans de tournées (permet notamment d'améliorer
         la réactivité de l'application). Si des tournées sont présentes dans votre
-        fichier d'import, un nouveau planning sera tout de même créé après l'import.
-      delete_plannings_confirm: Supprimer tous les anciens plannings ?
+        fichier d'import, un nouveau plan sera tout de même créé après l'import.
+      delete_plannings_confirm: Supprimer tous les plans de vos anciennes tournées ?
       csv:
         title: Fichier CSV
         help: Importe les clients depuis un fichier CSV. Les fichiers CSV peuvent
@@ -912,11 +912,11 @@ fr:
       ref_desc: un identifiant stable, constant et unique permettant la mise à jour
         non-destructrice de cet élément lors du prochain import
       route: tournée
-      route_desc: numéro ou référence de la tournée dans le planning.
+      route_desc: numéro ou référence de la tournée dans le plan de tournées.
       ref_vehicle: véhicule
-      ref_vehicle_desc: référence ou nom du véhicule effectuant l'arrêt dans le planning.
+      ref_vehicle_desc: référence ou nom du véhicule effectuant l'arrêt dans la tournée.
       stop_type: type arrêt
-      stop_type_desc: type d'arrêt dans le planning.
+      stop_type_desc: type d'arrêt dans la tournée.
       stop_type_visit: visite
       stop_type_visit_desc: ''
       stop_format: '[visite | dépôt | pause]'
@@ -1050,7 +1050,7 @@ fr:
       copy: Copier
       paste: Coller
       total: Total
-      planning: Appliquer au planning
+      planning: Appliquer au plan de tournées
       confirm_ovewrite_column: Êtes-vous sûr de vouloir modifier les données de la
         colonne ?
       confirm_ovewrite_row: Êtes-vous sûr de vouloir modifier les données de la ligne
@@ -1072,26 +1072,27 @@ fr:
       hello: Bonjour
       content: Un export au format KMZ vient de vous être envoyé depuis %{s} en pièce
         jointe à cet e-mail.
-      vehicle: "Véhicule : %{name}"
-      planning: "Planning : %{name} %{date}"
-      planning_ref: "Référence du planning : %{ref}"
-      route_ref: "Référence de la tournée : %{ref}"
-      order_array: "Commandes : %{name}"
+      vehicle: "Véhicule : %{name}"
+      planning: "Plan de tournées : %{name} %{date}"
+      planning_ref: "Référence du plan : %{ref}"
+      route_ref: "Référence de la tournée : %{ref}"
+      order_array: "Commandes : %{name}"
     send_computed_ics_route:
-      title: "Export Planning iCalendar"
+      title: "Export plan iCalendar"
       hello: Bonjour
-      content: "Un export au format agenda iCalendar vient de vous être envoyé depuis %{s}, vous pouvez : Copier-coller le lien et l'importer dans votre agenda personnel (la mise à jour de votre agenda se fera de manière automatique à l'avenir) ou Cliquer sur le lien pour télécharger le contenu de l'agenda (pas de mise à jour automatique)."
-      vehicle: "Véhicule : %{name}"
-      planning: "Planning : %{name} %{date}"
-      planning_ref: "Référence du planning : %{ref}"
-      route_ref: "Référence de la tournée : %{ref}"
-      order_array: "Commandes : %{name}"
-      link: "Lien de téléchargement : <a href=%{link}>Planning iCalendar</a>"
+      content: "Un export au format agenda iCalendar vient de vous être envoyé depuis %{s}, vous pouvez : Copier-coller le lien et l'importer dans votre agenda personnel (la mise à jour de votre agenda se fera de manière automatique à l'avenir) ou Cliquer sur le lien pour télécharger le contenu de l'agenda (pas de mise à jour automatique)."
+      vehicle: "Véhicule : %{name}"
+      planning: "Plan de tournées : %{name} %{date}"
+      planning_ref: "Référence du plan : %{ref}"
+      route_ref: "Référence de la tournée : %{ref}"
+      order_array: "Commandes : %{name}"
+      link: "Lien de téléchargement : <a href=%{link}>Plan iCalendar</a>"
   user_mailer:
     layout:
       welcome: "Bienvenue chez %{name} !"
       staff:
-        content: "Pour vous l'expérience %{name} démarre dès maintenant ! Notre équipe est mobilisée pour garantir son succès."
+        content: "Pour vous l'expérience %{name} démarre dès maintenant !
+        Notre équipe est mobilisée pour garantir son succès."
         greetings: "Bien à vous,"
         signature: "L'équipe %{name}"
       links:
@@ -1122,19 +1123,19 @@ fr:
         link: "Connexion"
   plannings:
     menu:
-      plannings: Plannings
+      plannings: Plans
       plannings_limit:
-        menu_message: Nombre conseillé de plannings atteint
+        menu_message: Nombre conseillé de plans atteint
     index:
-      title: Liste plannings
-      new: Nouveau planning
+      title: Liste plans de tournées
+      new: Nouveau plan
       export_selection: Exporter sélection
       export:
         icalendar: Agenda iCal
         icalendar_email: Agenda iCal par email
         spreadsheet: Tableur CSV / Excel
-        none_planning: Veuillez sélectionner au moins un planning à exporter
-      list_message: "Vous avez atteint la limite conseillée de plannings associés à votre compte (Limite: %{limit})"
+        none_planning: Veuillez sélectionner au moins un plan à exporter
+      list_message: "Vous avez atteint la limite conseillée de plans de tournées associés à votre compte (Limite : %{limit})"
     edit:
       vehicles: Véhicules
       current_position: 'Position véhicule :'
@@ -1145,35 +1146,32 @@ fr:
         success: Zonages appliqués avec succès
         fail: Échec lors de l'application des zonages
         action: Appliquer Zonages
-      zoning_new: Créer un nouveau zonage depuis ce planning
-      zoning_edit: Modifier ce zonage depuis ce planning
+      zoning_new: Créer un nouveau zonage depuis ce plan de tournées
+      zoning_edit: Modifier ce zonage depuis ce plan de tournées
       last_sent_to: Envoi
-      title: Modifier planning
+      title: Modifier plan
       stops: arrêts
-      without_stops_title: Les arrêts de ce planning volumineux n'ont pas été chargés
+      without_stops_title: Les arrêts de ce plan de tournées volumineux n'ont pas été chargés
         pour améliorer les performances de l'affichage
       load_stops_out_of_route: Charger les arrêts non planifiés
       load_stops: Charger les arrêts de cette tournée
       optimized_at: Optimisé
       optimize_global:
         title: Optimisation globale
-        all_help: Optimiser le planning dans son ensemble, pour tous les arrêts, excepté
-          les tournées verrouillées (vos arrêts pourront être attribués à une autre
-          tournée qu'actuellement)
-        active_help: Optimiser le planning dans son ensemble, uniquement pour les
-          arrêts actifs, excepté les tournées verrouillées (vos arrêts pourront être
-          attribués à une autre tournée qu'actuellement)
+        all_help: Optimiser le plan de tournées dans son ensemble excepté les tournées verrouillées
+          (vos arrêts pourront être attribués à une autre tournée qu'actuellement), en déplaçant tous les arrêts même inactifs
+        active_help: Optimiser le plan de tournées dans son ensemble excepté les tournées verrouillées
+          (vos arrêts pourront être attribués à une autre tournée qu'actuellement), en déplaçant uniquement les arrêts actifs
         all_stops: Optimiser avec les arrêts inactifs
         active_stops: Uniquement les arrêts actifs
-        confirm: Optimiser l'ensemble du planning ? (vos arrêts pourront être attribués
+        confirm: Optimiser l'ensemble du plan de tournées ? (vos arrêts pourront être attribués
           à une autre tournée qu'actuellement)
       optimize_each:
         title: Optimisation de chaque tournée
-        all_help: Optimiser les tournées, pour tous les arrêts, non verrouillées du
-          planning une à une (vos arrêts resteront dans chaque tournée initiale)
-        active_help: Optimiser les tournées, uniquement pour les arrêts actifs, non
-          verrouillées du planning une à une (vos arrêts resteront dans chaque tournée
-          initiale)
+        all_help: Optimiser toutes les tournées non verrouillées une à une
+          (vos arrêts resteront dans chaque tournée initiale), en déplaçant tous les arrêts même inactifs
+        active_help: Optimiser toutes les tournées non verrouillées une à une
+          (vos arrêts resteront dans chaque tournée initiale), en déplaçant uniquement les arrêts actifs
         all_stops: Optimiser avec les arrêts inactifs
         active_stops: Uniquement les arrêts actifs
         confirm: Lancer un calcul d'optimisation pour chacune des tournées ? (vos
@@ -1185,12 +1183,12 @@ fr:
       optimize_complete: Optimisation terminée
       optimize_failed: Échec lors de l'optimisation
       zoning_confirm: Enregistrer et appliquer le nouveau zonage ? Les tournées du
-        planning vont être modifiées
+        plan vont être modifiées
       page_change_zoning_confirm: Souhaitez-vous quitter la page et perdre les changements
         de zonage ?
       route_placeholder: Réf. de la tournée
       service_time: Durées de service
-      exports: Exporter le planning
+      exports: Exporter le plan de tournées
       stop_status:
         planned: Planifié
         started: Démarré
@@ -1234,10 +1232,10 @@ fr:
         zoom_in: Augmenter le zoom
         zoom_out: Diminuer le zoom
       reverse_order: Inverser l'ordre des arrêts
-      open_planning_panel: Déployer le panneau du planning
-      collapse_planning_panel: Minifier le panneau du planning
+      open_planning_panel: Déployer le panneau du plan de tournées
+      collapse_planning_panel: Minifier le panneau du plan de tournées
       refresh: Actualiser
-      refresh_help: Des paramètres ou des clients utilisés par ce planning ont été
+      refresh_help: Des paramètres ou des clients utilisés par ce plan de tournées ont été
         modifiés, il est nécessaire de le recalculer
       outdated_zoning: Le zonage a été modifié. Appliquez à nouveau pour actualiser.
       stops_help: Arrêts planifiés / total
@@ -1247,8 +1245,8 @@ fr:
       out_of_route: Non planifiés
       toggle_help: Affiche ou cache les arrêts sur la carte
       locked_unplanned_help: Verrouille les non-planifiés pour les opérations globales
-        sur le planning
-      locked_help: Verrouille la tournée pour les opérations globales sur le planning
+        sur le plan de tournées
+      locked_help: Verrouille la tournée pour les opérations globales sur le plan de tournées
       vehicle_help: Paramétrer le véhicule
       export_help: Exporter la tournée
       route_stops_active_help: Sélectionner les arrêts actifs
@@ -1309,15 +1307,15 @@ fr:
           pour aller ou partir de la destination'
       dialog:
         refresh:
-          title: Actualiser le planning
+          title: Actualiser le plan de tournées
           confirm: Vous avez effectué des modifications qui nécessitent de recalculer
-            votre planning. Souhaitez-vous l'actualiser maintenant ?
+            votre plan de tournées. Souhaitez-vous l'actualiser maintenant ?
         optimizer:
           title: Optimisation
           in_progress: Processus en cours, merci de patienter.
           matrix: Calcul du distancier
           optimize: Optimisation
-          routes: Actualisation du planning
+          routes: Actualisation du plan
           attempts: 'Tentatives :'
           inqueue: Tâche d'optimisation en file d'attente
           no_solution: Pas de solution trouvée pour votre problème
@@ -1348,12 +1346,12 @@ fr:
           excel: format Excel CSV
           download: Télécharger
     new:
-      title: Nouveau planning
+      title: Nouveau plan de tournées
       dialog:
-        new_planning: Création du nouveau planning en cours, merci de patienter
+        new_planning: Création du nouveau plan de tournées en cours, merci de patienter
     export_file:
-      ref_planning: référence planning
-      planning: planning
+      ref_planning: référence plan
+      planning: plan
       ref: référence
       vehicle: véhicule
       route: tournée
@@ -1396,10 +1394,10 @@ fr:
     form:
       ref_help: Référence libre
       begin_end_date: Période de validité
-      begin_end_date_help: Période durant laquelle le planning est valide
-      tags_help: Restreint les visites / clients dans le planning (les visites/clients
+      begin_end_date_help: Période durant laquelle le plan est valide
+      tags_help: Restreint les visites / clients dans le plan (les visites/clients
         doivent soit avoir l'ensemble de tous ces libellés (TOUS), soit un des libellés
-        sélectionnés (OU), pour apparaître dans le planning).
+        sélectionnés (OU), pour apparaître dans le plan).
       order_array: Comm.
       zonings_help: Permet d'affecter automatiquement des visites/clients à des véhicules
         suivant des zones géographiques prédéfinies.
@@ -1888,14 +1886,14 @@ fr:
     form:
       hide_out_of_route: Cacher les clients non planifiés
       all_destinations: Afficher tous les clients
-      from_planning_help: Vous pouvez aussi afficher les clients d'un unique planning
-        en modifiant ce zonage depuis le planning
-      stops_from_planning: Clients chargés depuis le planning « %{s} »
+      from_planning_help: Vous pouvez aussi afficher les clients d'un unique plan de tournées
+        en modifiant ce zonage depuis le plan en question
+      stops_from_planning: Clients chargés depuis le plan « %{s} »
       generate: Générer
       automatic:
         one: 'Automatique : 1 zone'
         other: 'Automatique : %{count} zones'
-      from_planning: Depuis les tournées du planning
+      from_planning: Depuis le plan de tournées
       zone_placeholder: Zone
       zone_vehicle: Véhicule
       avoid_zone: Ne pas circuler dans cette zone
@@ -2018,7 +2016,7 @@ fr:
       _yes: oui
       _no: non
     subscribe:
-      planning_unavailable: Le planning n’est pas modifiable pour le moment, la date
+      planning_unavailable: Le plan de tournées n’est pas modifiable pour le moment, la date
         de votre abonnement a expiré. Veuillez contacter votre revendeur afin de renouveler
         votre abonnement.
       expiration_date: "Votre période d'utilisation expire bientôt. Date de fin le %{date}. Si vous souhaitez le renouveler vous pouvez contacter %{reseller}."
