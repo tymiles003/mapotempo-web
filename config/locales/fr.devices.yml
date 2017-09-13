@@ -56,6 +56,10 @@ fr:
           suivi_de_flotte:
             username: "Utilisateur"
             password: "Mot de passe"
+          notico:
+            ftp_url: "Adresse du serveur FTP"
+            username: "Utilisateur"
+            password: "Mot de passe"
   errors:
     tomtom:
       access_denied: Non Autorisé. 'Accès complet aux commandes' n'est pas activé
@@ -114,6 +118,8 @@ fr:
           help: "Permet d'envoyer les plannings vers les GPS Orange Fleet Performance"
         masternaut:
           help: "Permet d'envoyer les plannings vers les GPS Masternaut."
+        notico:
+          help: "Permet d'envoyer les plannings vers l'application Notico."
   plannings:
     edit:
       teksat_send:
@@ -168,6 +174,10 @@ fr:
         action: Envoyer à SuiviDeFlote
         success: Envoyé à SuiviDeFlote avec succès
         fail: Échec lors de l'envoi vers SuiviDeFlote
+      notico_send:
+        action: Envoyer à Notico
+        success: Envoyé à Notico avec succès
+        fail: Échec lors de l'envoi vers Notico
       dialog:
         orange:
           title: Orange Fleet Performance
@@ -186,4 +196,7 @@ fr:
           in_progress: Veuillez patienter
         trimble:
           title: Trimble
+          in_progress: Veuillez patienter
+        notico:
+          title: Notico
           in_progress: Veuillez patienter

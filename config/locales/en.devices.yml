@@ -56,6 +56,10 @@ en:
           suivi_de_flotte:
             username: "Username"
             password: "Password"
+          notico:
+            ftp_url: "FTP server address"
+            username: "Username"
+            password: "Password"
   errors:
     tomtom:
       access_denied: Access denied. 'Full Access Orders' is not enabled in WEBFLEET
@@ -112,6 +116,8 @@ en:
           help: "Allows sending plans to Orange Fleet Performance devices"
         masternaut:
           help: "Allows sending plans to Masternaut devices"
+        notico:
+          help: "Allows sending plans to Notico application."
   plannings:
     edit:
       teksat_send:
@@ -166,6 +172,10 @@ en:
         action: Send to SuiviDeFlote
         success: Sent to SuiviDeFlote successfully
         fail: Failed to send to SuiviDeFlote
+      notico_send:
+        action: Send to Notico
+        success: Sent to Notico successfully
+        fail: Failed to send to Notico
       dialog:
         orange:
           title: Orange Fleet Performance
@@ -184,4 +194,7 @@ en:
           in_progress: Please wait
         trimble:
           title: Trimble
+          in_progress: Please wait
+        notico:
+          title: Notico
           in_progress: Please wait
