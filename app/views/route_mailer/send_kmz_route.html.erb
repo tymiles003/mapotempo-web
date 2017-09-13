@@ -3,43 +3,51 @@
     <td width="50">&nbsp;</td>
     <td width="1000" align="center">
       <div align="justify">
-            <p><%= t('.hello') + ',' %></p>
+        <p><%= t('.hello') + ',' %></p>
 
-            <p><%= t '.content', s: vehicle.customer.reseller.name %></p>
+        <p><%= t '.content', s: vehicle.customer.reseller.name %></p>
 
-            <br/>
+        <br/>
 
-            <ul>
-              <li>
-                <%= t('.vehicle', name: vehicle.name) %>
-              </li>
-              <li>
-                <%= t('.planning', name: route.planning.name, date: route.planning.date ? "(#{l(route.planning.date)})" : '') %>
-              </li>
-              <% if route.planning.ref %>
-                <li>
-                  <%= t('.planning_ref', ref: route.planning.ref) %>
-                </li>
-              <% end %>
-              <% if route.ref %>
-                <li>
-                  <%= t('.route_ref', ref: route.ref) %>
-                </li>
-              <% end %>
-              <% if route.planning.customer.enable_orders && route.planning.order_array %>
-                <li>
-                  <%= t('.order_array', name: route.planning.order_array.name) %>
-                </li>
-              <% end %>
-            </ul>
+        <ul>
+          <li>
+            <%= t('.vehicle', name: vehicle.name) %>
+          </li>
+          <li>
+            <%= t('.planning', name: route.planning.name, date: route.planning.date ? "(#{l(route.planning.date)})" : '') %>
+          </li>
+          <% if route.planning.ref %>
+            <li>
+              <%= t('.planning_ref', ref: route.planning.ref) %>
+            </li>
+          <% end %>
+          <% if route.ref %>
+            <li>
+              <%= t('.route_ref', ref: route.ref) %>
+            </li>
+          <% end %>
+          <% if route.planning.customer.enable_orders && route.planning.order_array %>
+            <li>
+              <%= t('.order_array', name: route.planning.order_array.name) %>
+            </li>
+          <% end %>
+        </ul>
 
-            <br/>
+        <br/>
 
-            <p>
-              <%= t('.greetings').html_safe %>
-            </p>
+        <p>
+          <%= I18n.t('user_mailer.layout.staff.greetings').html_safe %>
+        </p>
+        <p class="signature">
+          <%= I18n.t('user_mailer.layout.staff.signature', name: @name).html_safe %>
+        </p>
       </div>
     </td>
     <td width="50">&nbsp;</td>
   </tr>
 </table>
+
+<% content_for :footer do %>
+  <td align="center" valign="top" height="100px" width="100%" style="background-color: #ffffff;  border-top: 1px solid #e5e5e5; border-bottom: 1px solid #e5e5e5;">
+  </td>
+<% end %>

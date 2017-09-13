@@ -1043,6 +1043,7 @@ en:
       total: total
   route_mailer:
     send_kmz_route:
+      title: "Planning KMZ export"
       hello: Hello
       content: A KMZ file containing route informations has been attached to this
         E-Mail from %{s}.
@@ -1051,7 +1052,6 @@ en:
       planning_ref: "Plan reference: %{ref}"
       route_ref: "Route reference: %{ref}"
       order_array: "Orders: %{name}"
-      greetings: "Kind regards"
     send_computed_ics_route:
       title: "Planning iCalendar export"
       hello: Hello
@@ -1062,7 +1062,6 @@ en:
       route_ref: "Route reference: %{ref}"
       order_array: "Orders: %{name}"
       link: "Download link: <a href=%{link}>iCalendar Plan</a>"
-      greetings: "Kind regards"
   user_mailer:
     layout:
       welcome: "Welcome to %{name}!"
