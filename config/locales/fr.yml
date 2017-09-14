@@ -822,7 +822,7 @@ fr:
           ?
       visit:
         enable_multi_visits: Besoin de plusieurs visites pour le même client ? Contactez
-          l'administrateur pour avoir accès à cette fonctionnalité.
+          le support pour avoir accès à cette fonctionnalité.
         new: Nouvelle visite
         new_help: Nouvelle visite si vous vous rendez plusieurs fois chez ce client.
     edit:
@@ -1922,6 +1922,8 @@ fr:
         validate: Générer
   unauthorized:
     default: Vous n'êtes pas autorisé à accéder à cette page
+  unlock_operation:
+    default: Contactez le support pour activer cette fonctionnalité
   web:
     key_not_found: Votre clé de connexion n'est pas reconnue
     slow_browser: Vous utilisez %{n} qui ralentit l'application. Nous vous invitons

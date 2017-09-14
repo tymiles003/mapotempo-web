@@ -811,7 +811,7 @@ en:
           results?
       visit:
         enable_multi_visits: Need more than one visit for this destination? Please
-          contact support.
+          contact support to activate this feature.
         new: New visit
         new_help: New visit if you go to this destination several times.
     edit:
@@ -1877,6 +1877,8 @@ en:
         validate: Generate
   unauthorized:
     default: You are not authorized to access this page
+  unlock_operation:
+    default: Contact support to activate this feature
   web:
     key_not_found: Your connection key is invalid
     slow_browser: You use %{n} which slows down application. We recommand to use another
