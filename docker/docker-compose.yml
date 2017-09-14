@@ -24,6 +24,7 @@ services:
     volumes:
       - ./postgres:/var/lib/postgresql/data
     restart: always
+
   redis-cache:
     image: redis:${REDIS_VERSION:-3.2-alpine}
     restart: always

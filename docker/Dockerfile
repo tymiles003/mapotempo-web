@@ -6,6 +6,7 @@ ARG TAG
 ENV TAG ${TAG:-master}
 
 ENV RAILS_ENV production
+ENV REDIS_HOST redis-cache
 
 ADD . /srv/app/
 
