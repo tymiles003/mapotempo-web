@@ -252,7 +252,8 @@ class V01::Customers < Grape::API
       if @current_user.admin?
         customer = @current_user.reseller.customers.where(ParseIdsRefs.read(params[:id])).first!
         customer.exclude_users = params[:exclude_users]
-        customer.duplicate
+        customer = customer.duplicate
+        customer.save!(validate: false)
 
         present customer, with: V01::Entities::CustomerAdmin
       else

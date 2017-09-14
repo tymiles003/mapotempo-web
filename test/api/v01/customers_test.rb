@@ -193,6 +193,7 @@ class V01::CustomerTest < ActiveSupport::TestCase
   test 'should duplicate customer' do
     assert_difference('Customer.count', +1) do
       put api_admin(@customer.id.to_s + '/duplicate')
+      assert_equal Customer.last.id, JSON.parse(last_response.body, symbolize_names: true)[:id], last_response.body
       assert last_response.ok?
     end
   end
@@ -206,11 +207,11 @@ class V01::CustomerTest < ActiveSupport::TestCase
       assert_equal 403, last_response.status, 'Bad response: ' + last_response.body
     end
   end
-  
+
   test 'Should duplicate customer without users' do
     assert_difference 'Customer.count', +1 do
       assert_no_difference 'User.count' do
-        put api_admin(@customer.id.to_s + '/duplicate', 'JSON', {'exclude_users' => true})
+        put api_admin(@customer.id.to_s + '/duplicate', 'json', {'exclude_users' => true})
       end
     end
   end
