@@ -668,7 +668,7 @@ fr:
       status_no_user: Pas d'utilisateur
       status_no_sign_in_user: Utilisateur jamais connecté
       status_inactive_user: Utilisateur inactif
-      created_end_subscription: (Créé) Fin de souscription
+      created_end_subscription: Créé - Fin de souscription
     new:
       title: Nouveau compte client
     destroy:
