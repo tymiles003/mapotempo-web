@@ -4,7 +4,7 @@ services:
     build:
       context: ..
       dockerfile: docker/Dockerfile
-    image: mapotempo/mapotempo-web:${MAPOTEMPO_VERSION:-latest}
+    image: mapotempo/mapotempo-web:${MAPOTEMPO_VERSION:-54.1.1} # Warning, delayed-job must have the same version
     ports:
       - "8080:80" # HOST:CONTAINER, edit only HOST part
     volumes:
@@ -34,7 +34,7 @@ services:
     build:
       context: ..
       dockerfile: docker/Dockerfile
-    image: mapotempo/mapotempo-web:${MAPOTEMPO_VERSION:-54.1.0}
+    image: mapotempo/mapotempo-web:${MAPOTEMPO_VERSION:-54.1.1}
     ports: []
     volumes:
       - ./mapotempo.rb:/srv/app/config/initializers/mapotempo.rb
