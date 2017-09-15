@@ -62,7 +62,7 @@ class V01::CustomerTest < ActiveSupport::TestCase
   test 'should update a customer' do
     @customer.devices[:tomtom] = {enable: true}
     @customer.save!
-    put api(@customer.id), { devices: {tomtom: {user: 'user_abcd'}}, ref: 'ref-abcd', router_options: {motorway: true, trailers: 2, weight: 10, hazardous_goods: 'gas'} }
+    put api(@customer.id), { devices: {tomtom: {user: "user_abcd"}}.to_json, ref: 'ref-abcd', router_options: {motorway: true, trailers: 2, weight: 10, hazardous_goods: 'gas'} }
     assert last_response.ok?, last_response.body
 
     get api(@customer.id)
@@ -97,7 +97,7 @@ class V01::CustomerTest < ActiveSupport::TestCase
       assert_difference('VehicleUsage.count', @customer.vehicle_usage_sets.size) do
         assert_difference('Route.count', @customer.plannings.length) do
           Routers::RouterWrapper.stub_any_instance(:compute_batch, lambda { |url, mode, dimension, segments, options| segments.collect{ |i| [1, 1, '_ibE_seK_seK_seK'] } } ) do
-            put api_admin(@customer.id), { devices: {tomtom_id: 'user_abcd'}, ref: 'ref-abcd', max_vehicles: @customer.max_vehicles + 1 }
+            put api_admin(@customer.id), { devices: {tomtom_id: "user_abcd"}.to_json, ref: 'ref-abcd', max_vehicles: @customer.max_vehicles + 1 }
             assert last_response.ok?, last_response.body
           end
         end

@@ -23,8 +23,12 @@ class V01::Customers < Grape::API
     def customer_params
       p = ActionController::Parameters.new(params)
       p = p[:customer] if p.key?(:customer)
+
       customer = @current_user.admin? && params[:id] ? @current_user.reseller.customers.where(ParseIdsRefs.read(params[:id])).first! : @current_user.customer
-      p[:devices] = customer[:devices].deep_merge(p[:devices] || {}) if customer && customer[:devices].size > 0
+
+      p[:devices] = p[:devices] ? JSON.parse(p[:devices], symbolize_names: true) : {}
+      p[:devices] = customer[:devices].deep_merge(p[:devices]) if customer && customer[:devices].size > 0
+
       if @current_user.admin?
         p.permit(:ref, :name, :end_subscription, :max_vehicles, :take_over, :print_planning_annotating, :print_header, :router_id, :router_dimension, :test, :optimization_cluster_size, :optimization_time, :optimization_stop_soft_upper_bound, :optimization_vehicle_soft_upper_bound, :cost_waiting_time, :profile_id, :default_country, :reseller_id, :print_stop_time, :speed_multiplicator, :enable_references, :enable_multi_vehicle_usage_sets, :enable_multi_visits, :advanced_options, :enable_external_callback, :external_callback_url, :external_callback_name, :description, :enable_global_optimization, :enable_vehicle_position, :enable_stop_status, :optimization_force_start, router_options: [:time, :distance, :isochrone, :isodistance, :avoid_zones, :motorway, :toll, :trailers, :weight, :weight_per_axle, :height, :width, :length, :hazardous_goods, :max_walk_distance, :approach, :snap, :strict_restriction], devices: permit_recursive_params(p[:devices]))
       else
@@ -95,7 +99,8 @@ class V01::Customers < Grape::API
         :job_store_geocoding_id,
         :job_optimizer_id,
         :router_options,
-        :take_over
+        :take_over,
+        :devices
       )
 
       optional :router_options, type: Hash do
