@@ -27,10 +27,11 @@ class OrderArrayTest < ActiveSupport::TestCase
 
   test 'should duplicate order array' do
     o = order_arrays(:order_array_one)
-    assert_equal 2, o.orders[0].products.size
-
-    oo = o.duplicate
-    assert_equal 2, oo.orders[0].products.size
+    assert_no_difference('Product.count') do
+      oo = o.duplicate
+      oo.save
+      assert_equal 2, oo.orders.map{ |o_| o_.products.size }.inject(&:+)
+    end
   end
 
   test 'should add destination with order array' do
