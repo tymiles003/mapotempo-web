@@ -58,6 +58,7 @@ fr:
             password: "Mot de passe"
           notico:
             ftp_url: "Adresse du serveur FTP"
+            ftp_path: "Répertoire sur le serveur FTP"
             username: "Utilisateur"
             password: "Mot de passe"
   errors:
@@ -178,6 +179,10 @@ fr:
         action: Envoyer à Notico
         success: Envoyé à Notico avec succès
         fail: Échec lors de l'envoi vers Notico
+      notico_clear:
+        action: Vider Notico
+        success: Notico a été vidé avec succès
+        fail: Échec lors de la suppression de Notico
       dialog:
         orange:
           title: Orange Fleet Performance

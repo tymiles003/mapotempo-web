@@ -31,6 +31,7 @@ class Notico < DeviceBase
         forms: {
             settings: {
                 ftp_url: :text,
+                ftp_path: :text,
                 username: :text,
                 password: :password
             },
@@ -105,7 +106,7 @@ class Notico < DeviceBase
       ftp.login(credentials[:username], credentials[:password])
 
       if message[:filename] && message[:xml_content]
-        ftp.chdir('out/')
+        ftp.chdir(credentials[:ftp_path])
 
         temp_file = Tempfile.new(message[:filename])
         temp_file.write(message[:xml_content])

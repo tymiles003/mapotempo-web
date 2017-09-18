@@ -58,6 +58,7 @@ en:
             password: "Password"
           notico:
             ftp_url: "FTP server address"
+            ftp_path: "Path on FTP server"
             username: "Username"
             password: "Password"
   errors:
@@ -176,6 +177,10 @@ en:
         action: Send to Notico
         success: Sent to Notico successfully
         fail: Failed to send to Notico
+      notico_clear:
+        action: Clear Notico
+        success: Notico trip has been cleared successfully
+        fail: Failed to clear Notico
       dialog:
         orange:
           title: Orange Fleet Performance
