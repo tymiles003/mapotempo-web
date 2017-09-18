@@ -745,8 +745,7 @@ var plannings_edit = function(params) {
           },
           success: function() {
             notice(I18n.t('plannings.edit.optimize_complete'));
-          },
-          skipCallbacks: true
+          }
         });
       },
       complete: completeAjaxMap,
