@@ -1125,7 +1125,7 @@ fr:
     menu:
       plannings: Plans
       plannings_limit:
-        menu_message: Nombre conseillé de plans atteint
+        menu_message: Vous possédez trop de plans. Retrouvez tous vos plans en cliquant sur Liste.
     index:
       title: Liste plans de tournées
       new: Nouveau plan

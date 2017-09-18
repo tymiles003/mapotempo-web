@@ -1099,7 +1099,7 @@ en:
     menu:
       plannings: Plans
       plannings_limit:
-        menu_message: Advised limit of plans reached
+        menu_message: You have too many plans. Find all your plans by clicking on List.
     index:
       title: Listing plans
       new: New Plan
