@@ -428,7 +428,7 @@ class Route < ApplicationRecord
   end
 
   def size_active
-    vehicle_usage_id ? (stops.loaded? ? stops.select(&:active).size : stops.select(:active).count) : 0
+    vehicle_usage_id ? (stops.loaded? ? stops.select(&:active).size : stops.where(active: true).count) : 0
   end
 
   def no_geolocalization
