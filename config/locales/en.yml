@@ -264,13 +264,18 @@ en:
       reseller:
         host: Host
         name: Name
+        application_name: Website name
+        website_url: Website URL
         welcome_url: Welcome URL
         help_url: Help URL
         contact_url: Contact URL
+        subscription_url: Subscription URL
+        facebook_url: Facebook URL
+        twitter_url: Twitter URL
+        linkedin_url: LinkedIn URL
         logo_large: Large logo
         logo_small: Small logo
         favicon: Favicon
-        website_url: Website URL
         url_protocol: Connection type
       route:
         distance: Distance
@@ -597,6 +602,9 @@ en:
       form:
         host_help: Web URL hostname and port used to match this reseller
         name_help: Reseller brand name
+        application_name_help: Reseller Website name
+        website_url_help: 'Website address. It''s possible to use "{LG}" which will
+          be replaced by language like « en », « fr » (ie: https://www.mapotempo.com/{LG}/).'
         welcome_url_help: 'Web page address included as html as "iframe" on welcome
           page. It''s possible to use "{LG}" which will be replaced by language like
           « en », « fr » (ie: https://www.mapotempo.com/{LG}/app-news).'
@@ -604,12 +612,14 @@ en:
           "{LG}" which will be replaced by language like « en », « fr » (ie: https://www.mapotempo.com/{LG}/help-center).'
         contact_url_help: 'Web page address with contact form. It''s possible to use
           "{LG}" which will be replaced by language like « en », « fr » (ie: https://www.mapotempo.com/{LG}/contact-support/).'
+        subscription_url_help: "Web page address with subscription content for a test customer."
+        facebook_url_help: Reseller Facebook link
+        twitter_url_help: Reseller Twitter link
+        linkedin_url_help: Reseller linkedIn link
         logo_large_help: Full page resizable logo, preferably in SVG, alternatively
           in PNG format.
         logo_small_help: Head menu logo, 150×40 pixels in SVG or PNG format.
         favicon_help: Website icon, 16×16 pixels in PNG or ICO format.
-        website_url_help: 'Website address. It''s possible to use "{LG}" which will
-          be replaced by language like « en », « fr » (ie: https://www.mapotempo.com/{LG}/).'
         protocol_url_http: HTTP
         protocol_url_https: HTTPS
     users:

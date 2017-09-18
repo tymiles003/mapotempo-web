@@ -26,6 +26,14 @@
     <p class="help-block"><%= t '.name_help' %></p>
   <% end %>
 
+  <%= f.text_field :application_name do %>
+    <p class="help-block"><%= t '.application_name_help' %></p>
+  <% end %>
+
+  <%= f.text_field :website_url do %>
+    <p class="help-block"><%= t '.website_url_help' %></p>
+  <% end %>
+
   <%= f.text_field :welcome_url do %>
     <p class="help-block"><%= t '.welcome_url_help' %></p>
   <% end %>
@@ -38,8 +46,20 @@
     <p class="help-block"><%= t '.contact_url_help' %></p>
   <% end %>
 
-  <%= f.text_field :website_url do %>
-    <p class="help-block"><%= t '.website_url_help' %></p>
+  <%= f.text_field :subscription_url do %>
+    <p class="help-block"><%= t '.subscription_url_help' %></p>
+  <% end %>
+
+  <%= f.text_field :facebook_url do %>
+    <p class="help-block"><%= t '.facebook_url_help' %></p>
+  <% end %>
+
+  <%= f.text_field :twitter_url do %>
+    <p class="help-block"><%= t '.twitter_url_help' %></p>
+  <% end %>
+
+  <%= f.text_field :linkedin_url do %>
+    <p class="help-block"><%= t '.linkedin_url_help' %></p>
   <% end %>
 
   <%= f.file_field :logo_large do %>
