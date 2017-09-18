@@ -47,37 +47,76 @@ class Notico < DeviceBase
   end
 
   def send_route(customer, route, options = {})
+    interventions = {}
+
+    route.stops.select { |s| s.active && s.position? && !s.is_a?(StopRest) }.map do |stop|
+      quantities = customer.enable_orders ? (stop.order ? stop.order.products.collect(&:code).join(',') : '') : customer.deliverable_units.map { |du| stop.visit.default_quantities[du.id] && "x#{stop.visit.default_quantities[du.id]}#{du.label}" }.compact.join(' ')
+      labels = stop.visit.destination.tags.pluck(:label).join(', ')
+      if interventions[stop.visit.destination.ref] && interventions[stop.visit.destination.ref][:tourId] == stop.route_id
+        interventions[stop.visit.destination.ref][:items] << {
+            col_1: stop.visit.ref,
+            col_2: stop.comment || '',
+            col_3: quantities,
+            col_4: labels
+        }
+      else
+        interventions[stop.visit.destination.ref] = {
+            interId: stop.base_id,
+            contractId: stop.visit.destination.ref,
+            tourId: stop.route_id,
+            agentId: route.vehicle_usage.vehicle.devices[:agentId],
+
+            name: stop.name,
+            language: I18n.locale.to_s.upcase,
+            address: [stop.street, stop.detail].compact.join(' '),
+            zip_code: stop.postalcode,
+            city: stop.city,
+            country: stop.country || customer.default_country,
+            phone: stop.phone_number || '',
+
+            dt_firststart: p_time(route, stop.time).strftime('%F %H:%M'),
+            dt_firstend: p_time(route, stop.duration ? stop.time + stop.duration.seconds : stop.time).strftime('%F %H:%M'),
+
+            items: [{
+                        col_1: stop.visit.ref,
+                        col_2: stop.comment || '',
+                        col_3: quantities,
+                        col_4: labels
+                    }]
+        }
+      end
+    end
+
     builder = Nokogiri::XML::Builder.new(encoding: 'UTF-8') do |xml|
       xml.interventions {
-        route.stops.select { |s| s.active && s.position? && !s.is_a?(StopRest) }.collect do |stop|
-          xml.intervention(interId: stop.base_id, tourId: stop.route_id, agentId: route.vehicle_usage.vehicle.devices[:agentId], action: options[:delete] ? 'delete' : nil) {
+        interventions.each do |contractId, data|
+          xml.intervention(contractId: contractId, interId: data[:interId], tourId: data[:tourId], agentId: data[:agentId], action: options[:delete] ? 'delete' : nil) {
             unless options[:delete]
               xml.customer {
-                xml.name stop.name
-                xml.language I18n.locale.to_s.upcase
-                xml.address [stop.street, stop.detail].compact.join(' ')
-                xml.zip_code stop.postalcode
-                xml.city stop.city
-                xml.country stop.country || customer.default_country
-                xml.phone stop.phone_number || ''
-                xml.instructions stop.comment if stop.comment
+                xml.name data[:name]
+                xml.language data[:language]
+                xml.address data[:address]
+                xml.zip_code data[:zip_code]
+                xml.city data[:city]
+                xml.country data[:country]
+                xml.phone data[:phone]
               }
 
-              start_time = stop.time
-              end_time = stop.duration ? stop.time + stop.duration.seconds : stop.time
-              xml.dt_firststart p_time(route, start_time).strftime('%F %H:%M')
-              xml.dt_firstend p_time(route, end_time).strftime('%F %H:%M')
+              xml.dt_firststart data[:dt_firststart]
+              xml.dt_firstend data[:dt_firstend]
 
               xml.todo {
-                xml.item {
-                  xml.col_1 { xml.cdata(stop.ref || '') }
-                  xml.col_2 { xml.cdata((customer.enable_orders ? (stop.order ? stop.order.products.collect(&:code).join(',') : '') : customer.deliverable_units.map { |du| stop.visit.default_quantities[du.id] && "x#{stop.visit.default_quantities[du.id]}#{du.label}" }.compact.join(' '))) }
-                  xml.col_3 ''
-                  xml.col_4 ''
+                data[:items].map { |item|
+                  xml.item {
+                    xml.col_1 { xml.cdata(item[:col_1]) }
+                    xml.col_2 { xml.cdata(item[:col_2]) }
+                    xml.col_3 { xml.cdata(item[:col_3]) }
+                    xml.col_4 { xml.cdata(item[:col_4]) }
+                  }
                 }
               }
 
-              xml.signature 'non'
+              xml.signature 'oui'
             end
           }
         end
