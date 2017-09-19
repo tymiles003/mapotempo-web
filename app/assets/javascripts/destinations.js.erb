@@ -834,6 +834,8 @@ var destinations_index = function(params, api) {
       spiderfyCluster(null, id, move, function(id) {
         markers[id].setIcon(iconOver)
                    .setZIndexOffset(100);
+
+        markersLayers.refreshClusters();
       });
       iconOverStack.push(id);
     }
@@ -848,12 +850,10 @@ var destinations_index = function(params, api) {
   };
 
   var spiderfyCluster = function(layer, id, move, callback) {
-    var localCluster;
+    var localCluster = markersLayers.hasLayer(markers[id]) && markers[id].__parent;
 
-    markersLayers.refreshClusters();
-    localCluster = markers[id].__parent;
     if (move) {
-      if (localCluster && 'spiderfy' in localCluster) {
+      if (localCluster && (localCluster instanceof L.MarkerCluster)) {
         markersLayers.zoomToShowLayer(markers[id], function() {
           map.setView(markers[id].getLatLng(), map.getZoom(), { animate: true, duration: 600 });
           callback(id);
