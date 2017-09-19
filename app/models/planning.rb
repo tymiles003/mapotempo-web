@@ -545,11 +545,11 @@ class Planning < ApplicationRecord
   end
 
   def prefered_route_and_index(available_routes, stop, options = {})
-    options[:active_only] = false if options[:active_only] == nil
+    options[:active_only] = true if options[:active_only] == nil
     cache_sum_out_of_window = Hash.new{ |h, k| h[k] = k.sum_out_of_window }
 
     available_routes.flat_map { |route|
-      stops = route.stops.select { |s| (!options[:active_only] ? s.active? : true) && s.position? }
+      stops = route.stops.select { |s| (options[:active_only] ? s.active? : true) && s.position? }
       stops.map { |s| [s.position, route, s.index] } +
         [stops.empty? ? [route.vehicle_usage.try(:default_store_start), route, 1] : nil,
         ((stop.route_id != route.id) && route.vehicle_usage.try(:default_store_stop).try(:position?)) ? [route.vehicle_usage.default_store_stop, route, route.stops.size + 1] : nil]
