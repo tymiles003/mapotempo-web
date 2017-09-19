@@ -123,7 +123,7 @@
             <% if user_signed_in? %>
               <% if current_user.customer && request.env['reseller'].subscription_url && current_user.customer.test? %>
                 <li class="subscription">
-                  <%= link_to request.env['reseller'].subscription_url do %>
+                  <%= link_to request.env['reseller'].subscription_url.gsub('{LG}', I18n.locale.to_s), target: '_blank' do %>
                     <i class="fa fa-rocket fa-fw"></i> <span class="menu_label"><%= t 'web.subscription' %></span>
                   <% end %>
                 </li>
