@@ -28,15 +28,12 @@ fr:
             account: "Compte"
             user: "Utilisateur"
             password: "Mot de passe"
-            tomtom_id: "TomTom"
           masternaut:
             username: "Nom d'utilisateur"
             password: "Mot de passe"
-            masternaut_ref: "Ref. véhicule Masternaut"
           orange:
             user: "Utilisateur"
             password: "Mot de passe"
-            orange_id: "Orange"
           alyacom:
             association: "Identifiant"
             alyacom_api_key: "Clé d'API"
@@ -45,7 +42,6 @@ fr:
             username: "Nom d'utilisateur"
             password: "Mot de passe"
             url: "URL"
-            teksat_id: "Teksat"
           trimble:
             customer: "Compte client"
             username: "Utilisateur"
@@ -61,6 +57,24 @@ fr:
             ftp_path: "Répertoire sur le serveur FTP"
             username: "Utilisateur"
             password: "Mot de passe"
+      vehicle:
+        devices:
+          locster:
+            locster_ref: "Ref. véhicule Locster"
+          masternaut:
+            masternaut_ref: "Ref. véhicule Masternaut"
+          orange:
+            orange_id: "ID véhicule orange"
+          suivi_de_flotte:
+            suivi_de_flotte_id: "ID véhicule suivi de flotte"
+          teksat:
+            teksat_id: "ID véhicule Teksat"
+          tomtom:
+            tomtom_id: "ID véhicule TomTom"
+          trimble:
+            trimble_ref: "Ref. véhicule Trimble"
+          notico:
+            agent_id: "ID Livreur Notico Deliv"
   errors:
     tomtom:
       access_denied: Non Autorisé. 'Accès complet aux commandes' n'est pas activé
@@ -120,7 +134,7 @@ fr:
         masternaut:
           help: "Permet d'envoyer les tournées vers les GPS Masternaut."
         notico:
-          help: "Permet d'envoyer les tournées vers l'application Notico."
+          help: "Permet d'envoyer les tournées vers l'application Notico Deliv."
   plannings:
     edit:
       teksat_send:
@@ -176,13 +190,13 @@ fr:
         success: Envoyé à SuiviDeFlote avec succès
         fail: Échec lors de l'envoi vers SuiviDeFlote
       notico_send:
-        action: Envoyer à Notico
-        success: Envoyé à Notico avec succès
-        fail: Échec lors de l'envoi vers Notico
+        action: Envoyer à Notico Deliv
+        success: Envoyé à Notico Deliv avec succès
+        fail: Échec lors de l'envoi vers Notico Deliv
       notico_clear:
-        action: Vider Notico
-        success: Notico a été vidé avec succès
-        fail: Échec lors de la suppression de Notico
+        action: Vider Notico Deliv
+        success: Notico Deliv a été vidé avec succès
+        fail: Échec lors de la suppression de Notico Deliv
       dialog:
         orange:
           title: Orange Fleet Performance
@@ -203,5 +217,5 @@ fr:
           title: Trimble
           in_progress: Veuillez patienter
         notico:
-          title: Notico
+          title: Notico Deliv
           in_progress: Veuillez patienter

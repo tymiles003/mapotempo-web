@@ -28,15 +28,12 @@ en:
             account: "Account name"
             user: "User"
             password: "Password"
-            tomtom_id: "TomTom"
           masternaut:
             username: "Username"
             password: "Password"
-            masternaut_ref: "Masternaut vehicle Ref."
           orange:
             user: "Username"
             password: "Password"
-            orange_id: "Orange"
           alyacom:
             association: "Identifier"
             alyacom_api_key: "API key"
@@ -45,7 +42,6 @@ en:
             username: "Username"
             password: "Password"
             url: "URL"
-            teksat_id: "Teksat"
           trimble:
             customer: "Customer"
             username: "Username"
@@ -61,6 +57,24 @@ en:
             ftp_path: "Path on FTP server"
             username: "Username"
             password: "Password"
+      vehicle:
+        devices:
+          locster:
+            locster_ref: "Locster vehicle Ref."
+          masternaut:
+            masternaut_ref: "Masternaut vehicle Ref."
+          orange:
+            orange_id: "Orange vehicle ID"
+          suivi_de_flotte:
+            suivi_de_flotte_id: "Suivi de flotte vehicle ID"
+          teksat:
+            teksat_id: "Teksat vehicle ID"
+          tomtom:
+            tomtom_id: "TomTom vehicle ID"
+          trimble:
+            trimble_ref: "Trimble vehicle Ref."
+          notico:
+            agent_id: "Notico Deliv delivery man ID"
   errors:
     tomtom:
       access_denied: Access denied. 'Full Access Orders' is not enabled in WEBFLEET
@@ -118,7 +132,7 @@ en:
         masternaut:
           help: "Allows sending routes to Masternaut devices"
         notico:
-          help: "Allows sending routes to Notico application."
+          help: "Allows sending routes to Notico Deliv application."
   plannings:
     edit:
       teksat_send:
@@ -174,13 +188,13 @@ en:
         success: Sent to SuiviDeFlote successfully
         fail: Failed to send to SuiviDeFlote
       notico_send:
-        action: Send to Notico
-        success: Sent to Notico successfully
-        fail: Failed to send to Notico
+        action: Send to Notico Deliv
+        success: Sent to Notico Deliv successfully
+        fail: Failed to send to Notico Deliv
       notico_clear:
-        action: Clear Notico
-        success: Notico trip has been cleared successfully
-        fail: Failed to clear Notico
+        action: Clear Notico Deliv
+        success: Notico Deliv trip has been cleared successfully
+        fail: Failed to clear Notico Deliv
       dialog:
         orange:
           title: Orange Fleet Performance
@@ -201,5 +215,5 @@ en:
           title: Trimble
           in_progress: Please wait
         notico:
-          title: Notico
+          title: Notico Deliv
           in_progress: Please wait

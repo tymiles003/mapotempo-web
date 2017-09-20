@@ -23,7 +23,7 @@ class Notico < DeviceBase
   def definition
     {
         device: 'notico',
-        label: 'Notico',
+        label: 'Notico Deliv',
         label_small: 'Notico',
         route_operations: [:send, :clear],
         has_sync: false,
@@ -36,7 +36,7 @@ class Notico < DeviceBase
                 password: :password
             },
             vehicle: {
-                agentId: :text
+                agent_id: :text
             },
         }
     }
@@ -64,7 +64,7 @@ class Notico < DeviceBase
             interId: stop.base_id,
             contractId: stop.visit.destination.ref,
             tourId: stop.route_id,
-            agentId: route.vehicle_usage.vehicle.devices[:agentId],
+            agentId: route.vehicle_usage.vehicle.devices[:agent_id],
 
             name: stop.name,
             language: I18n.locale.to_s.upcase,

@@ -276,7 +276,7 @@
             <% if definition[:forms].key?(:vehicle) %>
               <% definition[:forms][:vehicle].each do |field, type| %>
                 <% if type == :text %>
-                  <%= f.text_field field %>
+                  <%= f.text_field field, t("activerecord.attributes.vehicle.devices.#{key}.#{field}") %>
                 <% elsif type == :select %>
                   <!-- this can be refactored with options_for_select -->
                   <%= f.select field, [], [], {}, data: {device: key} %>
