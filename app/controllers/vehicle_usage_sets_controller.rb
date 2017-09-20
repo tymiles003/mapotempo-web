@@ -111,6 +111,18 @@ class VehicleUsageSetsController < ApplicationController
     end
   end
 
+  def import_template
+    respond_to do |format|
+      format.excel do
+        data = render_to_string.gsub('\n', '\r\n')
+        send_data Iconv.iconv('ISO-8859-1//translit//ignore', 'utf-8', data).join(''),
+                  type: 'text/csv',
+                  filename: 'import_template.excel'
+      end
+      format.csv
+    end
+  end
+
   def import
     @customer = current_user.customer
     @import_csv = ImportCsv.new
