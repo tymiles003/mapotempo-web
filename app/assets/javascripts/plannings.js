@@ -335,6 +335,7 @@ var plannings_edit = function(params) {
             popupAnchor: new L.Point(0, -12),
             className: 'vehicle-position'
           }),
+          zIndexOffset: 800,
           title: vehicles_usages_map[pos.vehicle_id].name + ' - ' + pos.device_name + ' - ' + I18n.t('plannings.edit.vehicle_speed') + ' ' + (prefered_unit == 'km' ? (pos.speed || 0) + ' km/h - ' : (Math.ceil10(pos.speed/1.609344) || 0) + ' mph - ') + I18n.t('plannings.edit.vehicle_last_position_time') + ' ' + (pos.time_formatted || (new Date(pos.time)).toLocaleString()),
         }).addTo(vehicleLayer);
       }
