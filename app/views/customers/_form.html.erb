@@ -91,7 +91,7 @@
 
       <div class="col-md-6">
         <div class="input-group">
-          <%= number_field_tag 'customer[router_options][trailers]', @customer.router_options['trailers'], min: 0, max: 4, class: 'form-control' %>
+          <%= number_field_tag 'customer[router_options][trailers]', @customer.router_options['trailers'], min: 0, max: 4, step: 1, class: 'form-control' %>
           <span class="input-group-addon"><i class="fa fa-truck fa-fw"></i> </span>
         </div>
         <p class="help-block"><%= t('customers.form.router_options_trailers_range', from: 0, to: 4) %></p>
