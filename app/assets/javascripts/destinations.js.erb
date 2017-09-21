@@ -502,6 +502,17 @@ var destinations_index = function(params, api) {
     imperial: false
   }).addTo(map);
 
+  var deleteMarkerOnMapRelease = function(id) {
+    var queueDeleteFn = function() {
+      markersLayers.removeLayer(markers[id]);
+      delete markers[id];
+
+      map.off('moveend animationend', queueDeleteFn);
+    };
+
+    map.on('moveend animationend', queueDeleteFn);
+  }
+
   var markers       = {};
   var markersLayers = new L.MarkerClusterGroup({
     spiderfyOnMaxZoom: true,
@@ -710,10 +721,9 @@ var destinations_index = function(params, api) {
           success: function() {
             $row.remove();
             if (markers[id]) {
-              markersLayers.removeLayer(markers[id]);
               var keys  = Object.keys(markers);
               var index = keys.indexOf(id);
-              delete markers[id];
+              deleteMarkerOnMapRelease(id);
 
               keys.splice(index, 1);
               var last = keys[index] || keys[index - 1];
@@ -766,8 +776,7 @@ var destinations_index = function(params, api) {
           }
         }
       } else if (destination_id in markers) {
-        markersLayers.removeLayer(markers[destination_id]);
-        delete markers[destination_id];
+        deleteMarkerOnMapRelease(destination_id);
       }
     }
   };
@@ -1147,8 +1156,7 @@ var destinations_index = function(params, api) {
               var id = row.data('destination_id');
               row.remove();
               if (markers[id]) {
-                markersLayers.removeLayer(markers[id]);
-                delete markers[id];
+                deleteMarkerOnMapRelease(id);
               }
               count_dec();
             });
