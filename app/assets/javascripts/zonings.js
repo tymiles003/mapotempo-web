@@ -50,7 +50,7 @@ var zonings_edit = function(params) {
     showUnits = params.show_deliverable_units;
 
   var changes = {};
-  var drawing_changed, editing_drawing;
+  var drawing_changed, creating_drawing, editing_drawing;
 
   // Ensure touch compliance with chrome like browser
   L.controlTouchScreenCompliance();
@@ -119,7 +119,7 @@ var zonings_edit = function(params) {
   var fitBounds = initializeMapHash(map);
 
   function checkZoningChanges(e) {
-    var zones_changed;
+    var zones_changed = false;
     $.each(changes, function(i, array) {
       if (array.length > 0) zones_changed = true;
     });
@@ -135,12 +135,28 @@ var zonings_edit = function(params) {
 
   $(document).on('page:before-change', checkZoningChanges);
 
+  map.on(L.Draw.Event.DRAWSTART, function() {
+    creating_drawing = true;
+
+    markersGroup.togglePopupOnHover();
+  });
+
+  map.on(L.Draw.Event.DRAWSTOP, function() {
+    creating_drawing = true;
+
+    markersGroup.togglePopupOnHover();
+  });
+
   map.on(L.Draw.Event.EDITSTART, function() {
     editing_drawing = true;
+
+    markersGroup.togglePopupOnHover();
   });
 
   map.on(L.Draw.Event.EDITSTOP, function() {
     editing_drawing = true;
+
+    markersGroup.togglePopupOnHover();
   });
 
   map.on(L.Draw.Event.CREATED, function(e) {
@@ -152,7 +168,8 @@ var zonings_edit = function(params) {
   });
 
   map.on(L.Draw.Event.EDITED, function(e) {
-    editing_drawing = null;
+    creating_drawing = false;
+    editing_drawing = false;
     drawing_changed = true;
     e.layers.eachLayer(function(layer) {
       updateZone(layer);

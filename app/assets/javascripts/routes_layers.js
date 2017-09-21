@@ -236,7 +236,8 @@ var RoutesLayer = L.FeatureGroup.extend({
     appBaseUrl: '/',
     withPolylines: true,
     withQuantities: false,
-    disableClusters: false
+    disableClusters: false,
+    showPopupOnHover: true
   },
 
   // Clusters for each route
@@ -333,33 +334,37 @@ var RoutesLayer = L.FeatureGroup.extend({
     this.map.on('click', this.hideLastPopup).on('zoomstart', this.hideLastPopup);
 
     this.on('mouseover', function(e) {
-      if (e.layer instanceof L.Marker && !popupModule.activeClickMarker) {
-        // Unbind pop when needed | != compare memory adress between marker objects (Very same instance equality).
+      if (this.options.showPopupOnHover) {
+        if (e.layer instanceof L.Marker && !popupModule.activeClickMarker) {
+          // Unbind pop when needed | != compare memory address between marker objects (Very same instance equality).
 
-        if (popupModule.previousMarker && (popupModule.previousMarker != e.layer))
-          popupModule.previousMarker.closePopup();
+          if (popupModule.previousMarker && (popupModule.previousMarker != e.layer))
+            popupModule.previousMarker.closePopup();
 
-        if (e.layer.click)
-          e.layer.click = false; // Don't forget to re-init e.layer.click
+          if (e.layer.click)
+            e.layer.click = false; // Don't forget to re-init e.layer.click
 
-        popupModule.createPopupForLayer(e.layer);
-      } else if (e.layer instanceof L.Path) {
-        e.layer.setStyle({
-          opacity: 0.9,
-          weight: 7
-        });
+          popupModule.createPopupForLayer(e.layer);
+        } else if (e.layer instanceof L.Path) {
+          e.layer.setStyle({
+            opacity: 0.9,
+            weight: 7
+          });
+        }
       }
     }.bind(this)).on('mouseout', function(e) {
-      if (e.layer instanceof L.Marker) {
-        popupModule.previousMarker = e.layer;
-        if (!e.layer.click && e.layer.getPopup()) {
-          e.layer.closePopup();
+      if (this.options.showPopupOnHover) {
+        if (e.layer instanceof L.Marker) {
+          popupModule.previousMarker = e.layer;
+          if (!e.layer.click && e.layer.getPopup()) {
+            e.layer.closePopup();
+          }
+        } else if (e.layer instanceof L.Path) {
+          e.layer.setStyle({
+            opacity: 0.5,
+            weight: 5
+          });
         }
-      } else if (e.layer instanceof L.Path) {
-        e.layer.setStyle({
-          opacity: 0.5,
-          weight: 5
-        });
       }
     }.bind(this))
       .on('click', function(e) {
@@ -482,6 +487,10 @@ var RoutesLayer = L.FeatureGroup.extend({
         }
       }
     }
+  },
+
+  togglePopupOnHover: function() {
+    this.options.showPopupOnHover = !this.options.showPopupOnHover;
   },
 
   _setViewForMarker: function(routeId, marker) {
