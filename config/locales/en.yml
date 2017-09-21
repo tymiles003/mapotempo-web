@@ -613,7 +613,8 @@ en:
           "{LG}" which will be replaced by language like « en », « fr » (ie: https://www.mapotempo.com/{LG}/help-center).'
         contact_url_help: 'Web page address with contact form. It''s possible to use
           "{LG}" which will be replaced by language like « en », « fr » (ie: https://www.mapotempo.com/{LG}/contact-support/).'
-        subscription_url_help: "Web page address with subscription content for a test customer."
+        subscription_url_help: 'Web page address with subscription content for a test customer. It''s possible to use
+          "{LG}" which will be replaced by language like « en », « fr » (ie: https://www.mapotempo.com/{LG}/mapotempo-web-subscription-request).'
         facebook_url_help: Reseller Facebook link
         twitter_url_help: Reseller Twitter link
         linkedin_url_help: Reseller linkedIn link
