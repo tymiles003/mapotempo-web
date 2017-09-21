@@ -268,7 +268,7 @@ var RoutesLayer = L.FeatureGroup.extend({
     spiderfyOnMaxZoom: true,
     animate: false,
     maxClusterRadius: function(currentZoom) {
-      // Markers have to be clustered during map initilization with defaultMapZoom
+      // Markers have to be clustered during map initialization with defaultMapZoom
       return currentZoom > defaultMapZoom ? 1 : nbRoutes < 4 ? 30 * nbRoutes : 100;
     },
     spiderfyDistanceMultiplier: 0.5,
@@ -491,6 +491,31 @@ var RoutesLayer = L.FeatureGroup.extend({
     this.clustersByRoute = {};
   },
 
+  switchMarkerClusters: function() {
+    this.options.disableClusters = !this.options.disableClusters;
+
+    var newClustersByRoute = {};
+
+    nbRoutes = Object.keys(this.clustersByRoute).length;
+    for (var routeId in this.clustersByRoute) {
+      if (this.clustersByRoute.hasOwnProperty(routeId)) {
+        this.markerOptions.disableClusteringAtZoom = this.options.disableClusters ? 0 : 19;
+        newClustersByRoute[routeId] = L.markerClusterGroup(this.markerOptions);
+
+        this.clustersByRoute[routeId].getLayers().forEach(function (routeId, marker) {
+          newClustersByRoute[routeId].addLayer(marker);
+        }.bind(this, routeId));
+
+        this.removeLayer(this.clustersByRoute[routeId]);
+        this.clustersByRoute[routeId] = undefined;
+
+        this.addLayer(newClustersByRoute[routeId]);
+
+        this.clustersByRoute[routeId] = newClustersByRoute[routeId];
+      }
+    }
+  },
+
   focus: function(options) {
     if (options.routeId && options.stopIndex) {
       if (this.clustersByRoute[options.routeId]) {
@@ -640,7 +665,7 @@ var RoutesLayer = L.FeatureGroup.extend({
           var pointIconSize = geoJsonPoint.properties.icon_size || 'medium';
           var pointColor = geoJsonPoint.properties.color || '#707070';
           if (!geoJsonPoint.properties.number)
-            pointColor = 'rgba('+parseInt(pointColor.substring(1,3),16)+','+parseInt(pointColor.substring(3,5),16)+','+parseInt(pointColor.substring(5,7),16)+',0.8)';
+            pointColor = 'rgba(' + parseInt(pointColor.substring(1, 3), 16) + ',' + parseInt(pointColor.substring(3, 5), 16) + ',' + parseInt(pointColor.substring(5, 7), 16) + ',0.8)';
           var pointAnchor = new L.Point(this.map.iconSize[pointIconSize].size / 2, this.map.iconSize[pointIconSize].size / 2);
 
           if (overlappingMarkers[overlapKey]) {
@@ -719,7 +744,9 @@ var RoutesLayer = L.FeatureGroup.extend({
     // Add marker clusters
     nbRoutes = Object.keys(this.clustersByRoute).length;
     for (var routeId in this.clustersByRoute) {
-      this.addLayer(this.clustersByRoute[routeId]);
+      if (this.clustersByRoute.hasOwnProperty(routeId)) {
+        this.addLayer(this.clustersByRoute[routeId]);
+      }
     }
 
     // Add store markers

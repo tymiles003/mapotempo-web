@@ -526,6 +526,8 @@ var plannings_edit = function(params) {
     imperial: false
   }).addTo(map);
 
+  L.disableClustersControl(map, routesLayer);
+
   var fitBounds = initializeMapHash(map);
 
   sidebar.addTo(map);

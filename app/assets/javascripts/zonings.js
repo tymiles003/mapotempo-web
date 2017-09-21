@@ -116,6 +116,8 @@ var zonings_edit = function(params) {
     }
   }).addTo(map);
 
+  L.disableClustersControl(map, markersGroup);
+
   var fitBounds = initializeMapHash(map);
 
   function checkZoningChanges(e) {

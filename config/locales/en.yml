@@ -1123,6 +1123,7 @@ en:
       list_message: "You have reached the advised number of plans for your account (Account Limit: %{limit})"
     edit:
       vehicles: Vehicles
+      marker_clusters: Switch clusters of stops
       current_position: 'Vehicle position:'
       lock_routes: Lock routes
       toggle_routes: Toggle routes

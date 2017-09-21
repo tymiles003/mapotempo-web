@@ -251,6 +251,12 @@ span.color[data-color=''][data-selected]:after {
     }
   }
 
+  .leaflet-control-disable-clusters {
+    &:hover {
+      cursor: pointer;
+    }
+  }
+
   .focus-geocoder {
     background-color: red;
     border: none;

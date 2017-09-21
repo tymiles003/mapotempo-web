@@ -1149,6 +1149,7 @@ fr:
       list_message: "Vous avez atteint la limite conseillée de plans de tournées associés à votre compte (Limite : %{limit})"
     edit:
       vehicles: Véhicules
+      marker_clusters: Activer/Désactiver les groupes de points
       current_position: 'Position véhicule :'
       lock_routes: Verrouiller les tournées
       toggle_routes: Masquer les tournées

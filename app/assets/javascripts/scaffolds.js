@@ -394,4 +394,34 @@ L.controlTouchScreenCompliance = function() {
     }
     if (removeTouchStyle) L.Browser.touch = false;
   }
-}
+};
+
+// Button to disable clusters
+L.disableClustersControl = function (map, routesLayer) {
+  var disableClustersControl = L.Control.extend({
+    options: {
+      position: 'topleft'
+    },
+
+    onAdd: function () {
+      var container = L.DomUtil.create('div', 'leaflet-bar leaflet-control leaflet-control-disable-clusters');
+      container.style.backgroundColor = 'white';
+      container.style.width = '26px';
+      container.style.height = '26px';
+
+      var button = L.DomUtil.create('a', '', container);
+      button.title = I18n.t('plannings.edit.marker_clusters');
+
+      var icon = L.DomUtil.create('i', 'fa fa-certificate fa-lg', button);
+      icon.style.marginLeft = '2px';
+
+      container.onclick = function () {
+        routesLayer.switchMarkerClusters();
+      };
+
+      return container;
+    }
+  });
+
+  map.addControl(new disableClustersControl(routesLayer));
+};
