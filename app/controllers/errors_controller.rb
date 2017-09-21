@@ -4,7 +4,7 @@ class ErrorsController < ApplicationController
   def show
     respond_to do |format|
       format.html { render 'errors/show', locals: { status: status_code } }
-      format.json { render json: { error: t('errors.management.status.explanation.default'), status: status_code } }
+      format.json { render json: { error: t('errors.management.status.explanation.default') }, status: status_code }
       format.all { render body: nil, status: status_code }
     end
   end

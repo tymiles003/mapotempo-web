@@ -16,6 +16,7 @@
 # <http://www.gnu.org/licenses/agpl.html>
 #
 require 'coerce'
+require 'exceptions'
 
 class V01::Plannings < Grape::API
   helpers SharedParams
@@ -160,11 +161,25 @@ class V01::Plannings < Grape::API
     end
     patch ':id/automatic_insert' do
       Route.includes_destinations.scoping do
-        planning_id = ParseIdsRefs.read params[:id]
-        planning = current_customer.plannings.where(planning_id).first!
+        planning = current_customer.plannings.where(ParseIdsRefs.read params[:id]).first!
         stops = planning.routes.flat_map{ |r| r.stops }.select{ |stop| params[:stop_ids].include?(stop.id) }
-        stops.each{ |stop| planning.automatic_insert(stop, max_time: params[:max_time], max_distance: params[:max_distance], out_of_zone: params[:out_of_zone], active_only: params[:active_only]) }
-        planning.save!
+
+        begin
+          Planning.transaction do
+            stops.each do |stop|
+              planning.automatic_insert(stop,
+                max_time: params[:max_time],
+                max_distance: params[:max_distance],
+                out_of_zone: params[:out_of_zone],
+                active_only: params[:active_only]) || raise(Exceptions::LoopError.new)
+            end
+            planning.compute
+            planning.save!
+            status 204
+          end
+        rescue Exceptions::LoopError => e
+          status 400
+        end
       end
     end
 

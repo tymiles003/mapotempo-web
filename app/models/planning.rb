@@ -209,7 +209,7 @@ class Planning < ApplicationRecord
         stop.route.move_stop_out(stop, force)
         route.add_rest(active, stop_id)
       end
-      route.compute
+      route.compute # FIXME: Needed?
     else
       route.move_stop(stop, index || 1)
     end

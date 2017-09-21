@@ -183,6 +183,8 @@ class PlanningsController < ApplicationController
             @routes = [route]
             @routes << @planning.routes.find{ |route| route.vehicle_usage && route.vehicle_usage.id == vehicle_usage_id_was } if vehicle_usage_id_was != route.vehicle_usage.id
             format.json { render action: 'show', location: @planning }
+          else
+            format.json { render json: @planning.errors, status: :unprocessable_entity }
           end
         end
       rescue ActiveRecord::RecordInvalid => e
@@ -201,27 +203,31 @@ class PlanningsController < ApplicationController
       route_ids = stops.any? ? [stops[0].route_id] : []
     end
 
-    Planning.transaction do
-      success = true
-      stops.each do |stop|
-        route = @planning.automatic_insert(stop)
-        if route
-          route_ids << route.id if route_ids.exclude?(route.id)
-        else
-          success = false
-          break
-        end
-      end
+    respond_to do |format|
+      begin
+        Planning.transaction do
+          stops.each do |stop|
+            route = @planning.automatic_insert(stop)
+            if route
+              route_ids << route.id if route_ids.exclude?(route.id)
+            else
+              raise Exceptions::LoopError.new
+            end
+          end
 
-      respond_to do |format|
-        format.json do
-          if success && @planning.save && @planning.reload
-            @routes = @planning.routes.select{ |r| route_ids.include? r.id }
-            render action: :show
-          else
-            render json: @planning.errors, status: :unprocessable_entity
+          format.json do
+            if @planning.compute && @planning.save! && @planning.reload
+              @routes = @planning.routes.select{ |r| route_ids.include? r.id }
+              render action: :show
+            else
+              render json: @planning.errors, status: :unprocessable_entity
+            end
           end
         end
+      rescue Exceptions::LoopError => e
+        format.json { render json: { error: t('errors.planning.automatic_insert_no_result') }, status: :unprocessable_entity }
+      rescue ActiveRecord::RecordInvalid => e
+        format.json { render json: @planning.errors, status: :unprocessable_entity }
       end
     end
   end

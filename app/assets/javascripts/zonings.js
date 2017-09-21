@@ -78,7 +78,7 @@ var zonings_edit = function(params) {
     url_click2call: url_click2call,
     unit: prefered_unit,
     outOfRouteId: params.out_of_route_id,
-    allRoutesWithVehicle: [],
+    routes: params.routes_array, // Needed for outdated
     colorsByRoute: params.colors_by_route,
     appBaseUrl: params.apiWeb ? '/api-web/0.1/' : '/',
     withPolylines: false,

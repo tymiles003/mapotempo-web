@@ -141,14 +141,12 @@ class V01::Routes < Grape::API
           nickname: 'getRouteByVehicle',
           success: V01::Entities::Route
         params do
-          requires :id, type: String, desc: 'ID / Ref (ref:abcd) of the VEHICLE attached to the Route'
+          requires :id, type: String, desc: ID_DESC
           optional :geojson, type: Symbol, values: [:true, :false, :point, :polyline], default: :false, desc: 'Fill the geojson field with route geometry: `point` to return only points, `polyline` to return with encoded linestring.'
         end
         get ':id' do
-          planning_id = ParseIdsRefs.read(params[:planning_id])
-          id = ParseIdsRefs.read(params[:id])
-          planning = current_customer.plannings.find_by! planning_id
-          vehicle = current_customer.vehicles.find_by! id
+          planning = current_customer.plannings.find_by! ParseIdsRefs.read(params[:planning_id])
+          vehicle = current_customer.vehicles.find_by! ParseIdsRefs.read(params[:id])
           route = planning.routes.find{ |route| route.vehicle_usage && route.vehicle_usage.vehicle == vehicle }
           present route, with: V01::Entities::Route, geojson: params[:geojson]
         end

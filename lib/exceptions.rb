@@ -1,6 +1,8 @@
 require 'singleton'
 
 module Exceptions
+  class LoopError < StandardError; end
+
   ############################################
   #  Base class for nested model validations #
   ############################################

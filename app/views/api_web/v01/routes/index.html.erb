@@ -29,6 +29,8 @@ controller.js(
   prefered_unit: current_user.prefered_unit,
   planning_id: @planning.id,
   route_ids: @routes ? @routes.collect(&:id) : nil,
+  out_of_route_id: @planning.routes.find{ |r| !r.vehicle_usage_id },
+  routes_array: @routes ? @routes.map{ |r| {route_id: r.id, outdated: r.outdated} } : [],
   colors_by_route: Hash[@routes.select(&:vehicle_usage).map{ |r| [r.id, r.default_color] }],
   disable_clusters: @disable_clusters || @routes.to_a.sum(0) { |r| r.stops.size } < 1000,
   map_layers: Hash[layers.map{ |l| l[:name] }.zip(layers)],

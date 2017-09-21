@@ -25,7 +25,7 @@ var api_web_v01_routes_index = function(params) {
 
   var prefered_unit = (!params.prefered_unit ? 'km' : params.prefered_unit),
     planning_id = params.planning_id,
-    route_ids = params.route_ids;
+    route_ids = params.routes_array.map(function(route) { return route.route_id; } );
 
   var map = mapInitialize(params);
   L.control.attribution({
@@ -37,6 +37,8 @@ var api_web_v01_routes_index = function(params) {
 
   var routesLayer = new RoutesLayer(planning_id, {
     unit: prefered_unit,
+    outOfRouteId: params.out_of_route_id,
+    routes: params.routes_array, // Needed for outdated
     colorsByRoute: params.colors_by_route,
     appBaseUrl: '/api-web/0.1/',
     popupOptions: {

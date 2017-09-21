@@ -191,7 +191,7 @@ class V01::PlanningsTest < V01::PlanningsBaseTest
   test 'should automatic insert stop with ID from unassigned' do
     unassigned_stop = @planning.routes.detect{ |route| !route.vehicle_usage }.stops.select(&:position?).first
     patch api("#{@planning.id}/automatic_insert"), { stop_ids: [unassigned_stop.id], out_of_zone: true }
-    assert_equal 200, last_response.status
+    assert_equal 204, last_response.status
     assert @planning.routes.reload.select(&:vehicle_usage).any?{ |route| route.stops.select(&:active).map(&:id).include?(unassigned_stop.id) }
   end
 
@@ -199,7 +199,7 @@ class V01::PlanningsTest < V01::PlanningsBaseTest
     last_stop = routes(:route_one_one).stops.select(&:position?).last
     last_stop.update! active: false
     patch api("ref:#{@planning.ref}/automatic_insert"), { stop_ids: [last_stop.id], out_of_zone: true }
-    assert_equal 200, last_response.status
+    assert_equal 204, last_response.status
     routes = @planning.routes.reload.select(&:vehicle_usage)
     assert routes.any?{ |route| route.stops.select(&:active).map(&:id).include?(last_stop.id) }
     assert routes.all?{ |r| r.stops.collect(&:index).sum == (r.stops.length * (r.stops.length + 1)) / 2 }
@@ -213,7 +213,7 @@ class V01::PlanningsTest < V01::PlanningsBaseTest
 
     # 1. First insert with active_only = true
     patch api("#{@planning.id}/automatic_insert"), { stop_ids: [unassigned_stop.id], out_of_zone: true, active_only: false }
-    assert_equal 200, last_response.status
+    assert_equal 204, last_response.status
     assert @planning.routes.reload.select(&:vehicle_usage).any?{ |route| route.stop_ids.include?(unassigned_stop.id) }
 
     stop = @planning.routes.flat_map{ |r| r.stops.select{ |s| s.id == unassigned_stop.id } }.compact.first
@@ -231,7 +231,7 @@ class V01::PlanningsTest < V01::PlanningsBaseTest
 
     # 4. Second insert with active_only = false
     patch api("#{@planning.id}/automatic_insert"), { stop_ids: [unassigned_stop.id], out_of_zone: true, active_only: true }
-    assert_equal 200, last_response.status
+    assert_equal 204, last_response.status
     assert @planning.routes.reload.select(&:vehicle_usage).any?{ |route| route.stop_ids.include?(unassigned_stop.id) }
 
     # 5. Route or index should be different between automatic insert
@@ -243,11 +243,11 @@ class V01::PlanningsTest < V01::PlanningsBaseTest
     unassigned_stop = @planning.routes.detect{ |route| !route.vehicle_usage }.stops.select(&:position?).first
 
     patch api("#{@planning.id}/automatic_insert"), { stop_ids: [unassigned_stop.id], max_time: 50_000 }
-    assert_equal 200, last_response.status
+    assert_equal 400, last_response.status
     assert_not @planning.routes.reload.select(&:vehicle_usage).any?{ |route| route.stop_ids.include?(unassigned_stop.id)}
 
     patch api("#{@planning.id}/automatic_insert"), { stop_ids: [unassigned_stop.id], max_time: 100_000 }
-    assert_equal 200, last_response.status
+    assert_equal 204, last_response.status
     assert @planning.routes.reload.select(&:vehicle_usage).any?{ |route| route.stop_ids.include?(unassigned_stop.id) }
   end
 
@@ -255,11 +255,11 @@ class V01::PlanningsTest < V01::PlanningsBaseTest
     unassigned_stop = @planning.routes.detect{ |route| !route.vehicle_usage }.stops.select(&:position?).first
 
     patch api("#{@planning.id}/automatic_insert"), { stop_ids: [unassigned_stop.id], max_distance: 500}
-    assert_equal 200, last_response.status
+    assert_equal 400, last_response.status
     assert_not @planning.routes.reload.select(&:vehicle_usage).any?{ |route| route.stop_ids.include?(unassigned_stop.id)}
 
     patch api("#{@planning.id}/automatic_insert"), { stop_ids: [unassigned_stop.id], max_distance: 1_000}
-    assert_equal 200, last_response.status
+    assert_equal 204, last_response.status
     assert @planning.routes.reload.select(&:vehicle_usage).any?{ |route| route.stop_ids.include?(unassigned_stop.id) }
   end
 

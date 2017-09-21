@@ -575,6 +575,7 @@ fr:
       import_too_routes: Tentative d'importer plus de tournées que de véhicules disponibles
       already_optimizing: Une optimisation de plan est déjà en cours
       deadlock: "Attention : Échec de la mise à jour des données. Une autre mise a jour été effectuée en simultané, vous avez peut-être réalisé plusieurs opérations trop rapidement."
+      automatic_insert_no_result: Affectation des arrêts impossible
   import:
     csv:
       line: Ligne %{s}
@@ -1285,6 +1286,7 @@ fr:
       vehicle_last_position_time: 'Dernier relevé :'
       route_change_color_help: Changer la couleur de la tournée
       popup:
+        outdated: Tracé de la tournée obsolète. Veuillez recalculer votre plan de tournées.
         open_close1: 'Plage horaire 1 : '
         open1: début 1
         close1: fin 1

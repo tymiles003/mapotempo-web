@@ -42,23 +42,39 @@ var popupModule = (function() {
 
   var _buildContentForPopup = function(marker) {
 
-    if (_ajaxCanBeProceeded()) {
-      var url = _context.options.appBaseUrl;
+    var route = marker.properties.route_id && _context.options.routes.filter(function(route) {
+      return route.route_id == marker.properties.route_id;
+    })[0];
+    if (route && route.outdated) {
+      marker.bindPopup(L.responsivePopup({
+        offset: marker.options.icon.options.iconSize.divideBy(2)
+      }).setContent(I18n.t('plannings.edit.popup.outdated')), {
+        minWidth: 200,
+        autoPan: false,
+        closeOnClick: false
+      }).getPopup();
+      _previousPopup = marker.getPopup();
+      marker.openPopup();
+    }
+    else {
+      if (_ajaxCanBeProceeded()) {
+        var url = _context.options.appBaseUrl;
 
-      if (_context.planningId) {
-        url += (marker.properties.store_id) ?
-          'stores/' + marker.properties.store_id + '.json' :
-          'routes/' + marker.properties.route_id + '/stops/by_index/' + marker.properties.index + '.json';
-      } else {
-        url += 'visits/' + marker.properties.visit_id + '.json';
+        if (_context.planningId) {
+          url += (marker.properties.store_id) ?
+            'stores/' + marker.properties.store_id + '.json' :
+            'routes/' + marker.properties.route_id + '/stops/by_index/' + marker.properties.index + '.json';
+        } else {
+          url += 'visits/' + marker.properties.visit_id + '.json';
+        }
+
+        getPopupContent(url, marker);
+
+        _currentAjaxRequested.done(function() {
+          _previousPopup = marker.getPopup();
+          marker.openPopup();
+        });
       }
-
-      getPopupContent(url, marker);
-
-      _currentAjaxRequested.done(function() {
-        _previousPopup = marker.getPopup();
-        marker.openPopup();
-      });
     }
   };
 
@@ -82,7 +98,7 @@ var popupModule = (function() {
         }).getPopup();
 
         data.i18n = mustache_i18n;
-        data.routes = _context.options.allRoutesWithVehicle; // unnecessary to load all for each stop
+        data.routes = _context.options.routes.filter(function(route) { return route.vehicle_usage_id; } ); // unnecessary to load all for each stop
         data.out_of_route_id = _context.options.outOfRouteId;
         data.number = marker.properties.number;
         if (marker.properties.tomtom) {
@@ -227,7 +243,7 @@ var nbRoutes = 0;
 var RoutesLayer = L.FeatureGroup.extend({
   defaultOptions: {
     outOfRouteId: undefined,
-    allRoutesWithVehicle: [],
+    routes: [],
     colorsByRoute: {},
     isochrone: false,
     isodistance: false,
@@ -394,24 +410,34 @@ var RoutesLayer = L.FeatureGroup.extend({
             popupModule.activeClickMarker = e.layer;
           }
         } else if (e.layer instanceof L.Path) {
-          var distance = e.layer.properties.distance / 1000;
-          var driveTime = e.layer.properties.drive_time;
-          distance = (this.options.unit === 'km') ? distance.toFixed(1) + ' km' : (distance / 1.609344).toFixed(1) + ' miles';
+          var content = '';
 
-          if (driveTime) {
-            var driveTimeDay = null;
-            if (driveTime > 3600 * 24) {
-              driveTimeDay = driveTime / (3600 * 24) | 0;
+          var route = (e.layer.properties.route_id != this.options.outOfRouteId) && this.options.routes.filter(function(route) {
+            return route.route_id == e.layer.properties.route_id;
+          })[0];
+          if (route && route.outdated) {
+            content = I18n.t('plannings.edit.popup.outdated');
+          }
+          else {
+            var distance = e.layer.properties.distance / 1000;
+            var driveTime = e.layer.properties.drive_time;
+            distance = (this.options.unit === 'km') ? distance.toFixed(1) + ' km' : (distance / 1.609344).toFixed(1) + ' miles';
+
+            if (driveTime) {
+              var driveTimeDay = null;
+              if (driveTime > 3600 * 24) {
+                driveTimeDay = driveTime / (3600 * 24) | 0;
+              }
+              driveTime = ('0' + parseInt(driveTime / 3600) % 24).slice(-2) + ':' + ('0' + parseInt(driveTime / 60) % 60).slice(-2) + ':' + ('0' + (driveTime % 60)).slice(-2);
+              if (driveTimeDay) {
+                driveTime += ' (' + I18n.t('plannings.edit.popup.day') + driveTimeDay + ')';
+              }
+            } else {
+              driveTime = '';
             }
-            driveTime = ('0' + parseInt(driveTime / 3600) % 24).slice(-2) + ':' + ('0' + parseInt(driveTime / 60) % 60).slice(-2) + ':' + ('0' + (driveTime % 60)).slice(-2);
-            if (driveTimeDay) {
-              driveTime += ' (' + I18n.t('plannings.edit.popup.day') + driveTimeDay + ')';
-            }
-          } else {
-            driveTime = '';
+            content = (driveTime ? '<div>' + I18n.t('plannings.edit.popup.stop_drive_time') + ' ' + driveTime + '</div>' : '') + '<div>' + I18n.t('plannings.edit.popup.stop_distance') + ' ' + distance + '</div>';
           }
 
-          var content = (driveTime ? '<div>' + I18n.t('plannings.edit.popup.stop_drive_time') + ' ' + driveTime + '</div>' : '') + '<div>' + I18n.t('plannings.edit.popup.stop_distance') + ' ' + distance + '</div>';
           L.responsivePopup({
             minWidth: 200,
             autoPan: false,
