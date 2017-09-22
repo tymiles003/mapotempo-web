@@ -1990,6 +1990,7 @@ en:
       planning_unavailable: Plan can’t be changed. Your subscription period is
         expired | Contact your reseller to get a contrat extension.
       expiration_date: "Only few days to renew your subscription. The end date is %{date}. If you want to renew your subscription, please contact %{reseller}."
+      expiration_date_test: "Your test account expires the %{date}. To continue using our solution, you can contact our team."
       expiration_date_over: "The date of use is exceeded the %{date}. If you want to renew your subscription, please contact %{reseller}."
   helpers:
     submit:

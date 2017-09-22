@@ -2038,6 +2038,7 @@ fr:
         de votre abonnement a expiré. Veuillez contacter votre revendeur afin de renouveler
         votre abonnement.
       expiration_date: "Votre période d'utilisation expire bientôt. Date de fin le %{date}. Si vous souhaitez le renouveler vous pouvez contacter %{reseller}."
+      expiration_date_test: "Votre compte de test expire  le %{date}. Pour continuer d’utiliser notre solution, vous pouvez contacter notre équipe."
       expiration_date_over: "Votre période d'utilisation a expiré le %{date}. Si vous souhaitez le renouveler vous pouvez contacter %{reseller}."
   helpers:
     submit:
