@@ -282,7 +282,7 @@ fr:
       route:
         distance: Distance
         emission: Émissions
-        outdated: Périmé
+        outdated: Obsolète
         start: Début
         end: Fin
         hidden: Masqué
@@ -1290,7 +1290,7 @@ fr:
       vehicle_last_position_time: 'Dernier relevé :'
       route_change_color_help: Changer la couleur de la tournée
       popup:
-        outdated: Tracé de la tournée obsolète. Veuillez recalculer votre plan de tournées.
+        outdated: Tracé de la tournée obsolète. Veuillez recalculer votre plan de tournées (bouton Actualiser).
         open_close1: 'Plage horaire 1 : '
         open1: début 1
         close1: fin 1

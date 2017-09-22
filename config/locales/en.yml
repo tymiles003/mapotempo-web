@@ -1259,7 +1259,7 @@ en:
       vehicle_last_position_time: 'Last position:'
       route_change_color_help: Change route color
       popup:
-        outdated: Route trace outdated. Refresh your plan.
+        outdated: Route trace outdated. Refresh your plan (Refresh button).
         open_close1: 'Time window 1:'
         open1: open 1
         close1: close 1
