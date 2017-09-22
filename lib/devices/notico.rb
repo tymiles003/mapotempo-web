@@ -50,7 +50,7 @@ class Notico < DeviceBase
     interventions = {}
 
     route.stops.select { |s| s.active && s.position? && !s.is_a?(StopRest) }.map do |stop|
-      quantities = customer.enable_orders ? (stop.order ? stop.order.products.collect(&:code).join(',') : '') : customer.deliverable_units.map { |du| stop.visit.default_quantities[du.id] && "#{stop.visit.default_quantities[du.id]}#{du.label}" }.compact.join(' ')
+      quantities = customer.enable_orders ? (stop.order ? stop.order.products.collect(&:code).join(',') : '') : customer.deliverable_units.map { |du| stop.visit.default_quantities[du.id] && du.label && "#{number_with_precision(stop.visit.default_quantities[du.id], strip_insignificant_zeros: true)} #{du.label}" }.compact.join(' ')
       labels = stop.visit.destination.tags.pluck(:label).join(', ')
       if interventions[stop.visit.destination.ref] && interventions[stop.visit.destination.ref][:tourId] == stop.route_id
         interventions[stop.visit.destination.ref][:items] << {
