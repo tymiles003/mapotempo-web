@@ -11,8 +11,8 @@ require 'webmock/minitest'
 
 Dir[Rails.root.join('lib/**/*.rb')].each { |file| load file } # only explicitly required files are tracked
 
-#WebMock.allow_net_connect!
-WebMock.disable_net_connect!
+WebMock.allow_net_connect!
+# WebMock.disable_net_connect!
 
 require 'html_validation'
 #PageValidations::HTMLValidation.show_warnings = false

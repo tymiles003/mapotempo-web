@@ -131,6 +131,7 @@ class V01::Api < Grape::API
   mount V01::Devices::Trimble
   mount V01::Devices::SuiviDeFlotte
   mount V01::Devices::Notico
+  mount V01::Devices::Praxedo
 
   # Tools
   mount V01::Geocoder

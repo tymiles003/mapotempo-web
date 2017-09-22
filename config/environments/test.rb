@@ -108,6 +108,7 @@ Rails.application.configure do
   config.devices.orange.api_url = 'https://orange.example.com'
   config.devices.tomtom.api_url = 'https://tomtom.example.com'
   config.devices.tomtom.api_key = ENV['DEVICE_TOMTOM_API_KEY']
+  config.devices.praxedo.api_url = 'https://ww2.praxedo.com/eTech/services/'
   config.devices.cache_object = cache_factory('devices', 30)
 
   config.delayed_job_use = false

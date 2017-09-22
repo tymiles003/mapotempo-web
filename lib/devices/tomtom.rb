@@ -365,7 +365,7 @@ class Tomtom < DeviceBase
     end
   end
 
-  def sendDestinationOrder(customer, route, position, orderid, description, time, waypoints = nil)
+  def sendDestinationOrder(customer, route, position, order_id, description, time, waypoints = nil)
     objectuid = route.vehicle_usage.vehicle.devices[:tomtom_id]
     params = {
       dstOrderToSend: {
@@ -390,7 +390,7 @@ class Tomtom < DeviceBase
           objectUid: objectuid,
         },
         dstOrderToSend: {
-          orderNo: encode_order_id(description, orderid),
+          orderNo: encode_order_id(description, order_id),
           orderType: 'DELIVERY_ORDER',
           scheduledCompletionDateAndTime: time
         }
@@ -416,25 +416,5 @@ class Tomtom < DeviceBase
   def strip_sql(string)
     # Strip Quotes, forbidden by service in some cases (before Union or Select)
     string.tr('\'', "\u2019").tr("\r", ' ').tr("\n", ' ').gsub(/\s+/, ' ')
-  end
-
-  def encode_order_id(description, orderid)
-    # If orderid is a Visit or Rest, keep stop_type in encoded order_id
-    if orderid.is_a? String
-      stop_type = orderid[0]
-      orderid = orderid[1..-1].to_i
-    end
-    unique_base_order_id = Time.now.to_i.to_s(36) + ":#{stop_type}" + orderid.to_s(36)
-    description.upcase.gsub(/[^A-Z0-9\s]/i, '')[0..(19 - unique_base_order_id.length)] + unique_base_order_id
-  end
-
-  # Return a string, prefixed with 'v' (Visit), 'r' (Rest), or nothing (Store)
-  def decode_order_id(orderid)
-    sufix = orderid.split(':').last
-    if (sufix[0] == 'v' || sufix[0] == 'r')
-      sufix[0] + sufix[1..-1].to_i(36).to_s
-    else
-      sufix.to_i(36).to_s
-    end
   end
 end

@@ -1,0 +1,25 @@
+HTTP/1.1 200 OK
+Content-Type: text/xml
+Transfer-Encoding: chunked
+
+<soap:Envelope xmlns:soap="http://www.w3.org/2003/05/soap-envelope">
+  <soap:Body>
+    <ns2:createEventsResponse xmlns:ns2="http://ws.praxedo.com/v6/businessEvent">
+      <return>
+        <resultCode>0</resultCode>
+        <results>
+          <resultCode>0</resultCode>
+          <id>MYSTRING  1owocf3:v1</id>
+        </results>
+        <results>
+          <resultCode>0</resultCode>
+          <id>MYSTRIowocf3:vblziyy</id>
+        </results>
+        <results>
+          <resultCode>0</resultCode>
+          <id>MYSTRIowocf3:ve9st5g</id>
+        </results>
+      </return>
+    </ns2:createEventsResponse>
+  </soap:Body>
+</soap:Envelope>

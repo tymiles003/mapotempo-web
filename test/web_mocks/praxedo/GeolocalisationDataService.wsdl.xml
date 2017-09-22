@@ -1,0 +1,386 @@
+HTTP/1.1 200 OK
+Content-Type: text/xml
+Transfer-Encoding: chunked
+
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions targetNamespace="http://ws.praxedo.com/2006_09_25/geolocalisation/dataservice" xmlns:apachesoap="http://xml.apache.org/xml-soap" xmlns:impl="http://ws.praxedo.com/2006_09_25/geolocalisation/dataservice" xmlns:intf="http://ws.praxedo.com/2006_09_25/geolocalisation/dataservice" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:tns1="http://geolocalisation._2006_09_25.ws.praxedo.com" xmlns:tns2="http://_2006_09_25.ws.praxedo.com" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:wsdlsoap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+<!--WSDL created by Apache Axis version: 1.2
+Built on May 03, 2005 (02:20:24 EDT)-->
+ <wsdl:types>
+  <schema targetNamespace="http://_2006_09_25.ws.praxedo.com" xmlns="http://www.w3.org/2001/XMLSchema">
+   <import namespace="http://ws.praxedo.com/2006_09_25/geolocalisation/dataservice"/>
+   <import namespace="http://geolocalisation._2006_09_25.ws.praxedo.com"/>
+   <import namespace="http://schemas.xmlsoap.org/soap/encoding/"/>
+   <complexType name="OperationResult">
+    <sequence>
+     <element name="resultCode" type="xsd:int"/>
+     <element name="message" nillable="true" type="soapenc:string"/>
+    </sequence>
+   </complexType>
+  </schema>
+  <schema targetNamespace="http://geolocalisation._2006_09_25.ws.praxedo.com" xmlns="http://www.w3.org/2001/XMLSchema">
+   <import namespace="http://_2006_09_25.ws.praxedo.com"/>
+   <import namespace="http://ws.praxedo.com/2006_09_25/geolocalisation/dataservice"/>
+   <import namespace="http://schemas.xmlsoap.org/soap/encoding/"/>
+   <complexType name="GeographicalPosition">
+    <sequence>
+     <element name="longitude" type="xsd:double"/>
+     <element name="speed" type="xsd:double"/>
+     <element name="agent" nillable="true" type="soapenc:string"/>
+     <element name="zipCode" nillable="true" type="soapenc:string"/>
+     <element name="counter" type="xsd:double"/>
+     <element name="address" nillable="true" type="soapenc:string"/>
+     <element name="event" type="xsd:int"/>
+     <element name="latitude" type="xsd:double"/>
+     <element name="date" nillable="true" type="xsd:dateTime"/>
+     <element name="mobileAsset" nillable="true" type="soapenc:string"/>
+     <element name="city" nillable="true" type="soapenc:string"/>
+    </sequence>
+   </complexType>
+   <complexType name="GeolocalisationDataRequestResult">
+    <complexContent>
+     <extension base="tns2:OperationResult">
+      <sequence>
+       <element name="lastPositionId" type="xsd:long"/>
+       <element name="positions" nillable="true" type="impl:ArrayOf_tns1_GeographicalPosition"/>
+      </sequence>
+     </extension>
+    </complexContent>
+   </complexType>
+   <complexType name="TripGeographicalPosition">
+    <complexContent>
+     <extension base="tns1:GeographicalPosition">
+      <sequence>
+       <element name="relatedEvents" nillable="true" type="impl:ArrayOf_soapenc_string"/>
+       <element name="poiName" nillable="true" type="soapenc:string"/>
+      </sequence>
+     </extension>
+    </complexContent>
+   </complexType>
+   <complexType name="TripsRequestResult">
+    <complexContent>
+     <extension base="tns2:OperationResult">
+      <sequence>
+       <element name="trips" nillable="true" type="impl:ArrayOf_tns1_TripGeographicalPosition"/>
+      </sequence>
+     </extension>
+    </complexContent>
+   </complexType>
+  </schema>
+  <schema targetNamespace="http://ws.praxedo.com/2006_09_25/geolocalisation/dataservice" xmlns="http://www.w3.org/2001/XMLSchema">
+   <import namespace="http://_2006_09_25.ws.praxedo.com"/>
+   <import namespace="http://geolocalisation._2006_09_25.ws.praxedo.com"/>
+   <import namespace="http://schemas.xmlsoap.org/soap/encoding/"/>
+   <complexType name="ArrayOf_tns1_GeographicalPosition">
+    <complexContent>
+     <restriction base="soapenc:Array">
+      <attribute ref="soapenc:arrayType" wsdl:arrayType="tns1:GeographicalPosition[]"/>
+     </restriction>
+    </complexContent>
+   </complexType>
+   <complexType name="ArrayOf_soapenc_string">
+    <complexContent>
+     <restriction base="soapenc:Array">
+      <attribute ref="soapenc:arrayType" wsdl:arrayType="soapenc:string[]"/>
+     </restriction>
+    </complexContent>
+   </complexType>
+   <complexType name="ArrayOf_tns1_TripGeographicalPosition">
+    <complexContent>
+     <restriction base="soapenc:Array">
+      <attribute ref="soapenc:arrayType" wsdl:arrayType="tns1:TripGeographicalPosition[]"/>
+     </restriction>
+    </complexContent>
+   </complexType>
+  </schema>
+ </wsdl:types>
+
+   <wsdl:message name="getLastPositionForMobileAssetsRequest">
+
+      <wsdl:part name="in0" type="impl:ArrayOf_soapenc_string"/>
+
+      <wsdl:part name="in1" type="soapenc:string"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="getTripsForAgentRequest">
+
+      <wsdl:part name="in0" type="soapenc:string"/>
+
+      <wsdl:part name="in1" type="xsd:dateTime"/>
+
+      <wsdl:part name="in2" type="xsd:dateTime"/>
+
+      <wsdl:part name="in3" type="xsd:int"/>
+
+      <wsdl:part name="in4" type="xsd:int"/>
+
+      <wsdl:part name="in5" type="soapenc:string"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="getLastPositionForAgentsRequest">
+
+      <wsdl:part name="in0" type="impl:ArrayOf_soapenc_string"/>
+
+      <wsdl:part name="in1" type="soapenc:string"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="getLastPositionForMobileAssetsResponse">
+
+      <wsdl:part name="getLastPositionForMobileAssetsReturn" type="tns1:GeolocalisationDataRequestResult"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="getHistoryFromIdRequest">
+
+      <wsdl:part name="in0" type="xsd:long"/>
+
+      <wsdl:part name="in1" type="xsd:int"/>
+
+      <wsdl:part name="in2" type="xsd:int"/>
+
+      <wsdl:part name="in3" type="soapenc:string"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="getHistoryFromIdResponse">
+
+      <wsdl:part name="getHistoryFromIdReturn" type="tns1:GeolocalisationDataRequestResult"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="getHistoryForAgentResponse">
+
+      <wsdl:part name="getHistoryForAgentReturn" type="tns1:GeolocalisationDataRequestResult"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="getLastPositionForAgentsResponse">
+
+      <wsdl:part name="getLastPositionForAgentsReturn" type="tns1:GeolocalisationDataRequestResult"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="getHistoryForAgentRequest">
+
+      <wsdl:part name="in0" type="soapenc:string"/>
+
+      <wsdl:part name="in1" type="xsd:dateTime"/>
+
+      <wsdl:part name="in2" type="xsd:dateTime"/>
+
+      <wsdl:part name="in3" type="xsd:int"/>
+
+      <wsdl:part name="in4" type="xsd:int"/>
+
+      <wsdl:part name="in5" type="soapenc:string"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="getHistoryForMobileAssetRequest">
+
+      <wsdl:part name="in0" type="soapenc:string"/>
+
+      <wsdl:part name="in1" type="xsd:dateTime"/>
+
+      <wsdl:part name="in2" type="xsd:dateTime"/>
+
+      <wsdl:part name="in3" type="xsd:int"/>
+
+      <wsdl:part name="in4" type="xsd:int"/>
+
+      <wsdl:part name="in5" type="soapenc:string"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="getTripsForAgentResponse">
+
+      <wsdl:part name="getTripsForAgentReturn" type="tns1:TripsRequestResult"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="getHistoryForMobileAssetResponse">
+
+      <wsdl:part name="getHistoryForMobileAssetReturn" type="tns1:GeolocalisationDataRequestResult"/>
+
+   </wsdl:message>
+
+   <wsdl:portType name="GeolocalisationDataService">
+
+      <wsdl:operation name="getHistoryForAgent" parameterOrder="in0 in1 in2 in3 in4 in5">
+
+         <wsdl:input message="impl:getHistoryForAgentRequest" name="getHistoryForAgentRequest"/>
+
+         <wsdl:output message="impl:getHistoryForAgentResponse" name="getHistoryForAgentResponse"/>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="getHistoryForMobileAsset" parameterOrder="in0 in1 in2 in3 in4 in5">
+
+         <wsdl:input message="impl:getHistoryForMobileAssetRequest" name="getHistoryForMobileAssetRequest"/>
+
+         <wsdl:output message="impl:getHistoryForMobileAssetResponse" name="getHistoryForMobileAssetResponse"/>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="getLastPositionForAgents" parameterOrder="in0 in1">
+
+         <wsdl:input message="impl:getLastPositionForAgentsRequest" name="getLastPositionForAgentsRequest"/>
+
+         <wsdl:output message="impl:getLastPositionForAgentsResponse" name="getLastPositionForAgentsResponse"/>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="getLastPositionForMobileAssets" parameterOrder="in0 in1">
+
+         <wsdl:input message="impl:getLastPositionForMobileAssetsRequest" name="getLastPositionForMobileAssetsRequest"/>
+
+         <wsdl:output message="impl:getLastPositionForMobileAssetsResponse" name="getLastPositionForMobileAssetsResponse"/>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="getHistoryFromId" parameterOrder="in0 in1 in2 in3">
+
+         <wsdl:input message="impl:getHistoryFromIdRequest" name="getHistoryFromIdRequest"/>
+
+         <wsdl:output message="impl:getHistoryFromIdResponse" name="getHistoryFromIdResponse"/>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="getTripsForAgent" parameterOrder="in0 in1 in2 in3 in4 in5">
+
+         <wsdl:input message="impl:getTripsForAgentRequest" name="getTripsForAgentRequest"/>
+
+         <wsdl:output message="impl:getTripsForAgentResponse" name="getTripsForAgentResponse"/>
+
+      </wsdl:operation>
+
+   </wsdl:portType>
+
+   <wsdl:binding name="GeolocalisationDataServiceSoapBinding" type="impl:GeolocalisationDataService">
+
+      <wsdlsoap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+
+      <wsdl:operation name="getHistoryForAgent">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="getHistoryForAgentRequest">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://ws.praxedo.com/2006_09_25/geolocalisation/dataservice" use="encoded"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="getHistoryForAgentResponse">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://ws.praxedo.com/2006_09_25/geolocalisation/dataservice" use="encoded"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="getHistoryForMobileAsset">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="getHistoryForMobileAssetRequest">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://ws.praxedo.com/2006_09_25/geolocalisation/dataservice" use="encoded"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="getHistoryForMobileAssetResponse">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://ws.praxedo.com/2006_09_25/geolocalisation/dataservice" use="encoded"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="getLastPositionForAgents">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="getLastPositionForAgentsRequest">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://ws.praxedo.com/2006_09_25/geolocalisation/dataservice" use="encoded"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="getLastPositionForAgentsResponse">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://ws.praxedo.com/2006_09_25/geolocalisation/dataservice" use="encoded"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="getLastPositionForMobileAssets">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="getLastPositionForMobileAssetsRequest">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://ws.praxedo.com/2006_09_25/geolocalisation/dataservice" use="encoded"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="getLastPositionForMobileAssetsResponse">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://ws.praxedo.com/2006_09_25/geolocalisation/dataservice" use="encoded"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="getHistoryFromId">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="getHistoryFromIdRequest">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://ws.praxedo.com/2006_09_25/geolocalisation/dataservice" use="encoded"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="getHistoryFromIdResponse">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://ws.praxedo.com/2006_09_25/geolocalisation/dataservice" use="encoded"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="getTripsForAgent">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="getTripsForAgentRequest">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://ws.praxedo.com/2006_09_25/geolocalisation/dataservice" use="encoded"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="getTripsForAgentResponse">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://ws.praxedo.com/2006_09_25/geolocalisation/dataservice" use="encoded"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+   </wsdl:binding>
+
+   <wsdl:service name="GeolocalisationDataServiceService">
+
+      <wsdl:port binding="impl:GeolocalisationDataServiceSoapBinding" name="GeolocalisationDataService">
+
+         <wsdlsoap:address location="https://ww2.praxedo.com/eTech/services/2006_09_25/GeolocalisationDataService"/>
+
+      </wsdl:port>
+
+   </wsdl:service>
+
+</wsdl:definitions>

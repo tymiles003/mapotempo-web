@@ -57,6 +57,10 @@ en:
             ftp_path: "Path on FTP server"
             username: "Username"
             password: "Password"
+          praxedo:
+            login: "Login"
+            password: "Password"
+
       vehicle:
         devices:
           locster:
@@ -75,6 +79,8 @@ en:
             trimble_ref: "Trimble vehicle Ref."
           notico:
             agent_id: "Notico Deliv delivery man ID"
+          praxedo:
+            praxedo_agent_id: "Praxedo Agent ID"
   errors:
     tomtom:
       access_denied: Access denied. 'Full Access Orders' is not enabled in WEBFLEET
@@ -195,6 +201,14 @@ en:
         action: Clear Notico Deliv
         success: Notico Deliv trip has been cleared successfully
         fail: Failed to clear Notico Deliv
+      praxedo_send:
+        action: Send to Praxedo
+        success: Sent to Praxedo successfully
+        fail: Failed to send to Praxedo
+      praxedo_clear:
+        action: Clear Praxedo
+        success: Praxedo interventions have been cleared successfully
+        fail: Failed to clear Praxedo interventions
       dialog:
         orange:
           title: Orange Fleet Performance
@@ -216,4 +230,7 @@ en:
           in_progress: Please wait
         notico:
           title: Notico Deliv
+          in_progress: Please wait
+        praxedo:
+          title: Praxedo
           in_progress: Please wait
