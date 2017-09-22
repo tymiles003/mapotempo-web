@@ -255,6 +255,7 @@ fr:
         tag_operation:
           and: tous
           or: ou
+        out_of_route: Non planifié
       profile:
         name: Nom
         layers: Fond de carte

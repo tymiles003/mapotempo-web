@@ -254,6 +254,7 @@ en:
         tag_operation:
           and: all
           or: or
+        out_of_route: Unplanned
       profile:
         name: Name
         layers: Base Maps

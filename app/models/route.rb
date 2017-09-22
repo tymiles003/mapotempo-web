@@ -628,7 +628,7 @@ class Route < ApplicationRecord
           break
         end
       }
-      route_name = self.ref ? "#{ref}:#{vehicle_usage && vehicle_usage.vehicle.name}" : vehicle_usage && vehicle_usage.vehicle.name
+      route_name = vehicle_usage ? "#{ref}:#{vehicle_usage && vehicle_usage.vehicle.name}" : I18n.t('activerecord.attributes.planning.out_of_route')
       errors.add :stops, -> { I18n.t('activerecord.errors.models.route.attributes.stops.bad_index', index: bad_index || '', route: route_name) }
     end
     @no_stop_index_validation = nil
