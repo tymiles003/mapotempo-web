@@ -2009,7 +2009,7 @@ fr:
       confirm: Êtes-vous sûr ?
       duplicate: Dupliquer
       toggle_selection: Inverser sélection
-      dismiss: Fermer
+      dismiss: Ignorer
       import: Importer
       save: Sauvegarder
     unit:
