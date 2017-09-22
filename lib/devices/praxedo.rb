@@ -97,7 +97,7 @@ class Praxedo < DeviceBase
             creationDate: Time.now.strftime('%FT%T.%L%:z'),
             description: '',
             referentialData: {
-                '@xsi:type': 'tns:externalReferentialData',
+                '@xsi:type' => 'tns:externalReferentialData',
                 customerName: position.name,
                 location: {
                     address: [position.street, options[:stop] && position.detail].compact.join(' '),
@@ -130,7 +130,7 @@ class Praxedo < DeviceBase
         },
         schedulingData: {
             agentId: {
-                '@xsi:type': 'tns:externalEntityId',
+                '@xsi:type' => 'tns:externalEntityId',
                 id: route.vehicle_usage.vehicle.devices[:praxedo_agent_id]
             },
             appointmentDate: (p_time(route, options[:appointment_time]).strftime('%FT%T.%L%:z') if options[:appointment_time]),
