@@ -89,7 +89,9 @@ class V01::Users < Grape::API
         customer = @current_user.reseller.customers.where(id: params[:customer_id]).first!
         user = customer.users.build(user_params)
         user.password_confirmation = user.password
+        user.must_send_password_email = true
         user.save!
+
         present user, with: V01::Entities::User
       else
         error! 'Forbidden', 403
