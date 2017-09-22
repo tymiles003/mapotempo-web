@@ -1,5 +1,5 @@
 json.route_id route.id
-json.extract! route, :ref, :color, :outdated
+json.extract! route, :ref, :outdated
 (json.duration (route.start && route.end) ? '%i:%02i' % [(route.end - route.start) / 60 / 60, (route.end - route.start) / 60 % 60] : '0:00')
 (json.hidden true) if route.hidden
 (json.locked true) if route.locked
@@ -22,6 +22,8 @@ unless @planning.customer.enable_orders
   end
 end
 if route.vehicle_usage
+  json.name (route.ref ? "#{route.ref} " : '') + route.vehicle_usage.vehicle.name
+  json.color route.color || route.vehicle_usage.vehicle.color
   json.contact_email route.vehicle_usage.vehicle.contact_email if route.vehicle_usage.vehicle.contact_email
   json.vehicle_usage_id route.vehicle_usage.id
   json.vehicle_id route.vehicle_usage.vehicle.id
