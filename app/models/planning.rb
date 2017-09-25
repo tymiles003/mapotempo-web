@@ -54,8 +54,6 @@ class Planning < ApplicationRecord
 
       def copy.update_vehicle_usage_set; end
 
-      def copy.update_zonings; end
-
       copy.routes.each{ |route|
         route.planning = copy
       }
