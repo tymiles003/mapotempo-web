@@ -168,7 +168,8 @@ class Customer < ApplicationRecord
         planning.zonings = planning.zonings.collect{ |zoning| zonings_map[zoning] }
         planning.tags = planning.tags.collect{ |tag| tags_map[tag] }
 
-        planning.routes.includes_vehicle_usages.includes_stops.each{ |route|
+        # All routes must be caught in memory, don't use scopes
+        planning.routes.each{ |route|
           route.vehicle_usage = vehicle_usages_map[route.vehicle_usage]
 
           route.stops.each{ |stop|

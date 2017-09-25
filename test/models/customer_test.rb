@@ -320,4 +320,17 @@ class CustomerTest < ActiveSupport::TestCase
       end
     end
   end
+
+  test 'should duplicate without outdated routes' do
+    duplicated_customer = nil
+
+    assert_difference('Customer.count',1) do
+      duplicated_customer = @customer.duplicate
+      routes = duplicated_customer.plannings.map(&:routes).flatten
+
+      assert_equal(0, routes.count(&:outdated))
+    end
+
+    duplicated_customer.destroy!
+  end
 end
