@@ -42,4 +42,26 @@ class UserMailer < ApplicationMailer
       end
     end
   end
+
+  def self.mail_automation(users)
+
+    users.each do |user|
+      date = user.created_at.midnight
+
+      case DateTime.now.in_time_zone.midnight
+        when date + 2.days # here is a debugging phase !remove me
+          d 'Mail3'
+        when date + 3.days
+          d 'Mail4'
+        when date + 4.days
+          d 'Mail5'
+        when date + 9.days
+          d 'Mail6'
+        when date + 14.days
+          d 'Mail7' if user.customer.test
+        else
+          d 'else'
+      end
+    end
+  end
 end
