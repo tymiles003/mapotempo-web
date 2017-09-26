@@ -345,15 +345,15 @@ class ImporterDestinations < ImporterBase
 
     @customer.save!
 
-    if !@routes.keys.compact.empty?
+    unless @routes.keys.compact.empty?
       @planning = @customer.plannings.find_by(ref: @planning_hash['ref']) if @planning_hash.key?('ref')
-      if !@planning
+      unless @planning
         # Do not link the planning to has_many of the customer, to avoid cascading while saving from customer.
         # The following save_import does not re-synchr the object in memory from database, unless explicitly requested.
         @planning = Planning.new
         @planning.assign_attributes({
           customer: @customer,
-          vehicle_usage_set: @planning_hash[:vehicle_usage_set_id] && @customer.vehicle_usage_sets.find{ |vu| vu_id == @planning_hash[:vehicle_usage_set_id] } || @customer.vehicle_usage_sets[0]})
+          vehicle_usage_set: @planning_hash[:vehicle_usage_set_id] && @customer.vehicle_usage_sets.find{ |vu| vu.id == @planning_hash[:vehicle_usage_set_id] } || @customer.vehicle_usage_sets[0]})
         @planning.default_empty_routes
       end
       @planning.assign_attributes({
@@ -365,19 +365,23 @@ class ImporterDestinations < ImporterBase
     end
   end
 
-  def finalize_import(_name, _options)
-    if !@destinations_to_geocode.empty? && !@synchronous && Mapotempo::Application.config.delayed_job_use
-      @customer.job_destination_geocoding = Delayed::Job.enqueue(GeocoderDestinationsJob.new(@customer.id, @planning ? @planning.id : nil))
-    elsif @planning
-      @planning.compute(ignore_errors: true)
-    end
-
+  def save_planning
     if @planning
       if !@planning.id
         @planning.save_import!
       else
         @planning.save!
       end
+    end
+  end
+
+  def finalize_import(_name, _options)
+    if !@destinations_to_geocode.empty? && !@synchronous && Mapotempo::Application.config.delayed_job_use
+      save_planning
+      @customer.job_destination_geocoding = Delayed::Job.enqueue(GeocoderDestinationsJob.new(@customer.id, @planning ? @planning.id : nil))
+    elsif @planning
+      @planning.compute(ignore_errors: true)
+      save_planning
     end
 
     @customer.save!
