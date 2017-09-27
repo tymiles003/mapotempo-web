@@ -121,7 +121,7 @@
 
           <ul class="nav navbar-nav pull-right">
             <% if user_signed_in? %>
-              <% if current_user.customer && request.env['reseller'].subscription_url && current_user.customer.test? %>
+              <% if current_user.customer && request.env['reseller'].subscription_url && (current_user.customer.test? || (current_user.customer.end_subscription && current_user.customer.end_subscription < Time.now)) %>
                 <li class="subscription">
                   <%= link_to request.env['reseller'].subscription_url.gsub('{LG}', I18n.locale.to_s), target: '_blank' do %>
                     <i class="fa fa-rocket fa-fw"></i> <span class="menu_label"><%= t 'web.subscription' %></span>
