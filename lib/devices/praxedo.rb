@@ -76,20 +76,10 @@ class Praxedo < DeviceBase
     })
   end
 
-  def format_position(customer, route, position, options = {})
+  def format_position(customer, route, position, order_id, options = {})
     # TODO: how to format quantities ?
     # quantities = (customer.enable_orders ? (position.order ? position.order.products.collect(&:code) : []) : customer.deliverable_units.map { |du| position.visit.default_quantities[du.id] && [du.label, position.visit.default_quantities[du.id]] }.compact)
     quantities = []
-
-    # TODO: content description ?
-    # description = [
-    #     '',
-    #     position.comment,
-    #     position.is_a?(StopVisit) ? quantities : nil,
-    #     position.open1 || position.close1 ? (position.open1 ? position.open1_time + number_of_days(position.open1) : '') + (position.open1 && position.close1 ? '-' : '') + (position.close1 ? (position.close1_time + number_of_days(position.close1) || '') : '') : nil,
-    #     position.open2 || position.close2 ? (position.open2 ? position.open2_time + number_of_days(position.open2) : '') + (position.open2 && position.close2 ? '-' : '') + (position.close2 ? (position.close2_time + number_of_days(position.close2) || '') : '') : nil,
-    # ].compact.join(' ').strip
-    description = ''
 
     {
         coreData: {
@@ -105,7 +95,7 @@ class Praxedo < DeviceBase
                     contact: options[:stop] && position.phone_number,
                     name: position.name,
                     zipCode: position.postalcode,
-                    description: description,
+                    description: options[:description],
                     geolocation: {
                         latitude: position.lat,
                         longitude: position.lng
@@ -113,11 +103,11 @@ class Praxedo < DeviceBase
                 }
             }
         },
-        id: encode_order_id(description, (position.is_a?(StopVisit) ? "v#{position.visit_id}" : "r#{position.id}")),
+        id: encode_order_id(options[:description], order_id),
         qualificationData: {
             type: {
                 id: 'ENT', # ENT or SAV
-                duration: options[:stop] && position.duration / 60 # unit: min
+                duration: options[:duration] ? options[:duration] / 60 : 0 # unit: min
             },
             # TODO: what field to use for quantities ?
             # expectedItems: quantities.map { |quantity|
@@ -139,21 +129,32 @@ class Praxedo < DeviceBase
     }.compact
   end
 
-  def send_route(customer, route)
+  def send_route(customer, route, options = {})
     events = []
 
     start = route.vehicle_usage.default_store_start
     if start && !start.lat.nil? && !start.lng.nil?
-      events << format_position(customer, route, start, appointment_time: route.start)
+      order_id = -2
+      description = start.name || "#{start.lat} #{start.lng}"
+      events << format_position(customer, route, start, order_id, appointment_time: route.start, duration: route.vehicle_usage.default_service_time_start, description: description)
     end
 
     route.stops.select { |s| s.active && s.position? && !s.is_a?(StopRest) }.map do |stop|
-      events << format_position(customer, route, stop, stop: true, appointment_time: stop.open1 || stop.close1 || stop.open2 || stop.close2, schedule_time: stop.time)
+      order_id = stop.is_a?(StopVisit) ? "v#{stop.visit_id}" : "r#{stop.id}"
+      # TODO: content description ?
+      description = [
+          stop.comment,
+          stop.open1 || stop.close1 ? (stop.open1 ? stop.open1_time + number_of_days(stop.open1) : '') + (stop.open1 && stop.close1 ? '-' : '') + (stop.close1 ? (stop.close1_time + number_of_days(stop.close1) || '') : '') : nil,
+          stop.open2 || stop.close2 ? (stop.open2 ? stop.open2_time + number_of_days(stop.open2) : '') + (stop.open2 && stop.close2 ? '-' : '') + (stop.close2 ? (stop.close2_time + number_of_days(stop.close2) || '') : '') : nil,
+      ].compact.join(' ').strip
+      events << format_position(customer, route, stop, order_id, stop: true, appointment_time: stop.open1 || stop.close1 || stop.open2 || stop.close2, schedule_time: stop.time, duration: stop.duration, description: description)
     end
 
     stop = route.vehicle_usage.default_store_stop
     if stop && !stop.lat.nil? && !stop.lng.nil?
-      events << format_position(customer, route, stop, appointment_time: route.stop)
+      order_id = -1
+      description = stop.name || "#{start.lat} #{start.lng}"
+      events << format_position(customer, route, stop, order_id, appointment_time: route.end, duration: route.vehicle_usage.default_service_time_end, description: description)
     end
 
     get(savon_client_events(customer), :create_events, events: events)
