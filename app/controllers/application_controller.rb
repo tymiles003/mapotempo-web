@@ -26,7 +26,8 @@ class ApplicationController < ActionController::Base
   rescue_from ActiveRecord::RecordNotFound, with: :not_found_error
   rescue_from AbstractController::ActionNotFound, with: :not_found_error
   rescue_from ActionController::UnknownController, with: :not_found_error
-  rescue_from ActiveRecord::StatementInvalid, ActiveRecord::StaleObjectError, with: :deadlock
+  rescue_from ActiveRecord::StaleObjectError, with: :deadlock
+  rescue_from PG::TRDeadlockDetected, with: :deadlock
 
   layout :layout_by_resource
 
