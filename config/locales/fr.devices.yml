@@ -60,6 +60,9 @@ fr:
           praxedo:
             login: "Login"
             password: "Mot de passe"
+            code_inter_start: "Code d'intervention pour le départ"
+            code_inter_stop: "Code d'intervention pour l'arrivé"
+            code_mat: "Code du matériel à livrer"
       vehicle:
         devices:
           locster:

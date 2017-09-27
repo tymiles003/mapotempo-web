@@ -19,21 +19,24 @@ class Praxedo < DeviceBase
 
   def definition
     {
-        device: 'praxedo',
-        label: 'Praxedo',
-        label_small: 'Praxedo',
-        route_operations: [:send],
-        has_sync: false,
-        help: true,
-        forms: {
-            settings: {
-                login: :text,
-                password: :password
-            },
-            vehicle: {
-                praxedo_agent_id: :text
-            },
-        }
+      device: 'praxedo',
+      label: 'Praxedo',
+      label_small: 'Praxedo',
+      route_operations: [:send],
+      has_sync: false,
+      help: true,
+      forms: {
+        settings: {
+          login: :text,
+          password: :password,
+          code_inter_start: :text,
+          code_inter_stop: :text,
+          code_mat: :text
+        },
+        vehicle: {
+          praxedo_agent_id: :text
+        },
+      }
     }
   end
 
@@ -55,13 +58,13 @@ class Praxedo < DeviceBase
   end
 
   @@order_status = {
-      'NEW' => nil,
-      'QUALIFIED' => nil,
-      'PRE_SCHEDULED' => 'Planned',
-      'SCHEDULED' => 'Planned',
-      'IN_PROGRESS' => 'Started',
-      'COMPLETED' => 'Finished',
-      'VALIDATED' => 'Finished'
+    'NEW' => nil,
+    'QUALIFIED' => nil,
+    'PRE_SCHEDULED' => 'Planned',
+    'SCHEDULED' => 'Planned',
+    'IN_PROGRESS' => 'Started',
+    'COMPLETED' => 'Finished',
+    'VALIDATED' => 'Finished'
   }
 
   def check_auth(params)
@@ -72,60 +75,53 @@ class Praxedo < DeviceBase
     end
 
     get(client, :get_events, {
-        requestedEvents: ['']
+      requestedEvents: ['']
     })
   end
 
   def format_position(customer, route, position, order_id, options = {})
-    # TODO: how to format quantities ?
-    # quantities = (customer.enable_orders ? (position.order ? position.order.products.collect(&:code) : []) : customer.deliverable_units.map { |du| position.visit.default_quantities[du.id] && [du.label, position.visit.default_quantities[du.id]] }.compact)
-    quantities = []
-
     {
-        coreData: {
-            anomaly: false,
-            creationDate: Time.now.strftime('%FT%T.%L%:z'),
-            description: '',
-            referentialData: {
-                '@xsi:type' => 'tns:externalReferentialData',
-                customerName: position.name,
-                location: {
-                    address: [position.street, options[:stop] && position.detail].compact.join(' '),
-                    city: position.city,
-                    contact: options[:stop] && position.phone_number,
-                    name: position.name,
-                    zipCode: position.postalcode,
-                    description: options[:description],
-                    geolocation: {
-                        latitude: position.lat,
-                        longitude: position.lng
-                    }
-                }
+      coreData: {
+        anomaly: false,
+        creationDate: Time.now.strftime('%FT%T.%L%:z'),
+        description: '',
+        referentialData: {
+          '@xsi:type' => 'tns:externalReferentialData',
+          customerName: position.name,
+          location: {
+            address: [position.street, options[:stop] && position.detail].compact.join(' '),
+            city: position.city,
+            contact: options[:stop] && position.phone_number,
+            name: position.name,
+            zipCode: position.postalcode,
+            description: options[:description],
+            geolocation: {
+              latitude: position.lat,
+              longitude: position.lng
             }
+          }
+        }
+      },
+      id: encode_order_id(options[:description], order_id),
+      qualificationData: {
+        type: {
+          id: options[:code_type_inter],
+          duration: options[:duration] ? options[:duration] / 60 : 0 # unit: min
         },
-        id: encode_order_id(options[:description], order_id),
-        qualificationData: {
-            type: {
-                id: 'ENT', # ENT or SAV
-                duration: options[:duration] ? options[:duration] / 60 : 0 # unit: min
-            },
-            # TODO: what field to use for quantities ?
-            # expectedItems: quantities.map { |quantity|
-            #   {
-            #       reference: quantity[0],
-            #       name: quantity[0],
-            #       expectedQuantity: quantity[1]
-            #   }
-            # }
-        },
-        schedulingData: {
-            agentId: {
-                '@xsi:type' => 'tns:externalEntityId',
-                id: route.vehicle_usage.vehicle.devices[:praxedo_agent_id]
-            },
-            appointmentDate: (p_time(route, options[:appointment_time]).strftime('%FT%T.%L%:z') if options[:appointment_time]),
-            schedulingDate: (p_time(route, options[:schedule_time]).strftime('%FT%T.%L%:z') if options[:schedule_time])
+        instructions: {
+          '@xsi:type' => ('tns:reportField' if options[:instruction]),
+          id: (customer.devices[:praxedo][:code_mat] if options[:instruction]),
+          value: (options[:instruction] if options[:instruction])
         }.compact
+      }.select {|_,v| v.present? },
+      schedulingData: {
+        agentId: {
+          '@xsi:type' => 'tns:externalEntityId',
+          id: route.vehicle_usage.vehicle.devices[:praxedo_agent_id]
+        },
+        appointmentDate: (p_time(route, options[:appointment_time]).strftime('%FT%T.%L%:z') if options[:appointment_time]),
+        schedulingDate: (p_time(route, options[:schedule_time]).strftime('%FT%T.%L%:z') if options[:schedule_time])
+      }.compact
     }.compact
   end
 
@@ -135,26 +131,26 @@ class Praxedo < DeviceBase
     start = route.vehicle_usage.default_store_start
     if start && !start.lat.nil? && !start.lng.nil?
       order_id = -2
-      description = start.name || "#{start.lat} #{start.lng}"
-      events << format_position(customer, route, start, order_id, appointment_time: route.start, duration: route.vehicle_usage.default_service_time_start, description: description)
+      description = I18n.transliterate(start.name) || "#{start.lat} #{start.lng}"
+      events << format_position(customer, route, start, order_id, appointment_time: route.start, duration: route.vehicle_usage.default_service_time_start, description: description, code_type_inter: customer.devices[:praxedo][:code_inter_start])
     end
 
     route.stops.select { |s| s.active && s.position? && !s.is_a?(StopRest) }.map do |stop|
       order_id = stop.is_a?(StopVisit) ? "v#{stop.visit_id}" : "r#{stop.id}"
-      # TODO: content description ?
       description = [
-          stop.comment,
-          stop.open1 || stop.close1 ? (stop.open1 ? stop.open1_time + number_of_days(stop.open1) : '') + (stop.open1 && stop.close1 ? '-' : '') + (stop.close1 ? (stop.close1_time + number_of_days(stop.close1) || '') : '') : nil,
-          stop.open2 || stop.close2 ? (stop.open2 ? stop.open2_time + number_of_days(stop.open2) : '') + (stop.open2 && stop.close2 ? '-' : '') + (stop.close2 ? (stop.close2_time + number_of_days(stop.close2) || '') : '') : nil,
+        stop.comment,
+        stop.open1 || stop.close1 ? (stop.open1 ? stop.open1_time + number_of_days(stop.open1) : '') + (stop.open1 && stop.close1 ? '-' : '') + (stop.close1 ? (stop.close1_time + number_of_days(stop.close1) || '') : '') : nil,
+        stop.open2 || stop.close2 ? (stop.open2 ? stop.open2_time + number_of_days(stop.open2) : '') + (stop.open2 && stop.close2 ? '-' : '') + (stop.close2 ? (stop.close2_time + number_of_days(stop.close2) || '') : '') : nil,
       ].compact.join(' ').strip
-      events << format_position(customer, route, stop, order_id, stop: true, appointment_time: stop.open1 || stop.close1 || stop.open2 || stop.close2, schedule_time: stop.time, duration: stop.duration, description: description)
+      code_type_inter = stop.visit.destination.tags.pluck(:label).map { |label| label.split('praxedo:')[1] }.compact.first
+      events << format_position(customer, route, stop, order_id, stop: true, appointment_time: stop.open1 || stop.close1 || stop.open2 || stop.close2, schedule_time: stop.time, duration: stop.duration, description: description, code_type_inter: code_type_inter, instruction: stop.visit.ref || stop.visit.destination.ref)
     end
 
     stop = route.vehicle_usage.default_store_stop
     if stop && !stop.lat.nil? && !stop.lng.nil?
       order_id = -1
-      description = stop.name || "#{start.lat} #{start.lng}"
-      events << format_position(customer, route, stop, order_id, appointment_time: route.end, duration: route.vehicle_usage.default_service_time_end, description: description)
+      description = I18n.transliterate(stop.name) || "#{start.lat} #{start.lng}"
+      events << format_position(customer, route, stop, order_id, appointment_time: route.end, duration: route.vehicle_usage.default_service_time_end, description: description, code_type_inter: customer.devices[:praxedo][:code_inter_stop])
     end
 
     get(savon_client_events(customer), :create_events, events: events)
@@ -165,15 +161,15 @@ class Praxedo < DeviceBase
 
     begin
       response = get(savon_client_events(customer), :search_events, {
-          request: {
-              agentIdConstraint: customer.vehicles.map { |v| v.devices[:praxedo_agent_id] }.compact,
-              dateConstraints: {
-                  name: 'schedulingDate', # available types: creationDate, appointmentDate, schedulingDate
-                  dateRange: [date.strftime('%FT%T.%L%:z'), (date + 2.day).strftime('%FT%T.%L%:z')] # FIXME: change 2 days
-              }
-          },
-          firstResultIndex: orders.size,
-          batchSize: 50 # return 50 paginated results
+        request: {
+          agentIdConstraint: customer.vehicles.map { |v| v.devices[:praxedo_agent_id] }.compact,
+          dateConstraints: {
+            name: 'schedulingDate', # available types: creationDate, appointmentDate, schedulingDate
+            dateRange: [date.strftime('%FT%T.%L%:z'), (date + 2.day).strftime('%FT%T.%L%:z')] # FIXME: change 2 days
+          }
+        },
+        firstResultIndex: orders.size,
+        batchSize: 50 # return 50 paginated results
       })
 
       response = response[:entities]
@@ -185,9 +181,9 @@ class Praxedo < DeviceBase
     end while (response && !response.empty?)
 
     orders.collect { |order| {
-        # TODO
-        # order_id: decode_order_id(order[:order_id]), #####################"
-        status: @@order_status[order[:status]] || order[:status],
+      # TODO
+      # order_id: decode_order_id(order[:order_id]), #####################"
+      status: @@order_status[order[:status]] || order[:status],
     } if order }.compact || []
   end
 
