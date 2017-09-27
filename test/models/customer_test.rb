@@ -333,4 +333,10 @@ class CustomerTest < ActiveSupport::TestCase
 
     duplicated_customer.destroy!
   end
+
+  test 'should clear all destinations' do
+    @customer.delete_all_destinations
+
+    assert plannings(:planning_one).routes.all? { |r| r.outdated }
+  end
 end

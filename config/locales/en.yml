@@ -800,7 +800,7 @@ en:
       import_stores: Import stores
       tags: Tags
       clear: Clear all destinations
-      clear_confirm: Are you sure to want to delete all destinations?
+      clear_confirm: Are you sure to want to delete all destinations? Existing routes will be lost.
     form:
       ref_help: A free reference
       detail_help: Non geocoded address complement, flat number for example
@@ -837,7 +837,7 @@ en:
         is made and the new ones are added in the application.
       replace_yes: Delete previous destinations
       replace_yes_help: Delete and replace destinations with import ones. Overwrite
-        all destinations. Plans will also be lost.
+        all destinations. Old routes will also be lost.
       replace_confirm: Deleting all destinations will affect your old plans which will
         contain only new unplanned destinations. Are you sure?
       plannings: Plans

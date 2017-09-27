@@ -233,16 +233,16 @@ class Customer < ApplicationRecord
 
   def delete_all_destinations
     destinations.delete_all
-    plannings.reload.each { |p|
-      p.routes.includes_stops.select(&:vehicle_usage).each do |route|
-        # reindex remaining stops (like rests)
-        route.force_reindex
-        # outdated for last step
-        route.outdated = true if route.stop_drive_time
-        route.optimized_at = route.last_sent_to = route.last_sent_at = nil
-      end
-      p.save!
-    }
+    Route.includes_stops.scoping do
+      plannings.reload.each { |p|
+        p.routes.each do |route|
+          # reindex remaining stops (like rests)
+          route.force_reindex
+          route.outdated = true if !route.geojson_points.try(&:empty?) || !route.geojson_tracks.try(&:empty?)
+        end
+        p.save!
+      }
+    end
   end
 
   def too_many_plannings?
