@@ -295,7 +295,7 @@ span.color[data-color=''][data-selected]:after {
   }
 }
 
-[data-controller='devise_sessions'], [data-controller='devise_passwords'], [data-controller='registrations'] {
+[data-controller='devise_sessions'], [data-controller='devise_passwords'], [data-controller='registrations'], [data-controller='users'] {
   #registration-header {
     margin-top: 30px;
     margin-bottom: 30px;
