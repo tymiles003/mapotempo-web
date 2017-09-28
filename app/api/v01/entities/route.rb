@@ -70,6 +70,9 @@ class V01::Entities::RouteStatus < Grape::Entity
   expose(:vehicle_usage_id, documentation: { type: Integer })
   expose(:last_sent_to, documentation: { type: String, desc: 'Type GPS Device of Last Sent.'})
   expose(:last_sent_at, documentation: { type: DateTime, desc: 'Last Time Sent To External GPS Device.'})
+  expose(:quantities, using: V01::Entities::DeliverableUnitQuantity, documentation: { type: V01::Entities::DeliverableUnitQuantity, is_array: true, param_type: 'form' }) { |m|
+    m.quantities ? m.quantities.to_a.collect{ |a| {deliverable_unit_id: a[0], quantity: a[1]} } : []
+  }
   expose(:stops, using: V01::Entities::StopStatus, documentation: { type: V01::Entities::StopStatus, is_array: true })
 end
 

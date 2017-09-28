@@ -113,14 +113,15 @@ class Praxedo < DeviceBase
           id: (customer.devices[:praxedo][:code_mat] if options[:instruction]),
           value: (options[:instruction] if options[:instruction])
         }.compact
-      }.select {|_,v| v.present? },
+      }.select { |_, v| v.present? },
       schedulingData: {
         agentId: {
           '@xsi:type' => 'tns:externalEntityId',
           id: route.vehicle_usage.vehicle.devices[:praxedo_agent_id]
         },
         appointmentDate: (p_time(route, options[:appointment_time]).strftime('%FT%T.%L%:z') if options[:appointment_time]),
-        schedulingDate: (p_time(route, options[:schedule_time]).strftime('%FT%T.%L%:z') if options[:schedule_time])
+        schedulingDate: (p_time(route, options[:schedule_time]).strftime('%FT%T.%L%:z') if options[:schedule_time]),
+        useSchedulingHour: true
       }.compact
     }.compact
   end
@@ -132,7 +133,7 @@ class Praxedo < DeviceBase
     if start && !start.lat.nil? && !start.lng.nil?
       order_id = -2
       description = I18n.transliterate(start.name) || "#{start.lat} #{start.lng}"
-      events << format_position(customer, route, start, order_id, appointment_time: route.start, duration: route.vehicle_usage.default_service_time_start, description: description, code_type_inter: customer.devices[:praxedo][:code_inter_start])
+      events << format_position(customer, route, start, order_id, appointment_time: route.start, schedule_time: route.start, duration: route.vehicle_usage.default_service_time_start, description: description, code_type_inter: customer.devices[:praxedo][:code_inter_start])
     end
 
     route.stops.select { |s| s.active && s.position? && !s.is_a?(StopRest) }.map do |stop|
@@ -142,15 +143,15 @@ class Praxedo < DeviceBase
         stop.open1 || stop.close1 ? (stop.open1 ? stop.open1_time + number_of_days(stop.open1) : '') + (stop.open1 && stop.close1 ? '-' : '') + (stop.close1 ? (stop.close1_time + number_of_days(stop.close1) || '') : '') : nil,
         stop.open2 || stop.close2 ? (stop.open2 ? stop.open2_time + number_of_days(stop.open2) : '') + (stop.open2 && stop.close2 ? '-' : '') + (stop.close2 ? (stop.close2_time + number_of_days(stop.close2) || '') : '') : nil,
       ].compact.join(' ').strip
-      code_type_inter = stop.visit.destination.tags.pluck(:label).map { |label| label.split('praxedo:')[1] }.compact.first
-      events << format_position(customer, route, stop, order_id, stop: true, appointment_time: stop.open1 || stop.close1 || stop.open2 || stop.close2, schedule_time: stop.time, duration: stop.duration, description: description, code_type_inter: code_type_inter, instruction: stop.visit.ref || stop.visit.destination.ref)
+      code_type_inter = stop.visit.tags.map(&:label).map { |label| label.split('praxedo:')[1] }.compact.first
+      events << format_position(customer, route, stop, order_id, stop: true, appointment_time: stop.open1 || stop.close1 || stop.open2 || stop.close2 || stop.time, schedule_time: stop.time, duration: stop.duration, description: description, code_type_inter: code_type_inter, instruction: stop.visit.ref)
     end
 
     stop = route.vehicle_usage.default_store_stop
     if stop && !stop.lat.nil? && !stop.lng.nil?
       order_id = -1
       description = I18n.transliterate(stop.name) || "#{start.lat} #{start.lng}"
-      events << format_position(customer, route, stop, order_id, appointment_time: route.end, duration: route.vehicle_usage.default_service_time_end, description: description, code_type_inter: customer.devices[:praxedo][:code_inter_stop])
+      events << format_position(customer, route, stop, order_id, appointment_time: route.end, schedule_time: route.end, duration: route.vehicle_usage.default_service_time_end, description: description, code_type_inter: customer.devices[:praxedo][:code_inter_stop])
     end
 
     get(savon_client_events(customer), :create_events, events: events)
@@ -160,17 +161,45 @@ class Praxedo < DeviceBase
     orders = []
 
     begin
-      response = get(savon_client_events(customer), :search_events, {
+      message = {
         request: {
           agentIdConstraint: customer.vehicles.map { |v| v.devices[:praxedo_agent_id] }.compact,
           dateConstraints: {
-            name: 'schedulingDate', # available types: creationDate, appointmentDate, schedulingDate
+            name: 'completionDate', # available types: creationDate, appointmentDate, schedulingDate, completionDate
             dateRange: [date.strftime('%FT%T.%L%:z'), (date + 2.day).strftime('%FT%T.%L%:z')] # FIXME: change 2 days
-          }
+          },
+          statusConstraint: 'COMPLETED'
         },
         firstResultIndex: orders.size,
-        batchSize: 50 # return 50 paginated results
-      })
+        batchSize: 50, # return 50 paginated results,
+        options: [
+          {
+            key: 'businessEvent.populate.coreData'
+          },
+          {
+            '@xsi:type' => 'tns:wsValuedEntry',
+            key: 'businessEvent.populate.coreData.referentialData',
+            value: 'external'
+          },
+          {
+            key: 'businessEvent.populate.qualificationData'
+          },
+          {
+            key: 'businessEvent.populate.schedulingData'
+          },
+          {
+            key: 'businessEvent.populate.completionData.fields'
+          },
+          {
+            key: 'businessEvent.populate.completionData.items'
+          },
+          {
+            key: 'businessEvent.populate.completionData.lifeCycleDate'
+          }
+        ]
+      }
+
+      response = get(savon_client_events(customer), :search_events, message)
 
       response = response[:entities]
       if !response.is_a?(Array)
@@ -180,25 +209,23 @@ class Praxedo < DeviceBase
       end
     end while (response && !response.empty?)
 
-    orders.collect { |order| {
-      # TODO
-      # order_id: decode_order_id(order[:order_id]), #####################"
-      status: @@order_status[order[:status]] || order[:status],
-    } if order }.compact || []
-  end
+    orders.compact.map { |intervention|
+      if intervention[:completion_data] && intervention[:completion_data][:fields]
+        quantities = []
+        intervention[:completion_data][:fields].map do |field|
+          quantities << {
+            label: field[:id],
+            quantity: field[:value]
+          }
+        end
 
-  # FIXME: not used for now
-  # def clear_route(customer, route)
-  #   events = route.stops.select { |s| s.active && s.position? && !s.is_a?(StopRest) }.map do |stop|
-  #     {
-  #         deleteEvents: {
-  #             eventsToDelete: encode_order_id(description, (stop.is_a?(StopVisit) ? "v#{stop.visit_id}" : "r#{stop.id}"))
-  #         }
-  #     }
-  #   end
-  #
-  #   get(savon_client_events(customer), :delete_events, events)
-  # end
+        {
+          order_id: decode_order_id(intervention[:id]),
+          quantities: quantities
+        }
+      end
+    }.compact
+  end
 
   # FIXME: not used for now
   # def get_vehicles_pos(customer)
@@ -211,6 +238,19 @@ class Praxedo < DeviceBase
   #         lng: object[:position][0][1]
   #     }
   #   end if objects
+  # end
+
+  # FIXME: not used for now
+  # def clear_route(customer, route)
+  #   events = route.stops.select { |s| s.active && s.position? && !s.is_a?(StopRest) }.map do |stop|
+  #     {
+  #         deleteEvents: {
+  #             eventsToDelete: encode_order_id(description, (stop.is_a?(StopVisit) ? "v#{stop.visit_id}" : "r#{stop.id}"))
+  #         }
+  #     }
+  #   end
+  #
+  #   get(savon_client_events(customer), :delete_events, events)
   # end
 
   private

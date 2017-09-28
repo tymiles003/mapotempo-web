@@ -47,11 +47,11 @@ class DeviceBase
 
   # Return a string, prefixed with 'v' (Visit), 'r' (Rest), or nothing (Store)
   def decode_order_id(order_id)
-    sufix = order_id.split(':').last
-    if sufix[0] == 'v' || sufix[0] == 'r'
-      sufix[0] + sufix[1..-1].to_i(36).to_s
+    suffix = order_id.split(':').last
+    if suffix[0] == 'v' || suffix[0] == 'r'
+      suffix[0] + suffix[1..-1].to_i(36).to_s
     else
-      sufix.to_i(36).to_s
+      suffix.to_i(36).to_s
     end
   end
 end

@@ -59,4 +59,17 @@ class Device
   def available_position?
     @customer.enable_vehicle_position? && !configured_definitions.empty?
   end
+
+  def available_stop_status?
+    # FIXME: add new key to devices definition to check availability for stop status (and vehicle position)
+    # Mapotempo::Application.config.devices[service_name]
+
+    has_stop_status = false
+    Mapotempo::Application.config.devices.each_pair.map { |key, device|
+      has_stop_status ||= device.respond_to?(:fetch_stops) && @customer.device.configured?(key)
+    }
+    has_stop_status
+  end
+
+  # @planning.customer.device.configured?(:tomtom) && @planning.routes.any?{ |r| r.vehicle_usage && r.vehicle_usage.vehicle.devices[:tomtom_id] }
 end

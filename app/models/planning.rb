@@ -429,8 +429,9 @@ class Planning < ApplicationRecord
     if customer.enable_stop_status
       stops_map = Hash[routes.select(&:vehicle_usage).collect(&:stops).flatten.collect{ |stop| [(stop.is_a?(StopVisit) ? "v#{stop.visit_id}" : "r#{stop.id}"), stop] }]
       stops_map.each{ |ss| ss[1].assign_attributes status: nil, eta: nil }
+      routes_quantities_changed = []
 
-      Mapotempo::Application.config.devices.each_pair.collect{ |key, device|
+      stops_status = Mapotempo::Application.config.devices.each_pair.collect{ |key, device|
         if device.respond_to?(:fetch_stops) && customer.device.configured?(key)
           device.fetch_stops(self.customer, device.planning_date(self))
         end
@@ -439,9 +440,31 @@ class Planning < ApplicationRecord
         s[:order_id].to_i == 0
       }.each{ |s|
         if stops_map.key?(s[:order_id])
-          stops_map[s[:order_id]].assign_attributes status: s[:status], eta: s[:eta]
+          if s[:quantities].is_a?(Array)
+            quantities = {}
+            du_by_label = {}
+            customer.deliverable_units.map { |du| du_by_label[du.label] = du.id }
+            s[:quantities].map do |quantity|
+              if du_by_label.keys.include?(quantity[:label])
+                quantities[du_by_label[quantity[:label]]] = quantity[:quantity]
+              end
+            end
+            Visit.without_callback(:update, :before, :update_outdated) do
+              # Do not flag route as outdated just for quantities change, quantities are computed after loop
+              stops_map[s[:order_id]].visit.update_attributes(quantities: quantities)
+            end
+            routes_quantities_changed << stops_map[s[:order_id]].route
+          end
+
+          stops_map[s[:order_id]].assign_attributes(status: s[:status], eta: s[:eta])
         end
       }
+
+      routes_quantities_changed.map do |route|
+        route.quantities = route.compute_quantities
+      end
+
+      return stops_status
     end
   end
 

@@ -20,11 +20,4 @@ class PraxedoService < DeviceService
     'Praxedo'
   end
 
-  def get_vehicles_pos
-    if customer.devices[service_name] && customer.devices[:praxedo][:login]
-      with_cache [:get_vehicles_pos, service_name, customer.id, customer.devices[:praxedo][:login]] do
-        service.get_vehicles_pos customer
-      end
-    end
-  end
 end
