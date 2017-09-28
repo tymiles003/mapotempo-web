@@ -20,7 +20,7 @@ class OrderArray < ApplicationRecord
 
   belongs_to :customer
   has_many :orders, inverse_of: :order_array, autosave: true, dependent: :delete_all
-  has_many :planning, inverse_of: :order_array, dependent: :nullify
+  has_many :plannings, inverse_of: :order_array, dependent: :nullify
   enum length: {week: 7, week2: 14, month: 31}
 
   nilify_blanks
