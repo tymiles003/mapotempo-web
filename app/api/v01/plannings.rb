@@ -328,7 +328,7 @@ class V01::Plannings < Grape::API
         planning.fetch_stops_status
         planning.save!
         if params[:details]
-          present planning.routes.includes_stops, with: V01::Entities::RouteStatus
+          present planning.routes, with: V01::Entities::RouteStatus
         else
           status 204
         end

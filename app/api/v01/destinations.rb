@@ -163,7 +163,7 @@ class V01::Destinations < Grape::API
     end
     put ':id' do
       id = ParseIdsRefs.read(params[:id])
-      destination = current_customer.destinations.includes_visits.where(id).first!
+      destination = current_customer.destinations.where(id).first!
       destination.assign_attributes(destination_params)
       destination.save!
       destination.customer.save! if destination.customer

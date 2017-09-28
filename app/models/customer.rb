@@ -228,7 +228,7 @@ class Customer < ApplicationRecord
   end
 
   def visits
-    destinations.includes_visits.collect(&:visits).flatten
+    destinations.collect(&:visits).flatten
   end
 
   def delete_all_destinations
