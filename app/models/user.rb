@@ -101,7 +101,7 @@ class User < ApplicationRecord
   private
 
   def set_default_time_zone
-    self.time_zone = I18n.t('default_time_zone')
+    self.time_zone = self.time_zone == 'UTC' ? I18n.t('default_time_zone') : self.time_zone
   end
 
   def set_time_zone
@@ -109,6 +109,7 @@ class User < ApplicationRecord
   end
 
   def assign_defaults
+    set_default_time_zone
     self.api_key || self.api_key_random
   end
 
