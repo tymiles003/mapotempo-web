@@ -1600,7 +1600,7 @@ fr:
     update:
       success: Utilisateur mis à jour avec succès
     password:
-      title: Editer le mot de passe
+      title: Éditer le mot de passe
       unauthenticated: Erreur de connexion, veuillez vérifier le lien fournit par
         email
     set_password:
