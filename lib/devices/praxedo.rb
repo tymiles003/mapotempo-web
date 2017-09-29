@@ -51,7 +51,7 @@ class Praxedo < DeviceBase
 
   def savon_client_events(customer)
     Savon.client(basic_auth: [customer.devices[:praxedo][:login], customer.devices[:praxedo][:password]], wsdl: api_url + 'cxf/v6/BusinessEventManager?wsdl', env_namespace: :soapenv, soap_version: 2, multipart: true) do
-      log true
+      log false
       pretty_print_xml true
       convert_request_keys_to :none
     end
@@ -59,7 +59,7 @@ class Praxedo < DeviceBase
 
   def check_auth(params)
     client = Savon.client(basic_auth: [params[:login], params[:password]], wsdl: api_url + 'cxf/v6/BusinessEventManager?wsdl', env_namespace: :soapenv, soap_version: 2, multipart: true) do
-      log true
+      log false
       pretty_print_xml true
       convert_request_keys_to :none
     end

@@ -29,6 +29,14 @@ module ApiBase
           user: customer.devices[device][:username],
           password: customer.devices[device][:password]
         }
+      when :praxedo
+        {
+          login: customer.devices[device][:login],
+          password: customer.devices[device][:password],
+          code_inter_start: customer.devices[device][:code_inter_start],
+          code_inter_stop: customer.devices[device][:code_inter_stop],
+          code_mat: customer.devices[device][:code_mat]
+        }
       else
         raise 'Unknown Device params'
     end
