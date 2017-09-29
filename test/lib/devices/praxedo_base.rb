@@ -2,11 +2,14 @@ module PraxedoBase
 
   def add_praxedo_credentials(customer)
     customer.devices = {
-        praxedo: {
-            enable: 'true',
-            login: 'login',
-            password: 'password'
-        }
+      praxedo: {
+        enable: 'true',
+        login: 'login',
+        password: 'password',
+        code_inter_start: 'START',
+        code_inter_stop: 'STOP',
+        code_mat: 'LIST_BAC'
+      }
     }
     customer.save!
     customer
@@ -18,6 +21,15 @@ module PraxedoBase
     @route.planning.update!(date: 10.days.from_now)
     @vehicle = @route.vehicle_usage.vehicle
     @vehicle.update!(devices: { praxedo_agent_id: '91KVZ' })
+
+    praxedo_tag = Tag.create(customer: @customer, label: 'praxedo:LIV')
+    @route.stops.each_with_index do |stop, i|
+      if stop.is_a?(StopVisit)
+        stop.visit.ref = "1234#{i + 1}"
+        stop.visit.tags << praxedo_tag
+        stop.visit.save!
+      end
+    end
   end
 
   def with_stubs(names, &block)
@@ -38,13 +50,13 @@ module PraxedoBase
           when :create_events
             url = Addressable::Template.new "#{api_url}cxf/v6/BusinessEventManager"
             stubs << stub_request(:post, url).to_return(File.read(Rails.root.join('test/web_mocks/praxedo/createEvents-sendRoute.xml')))
-            # TODO: stub request with correct data
-          # when :search_events_wsdl
-          #   url = Addressable::Template.new "#{api_url}cxf/v6/BusinessEventManager?wsdl"
-          #   stubs << stub_request(:get, url).to_return(File.read(Rails.root.join('test/web_mocks/praxedo/BusinessEventManager.wsdl.xml')))
-          # when :search_events
-          #   url = Addressable::Template.new "#{api_url}cxf/v6/BusinessEventManager"
-          #   stubs << stub_request(:post, url).to_return(File.read(Rails.root.join('test/web_mocks/praxedo/createEvents-sendRoute.xml')))
+          when :search_events_wsdl
+            url = Addressable::Template.new "#{api_url}cxf/v6/BusinessEventManager?wsdl"
+            stubs << stub_request(:get, url).to_return(File.read(Rails.root.join('test/web_mocks/praxedo/BusinessEventManager.wsdl.xml')))
+          when :search_events
+            url = Addressable::Template.new "#{api_url}cxf/v6/BusinessEventManager"
+            stubs << stub_request(:post, url).with(body: /.*<firstResultIndex>0<\/firstResultIndex>.*/).to_return(File.read(Rails.root.join('test/web_mocks/praxedo/searchEvents-fetchStops.xml')))
+            stubs << stub_request(:post, url).with(body: /.*<firstResultIndex>3<\/firstResultIndex>.*/).to_return(File.read(Rails.root.join('test/web_mocks/praxedo/searchEvents-fetchStops-empty.xml')))
         end
       end
       yield

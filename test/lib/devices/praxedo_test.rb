@@ -14,8 +14,8 @@ class PraxedoTest < ActionController::TestCase
     with_stubs [:get_events_wsdl, :get_events] do
       assert_nothing_raised do
         params = {
-            login: @customer.devices[:praxedo][:login],
-            password: @customer.devices[:praxedo][:password]
+          login: @customer.devices[:praxedo][:login],
+          password: @customer.devices[:praxedo][:password]
         }
         assert @service.check_auth params
       end
@@ -26,20 +26,31 @@ class PraxedoTest < ActionController::TestCase
     with_stubs [:create_events_wsdl, :create_events] do
       set_route
       assert_nothing_raised do
-        assert @service.send_route @customer, @route
+        response = @service.send_route @customer, @route
+        assert response
+        assert_equal response.size, 5
+        assert response.all? { |r| r[:result_code] == '0' }
       end
     end
   end
 
-  # TODO: not working for now
-  # test 'fetch stops' do
-  #   with_stubs [:search_events_wsdl, :search_events] do
-  #     set_route
-  #     assert_nothing_raised do
-  #       assert @service.fetch_stops(@customer, Time.new(2017, 9, 24, 0, 0, 0, '+02:00'))
-  #     end
-  #   end
-  # end
+  test 'fetch stops' do
+    # All 3 stops in route are completed
+    # with following quantities from Praxedo:
+    # 0 => 30kg / 1 => 10kg / 2 => 5kg
+    with_stubs [:search_events_wsdl, :search_events] do
+      set_route
+      assert_nothing_raised do
+        stops_status = @service.fetch_stops(@customer, Time.new(2017, 10, 10, 0, 0, 0, '+02:00'))
+        assert stops_status
+        assert stops_status.size, 3
+        assert stops_status.each do |status|
+          status[:quantities].second[:label] == 'kg'
+          Float(status[:quantities].second[:quantity]) > 0
+        end
+      end
+    end
+  end
 
   # FIXME: not used for now
   # test 'clear route' do

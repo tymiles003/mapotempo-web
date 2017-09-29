@@ -17,6 +17,7 @@ json.last_sent_at_formatted l(route.last_sent_at) if route.last_sent_at
 json.optimized_at_formatted l(route.optimized_at) if route.optimized_at
 unless @planning.customer.enable_orders
   json.quantities route_quantities(route) do |units|
+    json.id units[:id] if units[:id]
     json.quantity units[:quantity] if units[:quantity]
     json.unit_icon units[:unit_icon]
   end

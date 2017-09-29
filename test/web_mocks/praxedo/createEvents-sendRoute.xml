@@ -9,23 +9,23 @@ Transfer-Encoding: chunked
         <resultCode>0</resultCode>
         <results>
           <resultCode>0</resultCode>
-          <id>STORE 1owxtuc:-2</id>
+          <id>STORE 1ox1d6b:-2</id>
         </results>
         <results>
           <resultCode>0</resultCode>
-          <id>MYSTRING 10owxtuc:v1</id>
+          <id>MYSTRING 10ox1d6b:v1</id>
         </results>
         <results>
           <resultCode>0</resultCode>
-          <id>MYSTRIowxtuc:vblziyy</id>
+          <id>MYSTRIox1d6b:vblziyy</id>
         </results>
         <results>
           <resultCode>0</resultCode>
-          <id>MYSTRIowxtuc:ve9st5g</id>
+          <id>MYSTRIox1d6b:ve9st5g</id>
         </results>
         <results>
           <resultCode>0</resultCode>
-          <id>STORE 1owxtuc:-1</id>
+          <id>STORE 1ox1d6b:-1</id>
         </results>
       </return>
     </ns2:createEventsResponse>

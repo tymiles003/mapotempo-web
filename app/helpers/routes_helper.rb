@@ -26,13 +26,14 @@ module RoutesHelper
 
   def route_quantities(route)
     vehicle = route.vehicle_usage.try(:vehicle)
-    route.quantities.select{ |k, v|
+    route.quantities.select{ |_k, v|
       v > 0
-    }.collect{ |k, v|
-      unit = route.planning.customer.deliverable_units.find{ |du| du.id == k }.try(&:label)
+    }.collect{ |id, v|
+      unit = route.planning.customer.deliverable_units.find{ |du| du.id == id }.try(&:label)
       {
-        quantity: Route.localize_numeric_value(v) + (vehicle && vehicle.default_capacities[k] ? '/' + Route.localize_numeric_value(vehicle.default_capacities[k]) : '') + (unit ? "\u202F" + unit : ''),
-        unit_icon: route.planning.customer.deliverable_units.find{ |du| du.id == k }.try(:default_icon)
+        id: id,
+        quantity: Route.localize_numeric_value(v) + (vehicle && vehicle.default_capacities[id] ? '/' + Route.localize_numeric_value(vehicle.default_capacities[id]) : '') + (unit ? "\u202F" + unit : ''),
+        unit_icon: route.planning.customer.deliverable_units.find{ |du| du.id == id }.try(:default_icon)
       }
     }
   end

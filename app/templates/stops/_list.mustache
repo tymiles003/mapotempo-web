@@ -4,7 +4,7 @@
       <p>
         <span data-size-active={{size}} class="route-info"><i class="fa fa-check-square fa-fw"></i>{{size}}&nbsp;{{#i18n}}plannings.edit.stops{{/i18n}}</span>
         {{#quantities}}
-          <span class="route-info"><i class="fa {{unit_icon}} fa-fw"></i>{{quantity}}</span>
+          <span class="route-info"><i class="fa {{unit_icon}} fa-fw"></i><span data-quantity_id="{{id}}">{{quantity}}</span></span>
         {{/quantities}}
       </p>
     </div>
@@ -85,7 +85,7 @@
       <span class="route-info"><i class="fa fa-clock-o fa-fw" title="{{#i18n}}plannings.edit.route_duration_help{{/i18n}}"></i>{{duration}}/{{work_time}}</span>
       <span class="route-info"><i class="fa fa-road fa-fw" title="{{#i18n}}plannings.edit.route_distance_help{{/i18n}}"></i>{{distance}}</span>
       {{#quantities}}
-        <span class="route-info"><i class="fa {{unit_icon}} fa-fw" title="{{#i18n}}plannings.edit.route_quantity_help{{/i18n}}"></i>{{quantity}}</span>
+        <span class="route-info"><i class="fa {{unit_icon}} fa-fw" title="{{#i18n}}plannings.edit.route_quantity_help{{/i18n}}"></i><span data-quantity_id="{{id}}">{{quantity}}</span></span>
       {{/quantities}}
       {{#route_error}}
         <ul class="ui-state-error">

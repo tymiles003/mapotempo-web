@@ -31,7 +31,7 @@
     <i class="fa fa-road fa-fw"></i> <%= number_to_human(route.distance, units: :distance, precision: 3, format: '%n %u') %>
     <% if !route.planning.customer.enable_orders %>
       <% route_quantities(route).each do |units| %>
-        <i class="fa <%= units[:unit_icon] %> fa-fw"></i> <%= units[:quantity] %>
+        <i class="fa <%= units[:unit_icon] %> fa-fw" data-quantity_id="<%= units[:id] %>"></i> <%= units[:quantity] %>
       <% end %>
     <% end %>
   </span>

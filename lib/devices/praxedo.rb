@@ -57,16 +57,6 @@ class Praxedo < DeviceBase
     end
   end
 
-  @@order_status = {
-    'NEW' => nil,
-    'QUALIFIED' => nil,
-    'PRE_SCHEDULED' => 'Planned',
-    'SCHEDULED' => 'Planned',
-    'IN_PROGRESS' => 'Started',
-    'COMPLETED' => 'Finished',
-    'VALIDATED' => 'Finished'
-  }
-
   def check_auth(params)
     client = Savon.client(basic_auth: [params[:login], params[:password]], wsdl: api_url + 'cxf/v6/BusinessEventManager?wsdl', env_namespace: :soapenv, soap_version: 2, multipart: true) do
       log true
@@ -99,7 +89,7 @@ class Praxedo < DeviceBase
               latitude: position.lat,
               longitude: position.lng
             }
-          }
+          }.compact
         }
       },
       id: encode_order_id(options[:description], order_id),
@@ -267,7 +257,7 @@ class Praxedo < DeviceBase
                     end
 
     result_code = response_body[:result_code]
-    if ['0', '200'].include?(result_code)
+    if %w(0 200).include?(result_code)
       if response_body[:results]
         return response_body[:results]
       else

@@ -409,11 +409,26 @@ var plannings_edit = function(params) {
       return content;
     };
 
+    var updateRouteQuantities = function(content, route) {
+      route.quantities.forEach(function (quantity) {
+        var $quantity = content.find("[data-quantity_id='" + quantity.deliverable_unit_id + "']");
+        if ($quantity.length > 0) {
+          var label = $quantity.text().split(/\s{1}/)[1];
+          if (label) {
+            $quantity.text(quantity.quantity + ' ' + label);
+          }
+        }
+      })
+    };
+
     if (data) {
       var routeL, routeStops, marker, $item;
 
       data.forEach(function(route) {
         if (route.vehicle_usage_id) {
+          var $route = $("[data-route_id='" + route.id + "']");
+          updateRouteQuantities($route, route);
+
           route.stops.forEach(function(stop) {
             var sort = function(element) {
               return (element.properties.index == stop.index) ? element : void(0);
