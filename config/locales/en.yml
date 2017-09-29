@@ -1128,6 +1128,7 @@ en:
       vehicles: Vehicles
       marker_clusters: Switch clusters of stops
       current_position: 'Vehicle position:'
+      optimize_routes: Optimize routes
       lock_routes: Lock routes
       toggle_routes: Toggle routes
       zonings:

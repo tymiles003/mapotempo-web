@@ -791,7 +791,7 @@ fr:
       optimization_overload_multiplier_yes: Oui
       optimization_overload_multiplier_yes_help: Lors de l'optimisation, si vous indiquez
         une capacité pour vos véhicules, un dépassement est autorisé. Plus le coefficient
-        est grand moins, l'optimisation permettra un dépassement.
+        est grand, moins l'optimisation permettra un dépassement.
       optimization_overload_multiplier_ignore: Ignoré
       optimization_overload_multiplier_ignore_help: Lors de l'optimisation, les quantités
         et capacités sur vos véhicules ne seront pas prises en compte.
@@ -1155,6 +1155,7 @@ fr:
       vehicles: Véhicules
       marker_clusters: Activer/Désactiver les groupes de points
       current_position: 'Position véhicule :'
+      optimize_routes: Optimiser le plan de tournées
       lock_routes: Verrouiller les tournées
       toggle_routes: Masquer les tournées
       zonings:
