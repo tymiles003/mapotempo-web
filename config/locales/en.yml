@@ -1090,13 +1090,12 @@ en:
     footer:
       first_step: "⭐ Step 1: Set your password"
       second_step: "⭐ Step 2: Log in to the application"
-      success: "Success"
     password:
       subject: "Set your password for %{name}"
       title: "Set your password"
       welcome: "Welcome to %{name}!"
       detail:
-        content: "Thank you for choosing the %{application_name} Web route plan and optimization solution%{limit}."
+        content: "Thank you for choosing the %{application_name} route plan and optimization solution%{limit}."
         limit: " for <b>%{days} days</b>"
         define: "Before to log in to your%{test} account, please generate your password:"
         test: " test"

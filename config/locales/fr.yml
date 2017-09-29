@@ -1117,7 +1117,6 @@ fr:
     footer:
       first_step: "⭐ Étape 1 : Définissez votre mot de passe"
       second_step: "⭐ Étape 2 : Connectez-vous à l'application"
-      success: "Succès"
     password:
       subject: "Définissez votre mot de passe pour %{name}"
       title: "Définissez votre mot de passe"
