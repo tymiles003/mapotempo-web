@@ -1114,26 +1114,27 @@ fr:
         facebook: "Lien Facebook"
         twitter: "Lien Twitter"
         linkedin: "Lien LinkedIn"
+    footer:
+      first_step: "⭐ Étape 1 : Définissez votre mot de passe"
+      second_step: "⭐ Étape 2 : Connectez-vous à l'application"
+      success: "Succès"
     password:
       subject: "Définissez votre mot de passe pour %{name}"
       title: "Définissez votre mot de passe"
       welcome: "Bienvenue à %{name} !"
       detail:
-        content: "Merci d'avoir choisi de tester la solution de planification et d'optimisation de tournées %{application_name}%{limit}."
+        content: "Merci d'avoir choisi la solution de planification et d'optimisation de tournées %{application_name}%{limit}."
         limit: " pour une période de <b>%{days} jours</b>"
         define: "Avant de vous connecter à votre compte%{test}, veuillez définir votre mot de passe :"
         test: " de test"
         link: "Définir mot de passe"
-      footer:
-        first_step: "⭐ Étape 1 : Définissez votre mot de passe"
-        second_step: "⭐ Étape 2 : Connectez-vous à l'application"
     connection:
       subject: "Connexion à votre compte %{name}"
       title: "Connexion à votre compte"
       welcome: "Félicitations ! Vous pouvez désormais vous connecter à votre compte."
       detail:
         content: "Pour vous connecter, "
-        id: "veuillez utiliser le mot de passe que vous avez défini ainsi que votre identifiant : %{login} et mot de passe"
+        id: "veuillez utiliser le mot de passe que vous avez défini ainsi que votre identifiant : %{login}."
         link: "Connexion"
   plannings:
     menu:
