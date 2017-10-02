@@ -210,7 +210,7 @@ class Masternaut < DeviceBase
     params = {
       jobRoute: {
         begin: (date.to_time + begin_time).strftime('%Y-%m-%dT%H:%M:%S'),
-        description: description ? description.tr("\r", ' ').tr("\n", ' ').gsub(/\s+/, ' ').strip[0..50] : nil,
+        description: description ? description.tr("\r", ' ').tr("\n", ' ').gsub(/\s+/, ' ').strip.mb_chars.limit(50).to_s : nil,
         end: (date.to_time + end_time).strftime('%Y-%m-%dT%H:%M:%S'),
         reference: reference,
       }
@@ -221,7 +221,7 @@ class Masternaut < DeviceBase
     waypoints.each{ |waypoint|
       params = {
         job: {
-          description: waypoint[:description].tr("\r", ' ').tr("\n", ' ').gsub(/\s+/, ' ').strip[0..255],
+          description: waypoint[:description].tr("\r", ' ').tr("\n", ' ').gsub(/\s+/, ' ').strip.mb_chars.limit(256).to_s,
           poiReference: [waypoint[:id], waypoint[:updated_at].to_i.to_s(36)].join(':'),
           scheduledBegin: (date.to_time + waypoint[:time]).strftime('%Y-%m-%dT%H:%M:%S'),
           type: 'job',

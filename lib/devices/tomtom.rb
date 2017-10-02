@@ -369,11 +369,11 @@ class Tomtom < DeviceBase
     objectuid = route.vehicle_usage.vehicle.devices[:tomtom_id]
     params = {
       dstOrderToSend: {
-        orderText: strip_sql(description).strip[0..499],
+        orderText: strip_sql(description).strip.mb_chars.limit(500).to_s,
         explicitDestination: {
-          street: (strip_sql(position.street[0..49]) if position.street),
-          postcode: (strip_sql(position.postalcode[0..9]) if position.postalcode),
-          city: (strip_sql(position.city[0..49]) if position.city),
+          street: (strip_sql(position.street.strip.mb_chars.limit(50).to_s) if position.street),
+          postcode: (strip_sql(position.postalcode.strip.mb_chars.limit(10).to_s) if position.postalcode),
+          city: (strip_sql(position.city.strip.mb_chars.limit(50).to_s) if position.city),
           geoPosition: '',
           attributes!: {
             geoPosition: {
@@ -405,7 +405,7 @@ class Tomtom < DeviceBase
           {
             latitude: (waypoint[:lat] * 1e6).round.to_s,
             longitude: (waypoint[:lng] * 1e6).round.to_s,
-            description: strip_sql(waypoint[:description]).tr(',', ' ').strip[0..19]
+            description: strip_sql(waypoint[:description]).tr(',', ' ').strip.mb_chars.limit(20).to_s
           }
         }
       }}
