@@ -268,10 +268,14 @@ class Praxedo < DeviceBase
     end
 
   rescue Savon::SOAPFault => error
-    Rails.logger.info error
-    fault_code = error.to_hash[:fault][:code][:value]
-    fault_reason = error.to_hash[:fault][:reason][:text]
-    raise "Praxedo: #{fault_code}, #{fault_reason}"
+    if error.http.code == 500 && error.to_hash[:fault][:detail][:ws_fault][:result_code] == '10'
+      raise DeviceServiceError.new('Praxedo: ' + I18n.t('errors.praxedo.invalid_account'))
+    else
+      Rails.logger.info error
+      fault_code = error.to_hash[:fault][:code][:value]
+      fault_reason = error.to_hash[:fault][:reason][:text]
+      raise DeviceServiceError.new("Praxedo: #{fault_code}, #{fault_reason}")
+    end
   rescue Savon::HTTPError => error
     Rails.logger.info error.http.code
     raise error

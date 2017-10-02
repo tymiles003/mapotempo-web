@@ -313,7 +313,7 @@ class Tomtom < DeviceBase
   rescue Savon::SOAPFault => error
     Rails.logger.info error
     fault_code = error.to_hash[:fault][:faultcode]
-    raise "TomTom: #{fault_code}"
+    raise DeviceServiceError.new("TomTom: #{fault_code}")
   rescue Savon::HTTPError => error
     Rails.logger.info error.http.code
     raise error

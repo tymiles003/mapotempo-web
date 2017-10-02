@@ -122,6 +122,8 @@ en:
       invalid_account: User invalid (does not exist)
     trimble:
       invalid_account: User invalid (does not exist)
+    praxedo:
+      invalid_account: User invalid (does not exist)
   customers:
     form:
       devices:
