@@ -1,4 +1,5 @@
 class UserMailer < ApplicationMailer
+
   def password_message(user, locale)
     I18n.with_locale(locale) do
       @name = user.customer.reseller.name
@@ -16,7 +17,7 @@ class UserMailer < ApplicationMailer
       @twitter_link = user.customer.reseller.twitter_url if user.customer.reseller.twitter_url.present?
       @linkedin_link = user.customer.reseller.linkedin_url if user.customer.reseller.linkedin_url.present?
 
-      mail to: @email, subject: t('user_mailer.password.subject', name: @name) do |format|
+      mail to: @email, from: @application_name , subject: t('user_mailer.password.subject', name: @name) do |format|
         format.html { render 'user_mailer/password', locals: { user: user } }
       end
     end
@@ -36,7 +37,7 @@ class UserMailer < ApplicationMailer
       @twitter_link = user.customer.reseller.twitter_url if user.customer.reseller.twitter_url.present?
       @linkedin_link = user.customer.reseller.linkedin_url if user.customer.reseller.linkedin_url.present?
 
-      mail to: @email, subject: t('user_mailer.connection.subject', name: @name) do |format|
+      mail to: @email, from: @application_name, subject: t('user_mailer.connection.subject', name: @name) do |format|
         format.html { render 'user_mailer/connection', locals: { user: user } }
       end
     end
