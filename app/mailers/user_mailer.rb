@@ -1,5 +1,7 @@
 class UserMailer < ApplicationMailer
 
+  attr_accessor :links
+
   def password_message(user, locale)
     I18n.with_locale(locale) do
       @name = user.customer.reseller.name
@@ -43,24 +45,63 @@ class UserMailer < ApplicationMailer
     end
   end
 
-  def self.mail_automation(users)
+  def accompanying_message(user, locale)
+    I18n.with_locale(locale) do
+      @name = user.customer.reseller.name
+      @application_name = user.customer.reseller.application_name || @name
+      @email = user.email
 
-    users.each do |user|
-      date = user.created_at.midnight
+      @title = t('user_mailer.connection.title')
+      @home_link = user.customer.reseller.url_protocol + '://' + user.customer.reseller.host
 
-      case DateTime.now.in_time_zone.midnight
-        when date + 2.days # here is a debugging phase !remove me
-          d 'Mail3'
-        when date + 3.days
-          d 'Mail4'
-        when date + 4.days
-          d 'Mail5'
-        when date + 9.days
-          d 'Mail6'
-        when date + 14.days
-          d 'Mail7' if user.customer.test
-        else
-          d 'else'
+      @logo_link = user.customer.reseller.logo_large.url || 'logo_mapotempo.png'
+      @facebook_link = user.customer.reseller.facebook_url if user.customer.reseller.facebook_url.present?
+      @twitter_link = user.customer.reseller.twitter_url if user.customer.reseller.twitter_url.present?
+      @linkedin_link = user.customer.reseller.linkedin_url if user.customer.reseller.linkedin_url.present?
+
+      mail to: @email, from: @application_name, subject: t('user_mailer.connection.subject', name: @name) do |format|
+        format.html { render 'user_mailer/accompanying', locals: { user: user } }
+      end
+    end
+  end
+
+  def subscribe_message(user, locale)
+    I18n.with_locale(locale) do
+      @name = user.customer.reseller.name
+      @application_name = user.customer.reseller.application_name || @name
+      @email = user.email
+
+      @title = t('user_mailer.connection.title')
+      @home_link = user.customer.reseller.url_protocol + '://' + user.customer.reseller.host
+
+      @logo_link = user.customer.reseller.logo_large.url || 'logo_mapotempo.png'
+      @facebook_link = user.customer.reseller.facebook_url if user.customer.reseller.facebook_url.present?
+      @twitter_link = user.customer.reseller.twitter_url if user.customer.reseller.twitter_url.present?
+      @linkedin_link = user.customer.reseller.linkedin_url if user.customer.reseller.linkedin_url.present?
+
+      mail to: @email, from: @application_name, subject: t('user_mailer.connection.subject', name: @name) do |format|
+        format.html { render 'user_mailer/subscribe', locals: { user: user } }
+      end
+    end
+  end
+
+  def automation_dispatcher(user, locale, template = 'accompanying_team')
+    I18n.with_locale(locale) do
+      @name = user.customer.reseller.name
+      @application_name = user.customer.reseller.application_name || @name
+      @template = template
+      @email = user.email
+
+      @help_url = user.customer.reseller.help_url
+      @help_url.sub! '{LG}', I18n.locale.to_s
+
+      @logo_link = user.customer.reseller.logo_large.url || 'logo_mapotempo.png'
+      @facebook_link = user.customer.reseller.facebook_url if user.customer.reseller.facebook_url.present?
+      @twitter_link = user.customer.reseller.twitter_url if user.customer.reseller.twitter_url.present?
+      @linkedin_link = user.customer.reseller.linkedin_url if user.customer.reseller.linkedin_url.present?
+
+      mail to: @email, from: @application_name, subject: t('user_mailer.connection.subject', name: @name) do |format|
+        format.html { render 'user_mailer/documentation_base', locals: {user: user } }
       end
     end
   end
