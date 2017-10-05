@@ -1406,8 +1406,8 @@ var plannings_edit = function(params) {
               placement: 'auto',
               trigger: 'manual',
               viewport: {
-                selector: $('#wrapper').length > 0 ? '#wrapper' : '#planning',
-                padding: $('#wrapper').height() * 2 || 0
+                selector: '.sidebar-content',
+                padding: 20
               }
             });
 
