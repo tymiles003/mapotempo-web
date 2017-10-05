@@ -63,6 +63,7 @@ en:
             code_inter_start: "Intervention code for start point"
             code_inter_stop: "Intervention code for stop point"
             code_mat: "Code for the material to deliver"
+            code_route: "Code for the route"
       vehicle:
         devices:
           locster:

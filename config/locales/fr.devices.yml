@@ -63,6 +63,7 @@ fr:
             code_inter_start: "Code d'intervention pour le départ"
             code_inter_stop: "Code d'intervention pour l'arrivé"
             code_mat: "Code du matériel à livrer"
+            code_route: "Code de la tournée"
       vehicle:
         devices:
           locster:

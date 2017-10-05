@@ -31,7 +31,8 @@ class Praxedo < DeviceBase
           password: :password,
           code_inter_start: :text,
           code_inter_stop: :text,
-          code_mat: :text
+          code_mat: :text,
+          code_route: :text
         },
         vehicle: {
           praxedo_agent_id: :text
@@ -98,10 +99,12 @@ class Praxedo < DeviceBase
           id: options[:code_type_inter],
           duration: options[:duration] ? options[:duration] / 60 : 0 # unit: min
         },
-        instructions: {
-          '@xsi:type' => ('tns:reportField' if options[:instruction]),
-          id: (customer.devices[:praxedo][:code_mat] if options[:instruction]),
-          value: (options[:instruction] if options[:instruction])
+        instructions: options[:instructions].map { |instruction|
+          {
+            '@xsi:type' => 'tns:reportField',
+            id: instruction[:id],
+            value: instruction[:value]
+          }.compact
         }.compact
       }.select { |_, v| v.present? },
       schedulingData: {
@@ -123,7 +126,7 @@ class Praxedo < DeviceBase
     if start && !start.lat.nil? && !start.lng.nil?
       order_id = -2
       description = I18n.transliterate(start.name) || "#{start.lat} #{start.lng}"
-      events << format_position(customer, route, start, order_id, appointment_time: route.start, schedule_time: route.start, duration: route.vehicle_usage.default_service_time_start, description: description, code_type_inter: customer.devices[:praxedo][:code_inter_start])
+      events << format_position(customer, route, start, order_id, appointment_time: route.start, schedule_time: route.start, duration: route.vehicle_usage.default_service_time_start, description: description, code_type_inter: customer.devices[:praxedo][:code_inter_start], instructions: [{id: customer.devices[:praxedo][:code_route], value: route.ref}])
     end
 
     route.stops.select { |s| s.active && s.position? && !s.is_a?(StopRest) }.map do |stop|
@@ -134,14 +137,14 @@ class Praxedo < DeviceBase
         stop.open2 || stop.close2 ? (stop.open2 ? stop.open2_time + number_of_days(stop.open2) : '') + (stop.open2 && stop.close2 ? '-' : '') + (stop.close2 ? (stop.close2_time + number_of_days(stop.close2) || '') : '') : nil,
       ].compact.join(' ').strip
       code_type_inter = stop.visit.tags.map(&:label).map { |label| label.split('praxedo:')[1] }.compact.first
-      events << format_position(customer, route, stop, order_id, stop: true, appointment_time: stop.open1 || stop.close1 || stop.open2 || stop.close2 || stop.time, schedule_time: stop.time, duration: stop.duration, description: description, code_type_inter: code_type_inter, instruction: stop.visit.ref)
+      events << format_position(customer, route, stop, order_id, stop: true, appointment_time: stop.open1 || stop.close1 || stop.open2 || stop.close2 || stop.time, schedule_time: stop.time, duration: stop.duration, description: description, code_type_inter: code_type_inter, instructions: [{id: customer.devices[:praxedo][:code_route], value: route.ref}, {id: customer.devices[:praxedo][:code_mat], value: stop.visit.ref}])
     end
 
     stop = route.vehicle_usage.default_store_stop
     if stop && !stop.lat.nil? && !stop.lng.nil?
       order_id = -1
       description = I18n.transliterate(stop.name) || "#{start.lat} #{start.lng}"
-      events << format_position(customer, route, stop, order_id, appointment_time: route.end, schedule_time: route.end, duration: route.vehicle_usage.default_service_time_end, description: description, code_type_inter: customer.devices[:praxedo][:code_inter_stop])
+      events << format_position(customer, route, stop, order_id, appointment_time: route.end, schedule_time: route.end, duration: route.vehicle_usage.default_service_time_end, description: description, code_type_inter: customer.devices[:praxedo][:code_inter_stop], instructions: [{id: customer.devices[:praxedo][:code_mat], value: route.ref}])
     end
 
     get(savon_client_events(customer), :create_events, events: events)
@@ -268,7 +271,7 @@ class Praxedo < DeviceBase
     end
 
   rescue Savon::SOAPFault => error
-    if error.http.code == 500 && error.to_hash[:fault][:detail][:ws_fault][:result_code] == '10'
+    if error.http.code == 500 && error.to_hash[:fault][:detail] && error.to_hash[:fault][:detail][:ws_fault][:result_code] == '10'
       raise DeviceServiceError.new('Praxedo: ' + I18n.t('errors.praxedo.invalid_account'))
     else
       Rails.logger.info error

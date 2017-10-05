@@ -35,7 +35,8 @@ module ApiBase
           password: customer.devices[device][:password],
           code_inter_start: customer.devices[device][:code_inter_start],
           code_inter_stop: customer.devices[device][:code_inter_stop],
-          code_mat: customer.devices[device][:code_mat]
+          code_mat: customer.devices[device][:code_mat],
+          code_route: customer.devices[device][:code_route]
         }
       else
         raise 'Unknown Device params'
