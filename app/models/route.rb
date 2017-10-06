@@ -307,6 +307,12 @@ class Route < ApplicationRecord
           plan(time, options)
         end
       end
+    else
+      unless options[:no_quantities]
+        self.quantities = compute_quantities.each{ |_, v|
+          v = v.round(3)
+        }
+      end
     end
 
     self.geojson_points = stops_to_geojson_points unless options[:no_geojson]
