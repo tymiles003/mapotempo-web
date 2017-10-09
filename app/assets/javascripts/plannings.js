@@ -1435,6 +1435,8 @@ var plannings_edit = function(params) {
 
     dropdownAutoDirection($('#planning').find('[data-toggle="dropdown"]'));
 
+    map.closePopup();
+
     checkLockAndActive();
   };
 
@@ -1467,6 +1469,7 @@ var plannings_edit = function(params) {
       success: function(data) {
         updatePlanning(data);
         enlightenStop({id: stop_id});
+        map.closePopup();
       }
     });
   });
@@ -1490,6 +1493,7 @@ var plannings_edit = function(params) {
         complete: function() {
           dialog.modal('hide');
           completeAjaxMap();
+          map.closePopup();
         }
       });
     }
@@ -1516,7 +1520,7 @@ var plannings_edit = function(params) {
   });
 
   $(".main").on("click", ".send_to_route", function() {
-    var stop_id = $(this).closest("[data-stop_id]").attr("data-stop_id");
+    var stopId = $(this).closest("[data-stop_id]").attr("data-stop_id");
     var url = this.href;
     $.ajax({
       type: 'PATCH',
@@ -1524,7 +1528,8 @@ var plannings_edit = function(params) {
       beforeSend: beforeSendWaiting,
       success: function(data) {
         updatePlanning(data);
-        enlightenStop({id: stop_id});
+        enlightenStop({id: stopId});
+        map.closePopup();
       },
       complete: completeAjaxMap,
       error: ajaxError
@@ -1643,6 +1648,7 @@ var plannings_edit = function(params) {
         hideNotices();
         fitBounds = true;
         displayZoning(data);
+        map.closePopup();
         notice(I18n.t('zonings.edit.success'));
       },
       complete: function() {
@@ -1677,6 +1683,7 @@ var plannings_edit = function(params) {
       success: function(data) {
         fitBounds = true;
         displayZoning(data);
+        map.closePopup();
       },
       complete: function() {
         completeAjaxMap();
