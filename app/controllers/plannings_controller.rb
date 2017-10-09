@@ -176,9 +176,9 @@ class PlanningsController < ApplicationController
     respond_to do |format|
       begin
         Planning.transaction do
-          route = @planning.routes.find{ |route| route.id == Integer(params['route_id']) }
+          route = @planning.routes.find{ |route| route.id == Integer(params[:route_id]) }
           vehicle_usage_id_was = route.vehicle_usage.id
-          vehicle_usage = @planning.vehicle_usage_set.vehicle_usages.find(Integer(params['vehicle_usage_id']))
+          vehicle_usage = @planning.vehicle_usage_set.vehicle_usages.find(Integer(params[:vehicle_usage_id]))
           if route && vehicle_usage && @planning.switch(route, vehicle_usage) && @planning.save! && @planning.compute && @planning.save!
             @routes = [route]
             @routes << @planning.routes.find{ |route| route.vehicle_usage && route.vehicle_usage.id == vehicle_usage_id_was } if vehicle_usage_id_was != route.vehicle_usage.id
@@ -194,17 +194,18 @@ class PlanningsController < ApplicationController
   end
 
   def automatic_insert
-    if params[:stop_ids] && !params[:stop_ids].empty?
-      stop_ids = params[:stop_ids].collect{ |id| Integer(id) }
-      stops = @planning.routes.collect{ |r| r.stops.select{ |s| stop_ids.include? s.id } }.flatten
-      route_ids = stops.collect(&:route_id).uniq
-    else
-      stops = @planning.routes.detect{ |r| !r.vehicle_usage }.stops
-      route_ids = stops.any? ? [stops[0].route_id] : []
-    end
-
     respond_to do |format|
       begin
+        if params[:stop_ids] && !params[:stop_ids].empty?
+          stop_ids = params[:stop_ids].collect{ |id| Integer(id) }
+          stops = @planning.routes.flat_map{ |r| r.stops.select{ |s| stop_ids.include? s.id } }
+          route_ids = stops.collect(&:route_id).uniq
+        else
+          stops = @planning.routes.detect{ |r| !r.vehicle_usage }.stops
+          route_ids = stops.any? ? [stops[0].route_id] : []
+        end
+        raise ActiveRecord::RecordNotFound if stops.empty?
+
         Planning.transaction do
           stops.each do |stop|
             route = @planning.automatic_insert(stop)
@@ -224,6 +225,8 @@ class PlanningsController < ApplicationController
             end
           end
         end
+      rescue ActiveRecord::RecordNotFound => e
+        format.json { render json: { error: t('errors.planning.automatic_insert_no_result') }, status: :unprocessable_entity }
       rescue Exceptions::LoopError => e
         format.json { render json: { error: t('errors.planning.automatic_insert_no_result') }, status: :unprocessable_entity }
       rescue ActiveRecord::RecordInvalid => e

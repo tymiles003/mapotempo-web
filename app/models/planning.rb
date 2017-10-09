@@ -75,6 +75,7 @@ class Planning < ApplicationRecord
     routes_visits = routes_visits.select{ |ref, _d| ref } # Remove out_of_route
     if routes_visits.size <= routes.size - 1
       visits = routes_visits.values.flat_map{ |s| s[:visits] }.collect{ |visit_active| visit_active[0] }
+      # Set all excluded visits out of route
       routes.find{ |r| !r.vehicle_usage }.set_visits((customer.visits - visits).select{ |visit|
         tags_compatible?(visit.tags.to_a | visit.destination.tags.to_a)
       })
@@ -570,18 +571,23 @@ class Planning < ApplicationRecord
   end
 
   def prefered_route_and_index(available_routes, stop, options = {})
-    options[:active_only] = true if options[:active_only] == nil
+    options[:active_only] = true if options[:active_only].nil?
     cache_sum_out_of_window = Hash.new{ |h, k| h[k] = k.sum_out_of_window }
 
-    available_routes.flat_map { |route|
+    by_distance = available_routes.flat_map { |route|
       stops = route.stops.select { |s| (options[:active_only] ? s.active? : true) && s.position? }
       stops.map { |s| [s.position, route, s.index] } +
         [stops.empty? ? [route.vehicle_usage.try(:default_store_start), route, 1] : nil,
         ((stop.route_id != route.id) && route.vehicle_usage.try(:default_store_stop).try(:position?)) ? [route.vehicle_usage.default_store_stop, route, route.stops.size + 1] : nil]
     }.compact.sort_by{ |a|
       a[0] && a[0].position? ? a[0].distance(stop.position) : Float::INFINITY
-    }[0..9].flat_map{ |visit_route_index|
-      [[visit_route_index[1], visit_route_index[2]], [visit_route_index[1], visit_route_index[2] + 1]]
+    }
+    # If more than one available_routes take at least one stop from second route
+    pos_second_route = by_distance.index{ |s| s[1].id != by_distance[0][1].id } if available_routes.size > 1
+    # Take 5% from nearest stops (min: 3, max: 10) and a stop in second route if it exists
+    (by_distance[0..[9, [2, by_distance.size / 20].max].min] +
+      (pos_second_route ? [by_distance[pos_second_route]] : [])).flat_map{ |dest_route_idx|
+      [[dest_route_idx[1], dest_route_idx[2]], [dest_route_idx[1], dest_route_idx[2] + 1]]
     }.uniq.map { |ri|
       ri[0].class.amoeba do
         clone :stops # Only duplicate 10 stops just for compute evaluation

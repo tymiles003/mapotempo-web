@@ -330,6 +330,8 @@ class PlanningsControllerTest < ActionController::TestCase
         assert_no_difference('Stop.count') do
           assert_raise do
             patch :move, planning_id: @planning, route_id: @planning.routes[1], stop_id: @planning.routes[0].stops[0], index: 1, format: :json
+            assert_valid response
+            assert_response 422
           end
         end
       end
@@ -476,7 +478,7 @@ class PlanningsControllerTest < ActionController::TestCase
     assert_redirected_to edit_planning_path(assigns(:planning))
   end
 
-  test 'Automatic Insert' do
+  test 'should automatic insert one stop' do
     patch :automatic_insert, id: @planning.id, format: :json, stop_ids: [stops(:stop_unaffected).id]
     assert_response :success
     assert_equal 2, assigns(:routes).length
@@ -485,23 +487,47 @@ class PlanningsControllerTest < ActionController::TestCase
     assert_equal [], routes.first['stops']
   end
 
-  test 'Automatic Insert With Bad IDs' do
+  test 'should not automatic insert with bad id' do
     patch :automatic_insert, id: @planning.id, format: :json, stop_ids: [1234]
-    assert_response :success
+    assert_valid response
+    assert_response 422
   end
 
-  test 'Automatic Insert All Unaffected Stops' do
+  test 'should automatic insert all unaffected stops' do
     assert @planning.routes.detect{|route| !route.vehicle_usage }.stops.any?
     patch :automatic_insert, id: @planning.id, format: :json, stop_ids: []
     assert_response :success
     assert @planning.routes.detect{|route| !route.vehicle_usage }.stops.reload.none?
   end
 
-  test 'Automatic Insert Twice' do
+  test 'should automatic insert twice' do
     patch :automatic_insert, id: @planning.id, format: :json
     assert_response :success
     patch :automatic_insert, id: @planning.id, format: :json
-    assert_response :success
+    assert_valid response
+    assert_response 422
+  end
+
+  test 'should not automatic insert with none available routes' do
+    @planning.routes.select(&:vehicle_usage_id).each{ |r| r.update locked: true }
+
+    patch :automatic_insert, id: @planning.id, format: :json, stop_ids: [stops(:stop_unaffected).id]
+    assert_valid response
+    assert_response 422
+  end
+
+  test 'should not automatic insert with error' do
+    ApplicationController.stub_any_instance(:server_error, lambda { |*a| raise }) do
+      Route.stub_any_instance(:compute, lambda { |*a| raise }) do
+        assert_no_difference('Stop.count') do
+          assert_raise do
+            patch :automatic_insert, id: @planning.id, format: :json, stop_ids: [stops(:stop_unaffected).id]
+            assert_valid response
+            assert_response 422
+          end
+        end
+      end
+    end
   end
 
   test 'should update active' do

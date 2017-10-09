@@ -1343,8 +1343,9 @@ en:
       edit_store_help: Edit store information
       edit_visit_help: Edit visit/customer information
       marker_help: Show on map
-      automatic_insert_help: Find a route and insert this stop
-      automatic_insert_help_multiple: Find routes and insert stops (results will not
+      automatic_insert_help: Find best place in a route to insert this stop (results could not
+        be optimized anymore)
+      automatic_insert_help_multiple: Find best places in routes to insert stops (results will not
         be optimized anymore)
       automatic_insert_confirm: Find a route for each stop? Results will not be optimized.
         Zonings are recommended to find a route for each stop with accuracy (Ok to
@@ -1413,7 +1414,7 @@ en:
           title: Switch vehicle
           in_progress: Please wait, applying new vehicle
         automatic_insert:
-          title: Set routes for stops without vehicles
+          title: Finding best position for your stops
           in_progress: Please wait
         spreadsheet:
           title: Export to spreadsheet

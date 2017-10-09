@@ -1374,7 +1374,7 @@ fr:
       edit_store_help: Modifier les informations du dépôt
       edit_visit_help: Modifier les informations du client
       marker_help: Visualiser sur la carte
-      automatic_insert_help: Propose un endroit pour insérer ce client dans une tournée
+      automatic_insert_help: Propose un endroit pour insérer ce client dans une tournée (le résultat peut ne plus être optimisé)
       automatic_insert_help_multiple: Propose un endroit pour insérer les clients
         dans des tournées (le résultat ne sera plus optimisé)
       automatic_insert_confirm: Affecter tous les arrêts non planifiés à des tournées ?
@@ -1444,7 +1444,7 @@ fr:
           title: Changement de véhicule
           in_progress: Application du nouveau véhicule en cours, merci de patienter
         automatic_insert:
-          title: Affectation des arrêts non planifiés
+          title: Recherche du meilleur endroit pour vos arrêts
           in_progress: Veuillez patienter
         spreadsheet:
           title: Export vers un tableur

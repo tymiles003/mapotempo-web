@@ -1465,7 +1465,20 @@ var plannings_edit = function(params) {
   $(".main").on("click", ".automatic_insert", function() {
     var stop_id = $(this).closest("[data-stop_id]").attr("data-stop_id");
 
+    var dialog = bootstrap_dialog($.extend(modal_options(), {
+      title: I18n.t('plannings.edit.dialog.automatic_insert.title'),
+      message: SMT['modals/default_with_progress']({
+        msg: I18n.t('plannings.edit.dialog.automatic_insert.in_progress')
+      })
+    })).modal({
+      keyboard: false,
+      show: true
+    });
     automaticInsertStops([stop_id], {
+      complete: function() {
+        dialog.modal('hide');
+        completeAjaxMap();
+      },
       success: function(data) {
         updatePlanning(data);
         enlightenStop({id: stop_id});
