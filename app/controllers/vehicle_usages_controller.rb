@@ -42,7 +42,7 @@ class VehicleUsagesController < ApplicationController
 
   def toggle
     if @vehicle_usage.update active: !@vehicle_usage.active?
-      redirect_to link_back || vehicle_usage_sets_path, notice: t('.success')
+      redirect_to vehicle_usage_sets_path + "#collapseUsageSet#{@vehicle_usage.vehicle_usage_set_id}", notice: t('.success')
     else
       render action: :edit
     end

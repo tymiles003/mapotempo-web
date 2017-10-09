@@ -4,7 +4,7 @@ module LinkBack
   extend ActiveSupport::Concern
 
   included do
-    after_filter 'save_link_back', only: [:new, :edit, :toggle]
+    after_filter 'save_link_back', only: [:new, :edit]
   end
 
   private

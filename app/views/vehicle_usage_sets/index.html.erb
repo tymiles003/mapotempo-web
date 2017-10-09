@@ -38,7 +38,7 @@
         <% end %>
         <td>
           <% if @vehicle_usage_sets.count > 1 %>
-          <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion-vehicle-usage-sets" href="#collapseUsageSet<%= vehicle_usage_set.id %>">
+          <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion-vehicle-usage-sets" href="#collapseUsageSet<%= vehicle_usage_set.id %>" aria-expanded="false">
           <% end %>
           <span class="usage-set-name"><%= vehicle_usage_set.name %></span>
           <% if @vehicle_usage_sets.count > 1 %>
@@ -89,7 +89,7 @@
       </tr>
       <tr class="vehicle_usages">
         <td colspan="<%= @customer.enable_multi_vehicle_usage_sets ? 6 : 5 %>">
-          <div id="collapseUsageSet<%= vehicle_usage_set.id %>" class="accordion-body collapse<% if i == 0 %> in<% end %>">
+          <div id="collapseUsageSet<%= vehicle_usage_set.id %>" class="accordion-body collapse<% if @vehicle_usage_sets.count == 1 %> in<% end %>">
             <div class="accordion-inner">
               <%= render 'vehicle_usages/index', vehicle_usage_set: vehicle_usage_set %>
             </div>

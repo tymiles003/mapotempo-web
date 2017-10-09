@@ -39,12 +39,12 @@
             <%= link_to edit_vehicle_usage_path(vehicle_usage, back: true), :class => 'btn btn-primary btn-sm' do %>
               <i class="fa fa-edit fa-fw"></i> <%= t 'all.verb.edit' %>
             <% end %>
-            <%= link_to [:toggle, vehicle_usage, back: true], { method: :patch, class: 'btn btn-default btn-sm', data: { confirm:  t('.disable_confirm') } } do %>
+            <%= link_to [:toggle, vehicle_usage], { method: :patch, class: 'btn btn-default btn-sm', data: { confirm:  t('.disable_confirm') } } do %>
               <i class="fa fa-power-off fa-fw"></i>
               <%= t('.disable') %>
             <% end %>
           <% else %>
-            <%= link_to [:toggle, vehicle_usage, back: true], { method: :patch, class: 'btn btn-default btn-sm' } do %>
+            <%= link_to [:toggle, vehicle_usage], { method: :patch, class: 'btn btn-default btn-sm' } do %>
               <i class="fa fa-circle-o-notch fa-fw"></i>
               <%= t('.enable') %>
             <% end %>

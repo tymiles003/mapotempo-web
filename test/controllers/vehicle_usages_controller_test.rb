@@ -67,10 +67,10 @@ class VehicleUsagesControllerTest < ActionController::TestCase
     assert_valid response
   end
 
-  test 'disable vehicle usage' do
+  test 'should disable vehicle usage' do
     patch :toggle, id: @vehicle_usage.id
     assert !@vehicle_usage.reload.active
-    assert_redirected_to vehicle_usage_sets_path
+    assert_redirected_to vehicle_usage_sets_path + "#collapseUsageSet#{vehicle_usage_sets(:vehicle_usage_set_one).id}"
   end
 
 end
