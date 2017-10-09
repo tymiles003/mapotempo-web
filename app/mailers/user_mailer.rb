@@ -19,7 +19,7 @@ class UserMailer < ApplicationMailer
       @twitter_link = user.customer.reseller.twitter_url if user.customer.reseller.twitter_url.present?
       @linkedin_link = user.customer.reseller.linkedin_url if user.customer.reseller.linkedin_url.present?
 
-      mail to: @email, from: @application_name , subject: t('user_mailer.password.subject', name: @name) do |format|
+      mail to: @email, from: "#{@name} <#{Rails.application.config.default_from_mail}>", subject: t('user_mailer.password.subject', name: @name) do |format|
         format.html { render 'user_mailer/password', locals: { user: user } }
       end
     end
@@ -39,7 +39,7 @@ class UserMailer < ApplicationMailer
       @twitter_link = user.customer.reseller.twitter_url if user.customer.reseller.twitter_url.present?
       @linkedin_link = user.customer.reseller.linkedin_url if user.customer.reseller.linkedin_url.present?
 
-      mail to: @email, from: @application_name, subject: t('user_mailer.connection.subject', name: @name) do |format|
+      mail to: @email, from: "#{@name} <#{Rails.application.config.default_from_mail}>", subject: t('user_mailer.connection.subject', name: @name) do |format|
         format.html { render 'user_mailer/connection', locals: { user: user } }
       end
     end
@@ -59,7 +59,7 @@ class UserMailer < ApplicationMailer
       @twitter_link = user.customer.reseller.twitter_url if user.customer.reseller.twitter_url.present?
       @linkedin_link = user.customer.reseller.linkedin_url if user.customer.reseller.linkedin_url.present?
 
-      mail to: @email, from: @application_name, subject: t('user_mailer.connection.subject', name: @name) do |format|
+      mail to: @email, from: "#{@name} <#{Rails.application.config.default_from_mail}>", subject: t('user_mailer.accompanying_second.title') do |format|
         format.html { render 'user_mailer/accompanying', locals: { user: user } }
       end
     end
@@ -79,7 +79,7 @@ class UserMailer < ApplicationMailer
       @twitter_link = user.customer.reseller.twitter_url if user.customer.reseller.twitter_url.present?
       @linkedin_link = user.customer.reseller.linkedin_url if user.customer.reseller.linkedin_url.present?
 
-      mail to: @email, from: @application_name, subject: t('user_mailer.connection.subject', name: @name) do |format|
+      mail to: @email, from: "#{@name} <#{Rails.application.config.default_from_mail}>", subject: t('user_mailer.subscribe_message.title') do |format|
         format.html { render 'user_mailer/subscribe', locals: { user: user } }
       end
     end
@@ -100,7 +100,9 @@ class UserMailer < ApplicationMailer
       @twitter_link = user.customer.reseller.twitter_url if user.customer.reseller.twitter_url.present?
       @linkedin_link = user.customer.reseller.linkedin_url if user.customer.reseller.linkedin_url.present?
 
-      mail to: @email, from: @application_name, subject: t('user_mailer.connection.subject', name: @name) do |format|
+      subject = t("user_mailer.#{template}.panels_header")
+
+      mail to: @email, from: "#{@name} <#{Rails.application.config.default_from_mail}>", subject: subject do |format|
         format.html { render 'user_mailer/documentation_base', locals: {user: user } }
       end
     end

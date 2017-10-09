@@ -29,7 +29,7 @@ namespace :mail do
       end
 
     rescue Net::SMTPAuthenticationError, Net::SMTPServerBusy, Net::SMTPSyntaxError, Net::SMTPFatalError, Net::SMTPUnknownError => e
-      raise Exception::MailerErrors.new(e)
+      raise Exceptions::MailerError.new(e)
     end
   end
 end
