@@ -1110,11 +1110,11 @@ en:
         link: "Connection"
     accompanying_team:
       header: "Our team accompanies you"
-      main_content: "In order to offer you the best experience, you can rely on our team to accompany you. So that, "
+      main_content: "In order to offer you the best experience, you can rely on our team to support you. So that, "
       highlight: "for any questions you can contact us: "
       contact_support: "Contact support"
       panels_header: "RESOURCES TO GET STARTED: 1st PART"
-      documentation: "online documentation ."
+      documentation: "online documentation"
       panels_subtitle: "Check out the first three sections of our"
       goal: "Goals:"
       panel_one:
@@ -1199,8 +1199,8 @@ en:
         gps: "Export to GPS devices and mobile (english sub.)"
         webfleet: "Link to Tomtom Webfleet (english sub."
     accompanying_second:
-      title: "Our team accompanies you"
-      content: "In order to offer you the best experience, you can rely on our team to accompany you. So that, <b>for any questions you can contact us:</b>"
+      title: "Our team supports you"
+      content: "In order to offer you the best experience, you can rely on our team to support you. So that, <b>for any questions you can contact us:</b>"
       link: "Contact support"
       footer: "You receive this email as a user of %{name}"
     subscribe_message:
