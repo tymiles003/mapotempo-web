@@ -13,6 +13,7 @@
   a {
     color: #676767;
     text-decoration: none !important;
+    font-weight: bold !important;
   }
 
   .pull-left {
@@ -165,6 +166,7 @@
           </td>
         </tr>
         <tr>
+
           <td style="padding-bottom: 75px;">
             <table cellpadding="0" cellspacing="0" width="100%" style="border-collapse:separate !important;">
               <tr>
@@ -184,7 +186,7 @@
                             <td style="padding: 15px;">
                               <table cellspacing="0" cellpadding="0" width="100%" style="min-height: 260px;">
                                 <tr>
-                                  <td style="text-align:left; width:80%">
+                                  <td style="text-align:left; width:80%; vertical-align: top;">
                                     <a target="_blank" href="<%= @help_url %>/manual/00-before_start.html">
                                       <span class="header-sm"><%= t("user_mailer.#{ @template }.panel_one.title") %></span>
                                     </a><br/>
@@ -235,7 +237,7 @@
                             <td style="padding: 15px;">
                               <table cellspacing="0" cellpadding="0" width="100%" style="min-height: 260px;">
                                 <tr>
-                                  <td style="text-align:left; width:80%">
+                                  <td style="text-align:left; width:80%; vertical-align: top;">
                                     <a target="_blank" href="<%= @help_url %>/manual/01-start.html">
                                       <span class="header-sm"><%= t("user_mailer.#{ @template }.panel_two.title", name: @name) %></span>
                                     </a><br/>
@@ -283,7 +285,7 @@
                             <td style="padding: 15px;">
                               <table cellspacing="0" cellpadding="0" width="100%" style="min-height: 260px;">
                                 <tr>
-                                  <td style="text-align:left; width:80%">
+                                  <td style="text-align:left; width:80%; vertical-align: top;">
                                     <a target="_blank" href="<%= @help_url %>/manual/02-global_settings_users.html"><span class="header-sm"><%= t("user_mailer.#{ @template }.panel_three.title") %></span></a><br/>
                                     <p style="font-size:12px;"><b><%= t("user_mailer.#{ @template }.goal") %></b>
                                       <%= t("user_mailer.#{ @template }.panel_three.content").capitalize %>
@@ -313,6 +315,7 @@
                     </tr>
                   </table>
                 </td>
+
               </tr>
             </table>
           </td>
