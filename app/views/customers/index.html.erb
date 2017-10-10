@@ -75,7 +75,7 @@
           <% else %>
             <% not_connected = customer.users.collect(&:confirmed_at).compact.empty? %>
             <% max = customer.users.collect(&:current_sign_in_at).compact.max %>
-            <% if not_connected %>
+            <% if not_connected && !max %>
               <span title="<%= t '.status_no_sign_in_user' %>"><i class="fa fa-user fa-fw"></i><i class="fa fa-hourglass-half fa-fw"></i></span>
             <% elsif max && max < Time.now - 61.days %>
               <span title="<%= t '.status_inactive_user' %>"><i class="fa fa-user fa-fw"></i>Zz (<%= l max.to_date %>
