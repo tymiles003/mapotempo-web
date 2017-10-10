@@ -1,7 +1,7 @@
 require 'test_helper'
 
 class ApplicationControllerTest < ActionController::TestCase
- 
+
   ApplicationController.class_eval do
     def index
       render nothing: true
@@ -12,6 +12,13 @@ class ApplicationControllerTest < ActionController::TestCase
 
   Rails.application.routes.draw do
    get 'index' => 'application#index'
+  end
+
+  test 'should set user from api key without updating sign in at' do
+    users(:user_one).update(current_sign_in_at: Time.new(2000), last_sign_in_at: Time.new(2000))
+
+    get :index, api_key: 'testkey1'
+    assert_equal [Time.new(2000)], users(:user_one).reload.attributes.slice('current_sign_in_at', 'last_sign_in_at').values.uniq
   end
 
   test 'should return an error with flash[:error]' do
