@@ -401,10 +401,7 @@ var RoutesLayer = L.FeatureGroup.extend({
               popupModule.activeClickMarker.closePopup();
               popupModule.createPopupForLayer(e.layer, this.map);
             } else if (popupModule.previousPopup) {
-              if (popupModule.previousPopup instanceof L.Popup && popupModule.previousPopup._source._leaflet_id === e.layer._leaflet_id) {
-                e.layer._popup = popupModule.previousPopup;
-                popupModule.previousPopup.addTo(this.map);
-              }
+              e.layer.bindPopup(popupModule.previousPopup.addTo(map));
             }
             e.layer.click = true;
             popupModule.activeClickMarker = e.layer;
@@ -458,7 +455,7 @@ var RoutesLayer = L.FeatureGroup.extend({
   hideLastPopup: function() {
     if (popupModule.previousPopup) {
       this.removeLayer(popupModule.previousPopup);
-      popupModule.previousPopup = {};
+      popupModule.previousPopup = null;
     }
   },
 
