@@ -237,17 +237,20 @@ class PlanningsController < ApplicationController
 
   def update_stop
     respond_to do |format|
-      Planning.transaction do
-        params[:route_id] = Integer(params[:route_id])
-        @route = @planning.routes.find{ |route| route.id == params[:route_id] }
-        params[:stop_id] = Integer(params[:stop_id])
-        @stop = @route.stops.find{ |stop| stop.id == params[:stop_id] }
-        if @route && @stop && @stop.update(stop_params) && @route.save && @route.compute! && @planning.save
-          @routes = [@route]
-          format.json { render action: 'show', location: @planning }
-        else
-          format.json { render json: @planning.errors, status: :unprocessable_entity }
+      begin
+        Planning.transaction do
+          @route = @planning.routes.find{ |route| route.id == Integer(params[:route_id]) }
+          @stop = @route.stops.find{ |stop| stop.id == Integer(params[:stop_id]) } if @route
+          @stop.assign_attributes(stop_params) if @stop
+          if @stop && @route.compute! && @planning.save!
+            @routes = [@route]
+            format.json { render action: 'show', location: @planning }
+          else
+            format.json { render json: @planning.errors, status: :unprocessable_entity }
+          end
         end
+      rescue ActiveRecord::RecordInvalid => e
+        format.json { render json: @planning.errors, status: :unprocessable_entity }
       end
     end
   end

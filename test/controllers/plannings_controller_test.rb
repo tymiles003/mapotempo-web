@@ -434,6 +434,19 @@ class PlanningsControllerTest < ActionController::TestCase
     end
   end
 
+  test 'should not update stop with error' do
+    ApplicationController.stub_any_instance(:server_error, lambda { |*a| raise }) do
+      Route.stub_any_instance(:compute!, lambda { |*a| raise }) do
+        assert_raise do
+          patch :update_stop, planning_id: @planning, format: :json, route_id: routes(:route_one_one).id, stop_id: stops(:stop_one_one).id, stop: { active: false }
+          assert_valid response
+          assert_response 422
+        end
+        assert stops(:stop_one_one).reload.active
+      end
+    end
+  end
+
   test 'should optimize one route in planning' do
     begin
       Stop.class_eval do
