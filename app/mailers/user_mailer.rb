@@ -59,7 +59,10 @@ class UserMailer < ApplicationMailer
       @twitter_link = user.customer.reseller.twitter_url if user.customer.reseller.twitter_url.present?
       @linkedin_link = user.customer.reseller.linkedin_url if user.customer.reseller.linkedin_url.present?
 
-      mail to: @email, from: "#{@name} <#{Rails.application.config.default_from_mail}>", subject: t('user_mailer.accompanying_second.title') do |format|
+      @contact_url = user.customer.reseller.contact_url
+      @contact_url.sub! '{LG}', I18n.locale.to_s
+
+      mail to: @email, from: "#{@application_name} <#{Rails.application.config.default_from_mail}>", subject: t('user_mailer.accompanying_second.title') do |format|
         format.html { render 'user_mailer/accompanying', locals: { user: user } }
       end
     end
@@ -79,13 +82,13 @@ class UserMailer < ApplicationMailer
       @twitter_link = user.customer.reseller.twitter_url if user.customer.reseller.twitter_url.present?
       @linkedin_link = user.customer.reseller.linkedin_url if user.customer.reseller.linkedin_url.present?
 
-      mail to: @email, from: "#{@name} <#{Rails.application.config.default_from_mail}>", subject: t('user_mailer.subscribe_message.title') do |format|
+      mail to: @email, from: "#{@application_name} <#{Rails.application.config.default_from_mail}>", subject: t('user_mailer.subscribe_message.title') do |format|
         format.html { render 'user_mailer/subscribe', locals: { user: user } }
       end
     end
   end
 
-  def automation_dispatcher(user, locale, template = 'accompanying_team')
+  def automation_dispatcher(user, locale, template = 'accompanying_team', links = false)
     I18n.with_locale(locale) do
       @name = user.customer.reseller.name
       @application_name = user.customer.reseller.application_name || @name
@@ -95,14 +98,19 @@ class UserMailer < ApplicationMailer
       @help_url = user.customer.reseller.help_url
       @help_url.sub! '{LG}', I18n.locale.to_s
 
+      @contact_url = user.customer.reseller.contact_url
+      @contact_url.sub! '{LG}', I18n.locale.to_s
+
       @logo_link = user.customer.reseller.logo_large.url || 'logo_mapotempo.png'
       @facebook_link = user.customer.reseller.facebook_url if user.customer.reseller.facebook_url.present?
       @twitter_link = user.customer.reseller.twitter_url if user.customer.reseller.twitter_url.present?
       @linkedin_link = user.customer.reseller.linkedin_url if user.customer.reseller.linkedin_url.present?
 
+      @links = links
+
       subject = t("user_mailer.#{template}.panels_header")
 
-      mail to: @email, from: "#{@name} <#{Rails.application.config.default_from_mail}>", subject: subject do |format|
+      mail to: @email, from: "#{@application_name} <#{Rails.application.config.default_from_mail}>", subject: subject do |format|
         format.html { render 'user_mailer/documentation_base', locals: {user: user } }
       end
     end
