@@ -1251,7 +1251,7 @@ fr:
     subscribe_message:
       title: "Et si nous poursuivions l'aventure ensemble ?"
       try_period_over: "Vous arrivez au terme de votre période d’essai. <b>Nous vous remercions de l’intérêt que vous portez à %{name} et nous espérons que l'expérience a répondu à vos attentes.</b>"
-      content: "Si vous souhaitez poursuivre l’aventure à nos côtés <b>vous pouvez dès à présent contacter notre service commercial par le biais de ce formulaire ou par téléphone au +33 (0)5 64 27 04 59 :</b>"
+      content: "Si vous souhaitez poursuivre l’aventure à nos côtés <b>vous pouvez dès à présent contacter notre service commercial par le biais de ce formulaire ou par téléphone au +33&nbsp;(0)5&nbsp;64&nbsp;27&nbsp;04&nbsp;59&nbsp;:</b>"
       link: "Je demande à m'abonner à %{name}"
   plannings:
     menu:

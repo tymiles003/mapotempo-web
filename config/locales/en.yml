@@ -1224,7 +1224,7 @@ en:
     subscribe_message:
       title: "What if we continue the adventure together?"
       try_period_over: "You are at the end of your free trial period. <b>Thank you for your interest in %{name} and we hope that the experience has met your expectations.</b>"
-      content: "If you wish to continue the adventure with us <b>you can contact our sales team by this form or by phone at +33 (0)5 64 27 04 59 </b>:"
+      content: "If you wish to continue the adventure with us <b>you can contact our sales team by this form or by phone at +33&nbsp;(0)5&nbsp;64&nbsp;27&nbsp;04&nbsp;59&nbsp;</b>:"
       link: "I request to subscribe to %{name}"
   plannings:
     menu:
