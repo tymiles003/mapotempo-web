@@ -10,4 +10,11 @@ module EmailHelper
 
     image_tag attachments[image_name].url, **options
   end
+
+  def base64_image(image, **options)
+    image = image.start_with?('/uploads') ? ("public/" + image) : ("app/assets/images/" + image)
+    imageB64 = Base64.encode64 File.read(Rails.root.join(image))
+
+    image_tag "data:image/png;base64,#{imageB64}", **options
+  end
 end

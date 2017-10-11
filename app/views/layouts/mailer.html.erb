@@ -283,26 +283,26 @@
                   <tr>
                     <td class="pull-left mobile-header-padding-left" style="vertical-align: middle;">
                       <a target="_blank" href="<%= @home_link %>">
-                        <%= email_image_tag(@logo_link, alt: "Logo #{@name}", width: '137px', height: '47px') %>
+                        <%= base64_image(@logo_link, alt: "Logo #{@name}", width: '137px', height: '47px') %>
                       </a>
                     </td>
 
                     <td class="pull-right mobile-header-padding-right" style="color: #4d4d4d;">
                       <% if @facebook_link %>
                         <a target='_blank' href="<%= @facebook_link %>" style="text-decoration:none;">
-                            <%= email_image_tag('icon_facebook.png', alt: I18n.t('user_mailer.layout.links.facebook'), width: '30', height: '30', style: 'margin-right:30px;') %>
+                            <%= base64_image('icon_facebook.png', alt: I18n.t('user_mailer.layout.links.facebook'), width: '30', height: '30', style: 'margin-right:30px;') %>
                         </a>
                       <% end %>
 
                       <% if @twitter_link %>
                         <a target='_blank' href="<%= @twitter_link %>" data-default="placeholder" style="text-decoration:none;">
-                            <%= email_image_tag('icon_twitter.png', alt: I18n.t('user_mailer.layout.links.twitter'), width: '30', height: '30', style: 'margin-right:30px;') %>
+                            <%= base64_image('icon_twitter.png', alt: I18n.t('user_mailer.layout.links.twitter'), width: '30', height: '30', style: 'margin-right:30px;') %>
                         </a>
                       <% end %>
 
                       <% if @linkedin_link %>
                         <a target='_blank' href="<%= @linkedin_link %>" data-default="placeholder" style="text-decoration:none;">
-                            <%= email_image_tag('icon_linkedin.png', alt: I18n.t('user_mailer.layout.links.linkedin'), width: '30', height: '30', style: 'margin-right:30px;') %>
+                            <%= base64_image('icon_linkedin.png', alt: I18n.t('user_mailer.layout.links.linkedin'), width: '30', height: '30', style: 'margin-right:30px;') %>
                         </a>
                       <% end %>
                     </td>

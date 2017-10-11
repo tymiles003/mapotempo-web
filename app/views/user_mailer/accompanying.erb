@@ -45,19 +45,19 @@
     <div style="min-width:215.53px;margin:5px; padding:10px;display:inline-block; color:#838383; font-family:'Source Sans Pro', Helvetica, Calibri, sans-serif; line-height: 21px;font-size:12px;" class="align-center outlook-font">
       <% if @facebook_link %>
           <a target='_blank' href="<%= @facebook_link %>" style="text-decoration:none;">
-            <%= email_image_tag('icon_facebook.png', alt: I18n.t('user_mailer.layout.links.facebook'), width: '30', height: '30', style: 'margin-right:30px;') %>
+            <%= base64_image('icon_facebook.png', alt: I18n.t('user_mailer.layout.links.facebook'), width: '30', height: '30', style: 'margin-right:30px;') %>
           </a>
       <% end %>
 
       <% if @twitter_link %>
           <a target='_blank' href="<%= @twitter_link %>" data-default="placeholder" style="text-decoration:none;">
-            <%= email_image_tag('icon_twitter.png', alt: I18n.t('user_mailer.layout.links.twitter'), width: '30', height: '30', style: 'margin-right:30px;') %>
+            <%= base64_image('icon_twitter.png', alt: I18n.t('user_mailer.layout.links.twitter'), width: '30', height: '30', style: 'margin-right:30px;') %>
           </a>
       <% end %>
 
       <% if @linkedin_link %>
           <a target='_blank' href="<%= @linkedin_link %>" data-default="placeholder" style="text-decoration:none;">
-            <%= email_image_tag('icon_linkedin.png', alt: I18n.t('user_mailer.layout.links.linkedin'), width: '30', height: '30', style: 'margin-right:30px;') %>
+            <%= base64_image('icon_linkedin.png', alt: I18n.t('user_mailer.layout.links.linkedin'), width: '30', height: '30', style: 'margin-right:30px;') %>
           </a>
       <% end %>
     </div>
