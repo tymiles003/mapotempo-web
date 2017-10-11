@@ -90,6 +90,7 @@ class UserMailer < ApplicationMailer
 
   def automation_dispatcher(user, locale, template = 'accompanying_team', links = false)
     I18n.with_locale(locale) do
+      @home_link = user.customer.reseller.url_protocol + '://' + user.customer.reseller.host
       @name = user.customer.reseller.name
       @application_name = user.customer.reseller.application_name || @name
       @template = template
