@@ -1214,8 +1214,8 @@ fr:
       documentation: "documentation en ligne"
       goal: "Objectifs :"
       panel_one:
-        title: "Gestion des plannings et des tournées"
-        content: "créer un planning de tournées, appliquer un zonage, optimiser des tournées, exporter des tournées (feuille de route, mobile, gps, agenda, tableur)."
+        title: "Gestion des plans et des tournées"
+        content: "créer un plan de tournées, appliquer un zonage, optimiser des tournées, exporter des tournées (feuille de route, mobile, gps, agenda, tableur)."
         time: "⏱20min."
         doc_link: "Doc - Gestion des plans de tournées"
         doc_href: "/manual/06-plans.html"
@@ -1237,7 +1237,7 @@ fr:
       footer: "Vous recevez ce message en tant qu'utilisateur de %{name}"
       adds:
         videos: "Vidéos"
-        plans: "Création d'un planning"
+        plans: "Création d'un plan"
         stops: "Gestion des points d'arrêt"
         optimize: "Présentation de l'optimisation"
         export: "Export des tournées"
