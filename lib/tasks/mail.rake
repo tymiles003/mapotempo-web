@@ -11,15 +11,15 @@ namespace :mail do
 
         case DateTime.now.in_time_zone.midnight
           when date + 1.days
-            UserMailer.automation_dispatcher(user, I18n.locale, 'accompanying_team').deliver! # 3
+            UserMailer.automation_dispatcher(user, I18n.locale, 'accompanying_team').deliver_now # 3
           when date + 2.days
-            UserMailer.automation_dispatcher(user, I18n.locale, 'features', true).deliver! # 4
+            UserMailer.automation_dispatcher(user, I18n.locale, 'features', true).deliver_now # 4
           when date + 3.days
-            UserMailer.automation_dispatcher(user, I18n.locale, 'advanced_options', true).deliver! # 5
+            UserMailer.automation_dispatcher(user, I18n.locale, 'advanced_options', true).deliver_now # 5
           when date + 9.days
-            UserMailer.accompanying_message(user, I18n.locale).deliver!
+            UserMailer.accompanying_message(user, I18n.locale).deliver_now
           when user.customer.end_subscription.midnight - 1.days
-            UserMailer.subscribe_message(user, I18n.locale).deliver! if user.customer.test
+            UserMailer.subscribe_message(user, I18n.locale).deliver_now if user.customer.test
           else
             # Silence is golden
         end
