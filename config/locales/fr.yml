@@ -579,6 +579,8 @@ fr:
         jour été effectuée en simultané, vous avez peut-être réalisé plusieurs opérations
         trop rapidement.'
       automatic_insert_no_result: Affectation des arrêts impossible
+      job_in_progress: Opération impossible pour le moment, une tâche de fond (optimisation)
+        est en cours d'execution
   import:
     csv:
       line: Ligne %{s}
