@@ -62,7 +62,7 @@ class V01::CustomerTest < ActiveSupport::TestCase
   test 'should update a customer' do
     @customer.devices[:tomtom] = {enable: true}
     @customer.save!
-    put api(@customer.id), { devices: {tomtom: {user: "user_abcd"}}.to_json, ref: 'ref-abcd', router_options: {motorway: true, trailers: 2, weight: 10, hazardous_goods: 'gas'} }
+    put api(@customer.id), { devices: {tomtom: {user: 'user_abcd'}}.to_json, ref: 'ref-abcd', router_options: {motorway: true, trailers: 2, weight: 10, hazardous_goods: 'gas'} }
     assert last_response.ok?, last_response.body
 
     get api(@customer.id)
@@ -78,6 +78,12 @@ class V01::CustomerTest < ActiveSupport::TestCase
     assert customer_response[:router_options][:motorway] = 'true'
     assert customer_response[:router_options][:trailers] = '2'
     assert customer_response[:router_options][:hazardous_goods] = 'gas'
+  end
+
+  test 'should not update customer with invalid router options' do
+    put api(@customer.id), {router_options: {width: '3,55'}}.to_json, 'CONTENT_TYPE' => 'application/json'
+    errors = JSON.parse(last_response.body)
+    assert_equal errors['message'], 'router_options[width] is invalid'
   end
 
   test 'should update a customer without modifying max vehicles' do

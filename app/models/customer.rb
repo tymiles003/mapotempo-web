@@ -47,6 +47,8 @@ class Customer < ApplicationRecord
   store_accessor :router_options, :time, :distance, :avoid_zones, :isochrone, :isodistance, :motorway, :toll, :trailers, :weight, :weight_per_axle, :height, :width, :length, :hazardous_goods, :max_walk_distance, :approach, :snap, :strict_restriction
   hash_bool_attr :router_options, :time, :distance, :avoid_zones, :isochrone, :isodistance, :motorway, :toll, :strict_restriction
 
+  include LocalizedAttr # To use to_delocalized_decimal method
+
   nilify_blanks
   auto_strip_attributes :name, :print_header, :default_country
 
@@ -77,6 +79,7 @@ class Customer < ApplicationRecord
   before_update :update_outdated, :update_max_vehicles, :update_enable_multi_visits
   before_save :sanitize_print_header, :nilify_router_options_blanks
   before_save :devices_update_vehicles, prepend: true
+  before_validation :check_router_options_format
 
   include RefSanitizer
 
@@ -400,5 +403,13 @@ class Customer < ApplicationRecord
         # Avoid validation of at least one vehicle_usage_set by customer
       end
     }
+  end
+
+  def check_router_options_format
+    self.router_options.each do |k, v|
+      if k == 'distance' || k == 'weight' || k == 'weight_per_axle' || k == 'height' || k == 'width' || k == 'length' || k == 'max_walk_distance'
+        self.router_options[k] = Customer.to_delocalized_decimal(v) if v.is_a?(String)
+      end
+    end
   end
 end

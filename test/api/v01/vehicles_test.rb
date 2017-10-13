@@ -73,6 +73,12 @@ class V01::VehiclesTest < ActiveSupport::TestCase
     assert vehicle['router_options']['snap'] = '50'
   end
 
+  test 'should not update vehicle with invalid router options' do
+    put api(@vehicle.id), {router_options: {motorway: false, width: '3,55', weight_per_axle: 3, length: 30, hazardous_goods: 'gas', max_walk_distance: 600, approach: 'curb', snap: 50}}.to_json, 'CONTENT_TYPE' => 'application/json'
+    errors = JSON.parse(last_response.body)
+    assert_equal errors['message'], 'router_options[width] is invalid'
+  end
+
   test 'should update vehicle with capacities or return parse error' do
     put api(@vehicle.id), { capacities: [{ deliverable_unit_id: 1, quantity: 10 }] }.to_json, 'CONTENT_TYPE' => 'application/json'
     assert last_response.ok?, last_response.body

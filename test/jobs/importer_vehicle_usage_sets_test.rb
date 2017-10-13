@@ -128,6 +128,7 @@ class ImporterVehicleUsageSetsTest < ActionController::TestCase
       assert_equal imported_data.first.length, '1'
       assert_equal imported_data.second.toll, false
       assert_equal imported_data.second.length, '10'
+      assert_equal imported_data.second.width, '3.55'
     end
   end
 

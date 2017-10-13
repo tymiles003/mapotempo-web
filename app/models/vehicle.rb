@@ -43,6 +43,7 @@ class Vehicle < ApplicationRecord
   validate :capacities_validator
 
   after_initialize :assign_defaults, :increment_max_vehicles, if: 'new_record?'
+  before_validation :check_router_options_format
   before_create :create_vehicle_usage
   before_save :nilify_router_options_blanks
   before_update :update_outdated, :update_color
@@ -205,6 +206,14 @@ class Vehicle < ApplicationRecord
     if !default
       errors[:base] << I18n.t('activerecord.errors.models.vehicles.at_least_one')
       false
+    end
+  end
+
+  def check_router_options_format
+    self.router_options.each do |k, v|
+      if k == 'distance' || k == 'weight' || k == 'weight_per_axle' || k == 'height' || k == 'width' || k == 'length' || k == 'max_walk_distance'
+        self.router_options[k] = Vehicle.to_delocalized_decimal(v) if v.is_a?(String)
+      end
     end
   end
 end
