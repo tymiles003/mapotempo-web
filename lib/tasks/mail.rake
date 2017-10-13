@@ -18,7 +18,7 @@ namespace :mail do
             UserMailer.automation_dispatcher(user, I18n.locale, 'advanced_options', true).deliver_now # 5
           when date + 9.days
             UserMailer.accompanying_message(user, I18n.locale).deliver_now
-          when user.customer.end_subscription.midnight - 1.days
+          when user.customer.end_subscription && user.customer.end_subscription.midnight - 1.days
             UserMailer.subscribe_message(user, I18n.locale).deliver_now if user.customer.test
           else
             # Silence is golden
