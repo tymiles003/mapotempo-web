@@ -290,7 +290,7 @@ html.turbolinks-progress-bar::before {
 
 .point-icon-text {
   font-size: 10px;
-  color: white;
+  color: white !important;
   width: 18px;
   font-weight: 600;
   left: -1px;
