@@ -265,8 +265,8 @@ fr:
         name: Nom
       reseller:
         host: Hôte
-        name: Nom
-        application_name: Nom site Web
+        name: Nom revendeur
+        application_name: Nom de l'application
         website_url: URL site web
         welcome_url: URL d'accueil
         help_url: URL d'aide

@@ -264,8 +264,8 @@ en:
         name: Name
       reseller:
         host: Host
-        name: Name
-        application_name: Website name
+        name: Reseller name
+        application_name: Application name
         website_url: Website URL
         welcome_url: Welcome URL
         help_url: Help URL
