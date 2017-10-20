@@ -140,27 +140,30 @@ class VisitTest < ActiveSupport::TestCase
     begin
       I18n.locale = :en
       assert I18n.locale == :en
+      assert_not_nil Visit.localize_numeric_value(nil)
       visit.update! quantities: {1 => nil}
       assert visit.localized_quantities[1].nil? # Don't crash with nil values
-      visit.update! quantities: {1 => "10.5"} # Assign with localized separator
+      visit.update! quantities: {1 => '10.5'} # Assign with localized separator
       assert_equal 10.5, visit.quantities[1]
-      assert_equal "10.5", visit.localized_quantities[1] # Localized value
+      assert_equal '10.5', visit.localized_quantities[1] # Localized value
       visit.update! quantities: {1 => 10}
       assert_equal 10, visit.quantities[1]
-      assert_equal "10", visit.localized_quantities[1] # Remove trailing zeros
+      assert_equal '10', visit.localized_quantities[1] # Remove trailing zeros
       visit.update! quantities: {1 => 10.1} # Assign without localized separator
       assert_equal 10.1, visit.quantities[1]
+      assert_not_nil Visit.localize_numeric_value(nil)
 
       I18n.locale = :fr
       assert I18n.locale == :fr
+      assert_not_nil Visit.localize_numeric_value(nil)
       visit.update! quantities: {1 => nil}
       assert visit.localized_quantities[1].nil? # Don't crash with nil values
-      visit.update! quantities: {1 => "10,5"} # Assign with localized separator
+      visit.update! quantities: {1 => '10,5'} # Assign with localized separator
       assert_equal 10.5, visit.quantities[1]
-      assert_equal "10,5", visit.localized_quantities[1] # Localized value
+      assert_equal '10,5', visit.localized_quantities[1] # Localized value
       visit.update! quantities: {1 => 10}
       assert_equal 10, visit.quantities[1]
-      assert_equal "10", visit.localized_quantities[1] # Remove trailing zeros
+      assert_equal '10', visit.localized_quantities[1] # Remove trailing zeros
       visit.update! quantities: {1 => 10.1} # Assign without localized separator
       assert_equal 10.1, visit.quantities[1]
     ensure

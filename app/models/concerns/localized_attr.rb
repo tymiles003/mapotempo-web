@@ -42,7 +42,7 @@ module LocalizedAttr
     end
 
     def localize_numeric_value(float)
-      LocalizedValues.localize_numeric_value(float)
+      float ? LocalizedValues.localize_numeric_value(float) : ''
     end
   end
 end
