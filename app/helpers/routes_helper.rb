@@ -29,13 +29,13 @@ module RoutesHelper
     route.quantities.select{ |_k, v|
       v > 0
     }.collect{ |id, v|
-      unit = route.planning.customer.deliverable_units.find{ |du| du.id == id }.try(&:label)
+      unit = route.planning.customer.deliverable_units.find{ |du| du.id == id }
       {
         id: id,
-        quantity: Route.localize_numeric_value(v) + (vehicle && vehicle.default_capacities[id] ? '/' + Route.localize_numeric_value(vehicle.default_capacities[id]) : '') + (unit ? "\u202F" + unit : ''),
-        unit_icon: route.planning.customer.deliverable_units.find{ |du| du.id == id }.try(:default_icon)
-      }
-    }
+        quantity: Route.localize_numeric_value(v) + (vehicle && vehicle.default_capacities[id] ? '/' + Route.localize_numeric_value(vehicle.default_capacities[id]) : '') + (unit.label ? "\u202F" + unit.label : ''),
+        unit_icon: unit.default_icon
+      } if unit
+    }.compact
   end
 
   def export_column_titles(columns)
