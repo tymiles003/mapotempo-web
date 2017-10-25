@@ -11,7 +11,7 @@ require_relative '../lib/optim/optimizer_wrapper'
 require_relative '../lib/exceptions'
 
 require_relative '../lib/devices/device_base'
-['fleet_demo', 'alyacom', 'masternaut', 'orange', 'teksat', 'tomtom', 'trimble', 'locster', 'suivi_de_flotte', 'notico', 'praxedo'].each{|name|
+['fleet_demo', 'fleet', 'alyacom', 'masternaut', 'orange', 'teksat', 'tomtom', 'trimble', 'locster', 'suivi_de_flotte', 'notico', 'praxedo'].each{|name|
   require_relative "../lib/devices/#{name}"
 }
 
@@ -91,6 +91,7 @@ module Mapotempo
 
     config.devices = OpenStruct.new(
       fleet_demo: FleetDemo.new,
+      fleet: Fleet.new,
       alyacom: Alyacom.new,
       masternaut: Masternaut.new,
       orange: Orange.new,
@@ -100,7 +101,7 @@ module Mapotempo
       locster: Locster.new,
       suivi_de_flotte: SuiviDeFlotte.new,
       notico: Notico.new,
-      praxedo: Praxedo.new,
+      praxedo: Praxedo.new
     )
 
     # Warn for plannings limitation in coming

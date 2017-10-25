@@ -70,6 +70,17 @@
               </li>
               <li role="separator" class="divider"></li>
             {{/fleet_demo}}
+            {{#fleet}}
+              <li class="link device-operation" data-service="fleet" data-operation="send" data-route-id="{{route_id}}">
+                <i class="fa fa-mobile fa-rotate-90 fa-fw"></i>
+                {{#i18n}}plannings.edit.fleet_send.action{{/i18n}}
+              </li>
+              <li class="link device-operation" data-service="fleet" data-operation="clear" data-route-id="{{route_id}}">
+                <i class="fa fa-mobile fa-rotate-90 fa-fw"></i>
+                {{#i18n}}plannings.edit.fleet_clear.action{{/i18n}}
+              </li>
+              <li role="separator" class="divider"></li>
+            {{/fleet}}
             {{#tomtom}}
               <li class="link device-operation" data-service="tomtom" data-operation="send" data-type="orders" data-route-id="{{route_id}}">
                   <i class="fa fa-mobile fa-rotate-90 fa-fw"></i>
