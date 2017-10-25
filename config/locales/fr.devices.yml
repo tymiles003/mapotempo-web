@@ -202,6 +202,7 @@ fr:
         action: Points de passage vers TomTom
         success: Envoi vers TomTom terminé avec succès
         fail: Échec lors de l'envoi vers TomTom
+        title: Attention tous les appareils tomtom ne supportent pas cette méthode d'envoi
       tomtom_clear:
         action: Vider TomTom
         success: Les commandes TomTom ont été vidées avec succès

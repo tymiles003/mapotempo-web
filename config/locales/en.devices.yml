@@ -200,6 +200,7 @@ en:
         action: Send to TomTom as Waypoints
         success: Sent to TomTom successfully
         fail: Failed to send to TomTom
+        title: Warning, this method is not handled by all devices
       tomtom_clear:
         action: Clear TomTom
         success: TomTom commands have been cleared successfully
