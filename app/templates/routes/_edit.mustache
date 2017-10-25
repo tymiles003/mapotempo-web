@@ -59,6 +59,17 @@
                 {{/customer_external_callback_url}}
               {{/customer_enable_external_callback}}
             {{/callback_button}}
+            {{#fleet_demo}}
+              <li class="link device-operation" data-service="fleet_demo" data-operation="send" data-route-id="{{route_id}}">
+                  <i class="fa fa-mobile fa-rotate-90 fa-fw"></i>
+                  {{#i18n}}plannings.edit.fleet_demo_send.action{{/i18n}}
+              </li>
+              <li class="link device-operation" data-service="fleet_demo" data-operation="clear" data-route-id="{{route_id}}">
+                  <i class="fa fa-mobile fa-rotate-90 fa-fw"></i>
+                  {{#i18n}}plannings.edit.fleet_demo_clear.action{{/i18n}}
+              </li>
+              <li role="separator" class="divider"></li>
+            {{/fleet_demo}}
             {{#tomtom}}
               <li class="link device-operation" data-service="tomtom" data-operation="send" data-type="waypoints" data-route-id="{{route_id}}">
                   <i class="fa fa-mobile fa-rotate-90 fa-fw"></i>
