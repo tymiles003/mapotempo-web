@@ -24,6 +24,9 @@ fr:
     attributes:
       customer:
         devices:
+          fleet:
+            user: "Nom utilisateur"
+            api_key: "Clé API"
           tomtom:
             account: "Compte"
             user: "Utilisateur"
@@ -66,6 +69,8 @@ fr:
             code_route: "Code de la tournée"
       vehicle:
         devices:
+          fleet:
+            fleet_user: "Nom de l'utilisateur fleet"
           locster:
             locster_ref: "Ref. véhicule Locster"
           masternaut:
@@ -85,6 +90,14 @@ fr:
           praxedo:
             praxedo_agent_id: "Code Technicien Praxedo"
   errors:
+    fleet:
+      invalid_account: Utilisateur invalide (non existant)
+      list: Impossible de lister les appareils
+      get_vehicles_pos: Impossible de lister la position des véhicules
+      fetch_stops: Impossible de récupérer la liste des missions
+      set_mission: Échec lors de la création de la mission
+      unauthorized: Non autorisé
+      timeout: Délai d'attente depassé
     tomtom:
       access_denied: Non Autorisé. 'Accès complet aux commandes' n'est pas activé
         dans l'interface WebFLEET. Vous n'avez pas les permissions nécessaires pour
@@ -136,6 +149,11 @@ fr:
           complete: "Synchronisation complète"
           confirm: "Synchroniser les véhicules ?"
           action: "Synchroniser les véhicules"
+        fleet_demo:
+          help: "(DEMONSTRATEUR) Simule la position des véhicules et le statut des visites (si ces options sont actives)
+            pour le dernier plan modifié."
+        fleet:
+          help: "Permet d'envoyer les tournées vers Mapotempo fleet."
         alyacom:
           help: "Permet d'envoyer les tournées vers l'application AlyaCom."
         tomtom:
@@ -150,9 +168,6 @@ fr:
           help: "Permet d'envoyer les tournées vers l'application Notico Deliv."
         praxedo:
           help: "Permet d'envoyer les tournées vers l'application Praxedo."
-        fleet_demo:
-          help: "(DEMONSTRATEUR) Simule la position des véhicules et le statut des visites (si ces options sont actives)
-            pour le dernier plan modifié."
   plannings:
     edit:
       fleet_demo_send:
@@ -163,6 +178,14 @@ fr:
         action: Vider Fleet (Demo)
         success: Les interventions Fleet (Demo) ont été vidées avec succès
         fail: Échec lors de la suppression des interventions Fleet (Demo)
+      fleet_send:
+        action: Envoyer à Mapotempo fleet
+        success: Envoyé à Mapotempo fleet avec succès
+        fail: Échec lors de l'envoi vers Mapotempo fleet
+      fleet_clear:
+        action: Vider Mapotempo fleet
+        success: Mapotempo fleet a été vidé avec succès
+        fail: Échec lors de la suppression de Mapotempo fleet
       teksat_send:
         action: Envoyer à Teksat
         success: Envoi vers Teksat terminé avec succès
@@ -234,6 +257,9 @@ fr:
       dialog:
         fleet_demo:
           title: Fleet (Demo)
+          in_progress: Veuillez patienter
+        fleet:
+          title: Mapotempo fleet
           in_progress: Veuillez patienter
         orange:
           title: Orange Fleet Performance

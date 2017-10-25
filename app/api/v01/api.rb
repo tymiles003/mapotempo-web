@@ -142,6 +142,7 @@ class V01::Api < Grape::API
   # Devices
   mount V01::Devices::DevicesApi
   mount V01::Devices::FleetDemo
+  mount V01::Devices::Fleet
   mount V01::Devices::Alyacom
   mount V01::Devices::Masternaut
   mount V01::Devices::Orange

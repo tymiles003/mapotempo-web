@@ -104,6 +104,7 @@ Rails.application.configure do
     ENV['ROUTER_API_KEY']
   )
 
+  config.devices.fleet.api_url = 'http://0.0.0.0:4920'
   config.devices.alyacom.api_url = 'https://alyacom.example.com'
   config.devices.masternaut.api_url = 'https://masternaut.example.com'
   config.devices.orange.api_url = 'https://orange.example.com'

@@ -57,8 +57,6 @@ var vehicle_usages_form = function(params) {
 var devicesObserveVehicle = (function() {
   'use strict';
 
-  const base_name = 'vehicle_usage_vehicle_devices';
-
   var _buildSelect = function(name, datas) {
     $('[data-device=' + name + ']').select2({
       data: datas || [],
@@ -74,13 +72,13 @@ var devicesObserveVehicle = (function() {
         return data_selection.text;
       }
     });
-  }
+  };
 
   // this is used to set a default value for select2 builder - Update datas from ajax request
   var _addDataToSelect2 = function(name, datas, devices) {
     _buildSelect(name, datas);
-    $('[data-device=' + name + ']').val(devices[name + "_id"] || datas[0]).trigger("change");
-  }
+    $('[data-device=' + name + ']').val(devices[name + "_id"] || devices[name + "_ref"] || devices[name + "_user"] || datas[0]).trigger("change");
+  };
 
   var _devicesInitVehicle = function(name, params) {
     _buildSelect(name, params.devices);
@@ -100,13 +98,13 @@ var devicesObserveVehicle = (function() {
         stickyError(err);
       }
     });
-  }
+  };
 
   var init = function(params) {
     $.each($("[data-device]"), function(i, deviceSelect) {
       _devicesInitVehicle($(deviceSelect).data('device'), params);
     });
-  }
+  };
 
   return { init: init };
 })();

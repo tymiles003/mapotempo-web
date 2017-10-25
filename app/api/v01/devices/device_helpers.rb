@@ -98,5 +98,15 @@ module Devices
         customer.vehicles[index].update! devices: {tomtom_id: vehicle[:objectUid]}, fuel_type: vehicle[:fuelType], color: vehicle[:color]
       end
     end
+
+    # Rebase
+    def fleet_sync_vehicles(customer)
+      fleet_vehicles = FleetService.new(customer: customer).list_vehicles(params.slice(:user))
+      customer.vehicles.update_all(devices: {tomtom_id: nil})
+      fleet_vehicles.each_with_index do |vehicle, index|
+        next unless customer.vehicles[index]
+        customer.vehicles[index].update!(devices: {fleet_user: vehicle[:id]}, color: vehicle[:color])
+      end
+    end
   end
 end

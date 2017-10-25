@@ -189,13 +189,14 @@ var devicesObserveCustomer = (function() {
     }
 
     function _allFieldsFilled() {
-      var isNotEmpty = true;
+      var isEmpty = true;
       var inputs = $('input[type="text"], input[type="password"]', '#' + config.name + '_container');
       inputs.each(function() {
+        isEmpty = false;
         if ($(this).val() == '')
-          isNotEmpty = false;
+          return false;
       });
-      return inputs.length && isNotEmpty ? true : false;
+      return !isEmpty;
     }
 
     function _ajaxCall(all) {
