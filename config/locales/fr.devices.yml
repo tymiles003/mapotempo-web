@@ -150,8 +150,19 @@ fr:
           help: "Permet d'envoyer les tournées vers l'application Notico Deliv."
         praxedo:
           help: "Permet d'envoyer les tournées vers l'application Praxedo."
+        fleet_demo:
+          help: "(DEMONSTRATEUR) Simule la position des véhicules et le statut des visites (si ces options sont actives)
+            pour le dernier plan modifié."
   plannings:
     edit:
+      fleet_demo_send:
+        action: Envoyer à Fleet (Demo)
+        success: Envoyé à Fleet (Demo) avec succès
+        fail: Échec lors de l'envoi vers Fleet (Demo)
+      fleet_demo_clear:
+        action: Vider Fleet (Demo)
+        success: Les interventions Fleet (Demo) ont été vidées avec succès
+        fail: Échec lors de la suppression des interventions Fleet (Demo)
       teksat_send:
         action: Envoyer à Teksat
         success: Envoi vers Teksat terminé avec succès
@@ -221,6 +232,9 @@ fr:
         success: Les interventions Praxedo ont été vidées avec succès
         fail: Échec lors de la suppression des interventions Praxedo
       dialog:
+        fleet_demo:
+          title: Fleet (Demo)
+          in_progress: Veuillez patienter
         orange:
           title: Orange Fleet Performance
           in_progress: Veuillez patienter
