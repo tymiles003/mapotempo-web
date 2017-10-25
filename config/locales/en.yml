@@ -1258,16 +1258,17 @@ en:
         export: "Routes export (english sub.)"
         gps: "Export to GPS devices and mobile (english sub.)"
         webfleet: "Link to Tomtom Webfleet (english sub.)"
-    accompanying_second:
+    accompanying:
       title: "Our team supports you"
       content: "In order to offer you the best experience, you can rely on our team to support you. So that, <b>for any questions you can contact us:</b>"
       link: "Contact support"
       footer: "You receive this email as a user of %{name}"
-    subscribe_message:
+    subscribe:
       title: "What if we continue the adventure together?"
       try_period_over: "You are at the end of your free trial period. <b>Thank you for your interest in %{name} and we hope that the experience has met your expectations.</b>"
       content: "If you wish to continue the adventure with us <b>you can contact our sales team by this form or by phone at +33&nbsp;(0)5&nbsp;64&nbsp;27&nbsp;04&nbsp;59&nbsp;</b>:"
       link: "I request to subscribe to %{name}"
+      footer: "You receive this email as a user of %{name}"
   plannings:
     menu:
       plannings: Plans

@@ -4,17 +4,14 @@ class UserMailer < ApplicationMailer
 
   def password_message(user, locale)
     I18n.with_locale(locale) do
-      @name = user.customer.reseller.name
-      @application_name = user.customer.reseller.application_name || @name
-      @email = user.email
-      @test = user.customer.test
+      @name, @application_name = names(user)
       @title = t('user_mailer.password.title')
       @confirmation_link = password_user_url(user, token: user.confirmation_token, host: user.customer.reseller.url_protocol + '://' + user.customer.reseller.host)
       @subscription_duration = user.customer.end_subscription && (user.customer.end_subscription - Date.today).to_i > 1 ? (user.customer.end_subscription - Date.today).to_i : nil
       @home_link = user.customer.reseller.url_protocol + '://' + user.customer.reseller.host
       @logo_link, @facebook_link, @twitter_link, @linkedin_link = social_links(user)
 
-      mail to: @email, from: "#{@name} <#{Rails.application.config.default_from_mail}>", subject: t('user_mailer.password.subject', name: @name) do |format|
+      mail to: user.email, from: "#{@name} <#{Rails.application.config.default_from_mail}>", subject: t('user_mailer.password.subject', name: @name) do |format|
         format.html { render 'user_mailer/password', locals: { user: user } }
       end
     end
@@ -22,14 +19,12 @@ class UserMailer < ApplicationMailer
 
   def connection_message(user, locale)
     I18n.with_locale(locale) do
-      @name = user.customer.reseller.name
-      @application_name = user.customer.reseller.application_name || @name
-      @email = user.email
+      @name, @application_name = names(user)
       @title = t('user_mailer.connection.title')
       @home_link = user.customer.reseller.url_protocol + '://' + user.customer.reseller.host
       @logo_link, @facebook_link, @twitter_link, @linkedin_link = social_links(user)
 
-      mail to: @email, from: "#{@name} <#{Rails.application.config.default_from_mail}>", subject: t('user_mailer.connection.subject', name: @name) do |format|
+      mail to: user.email, from: "#{@name} <#{Rails.application.config.default_from_mail}>", subject: t('user_mailer.connection.subject', name: @name) do |format|
         format.html { render 'user_mailer/connection', locals: { user: user } }
       end
     end
@@ -37,16 +32,15 @@ class UserMailer < ApplicationMailer
 
   def accompanying_message(user, locale)
     I18n.with_locale(locale) do
-      @name = user.customer.reseller.name
-      @application_name = user.customer.reseller.application_name || @name
-      @email = user.email
+      @name, @application_name = names(user)
+      @template = 'accompanying'
       @parameters = links_parameters('accompanying_message', locale)
-      @title = t('user_mailer.connection.title')
+      @title = t('user_mailer.accompanying.title')
       @home_link = user.customer.reseller.url_protocol + '://' + user.customer.reseller.host
       @logo_link, @facebook_link, @twitter_link, @linkedin_link = social_links(user)
       @contact_url = contact_url(user, locale)
 
-      mail to: @email, from: "#{@application_name} <#{Rails.application.config.default_from_mail}>", subject: t('user_mailer.accompanying_second.title') do |format|
+      mail to: user.email, from: "#{@application_name} <#{Rails.application.config.default_from_mail}>", subject: t('user_mailer.accompanying.title') do |format|
         format.html { render 'user_mailer/accompanying', locals: { user: user } }
       end
     end
@@ -54,15 +48,14 @@ class UserMailer < ApplicationMailer
 
   def subscribe_message(user, locale)
     I18n.with_locale(locale) do
-      @name = user.customer.reseller.name
-      @application_name = user.customer.reseller.application_name || @name
-      @email = user.email
+      @name, @application_name = names(user)
+      @template = 'subscribe'
       @parameters = links_parameters('subscribe_message', locale)
-      @title = t('user_mailer.connection.title')
+      @title = t('user_mailer.subscribe.title')
       @home_link = user.customer.reseller.url_protocol + '://' + user.customer.reseller.host
       @logo_link, @facebook_link, @twitter_link, @linkedin_link = social_links(user)
 
-      mail to: @email, from: "#{@application_name} <#{Rails.application.config.default_from_mail}>", subject: t('user_mailer.subscribe_message.title') do |format|
+      mail to: user.email, from: "#{@application_name} <#{Rails.application.config.default_from_mail}>", subject: t('user_mailer.subscribe.title') do |format|
         format.html { render 'user_mailer/subscribe', locals: { user: user } }
       end
     end
@@ -70,21 +63,17 @@ class UserMailer < ApplicationMailer
 
   def automation_dispatcher(user, locale, template = 'accompanying_team', links = false)
     I18n.with_locale(locale) do
+      @name, @application_name = names(user)
       @home_link = user.customer.reseller.url_protocol + '://' + user.customer.reseller.host
-      @name = user.customer.reseller.name
-      @application_name = user.customer.reseller.application_name || @name
       @template = template
-      @email = user.email
-      @help_url = user.customer.reseller.help_url
-      @help_url.sub! '{LG}', I18n.locale.to_s
+      @help_url = user.customer.reseller.help_url.sub('{LG}', locale.to_s)
       @contact_url = contact_url(user, locale)
       @logo_link, @facebook_link, @twitter_link, @linkedin_link = social_links(user)
       @links = links
       @parameters = links_parameters(template, locale)
-      subject = t("user_mailer.#{template}.panels_header")
 
-      mail to: @email, from: "#{@application_name} <#{Rails.application.config.default_from_mail}>", subject: subject do |format|
-        format.html { render 'user_mailer/documentation_base', locals: {user: user } }
+      mail to: user.email, from: "#{@application_name} <#{Rails.application.config.default_from_mail}>", subject: t("user_mailer.#{template}.panels_header") do |format|
+        format.html { render 'user_mailer/documentation_base', locals: { user: user } }
       end
     end
   end
@@ -107,5 +96,12 @@ class UserMailer < ApplicationMailer
     linkedin_link = user.customer.reseller.linkedin_url if user.customer.reseller.linkedin_url.present?
 
     [logo_link, facebook_link, twitter_link, linkedin_link]
+  end
+
+  def names(user)
+    name = user.customer.reseller.name
+    application_name = user.customer.reseller.application_name || name
+
+    [name, application_name]
   end
 end

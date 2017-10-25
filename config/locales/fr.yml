@@ -1319,14 +1319,14 @@ fr:
         export: Export des tournées
         gps: Export des tournées vers GPS et terminaux mobiles
         webfleet: Interfacer TomTom WEBFLEET
-    accompanying_second:
+    accompanying:
       title: Notre équipe vous accompagne
       content: 'Afin de vous offrir la meilleure expérience, vous pouvez compter sur
         notre équipe pour vous accompagner. Aussi, <b>pour toutes questions vous pouvez
         nous contacter</b> :'
       link: Contacter le support
       footer: Vous recevez ce message en tant qu'utilisateur de %{name}
-    subscribe_message:
+    subscribe:
       title: Et si nous poursuivions l'aventure ensemble ?
       try_period_over: Vous arrivez au terme de votre période d’essai. <b>Nous vous
         remercions de l’intérêt que vous portez à %{name} et nous espérons que l'expérience
@@ -1335,6 +1335,7 @@ fr:
         dès à présent contacter notre service commercial par le biais de ce formulaire
         ou par téléphone au +33&nbsp;(0)5&nbsp;64&nbsp;27&nbsp;04&nbsp;59&nbsp;:</b>
       link: Je demande à m'abonner à %{name}
+      footer: Vous recevez ce message en tant qu'utilisateur de %{name}
   plannings:
     menu:
       plannings: Plans

@@ -91,7 +91,7 @@ class UserMailerTest < ActionMailer::TestCase
       Rake::Task['mail:automation'].invoke
     end
 
-    assert_equal I18n.t('user_mailer.accompanying_second.title'), ActionMailer::Base.deliveries[0].subject
+    assert_equal I18n.t('user_mailer.accompanying.title'), ActionMailer::Base.deliveries[0].subject
 
     user_one.update(created_at: creation_date)
     user_one.customer.reseller.update(contact_url: nil, help_url: nil)
