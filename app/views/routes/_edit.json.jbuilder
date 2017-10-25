@@ -27,6 +27,7 @@ if route.vehicle_usage
   json.color route.color || route.vehicle_usage.vehicle.color
   json.contact_email route.vehicle_usage.vehicle.contact_email if route.vehicle_usage.vehicle.contact_email
   json.vehicle_usage_id route.vehicle_usage.id
+  json.devices route.vehicle_usage.vehicle.devices
   json.vehicle_id route.vehicle_usage.vehicle.id
   json.work_time '%i:%02i' % [(route.vehicle_usage.default_close - route.vehicle_usage.default_open) / 60 / 60, (route.vehicle_usage.default_close - route.vehicle_usage.default_open) / 60 % 60]
   # Devices

@@ -71,13 +71,13 @@
               <li role="separator" class="divider"></li>
             {{/fleet_demo}}
             {{#tomtom}}
-              <li class="link device-operation" data-service="tomtom" data-operation="send" data-type="waypoints" data-route-id="{{route_id}}">
-                  <i class="fa fa-mobile fa-rotate-90 fa-fw"></i>
-                  {{#i18n}}plannings.edit.tomtom_send_waypoints.action{{/i18n}}
-              </li>
               <li class="link device-operation" data-service="tomtom" data-operation="send" data-type="orders" data-route-id="{{route_id}}">
                   <i class="fa fa-mobile fa-rotate-90 fa-fw"></i>
                   {{#i18n}}plannings.edit.tomtom_send_orders.action{{/i18n}}
+              </li>
+              <li class="link device-operation" data-service="tomtom" data-operation="send" data-type="waypoints" data-route-id="{{route_id}}">
+                  <i class="fa fa-mobile fa-rotate-90 fa-fw"></i>
+                  {{#i18n}}plannings.edit.tomtom_send_waypoints.action{{/i18n}} {{#devices.tomtom_id}} {{devices.tomtom_id}} {{/devices.tomtom_id}}
               </li>
               <li class="link device-operation" data-service="tomtom" data-operation="clear" data-route-id="{{route_id}}">
                   <i class="fa fa-mobile fa-rotate-90 fa-fw"></i>
@@ -88,7 +88,7 @@
             {{#teksat}}
               <li class="link device-operation" data-service="teksat" data-operation="send" data-route-id="{{route_id}}">
                   <i class="fa fa-mobile fa-rotate-90 fa-fw"></i>
-                  {{#i18n}}plannings.edit.teksat_send.action{{/i18n}}
+                  {{#i18n}}plannings.edit.teksat_send.action{{/i18n}} {{#devices.teksat_id}} {{devices.teksat_id}} {{/devices.teksat_id}}
               </li>
               <li class="link device-operation" data-service="teksat" data-operation="clear" data-route-id="{{route_id}}">
                   <i class="fa fa-mobile fa-rotate-90 fa-fw"></i>
@@ -99,7 +99,7 @@
             {{#orange}}
               <li class="link device-operation" data-service="orange" data-operation="send" data-route-id="{{route_id}}">
                 <i class="fa fa-mobile fa-rotate-90 fa-fw"></i>
-                {{#i18n}}plannings.edit.orange_send.action{{/i18n}}
+                {{#i18n}}plannings.edit.orange_send.action{{/i18n}} {{#devices.orange_id}} {{devices.orange_id}} {{/devices.orange_id}}
               </li>
               <li class="link device-operation" data-service="orange" data-operation="clear" data-route-id="{{route_id}}">
                 <i class="fa fa-mobile fa-rotate-90 fa-fw"></i>
@@ -110,7 +110,7 @@
             {{#masternaut}}
               <li class="link device-operation" data-service="masternaut" data-operation="send" data-route-id="{{route_id}}">
                 <i class="fa fa-mobile fa-rotate-90 fa-fw"></i>
-                {{#i18n}}plannings.edit.masternaut_send.action{{/i18n}}
+                {{#i18n}}plannings.edit.masternaut_send.action{{/i18n}} {{#devices.masternaut_ref}} {{devices.masternaut_ref}} {{/devices.masternaut_ref}}
               </li>
               <li role="separator" class="divider"></li>
             {{/masternaut}}
@@ -124,7 +124,7 @@
             {{#trimble}}
               <li class="link device-operation" data-service="trimble" data-operation="send" data-route-id="{{route_id}}">
                   <i class="fa fa-mobile fa-rotate-90 fa-fw"></i>
-                  {{#i18n}}plannings.edit.trimble_send.action{{/i18n}}
+                  {{#i18n}}plannings.edit.trimble_send.action{{/i18n}} {{#devices.trimble_ref}} {{devices.trimble_ref}} {{/devices.trimble_ref}}
               </li>
               <li class="link device-operation" data-service="trimble" data-operation="clear" data-route-id="{{route_id}}">
                   <i class="fa fa-mobile fa-rotate-90 fa-fw"></i>
@@ -135,7 +135,7 @@
             {{#notico}}
               <li class="link device-operation" data-service="notico" data-operation="send" data-route-id="{{route_id}}">
                   <i class="fa fa-mobile fa-rotate-90 fa-fw"></i>
-                  {{#i18n}}plannings.edit.notico_send.action{{/i18n}}
+                  {{#i18n}}plannings.edit.notico_send.action{{/i18n}} {{#devices.agent_id}} {{devices.agent_id}} {{/devices.agent_id}}
               </li>
               <li class="link device-operation" data-service="notico" data-operation="clear" data-route-id="{{route_id}}">
                 <i class="fa fa-mobile fa-rotate-90 fa-fw"></i>
@@ -146,7 +146,7 @@
             {{#praxedo}}
               <li class="link device-operation" data-service="praxedo" data-operation="send" data-route-id="{{route_id}}">
                   <i class="fa fa-mobile fa-rotate-90 fa-fw"></i>
-                  {{#i18n}}plannings.edit.praxedo_send.action{{/i18n}}
+                  {{#i18n}}plannings.edit.praxedo_send.action{{/i18n}} {{#devices.praxedo_agent_id}} {{devices.praxedo_agent_id}} {{/devices.praxedo_agent_id}}
               </li>
               <li role="separator" class="divider"></li>
             {{/praxedo}}
