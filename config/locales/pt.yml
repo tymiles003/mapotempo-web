@@ -34,10 +34,10 @@ pt:
       import_csvs:
         one: CSV Import
         other: CSV Imports
-      import_tomtom: Import TomTom
+      import_tomtom: Importação TomTom
       import_tomtoms:
-        one: Import TomTom
-        other: Imports TomTom
+        one: Importação TomTom
+        other: Importações TomTom
     attributes:
       import_csv:
         file: Ficheiro
@@ -176,10 +176,12 @@ pt:
         description_help: Detalhes do cliente e utilizadores
         enable_vehicle_position: Ativar posicionamento do veículo
         enable_stop_status: Ativar status das visitas
-        router_options_approach: Chegada/Partida com o ponto de visita à direita
+        router_options_approach: Chegada/Partida no sentido da circulação
         router_options_snap: Ligar a paragem ao cruzamento
         router_options_truck_restriction_penalty: Respeito estrito das limitações
           de pesados
+        router_options_strict_restriction: Conformidade estrita com as limitações
+          do camião
       deliverable_unit:
         label: Etiqueta
         ref: Referência
@@ -189,7 +191,7 @@ pt:
         optimization_overload_multiplier: Coeficiente de sobrecarga
       destination:
         ref: Referência
-        ref_small: Ref.
+        ref_small: Ref.ª
         name: Nome
         address: Morada
         street: Rua
@@ -238,7 +240,7 @@ pt:
       planning:
         name: Nome
         ref: Referencia
-        ref_small: Ref.
+        ref_small: Ref.ª
         active: Ativo
         tag_ids: Marcadores
         tags: Marcadores
@@ -302,8 +304,8 @@ pt:
             other: Outro
           approach_none: Não definido
           approach:
-            unrestricted: Desativado
-            curb: Ativado
+            unrestricted: Indiferente
+            curb: Lado do sentido atual do tráfego
       stop:
         active: Ativo
         begin: Início
@@ -407,7 +409,7 @@ pt:
         service_time_end: Duração de serviço posterior
       visit:
         ref: Referência
-        ref_small: Ref.
+        ref_small: Ref.ª
         take_over: Duração da visita
         take_over_small: Duração
         open1: Início de período 1
@@ -428,7 +430,7 @@ pt:
         quantities: Quantidades
       visits:
         ref: Referência
-        ref_small: Ref.
+        ref_small: Ref.ª
         take_over: Duração da visita
         take_over_small: Duração
         open1: Início de período 1
@@ -528,7 +530,7 @@ pt:
         route:
           attributes:
             stops:
-              bad_index: Mau índice %{n}
+              bad_index: Mau índice %{index} na rota %{route}
         planning:
           attributes:
             ref:
@@ -570,6 +572,8 @@ pt:
     planning:
       import_too_routes: Tentativa de importar mais rotas que veículos disponíveis
       already_optimizing: Já se encontra em curso uma otimização de plano
+      deadlock: 'Aviso: Falha na atualização dos dados. Foi realizada outra atualização
+        em simultâneo, provavelmente efetuou diversas operações demasiado rápido.'
   import:
     csv:
       line: Linha %{s}
@@ -601,18 +605,18 @@ pt:
         name_help: Marca do revendedor
         welcome_url_help: 'Endereço da página web html incluído como  "iframe" na
           página de boas-vindas. Poderá utilizar "{LG}" o qual será substituído  pela
-          língua como « en », « fr » (ie: http://mapotempo.com/{LG}/page.html).'
+          língua como « en », « fr » (ie: https://www.mapotempo.com/{LG}/app-news).'
         help_url_help: 'Endereço da página web da ajuda. Poderá utilizar "{LG}" o
-          qual será substituído  pela língua como « en », « fr » (ie: http://mapotempo.com/{LG}/page.html).'
+          qual será substituído  pela língua como « en », « fr » (ie: https://www.mapotempo.com/{LG}/help-center).'
         contact_url_help: 'Endereço da página web com o formulário de contacto. Poderá
           utilizar "{LG}" o qual será substituído  pela língua como « en », « fr »
-          (ie: http://mapotempo.com/{LG}/page.html).'
+          (ie: https://www.mapotempo.com/{LG}/contact-support/).'
         logo_large_help: Logo de página inteira redimensionável, preferencialmente
           em formato SVG ou, alternativamente, em PNG.
         logo_small_help: Logo do menu, 150x40 pixels em SVG ou PNG.
         favicon_help: Icon do website , 16x16 pixels em formato PNG ou ICO.
         website_url_help: 'Endereço do website. Poderá utilizar "{LG}" o qual será
-          substituído  pela língua como « en », « fr » (ie: http://mapotempo.com/{LG}/page.html).'
+          substituído pela língua como « en », « fr » (ie: https://www.mapotempo.com/{LG}/).'
         protocol_url_http: HTTP
         protocol_url_https: HTTPS
     users:
@@ -667,7 +671,7 @@ pt:
       status_no_user: Sem utilizadores
       status_no_sign_in_user: Utilizador nunca se ligou
       status_inactive_user: Utilizador inativo
-      created_end_subscription: (Criada) Fim de subscrição
+      created_end_subscription: Criada - Fim de subscrição
     new:
       title: Nova conta cliente
     destroy:
@@ -722,1136 +726,1318 @@ pt:
         serão penalizadores (0 para impedir estritamente os atrasos: neste caso desativa
         os clusters).'
       cost_waiting_time_default: '%{n} (valor por defeito)'
-      cost_waiting_time_help:
-      optimization_force_start_help:
-      print_header_help:
+      router_options_approach_help: Chegada/Partida com o ponto de visita do lado
+        em que circula
+      router_options_strict_restriction: Se não assinalado, o calculador de rota tentará
+        respeitar as limitações, ignorando-as apenas se essa for a única via.
+      cost_waiting_time_help: Permite avaliar o tempo de espera. Quanto mais significativo
+        for o valor, mais será penalizada a espera antes a abertura de uma janela
+        temporal (0 para não considerar a espera).
+      optimization_force_start_help: Forçar a partida do veículo no início do seu
+        horário.
+      print_header_help: Bloqueio de texto adicionado antes de cada rota
       print:
-        title:
-      speed_multiplicator_default:
-      speed_multiplicator_help:
-      submit:
+        title: Impressão
+      speed_multiplicator_default: '%{n} (valor por defeito)'
+      speed_multiplicator_help: Um valor superior a 100% significa velocidade mais
+        elevada.
+      submit: Atualizar parâmetros globais
       external_callback:
-        title:
-        name:
-        name_placeholder:
-        url:
-        url_placeholder:
-        url_help:
-  deliverable_units:
-    edit:
-      title:
-    index:
-      title:
-      new:
-    new:
-      title:
-    form:
-      prefered_icons:
-      other_icons:
-      label_placeholder:
-      label_help:
-      ref_help:
-      default_quantity_help:
-      default_capacity_help:
-      optimization_overload_multiplier_no:
-      optimization_overload_multiplier_no_help:
-      optimization_overload_multiplier_yes:
-      optimization_overload_multiplier_yes_help:
-      optimization_overload_multiplier_ignore:
-      optimization_overload_multiplier_ignore_help:
-      optimization_overload_multiplier_help:
-  destinations:
-    upload_tomtom:
-      success:
-    menu:
-      destinations:
-      import:
-      export_spreadsheet_standard:
-      export_spreadsheet_excel:
-      stores:
-      import_stores:
-      tags:
-      clear:
-      clear_confirm:
-    form:
-      ref_help:
-      detail_help:
-      comment_help:
-      locate_manually:
-      geocoding_accuracy_none:
-      geocoding_fail:
-      geocoding_accuracy_help:
-      country_default:
-      geocoding_level:
-        point:
-        house:
-        street:
-        intersection:
-        city:
-        'null':
-      tags_help:
-      dialog:
-        confirm_overwrite_point:
-      visit:
-        enable_multi_visits:
-        new:
-        new_help:
-    edit:
-      title:
+        title: URL de resposta
+        name: Nome
+        name_placeholder: Aplicação externa
+        url: URL
+        url_placeholder: http://www.example.com?p_id={PLANNING_ID}
+        url_help: 'URL externa a evocar a partir do menu export do plano de rotas
+
+          As cadeias de caracteres seguintes serão substituidas: PLANNING_ID, PLANNING_REF,
+          ROUTE_ID, ROUTE_REF
+
+          Exemplo: http://www.example.com?p_id={PLANNING_ID}
+
+          '
+  stores:
+    default:
+      lat: '38.78280'
+      lng: '-9.12521'
+      city: Lisboa
+      name: Partida do veículo
     import:
-      title:
-      destinations:
-      replace_no:
-      replace_no_help:
-      replace_yes:
-      replace_yes_help:
-      replace_confirm:
-      plannings:
-      delete_plannings:
-      delete_plannings_help:
-      delete_plannings_confirm:
+      import_template_help: Ajuda
+      title: Importar armazéns
+      stores: Armazéns
+      replace_no: Atualizar / adicionar
+      replace_no_help: Uma atualização dos armazéns existentes (referencias de armazém
+        inalteradas) é executada e os novos adicionados.
+      replace_yes: Eliminar armazéns anteriores
+      replace_yes_help: Eliminar e substituir todos os armazéns pelos importados.
+      replace_confirm: Eliminar todos os armazéns e respetivas modificações substituindo-os
+        pelos importados?
       csv:
-        title:
-        help:
-        file_help:
-      import_template_help:
+        title: Ficheiro CSV
+        help: Importação de armazéns por ficheiro CSV. Ficheiros CSV podem ser exportados
+          a partir de folhas de cálculo ou outros aplicativos.
+        file_help: Importar apenas ficheiros CSV
       dialog:
         help:
-          title:
-          desc:
-          columns_route:
-          columns_destination:
-          columns_visit:
-          def_help:
-          def_example:
-      tomtom:
-        title:
-        help:
+          title: Lista de colunas do seu ficheiro
+          desc: 'O seu ficheiro de importação poderá utilizar os seguintes nomes de
+            colunas:'
+    geocoding:
+      geocoding_in_progress: Geocodificação em curso.
+    form:
+      ref: Referência
+      ref_help: Referência livre
+      locate_manually: Posicionar manualmente sobre a carta
+      country_default: '%{n} (valor por defeito)'
+      icon_size:
+        small: pequeno
+        medium: medio
+        large: grande
+      prefered_icons: Aconselhados
+      other_icons: Outros
+    edit:
+      title: Alterar armazém
     index:
-      title:
-      new:
-      default_name:
-      columns:
-      no_position:
-      geocoding_level:
-      geocoding_column_help:
-      geocoding_empty:
-      mutli_quantities:
-      click2call:
-      quantity_small:
       dialog:
         import:
-          title:
-          in_progress:
-        geocoding:
-          title:
-          in_progress:
-          attempts:
-          inqueue:
-          error:
-        geocoding_danger:
-          title:
-          infos:
-          hide_help:
-          correct_help:
-          move_help:
-          dismiss:
-          sort_geocoding:
+          title: Importar armazéns
+          in_progress: Importação em curso. Por favor aguarde
+      title: Listra de armazéns
+      new: Novo armazém
     new:
-      title:
+      title: Novo armazém
     import_file:
-      refs_duplicate:
-      ref:
-      ref_desc:
-      route:
-      route_desc:
-      ref_vehicle:
-      ref_vehicle_desc:
-      stop_type:
-      stop_type_desc:
-      stop_type_visit:
-      stop_type_visit_desc:
-      stop_format:
-      name:
-      name_desc:
-      street:
-      street_desc:
-      detail:
-      detail_desc:
-      postalcode:
-      postalcode_desc:
-      city:
-      city_desc:
-      state:
-      state_desc:
-      country:
-      country_desc:
-      lat:
-      lat_desc:
-      lat_format:
-      lng:
-      lng_desc:
-      lng_format:
-      geocoding_accuracy:
-      geocoding_accuracy_desc:
-      geocoding_accuracy_format:
-      geocoding_level:
-      geocoding_level_desc:
-      take_over:
-      take_over_desc:
-      quantity:
-      quantity_desc:
-      quantity1_1:
-      quantity1_1_desc:
-      quantity1_2:
-      quantity1_2_desc:
-      active:
-      active_desc:
-      open:
-      open_desc:
-      close:
-      close_desc:
-      open1:
-      open1_desc:
-      close1:
-      close1_desc:
-      open2:
-      open2_desc:
-      close2:
-      close2_desc:
-      comment:
-      comment_desc:
-      phone_number:
-      phone_number_desc:
-      tags:
-      tags_desc:
-      tags_format:
-      without_visit:
-      without_visit_desc:
-      ref_visit:
-      ref_visit_desc:
-      tags_visit:
-      tags_visit_desc:
+      ref: referencia
+      ref_desc: um identificados estável, constante e único que permita a atualização
+        não destrutiva deste elemento aquando da próxima importação
+      name: nome
+      name_desc: nome do armazém
+      color: cor
+      color_desc: cor do seu icon de armazém. Encontre as cores web em https://en.wikipedia.org/wiki/Web_colors
+      color_format: '#000000 ou black'
+      icon: icon
+      icon_desc: nome do icon representativo do armazém sobre a carta selecionado
+        da lista font-awesome http://fontawesome.io/icons. Favor incluir o prefixo
+        "fa-". Explo. fa-building.
+      icon_size: tamanho do icon
+      icon_size_desc: 'tamanho do icon representativo do armazém na carta. Por defeito:
+        large.'
+      open: horário de abertura
+      open_desc: Horário de abertura do armazém
+      close: horário de fecho
+      close_desc: Hora de fecho do armesém
+      street: rua
+      street_desc: numero de porta, tipo e nome de rua (a ortografia deverá estar
+        correta para uma Geocodificação fiável).
+      postalcode: código postal
+      postalcode_desc: código postal da localidade (deverá ser exato para uma geocodificação
+        fiável).
+      city: localidade
+      city_desc: nome da localidade (a ortografia deverá estar correta para uma geocodificação
+        fiável).
+      state: estado
+      state_desc: nome do estado (a ortografia deverá estar correta para uma geocodificação
+        fiável)
+      country: país
+      country_desc: nome do país (a ortografia deverá estar correta para uma geocodificação
+        fiável).
+      lat: lat
+      lat_desc: latitude do armazém (em graus decimais) entre -90º e 90º. Explo. 45,91
+      lat_format: numero com virgula entre -90 e 90
+      lng: Ing
+      lng_desc: longitude do armazém (em graus decimais) entre -180º e 180º. Explo.
+        -0,781
+      lng_format: numero com vírgula entre -180 e 180
+      geocoding_accuracy: fiabilidade da geocodificação
+      geocoding_accuracy_desc: classificação de qualidade atribuida à conversão do
+        endereço do destino em coordenadas geográficas. Se inferior a 85%, por favor
+        reveja a ortografia e repita a geocodificação. Esta classificação é expressa
+        por um valor entre 0 e 1. Explo. 0,70 significa 70% de precisão.
+      geocoding_accuracy_format: numero com virgula entre 0 e 1
+      geocoding_level: nivel de geocodificação
+      geocoding_level_desc: nivel de precisão conseguido com a conversão da morada
+        do destino em coordenadas geográficas
+      missing_name: '"nome" em falta.'
+      missing_location: '"localidade" ou "código postal" ou "lat" e "lng" em falta.'
+      invalid_numeric_value: valor numérico "%{value}" inválido no registo %{line}.
       format:
-        string:
-        integer:
-        float:
-        hour:
-        second:
-        yes_no:
-        required:
-        advisable:
-        optionnal:
-        deprecated:
-      not_csv:
-      empty_file:
-      too_many_lines:
-      none_column:
-      missing_name:
-      missing_location:
-      invalid_numeric_value:
-      check_custom_columns:
+        string: texto
+        integer: numero
+        hour: HH:MM
+        float: 0,123
+        required: obrigatório
+        advisable: recomendado
+        optionnal: opcional
+  vehicle_usage_sets:
+    import:
+      import_template_help: Ajuda
+      title: Importar uma nova configuração de veículos
+      vehicle_usage_set: Configuração de veículos
+      default_configuration_replaced: A configuração por defeito de todos os veículos
+        será substituida pelos dados importados
+      replace_yes: Substituir a configuração existente
+      replace_yes_help: A configuração existente será eliminada e substituida pela
+        configuração importada.
+      replace_no: Adicionar a nova configuração de veículos
+      replace_no_help: Será adicionada iua nova configuração sem alterar as existentes.
+      vehicles: Veículos
+      replace_vehicles: Substituir os veículos existemtes
+      replace_vehicles_help: Todos os veículos na aplicação serão atualizados com
+        os dados importados (os veículos com a mesma referência serão substituídos
+        pelos dados correspondentes).
+      csv:
+        title: Ficheiro CSV
+        help: Importar a configuração de veículos por ficheiro CSV. Os ficheiros CSV
+          podem ser exportados a partir de folhas de cálculo ou de outros aplicativos.
+        file_help: Importar apenas ficheiros CSV
+      dialog:
+        replace_vehicles_confirm: Tem a certeza que pretende substituir todas as propriedades
+          de veículos pelos dados do ficheiro de importação?
+        import:
+          title: Importação da configuração de veículos
+          in_progress: Importação de configuração em curso. Por favor aguarde
+        help:
+          title: Lista das colunas do seu ficheiro
+          desc: 'O su ficheiro de importação pode usar os seguintes nomes de colunas
+            e valores:'
+          columns_vehicle: Colunas de veículos
+          columns_vehicle_usage_set: Colunas da configuração de veículos
+          columns_vehicle_usage_set_default: Se uma coluna contém dados idênticos
+            para todos os veículos, estes dados serão utilizados na configuração por
+            defeito e retirados para cada veículo
+      name_vehicle_usage_set: configuração do nome
+      name_desc: nome da configuração por defeito
+      open: horário de abertura
+      open_desc: hora de entrada do estafeta
+      close: hora de fecho
+      close_desc: hora de saída do estafeta
+      store_start_ref: referência do armazém de partida
+      store_start_desc: referência do armazém de partida para o estafeta
+      store_stop_ref: referência do armazém de chegada
+      store_stop_desc: referência do armazém de chegada para o estafeta
+      rest_start: início do período de repouso
+      rest_start_desc: hora de início do período de repouso
+      rest_stop: fim do período de repouso
+      rest_stop_desc: hora de fim do período de repouso
+      rest_duration: duração do repouso
+      rest_duration_desc: duração do repouso para o estafeta
+      store_rest_ref: referência do armazém de repouso
+      store_rest_desc: referencia do armazém de repouso para o estafeta
+      service_time_start: duração de serviço anterior
+      service_time_start_desc: duração de serviço anterior sem ter em conta a duração
+        da pausa
+      service_time_end: duração do serviço após
+      service_time_end_desc: duração do serviço após sem ter em conta a duração de
+        pausa
+      format:
+        string: texto
+        integer: numero
+        float: numero decimal
+        hour: HH:MM
+        second: HH:MM:SS
+        yes_no: sim/não
+        required: obrigatório
+        required_for_default: requerido por defeito
+        advisable: recomendado
+        optional: opcional
+        deprecated: depreciado
+      not_csv: O ficheiro importado não é um CSV
+      empty_file: conteúdo em branco
+      too_many_lines: 'Importação abortada, demasiadas linhas (máx: %{n}).'
+      none_column: Nenhuma coluna encontrada
+      missing_name: '"nome" da configuração por defeito em falta'
+      missing_open_close: Falta hora de início ou fim na configuração por defeito
+      invalid_numeric_value: Valor numérico inválido "%{value}".
+      check_custom_columns: Verifique a definição das colunas a importar.
+    default:
+      name: Defeito
+    menu:
+      vehicle_usage_sets: Veículos
+      import_vehicle_usage_sets: Configuração de importação
+      deliverable_units: Unidades enviáveis
+    edit:
+      title: Alterar a configuração dos veículos
+    index:
+      title: Listar a configuração dos veículos
+      new: Nova configuração de veículos
+      stores: Partida - Chegada
+      time: Abertura - Fecho
+      service_time: Período de serviço
+    new:
+      title: Nova configuração de veículos
+    form:
+      open_close: Horário
+      open_close_help: Horário de trabalho do estafeta
+      stores: Partida / Chegada
+      store:
+        none: Nenhum
+      stores_help: Armazéns de partida e de chegada
+      service_times: Períodos de serviço
+      service_time_start_addon: antes
+      service_time_end_addon: depois
+      service_times_help: Períodos adicionados antes da primeira paragem e após a
+        ultima paragem.
+      rest_duration_store: Duração do repouso / local
+      rest_duration:
+        help: Se preenchido, requer um período de repouso
+      rest_start_stop: Período de repouso
+      rest_start_stop_help: Sem ter em conta o período de repouso
+  web:
+    help_menu: Ajuda
+    key_not_found: Chave de ligação inválida
+    slow_browser: Utiliza %{n} que retarda a aplicação. Recomendamos que utilize outro
+      navegador.
+    form:
+      default: '%{n} (valor por defeito)'
+      empty_entry: '- N/A -'
+      from_time: de
+      to_time: a
+      days: D+
+    select2:
+      empty_result: Sem resultados
+    dialog:
+      close: Fechar
+    placeholder_filter: filtrar
+    subscription: Subscrever
+    help_search_placeholder: Palavras a procurar...
+    help: Ajuda online
+    contact: Contactar o suporte
+    choose_file: Selecionar ficheiro
+    geocoder:
+      search: Procurar morada...
+      empty_result: Sem resultados
+  deliverable_units:
+    edit:
+      title: Modificar unidade de envio
+    index:
+      title: Lista de unidades de envio
+      new: Nova unidade de envio
+    new:
+      title: Nova unidade de envio
+    form:
+      prefered_icons: Preferencial
+      other_icons: Outros
+      label_placeholder: unidade
+      label_help: Por exemplo "embalagem" ou uma unidade como "kg".
+      ref_help: Referência livre
+      default_quantity_help: Quantidade a entregar por defeito em todas as visitas
+        (deixar vazio se não existir quantidade).
+      default_capacity_help: Capacidade por defeito de todos os seus veículos (deixar
+        vazio se ilimitada).
+      optimization_overload_multiplier_no: Não
+      optimization_overload_multiplier_no_help: Durante a otimização, se indicar uma
+        capacidade para os seus veículos, não será autorizado o excesso de carga.
+      optimization_overload_multiplier_yes: Sim
+      optimization_overload_multiplier_yes_help: Durante a otimização, se indicar
+        uma capacidade para os seus veículos, o excesso de carga será autorizado.
+        Quanto maior for o numero menor será o excesso de carga permitido pela otimização.
+      optimization_overload_multiplier_ignore: Ignrado
+      optimization_overload_multiplier_ignore_help: Durante a otimização, as quantidades
+        e capacidades dos seus veículos não serão tidas en conta.
+      optimization_overload_multiplier_help: O excesso de carga será ou não autorizado
+        durante a otimização (valido apenas se uma capacidade é especificada para
+        um veículo) Se o excesso de carga for autorizado, quanto maior for o número
+        indicado, menos a otimização permitirá o excesso.
+  destinations:
+    upload_tomtom:
+      success: Endereços importados com sucesso
+    menu:
+      destinations: Destinos
+      import: Importar
+      export_spreadsheet_standard: Exportar tabela standard
+      export_spreadsheet_excel: Exportar tabela Excel
+      stores: Armazéns
+      import_stores: Importar armazéns
+      tags: Etiquetas
+      clear: Apagar todos os destinos
+      clear_confirm: Tem a certeza que pretende apagar todos os destinos?
+    form:
+      ref_help: Referência livre
+      detail_help: Complemento do endereço não geocodificável, por exemplo o numero
+        do apartamento
+      comment_help: Informações para o despacho
+      locate_manually: Localizar manualmente sobre o mapa
+      geocoding_accuracy_none: Não aplicável
+      geocoding_fail: A geocodificação falhou
+      geocoding_accuracy_help: Qualidade da conversão da morada em localização geográfica
+      country_default: '%{n} (valor por defeito)'
+      geocoding_level:
+        point: Ponto
+        house: Casa
+        street: Rua
+        intersection: Cruzamento
+        city: Localidade
+        'null': Nenhum
+      tags_help: Categorias do destino
+      dialog:
+        confirm_overwrite_point: A localização anterior foi definida manualmente sobre
+          o mapa. Pretende substituir pelo resultado da geocodificação?
+      visit:
+        enable_multi_visits: Necessárias diversas visitas ao mesmo destino? Por favor
+          contactar o suporte para ativar esta funcionalidade.
+        new: Nova visita
+        new_help: Nova visita caso vá a este destino diversas vezes.
+    edit:
+      title: Alterar o destino
+    import:
+      title: Importar destinos
+      destinations: Destinos
+      replace_no: Atualização / adicional
+      replace_no_help: Uma atualização dos destinos existentes (referencias de destino
+        inalteradas) é efetuada sendo os novos adicionados à aplicação.
+      replace_yes: Apagar destinos anteriores
+      replace_yes_help: Eliminar e substituir todos os destinos anteriores pelos da
+        importação. Todos os destinos serão reescritos. A rotas serão igualmente perdidas.
+      replace_confirm: Ao apagar todos os destinos afetará o planeamento das rotas
+        antigas ficando apenas os novos destinos, não planificados. Tem a certeza?
+      plannings: Planeamentos
+      delete_plannings: Apagar planeamentos anteriores
+      delete_plannings_help: Apagar os planeamentos de rotas antigos (permitindo uma
+        melhoria na performance da aplicação) Se o novo ficheiro de importação contiver
+        rotas, será criado um novo plano de rotas após a importação.
+      delete_plannings_confirm: Apagar todos os planos de rotas criados anteriormente?
+      csv:
+        title: Ficheiro CSV
+        help: Importação de destinos a partir de um ficheiro CSV. Ficheiros CSV podem
+          ser criadosa partir de folhas de cálculo ou de outros softwares.
+        file_help: Importação apenas de ficheiros CSV.
+      import_template_help: Ajuda - Definição de colunas
+      dialog:
+        help:
+          title: Lista de colunas do seu ficheiro
+          desc: 'O seu ficheiro de importação poderá conter as seguintes colunas:'
+          columns_route: Colunas da rota
+          columns_destination: Colunas do destino visitado
+          columns_visit: Colunas da visita
+          def_help: Se não pretende utilizar nomes de colunas por defeito, poderá
+            defini-los livremente. Poderá definir um conjunto de números de colunas
+            ou de títulos.
+          def_example: Por exemplo para "morada", definir "rua, numero, 4" para unir
+            as colunas "rua", "numero" e a 4ª coluna (em título) para formar o valor
+            de "morada" na aplicação.
+      tomtom:
+        title: TomTom
+        help: Importar os endereços de TomTom WEBFLEET como destinos
+    index:
+      title: Lista destinos
+      new: Novo destino
+      default_name: Novo Destino
+      columns: Colunas
+      no_position: Em falta
+      geocoding_level: Nível de geocodificação
+      geocoding_column_help: Nivel de geocodificação e qualidade. Ordenar primeiro
+        por nível e depois por precisão
+      geocoding_empty: Em falta
+      mutli_quantities: Múltiplas quantidades, modifique esta visita para alterar
+        as quantidades.
+      click2call: Clicar para chamar
+      quantity_small: Qde.
+      dialog:
+        import:
+          title: Importação
+          in_progress: Importação em curso, aguarde por favor
+        geocoding:
+          title: Geocodificação
+          in_progress: Geocodificação em curso, aguarde por favor.
+          attempts: 'Tentativas:'
+          inqueue: Geocodificação em espera
+          error: O cálculo falhou.
+        geocoding_danger:
+          title: Resultados de geocodificação pouco fiáveis
+          infos: Alguns destinos parecem estar geocodificados de forma pouco fiável.
+            Pretende verifica-los na lista?
+          hide_help: 'Para não voltar a ver esta mensagem, os seus destinos com geocodificação
+            pouco fiável e:'
+          correct_help: Verifique a morada para a corrigir ou completar se necessário
+          move_help: Desloque os pontos manualmente no mapa se necessário
+          dismiss: Ignorar
+          sort_geocoding: Mostrar primeiro as geocodificações pouco fiáveis
+    new:
+      title: Novo destino
+    import_file:
+      refs_duplicate: 'A referência: "%{refs}" está duplicada.'
+      refs_visit_duplicate: 'A "referência de visita" : "%{refs}" está duplicada.'
+      ref: referência
+      ref_desc: um identificador estável, constante e único que permita a atualização
+        não destrutiva deste item quando da próxima importação
+      route: rota
+      route_desc: índice ou referencia da rota no plano.
+      ref_vehicle: veículo
+      ref_vehicle_desc: referência ou nome do veículo utilizado para efetuar a paragem
+        na rota.
+      stop_type: tipo de paragem
+      stop_type_desc: tipo de paragem na rota.
+      stop_type_visit: visita
+      stop_format: '[visita | armazém | pausa]'
+      name: nome
+      name_desc: nome do destino ou cliente visitado
+      street: rua
+      street_desc: numero da porta, tipo de via e nome da via (a ortografia é fundamentar
+        para a fiabilidade da geocodificação). Elementos não oficiais como o numero
+        da sala, letra da escada, etc devem ser movidos para o campo "detalhe"
+      detail: detalhe
+      detail_desc: 'detalhes de acesso complementares que permitam ao agente no terreno
+        identificar o caminho a percorrer do veículo até à porta do destino. Exemplo:
+        nome do edifício, andar, escada, numero da sala…'
+      postalcode: código postal
+      postalcode_desc: código postal da localidade (a exatidão é importante para a
+        fiabilidade da geocodificação)
+      city: localidade
+      city_desc: nome da localidade ou freguesia (a ortografia deverá estar correta
+        para uma geocodificação fiável)
+      state: estado
+      state_desc: nome do estado (ortografia deverá estar correta para uma geocodificação
+        fiável)
+      country: país
+      country_desc: nome do país (a ortografia deverá estar correta para uma geocodificação
+        fiável)
+      lat: lat
+      lat_desc: latitude do destino (em graus decimais) entre -90º e 90º. Explo. 45,91
+      lat_format: numero com vírgula entre -90 e 90
+      lng: Ing
+      lng_desc: longitude do destino (em graus decimais) entre -180º e 180º. Explo.
+        -0,781
+      lng_format: numero com vírgula entre -180 e 180
+      geocoding_accuracy: fiabilidade da geocodificação
+      geocoding_accuracy_desc: classificação da fiabilidade da conversão da morada
+        postal em coordenadas geográficas. Esta classificação é expressa numa escala
+        entre 0 e 1. Explo. 0,70 que significa 70% de fiabilidade.
+      stop_type_visit_desc: ' '
+      geocoding_accuracy_format: número com vírgula de 0 a 1
+      geocoding_level: nível de geocodificação
+      geocoding_level_desc: nível de precisão alcançado após conversão da modada do
+        destino em coordenadas geográficas, expresso de forma descritiva.
+      take_over: duração da visita
+      take_over_desc: duração antecipada da visita
+      quantity: quantidade
+      quantity_desc: numero de unidades a despachar.
+      quantity1_1: quantidade 1_1
+      quantity1_1_desc: 'rejeitado: utilizar antes "quantidades".'
+      quantity1_2: quantidade 1_2
+      quantity1_2_desc: 'rejeitado: utilizar antes "quantidades".'
+      active: ativo
+      active_desc: indica se a visita está ou não ativa nesta rota/plano
+      open: horário de abertura
+      open_desc: 'rejeitado: utilizar antes "horário de abertura 1".'
+      close: horário de fecho
+      close_desc: 'rejeitado: utilizar antes "horário de fecho 1".'
+      open1: horário de abertura 1
+      open1_desc: início do período de tempo 1 (pode ultrapassar 24:00h) sugerido
+        para a visita.
+      close1: horário de fecho 1
+      close1_desc: horário de fecho 1 (pode ultrapassar as 24:00h) sugerido para a
+        visita.
+      open2: horário de abertura 2
+      open2_desc: início do período de tempo 2 (pode ultrapassar 24:00h) sugerido
+        para a visita.
+      close2: horário de fecho 2
+      close2_desc: fim do período de tempo 2 (pode ultrapassar 24:00h) sugerido para
+        a visita.
+      comment: comentário
+      comment_desc: informações complementares para a visita.
+      phone_number: telefone
+      phone_number_desc: número do telefone de contacto no destino.
+      tags: etiquetas
+      tags_desc: categorização do destino (permitirá agrupa-los).
+      tags_format: etiqueta 1, etiqueta 2
+      without_visit: sem visita
+      without_visit_desc: precisa que não existe nenhuma visita associada
+      ref_visit: visita de referência
+      ref_visit_desc: referência da visita.
+      tags_visit: etiqueta a visita
+      tags_visit_desc: categorização da visita (permitirá, por exemplo, agrupa-las).
+      format:
+        string: texto
+        integer: numero inteiro
+        float: '0.123'
+        hour: HH:MM
+        second: HH:MM:SS
+        yes_no: sim/não
+        required: obrigatório
+        advisable: recomendado
+        optionnal: opcional
+        deprecated: rejeitado
+      not_csv: O ficheiro importado não é formato CSV
+      empty_file: conteúdo em branco
+      too_many_lines: 'importação abortada, demasiadas linhas (max: %{n}).'
+      none_column: Não encontrada qualquer correspondencia de coluna
+      missing_name: falta "nome".
+      missing_location: '"localidade / código postal" ou "lat / long" em falta.'
+      invalid_numeric_value: valor numérico « %{value} » invalido.
+      check_custom_columns: Verifique a definição das colunas a importar.
     reverse_geocoding:
-      apply:
+      apply: Aplicar nova morada
   index:
     unsupported_browser:
-      unsupported_browser:
-      unsupported_browser_modern:
-      download_browser:
+      unsupported_browser: Browser não suportado
+      unsupported_browser_modern: O seu Browser é demasiado antigo. Por favor utilize
+        um mais recente.
+      download_browser: 'Poderá descarregar a ultima versão do Browser Firefox em: '
   order_arrays:
     menu:
-      order_arrays:
+      order_arrays: Encomendas
     form:
-      week:
-      week2:
-      month:
+      week: Semana
+      week2: 2 Semanas
+      month: Mês
       export:
-        print:
-        menu:
-        spreadsheet_standard:
-        spreadsheet_excel:
+        print: Imprimir
+        menu: Exportar
+        spreadsheet_standard: Folha de cálculo standard
+        spreadsheet_excel: Folha de cálculo Excel
     index:
-      title:
-      new:
+      title: Lista tabelas de encomendas
+      new: Nova tabela de encomendas
     edit:
-      title:
-      vehicle:
-      name:
-      comment:
-      empty_row:
-      empty_column:
-      copy:
-      paste:
-      total:
-      planning:
-      confirm_ovewrite_column:
-      confirm_ovewrite_row:
+      title: Modificar tabela de encomendas
+      vehicle: Veículo
+      name: Nome
+      comment: Comentário
+      empty_row: Limpar linha
+      empty_column: Limpar coluna
+      copy: Copiar
+      paste: Colar
+      total: Total
+      planning: Aplicar ao plano de rotas
+      confirm_ovewrite_column: Tem a certeza que pretende modificar os dados da coluna?
+      confirm_ovewrite_row: Tem a certeza que pretende modificar o dados da linha?
       dialog:
         loading:
-          title:
-          in_progress:
+          title: Carregando
+          in_progress: Carregando, por favor aguarde.
     new:
-      title:
+      title: Nova tabela de encomendas
     export_file:
-      vehicle:
-      name:
-      comment:
-      total:
+      vehicle: veículo
+      name: nome
+      comment: comentário
+      total: total
   route_mailer:
     send_kmz_route:
-      content:
-      vehicle:
-      planning:
-      planning_ref:
-      route_ref:
-      order_array:
+      title: Exportação Plano KMZ
+      hello: Olá
+      content: Foi-lhe enviado um ficheiro KMZ contendo informação de rotas, anexado
+        a este email desde %{s}.
+      vehicle: 'Veículo: %{name}'
+      planning: 'Plano de rotas : %{name} %{date}'
+      planning_ref: 'Referencia do plano : %{ref}'
+      route_ref: 'Referencia da rota: %{ref}'
+      order_array: 'Encomendas: %{name}'
     send_computed_ics_route:
-      content:
-      vehicle:
-      planning:
-      planning_ref:
-      route_ref:
-      order_array:
-      link:
+      title: Exportação do plano iCalender
+      hello: Olá
+      content: 'Foi-lhe enviado um iCalender de %{s}, poderá: copiar/colar o link
+        na sua agenda (a atualização será automática) ou pode clicar neste link para
+        descarregar o ficheiro (neste caso não haverá atualização automática).'
+      vehicle: 'Veículo : %{name}'
+      planning: 'Plano de rotas: %{name} %{date}'
+      planning_ref: 'Referencia do plano : %{ref}'
+      route_ref: 'Referencia da rota: %{ref}'
+      order_array: 'Encomendas: %{name}'
+      link: 'Link para descarregar: <a href=%{link}>iCalendar Plan</a>'
   user_mailer:
-    welcome:
-      title:
-      content:
+    layout:
+      welcome: Benvindo(a) a %{name} !
+      staff:
+        content: Para si, a experiência %{name} começa agora! A nossa equipa está
+          mobilizada para garantir o sucesso.
+        greetings: Melhores Cumprimentos,
+        signature: A equipa %{name}
+      links:
+        title: Siga-nos!
+        facebook: Ligação Fa
+        twitter: Ligação Twitter
+        linkedin: Ligação Linkedin
+    password:
+      subject: Defina a sua palavra passe para %{name}
+      title: Defina a sua palavra passe
+      welcome: Benvindo a %{name} !
+      detail:
+        content: Obrigado por ter escolhido testar a solução de planificação e otimização
+          de rotas %{application_name}%{limit}.
+        limit: ' por um período de <b>%{days} dias</b>'
+        define: 'Antes de se ligar à sua conta%{test}, por favor defina a sua palavra
+          passe:'
+        test: ' de teste'
+        link: Definir palavra passe
+      footer:
+        first_step: 'Passo 1: Defina a sua palavra passe'
+        second_step: 'Passo 2: Entre na aplicação'
+    connection:
+      subject: Ligação à sua conta %{name}
+      title: Ligue-se à sua conta
+      welcome: Parabéns. Pode agora entrar na sua conta.
+      detail:
+        content: 'Para se ligar, '
+        id: 'utilize a palavra passe e utilizador que definiu: %{login} e palavra
+          passe'
+        link: Ligação
   plannings:
     menu:
-      plannings:
+      plannings: Planos
       plannings_limit:
-        menu_message:
+        menu_message: Numero máximo sugerido de planos atingidos
     index:
-      title:
-      new:
-      export_selection:
+      title: Lista de planos de rotas
+      new: Novo plano
+      export_selection: Exportar seleção
       export:
-        icalendar:
-        icalendar_email:
-        spreadsheet:
-        none_planning:
-      list_message:
+        icalendar: Agenda iCal
+        icalendar_email: Agenda iCal por email
+        spreadsheet: Folha de cálculo CSV / Excel
+        none_planning: Por favor selecione pelo menos um plano para exportar
+      list_message: 'Você alcançou o limite aconselhado de planos rotas associados
+        à sua conta (Limite : %{limit})'
     edit:
-      vehicles:
-      current_position:
-      lock_routes:
-      toggle_routes:
+      vehicles: Veículos
+      current_position: 'Posição do veículo:'
+      lock_routes: Bloquear rotas
+      toggle_routes: Alternar rotas
       zonings:
-        label:
-        success:
-        fail:
-        action:
-      zoning_new:
-      zoning_edit:
-      last_sent_to:
-      title:
-      stops:
-      without_stops_title:
-      load_stops_out_of_route:
-      load_stops:
-      optimized_at:
+        label: Zoneamentos
+        success: Zoneamentos aplicados com sucesso
+        fail: Falha na aplicação de Zoneamentos
+        action: Aplicar Zoneamentos
+      zoning_new: Criar novo zoneamento a partir deste plano de rotas
+      zoning_edit: Modificar zoneamento a partir deste plano de rotas
+      last_sent_to: Enviado para
+      title: Modificar plano
+      stops: paragens
+      without_stops_title: As paragens deste volumoso plano de rotas não foram carregadas
+        para melhorar a performance da apresentação
+      load_stops_out_of_route: Carregar as paragens não planificadas
+      load_stops: Carregar as paragens desta rota
+      optimized_at: Otimizado
       optimize_global:
-        title:
-        all_help:
-        active_help:
-        all_stops:
-        active_stops:
-        confirm:
+        title: Otimização global
+        all_help: Otimizar o plano de rotas no seu conjunto exceto rotas bloqueadas
+          (as paragens poderão ser atribuidas a outra rota, diferente da atual), todas
+          as paragens serão afetadas
+        active_help: Otimizar o plano de rotas no seu conjunto exceto rotas bloqueadas
+          (as paragens poderão ser atribuidas a outra rota, diferente da atual), apenas
+          as paragens ativas serão afetadas
+        all_stops: Otimizar incluindo paragens inativas
+        active_stops: Apenas paragens ativas
+        confirm: Otimizar o plano de rotas no seu conjunto? (as paragens poderão ser
+          atribuidas a outra rota, diferente da atual)
       optimize_each:
-        title:
-        all_help:
-        active_help:
-        all_stops:
-        active_stops:
-        confirm:
-      optimize_all:
-      optimize_actives:
-      optimize_help:
-      optimize_confirm:
-      optimize_complete:
-      optimize_failed:
-      zoning_confirm:
-      page_change_zoning_confirm:
-      route_placeholder:
-      service_time:
-      exports:
+        title: Otimização de cada rota
+        all_help: Otimizar o plano de rotas não bloqueadas, uma a uma (as paragens
+          ficarão na respetiva rota), todas as rotas serão afetadas
+        active_help: Otimizar todas as rotas não bloqueadas, uma a uma (as paragens
+          ficarão na rota original), apenas as paragens ativas serão consideradas
+        all_stops: Otimizar, incluindo as paragens inativas
+        active_stops: Apenas paragens ativas
+        confirm: Lançar um cálculo de otimização para cada rota? (as paragens ficarão
+          na respetiva rota inicial)
+      optimize_all: Otimizar com paragens inativas
+      optimize_actives: Otimizar as paragens ativas
+      optimize_help: Otimizar a rota
+      optimize_confirm: Lançar um calculo de otimização?
+      optimize_complete: Otimização terminada
+      optimize_failed: Falha na otimização
+      zoning_confirm: Guardar e aplicar o novo zoneamento? As rotas do plano serão
+        modificadas
+      page_change_zoning_confirm: Pretende deixar a página e abandonar alterações
+        de zoneamento?
+      route_placeholder: Ref. da rota.
+      service_time: Duração do serviço
+      exports: Exportar o plano de rotas
       stop_status:
-        planned:
-        started:
-        finished:
-        rejected:
-        any:
-        none:
-      update_stops_status:
+        planned: Planificado
+        started: Iniciado
+        finished: Terminado
+        rejected: Rejeitado
+        any: Todos os estados
+        none: Sem estado
+      update_stops_status: 'Estados de paragens:'
       customer_external_callback_url:
-        action:
+        action: Aplicação externa
       export:
         customer_external_callback_url:
-          success:
-          fail:
+          success: Aplicação externa evocada com sucesso
+          fail: Falha ao evocar aplicação externa
         icalendar:
-          action:
-          action_email:
-          success:
-          fail:
-          mail_error:
+          action: Agenda iCal
+          action_email: Agenda iCal por email
+          success: Ficheiro corretamente enviado por email a todos os veículos
+          fail: Falha na exportação por email
+          mail_error: Email(s) não enviado(s). <br/> Verificar a configuração de email
+            para cada veículo.
         kmz_email:
-          action:
-          success:
-          fail:
+          action: Seguimento KMZ por email
+          success: Email enviado corretamente
+          fail: Falha no envio de email
         csv:
-          success:
-        print:
-        spreadsheet:
-        gpx_route:
-        gpx_track:
-        kmz_track:
+          success: CSV exportado corretamente
+        print: Imprimir
+        spreadsheet: Tabela CSV / Excel
+        gpx_route: Rota GPX
+        gpx_track: Seguimento GPX
+        kmz_track: Seguimento KMZ
       zoning:
-        none:
-        apply:
-        edit:
-        new:
+        none: Nenhum
+        apply: Aplicar zoneamento
+        edit: Modificar zoneamento
+        new: Novo zoneamento
       order_array:
-        edit:
+        edit: Modificar plano de encomendas
       map:
-        zoom_in:
-        zoom_out:
-      reverse_order:
-      open_planning_panel:
-      collapse_planning_panel:
-      refresh:
-      refresh_help:
-      outdated_zoning:
-      stops_help:
-      duration_help:
-      distance_help:
-      emission_help:
-      out_of_route:
-      toggle_help:
-      locked_unplanned_help:
-      locked_help:
-      vehicle_help:
-      export_help:
-      route_stops_active_help:
-      route_duration_help:
-      route_distance_help:
-      route_quantity_help:
-      drag_help:
-      active_help:
-      edit_store_help:
-      edit_visit_help:
-      marker_help:
-      automatic_insert_help:
-      automatic_insert_help_multiple:
-      automatic_insert_confirm:
-      automatic_insert_too_many:
-      active_all:
-      active_reverse:
-      active_none:
-      send_to_route_help:
-      wait:
-      vehicle_speed:
-      vehicle_last_position_time:
-      route_change_color_help:
+        zoom_in: Aumentar zoom
+        zoom_out: Diminuir zoom
+      reverse_order: Inverter ordem de paragens
+      open_planning_panel: Abrir painel do plano de rotas
+      collapse_planning_panel: Minimizar painel do plano de rotas
+      refresh: Atualizar
+      refresh_help: Foram modificados parâmetros ou clientes utilizados neste plano
+        de rotas. Necessário recalcular
+      outdated_zoning: O zoneamento foi alterado. Aplicar de novo para atualizar.
+      stops_help: Paragens planeadas / total
+      duration_help: Soma da duração das rotas
+      distance_help: Soma das distancias das rotas
+      emission_help: Emissão
+      out_of_route: Não afetado(a)
+      toggle_help: Alternar visualização das paragens, no mapa
+      locked_unplanned_help: Bloquear os não planeados no plano de operações global
+      locked_help: Bloquear a rota no plano de operações global
+      vehicle_help: Parâmetros do veículo
+      export_help: Exportar a rota
+      route_stops_active_help: Selecionar paragens ativas
+      route_duration_help: Duração da rota / Janela de tempo do veículo
+      route_distance_help: Distancia da rota
+      route_quantity_help: Quantidade / Capacidade do veículo
+      drag_help: Arrastar para ordenar as paragens nas rotas
+      active_help: Ter ou não em consideração um destino na rota
+      edit_store_help: Modificar as informações do armazém
+      edit_visit_help: Modificar as informações da visita/cliente
+      marker_help: Visualizar na carta
+      automatic_insert_help: Encontrar uma rota e inserir esta paragem
+      automatic_insert_help_multiple: Encontrar rotas e inserir paragens ( os resultados
+        já não serão otimizados)
+      automatic_insert_confirm: Fazer corresponder a rotas todas as paragens não planeadas?
+        O resultado já não será otimizado. Os zoneamentos são recomendados para fazer
+        corresponder as paragens às rotas de forma mais precisa (Ok para continuar
+        mesmo assim).
+      automatic_insert_too_many: Demasiadas paragens sem veículos. Os zoneamentos
+        são recomendados para fazer corresponder as paragens às rotas de forma mais
+        precisa
+      active_all: Todos
+      active_reverse: Inverter
+      active_none: Nenhum
+      send_to_route_help: Mover esta paragem para uma rota
+      wait: 'Tempo de espera:'
+      vehicle_speed: 'Velocidade:'
+      vehicle_last_position_time: 'Ultima posição:'
+      route_change_color_help: Alterar cor da rota
       popup:
-        open_close1:
-        open1:
-        close1:
-        open_close2:
-        open2:
-        close2:
-        time:
-        quantity:
-        orders:
-        duration:
-        tags:
-        stop_drive_time:
-        stop_distance:
-        visit:
-        status:
-        eta:
-        day:
+        open_close1: 'Intervalo de tempo 1:'
+        open1: início 1
+        close1: fecho 1
+        open_close2: 'Intervalo de tempo 2:'
+        open2: início 2
+        close2: fim 2
+        time: 'Planeado:'
+        quantity: 'Quantidade:'
+        orders: 'Encomendas:'
+        duration: 'Duração da visita:'
+        tags: 'Etiquetas:'
+        stop_drive_time: 'Duração:'
+        stop_distance: 'Distancia:'
+        visit: Visita
+        status: 'Estado:'
+        eta: 'ETA:'
+        day: D+
       error:
-        no_geolocalization:
-        no_geolocalization_help:
-        out_of_window:
-        out_of_window_help:
-        out_of_capacity:
-        out_of_capacity_help:
-        out_of_drive_time:
-        out_of_drive_time_help:
-        no_path:
-        no_path_help:
+        no_geolocalization: Sem geolocalização
+        no_geolocalization_help: Coordenadas geográficas inexistentes ou endereço
+          não localizado
+        out_of_window: Fora do período temporal
+        out_of_window_help: Paragem planeada fora dos períodos temporais especificados
+        out_of_capacity: Para além da capacidade do veículo
+        out_of_capacity_help: Excedida a capacidade do veículo
+        out_of_drive_time: Fora do periodo temporal do veículo
+        out_of_drive_time_help: Planificado para além do periodo temporal do veículo
+        no_path: Destino inacessível
+        no_path_help: 'Destino inacessível: sem via de acesso ou itinerário para ir
+          ou regressar do destino'
       dialog:
         refresh:
-          title:
-          confirm:
+          title: Atualizar o plano de rotas
+          confirm: Efetuou alterações que implicam o recálculo do seu plano de rotas.
+            Pretende atualizar o plano agora?
         optimizer:
-          title:
-          in_progress:
-          matrix:
-          optimize:
-          routes:
-          attempts:
-          inqueue:
-          no_solution:
-          error:
+          title: Otimização
+          in_progress: Em processamento. Por favor aguarde.
+          matrix: Matriz de distanciamentos
+          optimize: Otimização
+          routes: Atualização do plano
+          attempts: 'Tentativas:'
+          inqueue: Otimização em espera
+          no_solution: Sem solução para o seu problema
+          error: Impossível efetuar o cálculo.
         zoning:
-          title:
-          in_progress:
+          title: Zoneamento
+          in_progress: Aplicando o novo zoneamento. Por favor aguarde
         vehicle:
-          title:
-          in_progress:
+          title: Troca de veículo
+          in_progress: Aplicando novo veículo. Por favor aguarde
         automatic_insert:
-          title:
-          in_progress:
+          title: Estabelecer rotas para paragens não planificadas
+          in_progress: Por favor aguarde
         spreadsheet:
-          title:
-          stops:
-          out_of_route:
-          stores:
-          rests:
-          stops_inactives:
-          columns:
-          columns_export:
-          columns_skip:
-          columns_DnD_help:
-          format:
-          csv:
-          excel:
-          download:
+          title: Exportar para folha de cálculo
+          stops: Paragens adicionais
+          out_of_route: não planificadas
+          stores: armazéns
+          rests: pausas
+          stops_inactives: paragens inativas
+          columns: Colunas
+          columns_export: Para exportação
+          columns_skip: Não exportados
+          columns_DnD_help: Utilize o rato para agarrar-e-largar as colunas não exportadas
+          format: Formato
+          csv: Formato CSV satandard
+          excel: formato Excel CSV
+          download: Descarregar
     new:
-      title:
+      title: Novo plano de rotas
       dialog:
-        new_planning:
+        new_planning: Criando o novo plano de rotas. Por favor aguarde
     export_file:
-      ref_planning:
-      planning:
-      ref:
-      vehicle:
-      route:
-      order:
-      stop_type:
-      stop_type_store:
-      stop_type_visit:
-      stop_type_rest:
-      wait_time:
-      time:
-      distance:
-      drive_time:
-      name:
-      street:
-      detail:
-      postalcode:
-      city:
-      state:
-      country:
-      lat:
-      lng:
-      comment:
-      tags:
-      phone_number:
-      ref_visit:
-      duration:
-      quantity:
-      orders:
-      active:
-      open1:
-      close1:
-      open2:
-      close2:
-      tags_visit:
-      out_of_window:
-      out_of_capacity:
-      out_of_drive_time:
-      status:
-      eta:
+      ref_planning: plano de referência
+      planning: plano
+      ref: referência
+      vehicle: veículo
+      route: rota
+      order: pedido/encomenda
+      stop_type: tipo de paragem
+      stop_type_store: armazém
+      stop_type_visit: visita
+      stop_type_rest: pausa
+      wait_time: espera
+      time: hora
+      distance: distância
+      drive_time: empo de trajeto
+      name: nome
+      street: rua
+      detail: complemento
+      postalcode: código postal
+      city: localidade
+      state: estado
+      country: país
+      lat: lat
+      lng: Ing
+      comment: comentário
+      tags: etiquetas
+      phone_number: telefone
+      ref_visit: visita referencia
+      duration: duração da visita
+      quantity: quantidade
+      orders: encomendas
+      active: ativo
+      open1: horário de abertura 1
+      close1: horário de fecho 1
+      open2: horário de abertura 2
+      close2: horário de fecho 2
+      tags_visit: etiquetas da visita
+      out_of_window: fora do período da visita
+      out_of_capacity: para além da capacidade do veículo
+      out_of_drive_time: fora do período do veículo
+      status: estado
+      eta: eta
     form:
-      ref_help:
-      begin_end_date:
-      begin_end_date_help:
-      tags_help:
-      order_array:
-      zonings_help:
-      avoid_zones_help:
-      default_date:
-      default:
+      ref_help: Referência livre
+      begin_end_date: Período de validade
+      begin_end_date_help: Período durante o qual o plano é válido
+      tags_help: Visitas / destinos limitados no plano (as visitas/destinos deverão
+        possuir todas estas etiquetas (TODAS), ou uma das etiquetas selecionadas (OU),
+        para que sejam incluídas no plano).
+      order_array: Encomendas
+      zonings_help: Permite fazer corresponder automáticamente veículos a visitas/destinos
+        de acordo com zonas geográficas pré definidas.
+      avoid_zones_help: Permite ainda definir zonas onde o veículo não pode circular.
+      default_date: Data de hoje por defeito
+      default: Defeito
     show:
-      print:
+      print: Imprimir
   routes:
     show:
-      print:
-      wait:
+      print: Imprimir
+      wait: 'Tempo de espera:'
       annotating:
-        hour:
-        signature:
+        hour: 'Hora de passagem:'
+        signature: 'Assinatura:'
   shared:
     error_messages:
       form_contains_error:
-        one:
-        other:
+        one: O formulário contém um erro.
+        other: O formulário contém erros.
   stops:
     default:
-      name_rest:
-  stores:
-    default:
-      name:
-      lat: '38.78280'
-      lng: '-9.12521'
-      city: 'Lisboa'
-    geocoding:
-      geocoding_in_progress:
-    form:
-      ref:
-      ref_help:
-      locate_manually:
-      country_default:
-      icon_size:
-        small:
-        medium:
-        large:
-      prefered_icons:
-      other_icons:
-    edit:
-      title:
-    import:
-      title:
-      stores:
-      replace_no:
-      replace_no_help:
-      replace_yes:
-      replace_yes_help:
-      replace_confirm:
-      csv:
-        title:
-        help:
-        file_help:
-      import_template_help:
-      dialog:
-        help:
-          title:
-          desc:
-    index:
-      dialog:
-        import:
-          title:
-          in_progress:
-      title:
-      new:
-    new:
-      title:
-    import_file:
-      ref:
-      ref_desc:
-      name:
-      name_desc:
-      color:
-      color_desc:
-      color_format:
-      icon:
-      icon_desc:
-      icon_size:
-      icon_size_desc:
-      open:
-      open_desc:
-      close:
-      close_desc:
-      street:
-      street_desc:
-      postalcode:
-      postalcode_desc:
-      city:
-      city_desc:
-      state:
-      state_desc:
-      country:
-      country_desc:
-      lat:
-      lat_desc:
-      lat_format:
-      lng:
-      lng_desc:
-      lng_format:
-      geocoding_accuracy:
-      geocoding_accuracy_desc:
-      geocoding_accuracy_format:
-      geocoding_level:
-      geocoding_level_desc:
-      missing_name:
-      missing_location:
-      invalid_numeric_value:
-      format:
-        string:
-        integer:
-        hour:
-        float:
-        required:
-        advisable:
-        optionnal:
+      name_rest: Pausa
   products:
     menu:
-      products:
+      products: Produtos
     edit:
-      title:
+      title: Alterar produto
     index:
-      title:
-      new:
+      title: Lista produtos
+      new: Novo produto
     new:
-      title:
+      title: Novo produto
     form:
-      name_help:
-      code_help:
+      name_help: Nome completo do produto
+      code_help: Código curto, algumas letras
   tags:
     edit:
-      title:
+      title: Alterar etiqueta
     index:
-      title:
-      new:
+      title: Lista etiquetas
+      new: Nova etiqueta
     new:
-      title:
+      title: Nova etiqueta
     form:
-      color_default:
-      color_help:
-      customised_color:
-      ref:
-      ref_help:
+      color_default: Por defeito
+      color_help: Forçar utilização desta cor
+      customised_color: Cor personalizada
+      ref: Referencia
+      ref_help: Referencia livre
       icon_size:
-        small:
-        medium:
-        large:
-      prefered_icons:
-      other_icons:
+        small: pequeno
+        medium: médio
+        large: grande
+      prefered_icons: Aconselhados
+      other_icons: Outros
   users:
     menu:
-      sign_out:
+      sign_out: Saír
     edit:
-      title:
-      edit:
-      edit_user:
+      title: Alterar parâmetros de utilizador
+      edit: Alterar as suas credenciais de entrada e password
+      edit_user: Não tem direitos para alterar outro utilizador
     form:
-      url_click2call_help:
-      send_email:
+      url_click2call_help: URL da solução de comunicação VOIP. Na URL deverá  inscrever
+        '{TEL}' no lugar do numero de telefone
+      send_email: Enviar email
     update:
-      success:
+      success: Utilizador atualizado com sucesso
     password:
-      title:
-      unauthenticated:
+      title: Alterar a password
+      unauthenticated: Erro de ligação, por favor verifique o link enviado por email
     set_password:
-      action:
-      success:
+      action: Atualizar password
+      success: Utilizador atualizado com sucesso
   vehicles:
-    default_name:
-    emissions_nothing:
-    emissions_light_petrol:
-    emissions_light_diesel:
-    emissions_light_lgp:
+    default_name: Veículo %{n}
+    emissions_nothing: Nenhum - %{n}
+    emissions_light_petrol: Luz - Gasolina - %{n}
+    emissions_light_diesel: Luz - Gasóleo - %{n}
+    emissions_light_lgp: Luz - GPL - %{n}
     import:
-      ref_vehicle:
-      ref_desc:
-      name_vehicle:
-      name_desc:
-      contact_email:
-      contact_email_desc:
-      emission:
-      emission_desc:
-      consumption:
-      consumption_desc:
-      capacities:
-      capacities_desc:
-      router_mode:
-      router_mode_desc:
-      router_dimension:
-      router_dimension_desc:
-      router_options:
-      router_options_desc:
-      speed_multiplicator:
-      speed_multiplicator_desc:
-      color:
-      color_desc:
-      devices:
-      devices_desc:
-      missing_name:
+      ref_vehicle: referência veículo
+      ref_desc: referência do veículo
+      name_vehicle: nome veículo
+      name_desc: nome do veículo
+      contact_email: email
+      contact_email_desc: email do dispositivo do motorista
+      emission: emissão
+      emission_desc: emissão do veículo
+      consumption: consumo
+      consumption_desc: consumo do veículo
+      capacities: capacidades
+      capacities_desc: capacidades máximas do veículo
+      router_mode: calculador de itinerário
+      router_mode_desc: forçar a utilização de um calculador de itinerário
+      router_dimension: objetivo do calculador
+      router_dimension_desc: forçar a utilização de um calculador de objetivo do cálculo
+      router_options: opções do calculador
+      router_options_desc: forçar a utilização de opções específicas do calculador
+        de itinerário
+      speed_multiplicator: ajuste da velocidade
+      speed_multiplicator_desc: um valor superior a 100% significa uma velocidade
+        mais elevada
+      color: cor
+      color_desc: cor associada ao veículo
+      devices: dispositivos
+      devices_desc: referência ou ID do seu GPS associado ao veículo
+      missing_name: '"nome" do veículo em falta'
       format:
-        string:
-        integer:
-        float:
-        hour:
-        second:
-        yes_no:
-        required:
-        advisable:
-        optionnal:
-        deprecated:
+        string: texto
+        json: json
+        integer: numero
+        float: numero decimal
+        hour: HH:MM
+        second: HH:MM:SS
+        yes_no: sim/não
+        required: obrigatório
+        advisable: recomendado
+        optionnal: opcional
+        deprecated: depreciado
     form:
       ref:
-        help:
+        help: Referência livre
       emissions:
-        help:
+        help: Tipo de combustível
       consumption:
-        help:
-        help_miles:
+        help: Consumo médio aos 100 em litros de combustível
+        help_miles: Consumo médio às 62,1 milhas, em litros de combustível.
       capacities:
-        label:
-        default:
-        no_overload:
-        ignore_overload:
-        help:
+        label: Capacidades
+        default: '%{n} (valor por defeito)'
+        no_overload: ' (sem sobrecarga)'
+        ignore_overload: ' (ignorado)'
+        help: Capacidades máximas do veículo
       router:
-        default:
-        help:
+        default: Defeito
+        help: Forçar a utilização de um calculador de itinerário
       router_dimension:
-        default:
+        default: Defeito
       speed_multiplicator:
-        default:
-        help:
+        default: '%{n} (valor por defeito)'
+        help: Um valor superior a 100% significa uma velocidade mais elevada. O ajustamento
+          global dos parâmetros é também utilizado nos cálculos.
       contact_email:
-        help:
+        help: Email do terminal do motorista
   vehicle_usages:
     menu:
-      vehicle_usages:
+      vehicle_usages: Configurações de veículos
     edit:
-      title:
+      title: Alterar veículo e configuração
     index:
-      title:
-      capacities:
-      stores:
+      title: Lista de configurações de veículos
+      capacities: Capacidades
+      stores: Partida - Chegada
       store:
-        no_start:
-        no_stop:
-        same_start_stop:
-      time:
-      devices:
-      disable:
-      disable_confirm:
-      enable:
+        no_start: Sem armazém na partida
+        no_stop: 'Sem armazém na chegada: fim de rota livre'
+        same_start_stop: Veículo volta ao armazém da partida
+      time: Abertura - Fecho
+      devices: Dispositivos móveis
+      disable: Desativar
+      disable_confirm: Tem a certeza? Todas as rotas que utilizem este veículo e configuração
+        serão perdidas.
+      enable: Ativar
     new:
-      title:
+      title: Nova configuração de veículo
     toggle:
-      success:
+      success: Atualização de configuração de veículo executada
     form:
-      save:
+      save: Guardar a configuração do veículo
       vehicle:
-        legend:
-        help:
+        legend: Veículo
+        help: As seguintes informações do veículo são comuns a todas as configurações
+          de veículos
       vehicle_usage:
-        legend:
-        help:
+        legend: 'Configuração do veículo: "%{s}"'
+        help: As informações abaixo são específicas para a configuração do veículo.
       open:
-        default:
+        default: '%{n} (defeito)'
       close:
-        default:
+        default: '%{n} (defeito)'
       open_close_days:
-        default:
-      open_close:
-      open_close_help:
-      stores:
+        default: '%{n}'
+      open_close: Horas
+      open_close_help: Horário de trabalho do estafeta
+      stores: Partida / Chegada
       store:
-        default:
-        none:
-      stores_help:
-      rest_duration_store:
+        default: Defeito
+        none: Nenhum
+      stores_help: Armazéns de partida e chegada
+      rest_duration_store: Duração da pausa / local
       rest_start:
-        default:
+        default: '%{n} (defeito)'
       rest_stop:
-        default:
-      rest_start_stop:
-      rest_start_stop_help:
+        default: '%{n} (defeito)'
+      rest_start_stop: Período de repouso
+      rest_start_stop_help: Sem ter em conta a duração da pausa
       rest_duration:
-        default:
-        help:
+        default: '%{n} (valor por defeito)'
+        help: Requer período de repouso se preenchido
       store_rest:
-        default:
-        none:
-      service_times:
+        default: Defeito
+        none: Nenhum
+      service_times: Tempos de serviço
       service_time:
-        default:
-      service_time_start_addon:
-      service_time_end_addon:
-      service_times_help:
+        default: '%{n} (valor por defeito)'
+      service_time_start_addon: antes
+      service_time_end_addon: depois
+      service_times_help: Períodos adicionados antes da primeira e após a ultima paragem
       devices:
-        placeholder:
-        fieldset:
-  vehicle_usage_sets:
-    default:
-      name:
-    menu:
-      vehicle_usage_sets:
-      import_vehicle_usage_sets:
-      deliverable_units:
-    edit:
-      title:
-    index:
-      title:
-      new:
-      stores:
-      time:
-      service_time:
-    new:
-      title:
-    import:
-      title:
-      vehicle_usage_set:
-      replace_yes:
-      replace_yes_help:
-      replace_no:
-      replace_no_help:
-      vehicles:
-      replace_vehicles:
-      replace_vehicles_help:
-      csv:
-        title:
-        help:
-        file_help:
-      import_template_help:
-      dialog:
-        replace_vehicles_confirm:
-        import:
-          title:
-          in_progress:
-        help:
-          title:
-          desc:
-          columns_vehicle_usage_set:
-          columns_vehicle:
-      name_vehicle_usage_set:
-      name_desc:
-      open:
-      open_desc:
-      close:
-      close_desc:
-      store_start_ref:
-      store_start_desc:
-      store_stop_ref:
-      store_stop_desc:
-      rest_start:
-      rest_start_desc:
-      rest_stop:
-      rest_stop_desc:
-      rest_duration:
-      rest_duration_desc:
-      store_rest_ref:
-      store_rest_desc:
-      service_time_start:
-      service_time_start_desc:
-      service_time_end:
-      service_time_end_desc:
-      format:
-        string:
-        integer:
-        float:
-        hour:
-        second:
-        yes_no:
-        required:
-        required_for_default:
-        advisable:
-        optional:
-        deprecated:
-      not_csv:
-      empty_file:
-      too_many_lines:
-      none_column:
-      missing_name:
-      missing_open_close:
-      invalid_numeric_value:
-      check_custom_columns:
-    form:
-      open_close:
-      open_close_help:
-      stores:
-      store:
-        none:
-      stores_help:
-      service_times:
-      service_time_start_addon:
-      service_time_end_addon:
-      service_times_help:
-      rest_duration_store:
-      rest_duration:
-        help:
-      rest_start_stop:
-      rest_start_stop_help:
+        placeholder: Escolher um dispositivo
+        fieldset: GPS & Telemóveis
   visits:
     form:
-      legend:
-      destroy:
-      ref_help:
+      legend: 'Visita #%{n}'
+      destroy: Se selecionado, a visita será eliminada ao submeter esta página. Retirar
+        seleção para cancelar.
+      ref_help: Referência livre. Importante para evitar sobrescrever as visitas na
+        importação/exportação
       quantities:
-        default:
-        help:
-      take_over_default:
-      take_over_help:
-      open_close1:
-      open_close2:
-      close_help:
-      tags_help:
-      delete:
-      delete_help:
+        default: '%{n} (valor por defeito))'
+        help: Quantidades a despachar
+      take_over_default: defeito
+      take_over_help: Se em branco, utiliza o valor por defeito
+      open_close1: Período horário 1
+      open_close2: Período horário 2
+      close_help: Sem tomar em conta a duração da visita
+      tags_help: Categorias de visita
+      delete: Marcar para eliminar
+      delete_help: Eliminar esta visita (o destino será mantido)
   zonings:
     default:
-      from_route:
-      from_isochrone:
-      from_isodistance:
-      from:
+      from_route: Rota
+      from_isochrone: Isocrono
+      from_isodistance: Isodistancia
+      from: desde
     menu:
-      zonings:
+      zonings: Zonas
     edit:
-      title:
-      collapse_zoning_panel:
-      generate_confirm:
-      vehicleless_confirm:
-      isochrone_missing_vehicle:
-      isodistance_missing_vehicle:
-      failed:
-      success:
+      title: Alterar zoneamento
+      collapse_zoning_panel: Minimizar o painel de zoneamento
+      generate_confirm: Esta ação reinicializará todas as zonas correntes. Continuar?
+      vehicleless_confirm: Algumas zonas não têm veículo. Confirma?
+      isochrone_missing_vehicle: O Isocrono não pode ser gerada para, pelo menos,
+        um veículo, devido a restrições do calculador de itinerários
+      isodistance_missing_vehicle: O Isodistante não pode ser criado para pelo menos
+        um veículo devido a restrições do calculador de itinerários
+      failed: Falha ao gerar o Isocrono
+      success: Isocrono gerado corretamente
     index:
-      title:
-      new:
+      title: Listagem de zonas
+      new: Novo Zoneamento
     new:
-      title:
+      title: Novo zoneamento
     form:
-      hide_out_of_route:
-      all_destinations:
-      from_planning_help:
-      stops_from_planning:
-      generate:
+      hide_out_of_route: Ocultar destinos não afetados
+      all_destinations: Mostrar todos os destinos
+      from_planning_help: É também possível filtrar destinos a partir de um plano
+        de rotas, modificando este zoneamento de acordo com o plano em questão
+      stops_from_planning: Destinos do plano "%{s}"
+      generate: Gerar
       automatic:
-        one:
-        other:
-      from_planning:
-      zone_placeholder:
-      zone_vehicle:
-      avoid_zone:
-      isochrone:
-      isodistance:
+        one: 'Automático: 1 zona'
+        other: 'Automático: %{count} zonas'
+      from_planning: A partir do plano rotas
+      zone_placeholder: Zona
+      zone_vehicle: Veículo
+      avoid_zone: Não circular nesta zona
+      isochrone: Isocrono / veículo(s)
+      isodistance: Isodistancia / veículo(s)
       dialog:
         isochrone:
-          title:
-          vehicle_usage_set:
-          vehicle_usage_set_help:
-          size:
-          size_help:
+          title: Isocrono
+          vehicle_usage_set: Configuração de veículos
+          vehicle_usage_set_help: Configuração de veículos a considerar, particularmente
+            o armazém de início.
+          size: Tempo
+          size_help: Zona acessível desde o ponto de partida com este tempo de viagem.
         isochrone-progress:
-          title:
+          title: Cálculo de Isocronos em execução
         isodistance:
-          title:
-          vehicle_usage_set:
-          vehicle_usage_set_help:
-          size:
-          size_help:
+          title: Isodistancia
+          vehicle_usage_set: Configuração de veículos
+          vehicle_usage_set_help: Configuração de veículos a ter em conta, particularmente
+            o armazém de partida.
+          size: Distancia
+          size_help: Zona acessível a desde o ponto de partida com esta distancia
+            percorrida.
         isodistance-progress:
-          title:
-        validate:
+          title: Cálculo de Isodistancias em curso
+        validate: Gerar
   unauthorized:
-    default:
-  web:
-    key_not_found:
-    slow_browser:
-    form:
-      default:
-      empty_entry:
-      from_time:
-      to_time:
-      days:
-    select2:
-      empty_result:
-    dialog:
-      close:
-    placeholder_filter:
-    help_menu:
-    help_search_placeholder:
-    help:
-    contact:
-    choose_file:
-    geocoder:
-      search:
-      empty_result:
+    default: Sem autorização para aceder a esta página
+  unlock_operation:
+    default: Contactar o suporte para aceder a esta funcionalidade
   api_web:
     v01:
       plannings:
         print:
-          button:
+          button: Imprimir
       destinations:
         index:
-          none_destinations:
+          none_destinations: Nenhum destino encontrado
       routes:
         index:
-          none_routes:
-          departure:
-          arrival:
+          none_routes: Nenhuma rota encontrada
+          departure: 'Partida:'
+          arrival: 'Chegada:'
         print:
-          button:
+          button: Imprimir
       stores:
         index:
-          none_stores:
+          none_stores: Nenhum armazém encontrado
       zones:
         index:
-          none_zones:
-          without_vehicle:
+          none_zones: Nenhuma zona encontrada
+          without_vehicle: Sem veículo
   all:
-    datepicker:
+    datepicker: dd-mm-yyyy
     map_attribution:
-      osm:
-      here:
+      osm: Carta et dados &copy; contribuintes <a href="http://openstreetmap.org"
+        target="_blank">OpenStreetMap</a>, %{attribution}
+      here: Aqui
     verb:
-      new:
-      list:
-      show:
-      edit:
+      new: Novo
+      list: Lista
+      show: Apresentar
+      edit: Modificar
       export:
-        button:
-        csv:
-        excel:
-      send:
-      destroy:
-      destroy_selection:
-      destroy_confirm:
-      confirm:
-      duplicate:
-      toggle_selection:
-      dismiss:
-      import:
-      save:
+        button: Exportar
+        csv: Folha de cálculo CSV
+        excel: Folha de cálculo Excel
+      send: Folha de cálculo Excel
+      destroy: Eliminar
+      destroy_selection: Eliminar seleção
+      destroy_confirm: Tem a certeza?
+      confirm: Tem a certeza?
+      duplicate: Duplicar
+      toggle_selection: Inverter seleção
+      dismiss: Fechar
+      import: Importar
+      save: Guardar
     unit:
-      m:
-      kms:
-      mile:
-      miles:
-      millisecond:
-      second:
-      minute:
-      kg:
-      ton:
-      kgco2e_html:
-      kgco2e_l_html:
-      l_100km:
-      l_62Miles:
-      hour_minute:
-      hour_minute_second:
+      m: m
+      kms: km
+      mile: mi.
+      miles: mi.
+      millisecond: ms
+      second: s
+      minute: min
+      kg: kg
+      ton: toneladas
+      kgco2e_html: kgCO<sub>2</sub>e
+      kgco2e_l_html: kgCO<sub>2</sub>e/l
+      l_100km: l/100 km
+      l_62Miles: l/62.1 mi.
+      hour_minute: hora:minuto
+      hour_minute_second: 'hora : minuto : segundo'
     value:
-      _true:
-      _false:
-      _yes:
-      _no:
+      _true: verdade
+      _false: falso
+      _yes: sim
+      _no: não
     subscribe:
-      planning_unavailable:
-      expiration_date:
-      expiration_date_over:
+      planning_unavailable: O plano de rotas não é modificável de momento, a sua data
+        de subscrição expirou. Contacte o seu revendedor para renovar a subscrição.
+      expiration_date: O seu período de subscrição expira em breve. A data final é
+        %{date}. Caso pretenda renovar, contacte %{reseller}.
+      expiration_date_over: O seu período de subscrição excedeu %{date}. Caso pretenda
+        renovar, contacte %{reseller}.
   helpers:
     submit:
-      create:
-      update:
-      submit:
+      create: Criar %{model}
+      update: Guardar %{model}
+      submit: Guardar %{model}
   number:
     format:
-      delimiter:
-      separator:
+      delimiter: ' '
+      separator: ','
   devise:
     shared:
       links:
-        sign_in_prefix:
-        sign_up_prefix:
+        sign_in_prefix: Já possui uma conta?
+        sign_up_prefix: Necessita criar uma conta?
     sessions:
       new:
-        remember_me:
+        remember_me: Sembrar-se de mim
