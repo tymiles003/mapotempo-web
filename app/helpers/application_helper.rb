@@ -56,7 +56,7 @@ module ApplicationHelper
 
   def number_of_days(time_in_seconds)
     if time_in_seconds && time_in_seconds > 0
-      number_of_days = Time.at(time_in_seconds).utc.strftime('%d').to_i - 1
+      number_of_days = (time_in_seconds / 86400).to_i
       number_of_days > 0 ? number_of_days : nil
     end
   end

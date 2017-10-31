@@ -8,7 +8,7 @@
           <%= route.vehicle_usage.vehicle.name %>
           <% if !route.start.nil? && !route.end.nil? %>
           <br/>
-          <%= t '.departure' %> <%= route.start_time %> <%= '(J+' + number_of_days(route.start).to_s + ')' if number_of_days(route.start) %> / <%= t '.arrival' %> <%= route.end_time %> <%= '(J+' + number_of_days(route.end).to_s + ')' if number_of_days(route.end) %>
+          <%= t '.departure' %> <%= route.start_time %> <%= '(+' + number_of_days(route.start).to_s + ')' if number_of_days(route.start) %> / <%= t '.arrival' %> <%= route.end_time %> <%= '(+' + number_of_days(route.end).to_s + ')' if number_of_days(route.end) %>
           <% end %>
         </div>
       <% end %>

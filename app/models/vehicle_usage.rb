@@ -259,8 +259,8 @@ class VehicleUsage < ApplicationRecord
       errors.add(:base, "#{I18n.t('activerecord.attributes.vehicle_usage.service_time_start')} / #{I18n.t('activerecord.attributes.vehicle_usage.service_time_end')} #{I18n.t('activerecord.errors.models.vehicle_usage.service_range')}")
     elsif self.default_rest_start && self.default_rest_stop
       if !(self.default_rest_start >= working_day_start) || !(self.default_rest_stop <= working_day_end)
-        begin_day = Time.at(working_day_start).utc.strftime('%d').to_i - 1
-        end_day = Time.at(working_day_end).utc.strftime('%d').to_i - 1
+        begin_day = (working_day_start / 86400).to_i
+        end_day = (working_day_end / 86400).to_i
         errors.add(:base, I18n.t('activerecord.errors.models.vehicle_usage.rest_range', start: Time.at(working_day_start).utc.strftime('%H:%M') + (begin_day > 0 ? " (+#{begin_day})" : ''), end: Time.at(working_day_end).utc.strftime('%H:%M') + (end_day > 0 ? " (+#{end_day})" : '')))
       end
     end
