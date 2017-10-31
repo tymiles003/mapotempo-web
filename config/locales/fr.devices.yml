@@ -125,6 +125,8 @@ fr:
       invalid_account: Utilisateur invalide (non existant)
     trimble:
       invalid_account: Utilisateur invalide (non existant)
+    notico:
+      invalid_server: Addresse serveur invalide (non existant)
     praxedo:
       invalid_account: Utilisateur invalide (non existant)
   customers:

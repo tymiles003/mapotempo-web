@@ -140,25 +140,29 @@ class Notico < DeviceBase
     ftp = nil
 
     begin
-      ftp = Net::FTP.new(credentials[:ftp_url])
-      ftp.passive = true
-      ftp.login(credentials[:username], credentials[:password])
+      Timeout.timeout(10) do
+        ftp = Net::FTP.new(credentials[:ftp_url])
+        ftp.passive = true
+        ftp.login(credentials[:username], credentials[:password])
 
-      if message[:filename] && message[:xml_content]
-        ftp.chdir(credentials[:ftp_path])
+        if message[:filename] && message[:xml_content]
+          ftp.chdir(credentials[:ftp_path])
 
-        temp_file = Tempfile.new(message[:filename])
-        temp_file.write(message[:xml_content])
-        temp_file.close
+          temp_file = Tempfile.new(message[:filename])
+          temp_file.write(message[:xml_content])
+          temp_file.close
 
-        ftp.putbinaryfile(temp_file, message[:filename])
+          ftp.putbinaryfile(temp_file, message[:filename])
 
-        temp_file.unlink
+          temp_file.unlink
+        end
+
+        ftp.close
       end
-
-      ftp.close
+    rescue Timeout::Error
+      raise DeviceServiceError.new("Notico: #{I18n.t('errors.notico.invalid_server')}")
     rescue
-      raise DeviceServiceError.new("Notico: #{ftp.last_response}")
+      raise DeviceServiceError.new("Notico: #{ftp ? ftp.last_response : I18n.t('errors.notico.invalid_server')}")
     end
   end
 end
