@@ -121,12 +121,13 @@ class Praxedo < DeviceBase
 
   def send_route(customer, route, options = {})
     events = []
+    code_route_id = encode_order_id('', route.id)
 
     start = route.vehicle_usage.default_store_start
     if start && !start.lat.nil? && !start.lng.nil?
       order_id = -2
       description = I18n.transliterate(start.name) || "#{start.lat} #{start.lng}"
-      events << format_position(customer, route, start, order_id, appointment_time: route.start, schedule_time: route.start, duration: route.vehicle_usage.default_service_time_start, description: description, code_type_inter: customer.devices[:praxedo][:code_inter_start], instructions: [{id: customer.devices[:praxedo][:code_route], value: route.ref}])
+      events << format_position(customer, route, start, order_id, appointment_time: route.start, schedule_time: route.start, duration: route.vehicle_usage.default_service_time_start, description: description, code_type_inter: customer.devices[:praxedo][:code_inter_start], instructions: [{id: customer.devices[:praxedo][:code_route], value: code_route_id}])
     end
 
     route.stops.select { |s| s.active && s.position? && !s.is_a?(StopRest) }.map do |stop|
@@ -137,14 +138,14 @@ class Praxedo < DeviceBase
         stop.open2 || stop.close2 ? (stop.open2 ? stop.open2_time + number_of_days(stop.open2) : '') + (stop.open2 && stop.close2 ? '-' : '') + (stop.close2 ? (stop.close2_time + number_of_days(stop.close2) || '') : '') : nil,
       ].compact.join(' ').strip
       code_type_inter = stop.visit.tags.map(&:label).map { |label| label.split('praxedo:')[1] }.compact.first
-      events << format_position(customer, route, stop, order_id, stop: true, appointment_time: stop.open1 || stop.close1 || stop.open2 || stop.close2 || stop.time, schedule_time: stop.time, duration: stop.duration, description: description, code_type_inter: code_type_inter, instructions: [{id: customer.devices[:praxedo][:code_route], value: route.ref}, {id: customer.devices[:praxedo][:code_mat], value: stop.visit.ref}])
+      events << format_position(customer, route, stop, order_id, stop: true, appointment_time: stop.open1 || stop.close1 || stop.open2 || stop.close2 || stop.time, schedule_time: stop.time, duration: stop.duration, description: description, code_type_inter: code_type_inter, instructions: [{id: customer.devices[:praxedo][:code_route], value: code_route_id}, {id: customer.devices[:praxedo][:code_mat], value: stop.visit.ref}])
     end
 
     stop = route.vehicle_usage.default_store_stop
     if stop && !stop.lat.nil? && !stop.lng.nil?
       order_id = -1
       description = I18n.transliterate(stop.name) || "#{start.lat} #{start.lng}"
-      events << format_position(customer, route, stop, order_id, appointment_time: route.end, schedule_time: route.end, duration: route.vehicle_usage.default_service_time_end, description: description, code_type_inter: customer.devices[:praxedo][:code_inter_stop], instructions: [{id: customer.devices[:praxedo][:code_mat], value: route.ref}])
+      events << format_position(customer, route, stop, order_id, appointment_time: route.end, schedule_time: route.end, duration: route.vehicle_usage.default_service_time_end, description: description, code_type_inter: customer.devices[:praxedo][:code_inter_stop], instructions: [{id: customer.devices[:praxedo][:code_route], value: code_route_id}])
     end
 
     get(savon_client_events(customer), :create_events, events: events)
