@@ -480,7 +480,7 @@ fr:
               not_float: doit être un nombre
               negative_value: doit être une valeur positive (%{value})
         vehicles:
-          at_least_one: Au moins un véhicle est requis
+          at_least_one: Au moins un véhicule est requis
         vehicle_usage:
           attributes:
             close:

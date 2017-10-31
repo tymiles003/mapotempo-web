@@ -1852,7 +1852,7 @@ en:
       replace_no: Add vheicles configuration
       replace_no_help: A new configuration will be added without changing exisiting
         configurations.
-      vehicles: Véhicles
+      vehicles: Vehicles
       replace_vehicles: Replace existing vehicles
       replace_vehicles_help: All vehicles in application will be updated with imported
         data (vehicles with the same reference will be replaced by the relevant data).
