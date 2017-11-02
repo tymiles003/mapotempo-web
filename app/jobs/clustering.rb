@@ -74,10 +74,12 @@ class Clustering
       }
 
       clusters.each_with_index.map{ |cluster, i|
-        lat_min, lat_max = cluster.minmax_by{ |i| i[0] }.map{ |i| i[0] }
-        lng_min, lng_max = cluster.minmax_by{ |i| i[1] }.map{ |i| i[1] }
-        buffer = [[(lat_max - lat_min), (lng_max - lng_min)].min * 0.02, 1e-04].max
-        hull(factory, cluster, multi_points[i], (i > 0 ? multi_points[0..i - 1] : []) + multi_points[i + 1..multi_points.length - 1], buffer)
+        unless cluster.empty?
+          lat_min, lat_max = cluster.minmax_by{ |i| i[0] }.map{ |i| i[0] }
+          lng_min, lng_max = cluster.minmax_by{ |i| i[1] }.map{ |i| i[1] }
+          buffer = [[(lat_max - lat_min), (lng_max - lng_min)].min * 0.02, 1e-04].max
+          hull(factory, cluster, multi_points[i], (i > 0 ? multi_points[0..i - 1] : []) + multi_points[i + 1..multi_points.length - 1], buffer)
+        end
       }
     end
   end
