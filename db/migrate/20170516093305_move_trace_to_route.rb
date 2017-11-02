@@ -95,7 +95,7 @@ class MoveTraceToRoute < ActiveRecord::Migration
 
           route.geojson_points = geojson_points unless geojson_points.empty?
 
-          route.quantities = route.compute_quantities
+          route.compute_quantities
 
           route.save!(validate: false)
         }

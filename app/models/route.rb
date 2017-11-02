@@ -213,26 +213,6 @@ class Route < ApplicationRecord
             self.end = stop.time + stop.duration
             self.visits_duration = (self.visits_duration || 0) + stop.duration if stop.is_a?(StopVisit)
 
-            if stop.visit.try(:default_quantities?)
-              unless options[:no_quantities]
-                stop.route.planning.customer.deliverable_units.each{ |du|
-                  if stop.visit.quantities_operations[du.id] == 'fill'
-                    quantities_[du.id] = vehicle_usage.vehicle.default_capacities[du.id]
-                  elsif stop.visit.quantities_operations[du.id] == 'empty'
-                    quantities_[du.id] = 0
-                  else
-                    quantities_[du.id] = (quantities_[du.id] || 0) + (stop.visit.default_quantities[du.id] || 0)
-                  end
-                }
-                stop.out_of_capacity = stop.route.planning.customer.deliverable_units.any?{ |du|
-                  (vehicle_usage.vehicle.default_capacities[du.id] && quantities_[du.id] > vehicle_usage.vehicle.default_capacities[du.id]) ||
-                    quantities_[du.id] < 0 # FIXME with initial quantity
-                }
-              end
-            else
-              stop.out_of_capacity = false
-            end
-
             stop.out_of_drive_time = stop.time > vehicle_usage.default_close
             stop.out_of_work_time = vehicle_usage.outside_default_work_time?(self.start, stop.time)
           end
@@ -242,11 +222,7 @@ class Route < ApplicationRecord
         end
       }
 
-      unless options[:no_quantities]
-        self.quantities = quantities_.each{ |k, v|
-          v = v.round(3)
-        }
-      end
+      compute_quantities unless options[:no_quantities]
 
       # Last stop to store
       distance, drive_time, trace = traces.shift
@@ -328,11 +304,7 @@ class Route < ApplicationRecord
         end
       end
     else
-      unless options[:no_quantities]
-        self.quantities = compute_quantities.each{ |_, v|
-          v = v.round(3)
-        }
-      end
+      compute_quantities unless options[:no_quantities]
     end
 
     self.geojson_points = stops_to_geojson_points unless options[:no_geojson]
@@ -487,13 +459,31 @@ class Route < ApplicationRecord
 
   attr_localized :quantities
 
-  # required for migration
   def compute_quantities
-    Hash[planning.customer.deliverable_units.map{ |du|
-      [du.id, stops.to_a.sum(0) { |stop|
-        stop.is_a?(StopVisit) && (stop.active || !vehicle_usage?) ? (stop.visit.default_quantities[du.id] || 0) : 0
-      }]
-    }]
+    quantities_ = {}
+
+    stops.each do |stop|
+      if stop.active && stop.position? && stop.is_a?(StopVisit) && stop.visit.try(:default_quantities?)
+        out_of_capacity = nil
+
+        stop.route.planning.customer.deliverable_units.each do |du|
+          if stop.visit.quantities_operations[du.id] == 'fill'
+            quantities_[du.id] = vehicle_usage.vehicle.default_capacities[du.id]
+          elsif stop.visit.quantities_operations[du.id] == 'empty'
+            quantities_[du.id] = 0
+          else
+            quantities_[du.id] = (quantities_[du.id] || 0) + (stop.visit.default_quantities[du.id] || 0)
+          end
+
+          out_of_capacity ||= (vehicle_usage.vehicle.default_capacities[du.id] && quantities_[du.id] > vehicle_usage.vehicle.default_capacities[du.id]) || quantities_[du.id] < 0 if vehicle_usage # FIXME with initial quantity
+          stop.out_of_capacity = out_of_capacity
+        end
+      end
+    end
+
+    self.quantities = quantities_.each { |k, v|
+      v = v.round(3)
+    }
   end
 
   def reverse_order

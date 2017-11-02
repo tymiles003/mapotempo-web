@@ -61,11 +61,12 @@ class V01::Devices::PraxedoTest < ActiveSupport::TestCase
     end
   end
 
-  test 'fetch stops and update quantities' do
+  test 'fetch stops then update quantities and out of capacity' do
     customers(:customer_one).update(job_optimizer_id: nil)
     # All 3 stops in route are completed
     # with following quantities from Praxedo:
     # 0 => 30kg / 1 => 10kg / 2 => 5kg ==> 45kg
+    # Max quantity for associated vehicle: { 2 => nil, 1 => 1.0 }
     with_stubs [:search_events_wsdl, :search_events] do
       @customer.update_attribute(:enable_stop_status, true)
       set_route
@@ -84,14 +85,24 @@ class V01::Devices::PraxedoTest < ActiveSupport::TestCase
         end
       end
 
+      assert_not @route.stops[0].out_of_capacity
+      assert_not @route.stops[1].out_of_capacity
+      assert_not @route.stops[2].out_of_capacity
+
+      @route.reload
+
       # Check for visit update
       updated_quantities = [5, 10, 30]
       @route.stops.each_with_index do |stop, i|
         if stop.is_a?(StopVisit)
-          visit = stop.visit.reload
-          assert_equal visit.quantities[2], updated_quantities[i]
+          assert_equal stop.visit.quantities[2], updated_quantities[i]
         end
       end
+
+      # Check for out of capacity
+      assert_not @route.stops[0].out_of_capacity
+      assert @route.stops[1].out_of_capacity
+      assert @route.stops[2].out_of_capacity
     end
   end
 
