@@ -16,8 +16,4 @@
 # <http://www.gnu.org/licenses/agpl.html>
 #
 class PraxedoService < DeviceService
-  def name
-    'Praxedo'
-  end
-
 end

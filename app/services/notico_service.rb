@@ -16,8 +16,4 @@
 # <http://www.gnu.org/licenses/agpl.html>
 #
 class NoticoService < DeviceService
-  def name
-    'Notico'
-  end
-
 end

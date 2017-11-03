@@ -16,10 +16,6 @@
 # <http://www.gnu.org/licenses/agpl.html>
 #
 class TomtomService < DeviceService
-  def name
-    'TomTom'
-  end
-
   def list_devices
     if customer.devices[service_name] && customer.devices[:tomtom][:user]
       with_cache [:list_devices, service_name, customer.id, customer.devices[:tomtom][:user]] do
