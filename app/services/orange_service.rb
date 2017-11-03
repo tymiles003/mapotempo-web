@@ -16,10 +16,6 @@
 # <http://www.gnu.org/licenses/agpl.html>
 #
 class OrangeService < DeviceService
-  def test_list(params)
-    service.test_list customer, params
-  end
-
   def list_devices(params = {})
     if (customer.devices[service_name] && customer.devices[:orange][:username]) || (params && params[:username])
       with_cache [:list_devices, service_name, customer.id, customer.devices[:orange][:username]] do

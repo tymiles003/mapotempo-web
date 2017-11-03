@@ -28,7 +28,7 @@ class DeviceService
 
   def send_route(route, options = {})
     service.send_route customer, route, options
-    route.set_send_to(name)
+    route.set_send_to(@name)
     route.last_sent_at
   end
 
