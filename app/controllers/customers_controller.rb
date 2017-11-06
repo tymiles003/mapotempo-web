@@ -115,6 +115,7 @@ class CustomersController < ApplicationController
                                                     :speed_multiplicator,
                                                     :enable_orders,
                                                     :test,
+                                                    :optimization_max_split_size,
                                                     :optimization_cluster_size,
                                                     :optimization_time,
                                                     :optimization_stop_soft_upper_bound,
