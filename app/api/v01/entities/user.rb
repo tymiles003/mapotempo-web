@@ -28,4 +28,5 @@ class V01::Entities::User < Grape::Entity
   expose(:api_key, documentation: { type: String })
   expose(:url_click2call, documentation: { type: String })
   expose(:prefered_unit, documentation: { type: String })
+  expose(:locale, documentation: { type: String, desc: 'Currently used in mailing' })
 end

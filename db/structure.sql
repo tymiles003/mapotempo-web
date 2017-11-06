@@ -831,7 +831,8 @@ CREATE TABLE users (
     confirmed_at timestamp without time zone,
     confirmation_sent_at timestamp without time zone,
     time_zone character varying DEFAULT 'UTC'::character varying NOT NULL,
-    prefered_unit character varying DEFAULT 'km'::character varying
+    prefered_unit character varying DEFAULT 'km'::character varying,
+    locale character varying
 );
 
 
@@ -2651,3 +2652,5 @@ INSERT INTO schema_migrations (version) VALUES ('20171030141539');
 INSERT INTO schema_migrations (version) VALUES ('20171116151624');
 
 INSERT INTO schema_migrations (version) VALUES ('20171106100323');
+
+INSERT INTO schema_migrations (version) VALUES ('20171106110030');

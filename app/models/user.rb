@@ -35,6 +35,7 @@ class User < ApplicationRecord
 
   validates :customer, presence: true, unless: :admin?
   validates :layer, presence: true
+  validates :locale, length: { is: 2 }, format: { with: /(^fr$)|(^en$)/ }, if: -> (user) { user.locale.present? }
 
   attr_accessor :send_email
 
@@ -90,12 +91,14 @@ class User < ApplicationRecord
   end
 
   def send_password_email
-    Mapotempo::Application.config.delayed_job_use ? UserMailer.delay.password_message(self, I18n.locale) : UserMailer.password_message(self, I18n.locale).deliver_now
+    locale = (self.locale) ? self.locale.to_sym : I18n.locale
+    Mapotempo::Application.config.delayed_job_use ? UserMailer.delay.password_message(self, locale) : UserMailer.password_message(self, locale).deliver_now
     self.update! confirmation_sent_at: Time.now
   end
 
   def send_connection_email
-    Mapotempo::Application.config.delayed_job_use ? UserMailer.delay.connection_message(self, I18n.locale) : UserMailer.connection_message(self, I18n.locale).deliver_now
+    locale = (self.locale) ? self.locale.to_sym : I18n.locale
+    Mapotempo::Application.config.delayed_job_use ? UserMailer.delay.connection_message(self, locale) : UserMailer.connection_message(self, locale).deliver_now
   end
 
   private
