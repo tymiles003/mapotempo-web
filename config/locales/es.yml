@@ -166,7 +166,7 @@ es:
         optimization_time: Tiempo máximo de optimización por vehículo
         optimization_stop_soft_upper_bound: Coeficiente retrasos/paros
         optimization_vehicle_soft_upper_bound: Coeficiente retrasos/vehículos
-        cost_waiting_time: Coeficiente de tiempo de espera
+        optimization_cost_waiting_time: Coeficiente de tiempo de espera
         optimization_force_start: Forzar la hora de salida del vehículo
         profile:
         profile_id:
@@ -688,8 +688,8 @@ es:
       optimization_soft_upper_bound_default:
       optimization_stop_soft_upper_bound_help:
       optimization_vehicle_soft_upper_bound_help:
-      cost_waiting_time_default:
-      cost_waiting_time_help:
+      optimization_cost_waiting_time_default:
+      optimization_cost_waiting_time_help:
       optimization_force_start_help:
       print_header_help:
       print:

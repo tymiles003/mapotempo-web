@@ -24,7 +24,7 @@ class OptimizerJob < Job.new(:planning_id, :route_id, :global, :active_only)
   @@stop_soft_upper_bound = Mapotempo::Application.config.optimize_stop_soft_upper_bound
   @@vehicle_soft_upper_bound = Mapotempo::Application.config.optimize_vehicle_soft_upper_bound
   @@cluster_size = Mapotempo::Application.config.optimize_cluster_size
-  @@cost_waiting_time = Mapotempo::Application.config.cost_waiting_time
+  @@cost_waiting_time = Mapotempo::Application.config.optimize_cost_waiting_time
   @@force_start = Mapotempo::Application.config.optimize_force_start
 
   def perform
@@ -48,7 +48,7 @@ class OptimizerJob < Job.new(:planning_id, :route_id, :global, :active_only)
             stop_soft_upper_bound: planning.customer.optimization_stop_soft_upper_bound || @@stop_soft_upper_bound,
             vehicle_soft_upper_bound: planning.customer.optimization_vehicle_soft_upper_bound || @@vehicle_soft_upper_bound,
             cluster_threshold: planning.customer.optimization_cluster_size || @@cluster_size,
-            cost_waiting_time: planning.customer.cost_waiting_time || @@cost_waiting_time,
+            cost_waiting_time: planning.customer.optimization_cost_waiting_time || @@cost_waiting_time,
             force_start: planning.customer.optimization_force_start.nil? ? @@force_start : planning.customer.optimization_force_start
           ) { |bar, computed, count|
             if bar

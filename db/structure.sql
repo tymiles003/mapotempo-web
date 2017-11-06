@@ -90,7 +90,7 @@ CREATE TABLE customers (
     enable_vehicle_position boolean DEFAULT true NOT NULL,
     enable_stop_status boolean DEFAULT false NOT NULL,
     router_options hstore DEFAULT ''::hstore NOT NULL,
-    cost_waiting_time double precision,
+    optimization_cost_waiting_time double precision,
     take_over integer,
     with_state boolean DEFAULT false,
     devices jsonb DEFAULT '{}'::jsonb NOT NULL,
@@ -2649,3 +2649,5 @@ INSERT INTO schema_migrations (version) VALUES ('20170925081651');
 INSERT INTO schema_migrations (version) VALUES ('20171030141539');
 
 INSERT INTO schema_migrations (version) VALUES ('20171116151624');
+
+INSERT INTO schema_migrations (version) VALUES ('20171106100323');

@@ -172,7 +172,7 @@ he:
         optimization_time: אופטימיזציה לפי מקסימום זמן
         optimization_stop_soft_upper_bound: מקדם עיכוב לעצירות
         optimization_vehicle_soft_upper_bound: מקדם עיכוב לרכבים
-        cost_waiting_time: מקדם זמן המתנה
+        optimization_cost_waiting_time: מקדם זמן המתנה
         profile: פרופיל
         profile_id: פרופיל
         speed_multiplicator: מכפיל מהירות
@@ -688,8 +688,8 @@ he:
       optimization_vehicle_soft_upper_bound_help: בכדי להריץ אופטימיזציה גלובאלית,
         יש לאפשר ניהול הפצה באמצעות רכבים. הערך הוא חשוב ביותר, ככל שיש יותר עיכובים
         כך הביצועים נפגמים (הקלד 0  כדי למנוע עיכובים ובמקרה זה אין לבטל אשכולות).
-      cost_waiting_time_default: '%{n} (ערך ברירת מחדל)'
-      cost_waiting_time_help: הערכת שווי זמן ההמתנה. הערך הוא חשוב ביותר, ככל שיש
+      optimization_cost_waiting_time_default: '%{n} (ערך ברירת מחדל)'
+      optimization_cost_waiting_time_help: הערכת שווי זמן ההמתנה. הערך הוא חשוב ביותר, ככל שיש
         יותר עיכובים כך הביצועים נפגמים (הקלד 0  כדי למנוע עיכובים ובמקרה זה אין לבטל
         אשכולות).
       print_header_help: טקסט שיוכנס לפני כל מסלול

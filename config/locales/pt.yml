@@ -162,7 +162,7 @@ pt:
         optimization_time: Tempo máximo de otimização por veículo
         optimization_stop_soft_upper_bound: Coeficiente de atrasos em paragens
         optimization_vehicle_soft_upper_bound: Coeficientes de atrasos nos veículos
-        cost_waiting_time: Coeficiente de tempos de espera
+        optimization_cost_waiting_time: Coeficiente de tempos de espera
         optimization_force_start: Forçar hora de partida do veículo
         profile: Perfil
         profile_id: Perfil
@@ -739,7 +739,7 @@ pt:
         a gestão da repartição pelos veículos. Quanto maior for o valor mais os atrasos
         serão penalizadores (0 para impedir estritamente os atrasos: neste caso desativa
         os clusters).'
-      cost_waiting_time_default: '%{n} (valor por defeito)'
+      optimization_cost_waiting_time_default: '%{n} (valor por defeito)'
       router_options_approach_help: Chegada/Partida com o ponto de visita do lado
         em que circula
       router_options_strict_restriction: Se não assinalado, o calculador de rota tentará
