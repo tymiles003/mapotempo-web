@@ -90,8 +90,9 @@ class Praxedo < DeviceBase
               latitude: position.lat,
               longitude: position.lng
             }
-          }.compact
-        }
+          }.compact,
+          equipmentName: options[:equipment_name]
+        }.compact
       },
       id: encode_order_id(options[:description], order_id),
       qualificationData: {
@@ -138,7 +139,7 @@ class Praxedo < DeviceBase
         stop.open2 || stop.close2 ? (stop.open2 ? stop.open2_time + number_of_days(stop.open2) : '') + (stop.open2 && stop.close2 ? '-' : '') + (stop.close2 ? (stop.close2_time + number_of_days(stop.close2) || '') : '') : nil,
       ].compact.join(' ').strip
       code_type_inter = stop.visit.tags.map(&:label).map { |label| label.split('praxedo:')[1] }.compact.first
-      events << format_position(customer, route, stop, order_id, stop: true, appointment_time: stop.open1 || stop.close1 || stop.open2 || stop.close2 || stop.time, schedule_time: stop.time, duration: stop.duration, description: description, code_type_inter: code_type_inter, instructions: [{id: customer.devices[:praxedo][:code_route], value: code_route_id}, {id: customer.devices[:praxedo][:code_mat], value: stop.visit.ref}])
+      events << format_position(customer, route, stop, order_id, stop: true, appointment_time: stop.open1 || stop.close1 || stop.open2 || stop.close2 || stop.time, schedule_time: stop.time, duration: stop.duration, description: description, code_type_inter: code_type_inter, instructions: [{id: customer.devices[:praxedo][:code_route], value: code_route_id}, {id: customer.devices[:praxedo][:code_mat], value: stop.visit.ref}], equipment_name: stop.visit.destination.ref) # Destination ref is used as equipmentName, best possible choice
     end
 
     stop = route.vehicle_usage.default_store_stop
