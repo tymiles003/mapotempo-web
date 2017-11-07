@@ -15,7 +15,7 @@ class ImportCsvTest < ActiveSupport::TestCase
     assert import_csv.valid?
   end
 
-  test 'shoud import too many destinations' do
+  test 'shoud not import too many destinations' do
     importer_destinations = ImporterDestinations.new(@customer)
     def importer_destinations.max_lines
       2
