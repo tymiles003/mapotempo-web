@@ -173,6 +173,7 @@ class ApplicationController < ActionController::Base
     Rails.logger.warn(exception.backtrace.join("\n"))
 
     respond_to do |format|
+      format.html { render 'errors/show', layout: 'full_page', locals: { status: 422 }, status: 422 }
       format.json { render json: { error: I18n.t('errors.planning.deadlock') }, status: :unprocessable_entity }
     end
   end
