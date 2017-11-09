@@ -77,6 +77,11 @@ group :test do
 
   gem 'mapotempo_web_by_time_distance', github: 'Mapotempo/mapotempo_web_by_time_distance'
   gem 'mapotempo_web_import_vehicle_store', github: 'Mapotempo/mapotempo_web_import_vehicle_store'
+
+  # Browser tests
+  gem 'capybara'
+  gem 'selenium-webdriver'
+  gem 'chromedriver-helper'
 end
 
 gem 'grape', '< 0.19.2' # FIXME wait for ruby 2.2.6
