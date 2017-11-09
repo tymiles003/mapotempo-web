@@ -149,6 +149,7 @@ class PlanningsController < ApplicationController
           # save! is used to rollback all the transaction with associations
           if @planning.move_stop(route, stop, params[:index] ? Integer(params[:index]) : nil) && @planning.compute && @planning.save!
             @planning.reload
+            # Send in response only modified routes
             @routes = [route]
             @routes << @planning.routes.find{ |route| route.id == stop_route_id_was } if stop_route_id_was != route.id
             format.json { render action: 'show', location: @planning }
