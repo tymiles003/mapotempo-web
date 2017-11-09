@@ -111,14 +111,17 @@ class V01::Routes < Grape::API
         patch ':id/optimize' do
           begin
             raise Exceptions::JobInProgressError if current_customer.job_optimizer
-            if !Optimizer.optimize(get_route.planning, get_route, false, params[:synchronous], params[:all_stops].nil? ? params[:active_only] : !params[:all_stops])
-              status 304
-            else
-              get_route.planning.customer.save!
-              if params[:details]
-                present get_route, with: V01::Entities::Route, geojson: params[:geojson]
+
+            Route.where(id: params[:id]).includes_destinations.scoping do
+              if !Optimizer.optimize(get_route.planning, get_route, false, params[:synchronous], params[:all_stops].nil? ? params[:active_only] : !params[:all_stops])
+                status 304
               else
-                status 204
+                get_route.planning.customer.save!
+                if params[:details]
+                  present get_route, with: V01::Entities::Route, geojson: params[:geojson]
+                else
+                  status 204
+                end
               end
             end
           rescue NoSolutionFoundError => e
@@ -134,10 +137,12 @@ class V01::Routes < Grape::API
           requires :id, type: String, desc: ID_DESC
         end
         patch ':id/reverse_order' do
-          raise Exceptions::JobInProgressError if Job.on_planning(current_customer.job_optimizer, get_route.planning.id)
-          get_route and get_route.reverse_order && get_route.compute!
-          get_route.save!
-          present get_route, with: V01::Entities::Route
+          Route.where(id: params[:id]).includes_vehicle_usages.includes_destinations.scoping do
+            raise Exceptions::JobInProgressError if Job.on_planning(current_customer.job_optimizer, get_route.planning.id)
+            get_route and get_route.reverse_order && get_route.compute!
+            get_route.save!
+            present get_route, with: V01::Entities::Route
+          end
         end
       end
 
