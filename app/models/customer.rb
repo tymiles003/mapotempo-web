@@ -76,7 +76,7 @@ class Customer < ApplicationRecord
   after_initialize :assign_defaults, :update_max_vehicles, if: :new_record?
   after_initialize :assign_device
   after_create :create_default_store, :create_default_vehicle_usage_set, :create_default_deliverable_unit
-  before_update :update_outdated, :update_max_vehicles, :update_enable_multi_visits
+  before_update :update_max_vehicles, :update_enable_multi_visits, :update_outdated
   before_save :sanitize_print_header, :nilify_router_options_blanks
   before_save :devices_update_vehicles, prepend: true
   before_validation :check_router_options_format
@@ -189,7 +189,7 @@ class Customer < ApplicationRecord
     })
   end
 
-  def duplicate()
+  def duplicate
     Customer.transaction do
       copy = self.amoeba_dup
       copy.name += " (#{I18n.l(Time.zone.now, format: :long)})"
@@ -223,7 +223,7 @@ class Customer < ApplicationRecord
   end
 
   def max_vehicles=(max)
-    if !max.blank?
+    unless max.blank?
       @max_vehicles = Integer(max.to_s, 10)
     end
   rescue ArgumentError
@@ -327,13 +327,11 @@ class Customer < ApplicationRecord
 
   def update_outdated
     if take_over_changed? || router_id_changed? || router_dimension_changed? || router_options_changed? || speed_multiplicator_changed? || @deliverable_units_updated
-      Route.transaction do
-        plannings.each{ |planning|
-          planning.routes.each{ |route|
-            route.outdated = true
-          }
+      plannings.each { |planning|
+        planning.routes.each { |route|
+          route.outdated = true
         }
-      end
+      }
     end
   end
 
