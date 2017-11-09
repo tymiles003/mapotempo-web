@@ -45,9 +45,9 @@ class Optimizer
       end
     else
       routes = planning.routes.select { |r|
-        (route && r.id == route.id) || (!route && !global && r.vehicle_usage && r.size_active > 1) || (!route && global)
+        (route && r.id == route.id) || (!route && !global && r.vehicle_usage_id && r.size_active > 1) || (!route && global)
       }.reject(&:locked)
-      optimum = unless routes.select(&:vehicle_usage).empty?
+      optimum = unless routes.select(&:vehicle_usage_id).empty?
         planning.optimize(routes, global, active_only) do |positions, services, vehicles|
           Mapotempo::Application.config.optimize.optimize(
             positions, services, vehicles,

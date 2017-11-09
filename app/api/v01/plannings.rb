@@ -126,7 +126,7 @@ class V01::Plannings < Grape::API
       optional :geojson, type: Symbol, values: [:true, :false, :point, :polyline], default: :false, desc: 'Fill the geojson field with route geometry: `point` to return only points, `polyline` to return with encoded linestring.'
     end
     patch ':id/switch' do
-      Route.includes_destinations.scoping do
+      Stop.includes_destinations.scoping do
         planning = current_customer.plannings.where(ParseIdsRefs.read(params[:id])).first!
         raise Exceptions::JobInProgressError if Job.on_planning(planning.customer.job_optimizer, planning.id)
         route = planning.routes.find{ |route| route.id == Integer(params[:route_id]) }

@@ -319,9 +319,26 @@ class PlanningsControllerTest < ActionController::TestCase
   end
 
   test 'should move' do
-    patch :move, planning_id: @planning, route_id: @planning.routes[1], stop_id: @planning.routes[0].stops[0], index: 1, format: :json
-    assert_response :success
-    assert_equal 2, JSON.parse(response.body)['routes'].size
+    begin
+      $origin_route_id = @planning.routes[0].id
+      $destination_route_id = @planning.routes[1].id
+      Stop.class_eval do
+        after_initialize :after_init
+        def after_init
+          raise if self.route_id != $origin_route_id && self.route_id != $destination_route_id
+        end
+      end
+
+      patch :move, planning_id: @planning, route_id: @planning.routes[1], stop_id: @planning.routes[0].stops[0], index: 1, format: :json
+      assert_response :success
+      assert_equal 2, JSON.parse(response.body)['routes'].size
+
+    ensure
+      Stop.class_eval do
+        def after_init
+        end
+      end
+    end
   end
 
   test 'should not move with error' do
@@ -391,20 +408,38 @@ class PlanningsControllerTest < ActionController::TestCase
 
   test 'should switch' do
     @planning.routes.each(&:compute!) # To get correct colors for linestrings
-    assert_equal 0, JSON.parse(@planning.to_geojson)['features'].select{ |f|
+
+    begin
+      $origin_route_id = @planning.routes[1].id
+      $destination_route_id = @planning.routes[2].id
+      Stop.class_eval do
+        after_initialize :after_init
+        def after_init
+          raise if self.route_id != $origin_route_id && self.route_id != $destination_route_id
+        end
+      end
+
+      assert_equal 0, JSON.parse(@planning.to_geojson)['features'].select{ |f|
         f['geometry']['type'] == 'LineString' && f['properties']['color'] == '#00FF00'
       }.size
 
-    patch :switch, planning_id: @planning, format: :json, route_id: routes(:route_one_one).id, vehicle_usage_id: vehicle_usages(:vehicle_usage_one_three).id
-    assert_response :success, id: @planning
-    assert_equal 2, JSON.parse(response.body)['routes'].size
-    @planning.reload
-    @planning.routes.select(&:vehicle_usage).each{ |r|
-      assert_equal 1, r.stops.select{ |s| s.is_a?(StopRest) }.size
-    }
-    assert_equal 2, JSON.parse(@planning.to_geojson)['features'].select{ |f|
+      patch :switch, planning_id: @planning, format: :json, route_id: routes(:route_one_one).id, vehicle_usage_id: vehicle_usages(:vehicle_usage_one_three).id
+      assert_response :success, id: @planning
+      assert_equal 2, JSON.parse(response.body)['routes'].size
+      @planning.reload
+      @planning.routes.select(&:vehicle_usage).each{ |r|
+        assert_equal 1, r.stops.select{ |s| s.is_a?(StopRest) }.size
+      }
+      assert_equal 2, JSON.parse(@planning.to_geojson)['features'].select{ |f|
         f['geometry']['type'] == 'LineString' && f['properties']['color'] == '#00FF00'
       }.size
+
+    ensure
+      Stop.class_eval do
+        def after_init
+        end
+      end
+    end
   end
 
   test 'should not switch' do
@@ -417,15 +452,18 @@ class PlanningsControllerTest < ActionController::TestCase
 
   test 'should update stop' do
     begin
+      $route_id = routes(:route_one_one).id
       Stop.class_eval do
         after_initialize :after_init
         def after_init
-          raise if self.route.ref != 'route_one'
+          raise if self.route_id != $route_id
         end
       end
+
       patch :update_stop, planning_id: @planning, format: :json, route_id: routes(:route_one_one).id, stop_id: stops(:stop_one_one).id, stop: { active: false }
       assert_response :success
       assert_equal 1, JSON.parse(response.body)['routes'].size
+
     ensure
       Stop.class_eval do
         def after_init
@@ -447,15 +485,18 @@ class PlanningsControllerTest < ActionController::TestCase
 
   test 'should optimize one route in planning' do
     begin
+      $route_id = routes(:route_one_one).id
       Stop.class_eval do
         after_initialize :after_init
         def after_init
-          raise if self.route.ref != 'route_one'
+          raise if self.route_id != $route_id
         end
       end
+
       get :optimize_route, planning_id: @planning, format: :json, route_id: routes(:route_one_one).id
       assert_response :success
       assert_equal 1, JSON.parse(response.body)['routes'].size
+
     ensure
       Stop.class_eval do
         def after_init
@@ -550,15 +591,48 @@ class PlanningsControllerTest < ActionController::TestCase
   end
 
   test 'should update active' do
-    patch :active, planning_id: @planning, format: :json, route_id: routes(:route_one_one).id, active: :none
-    assert_response :success, response.body
-    assert_equal 1, JSON.parse(response.body)['routes'].size
+    begin
+      $route_id = routes(:route_one_one).id
+      Stop.class_eval do
+        after_initialize :after_init
+        def after_init
+          raise if self.route_id != $route_id
+        end
+      end
+
+      patch :active, planning_id: @planning, format: :json, route_id: routes(:route_one_one).id, active: :none
+      assert_response :success, response.body
+      assert_equal 1, JSON.parse(response.body)['routes'].size
+
+    ensure
+      Stop.class_eval do
+        def after_init
+        end
+      end
+    end
   end
 
   test 'should reverse route stops' do
-    patch :reverse_order, planning_id: @planning, format: :json, route_id: routes(:route_one_one).id
-    assert_response :success, response.body
-    assert_equal 1, JSON.parse(response.body)['routes'].size
+    begin
+      $route_id = routes(:route_one_one).id
+      Stop.class_eval do
+        after_initialize :after_init
+
+        def after_init
+          raise if self.route_id != $route_id
+        end
+      end
+
+      patch :reverse_order, planning_id: @planning, format: :json, route_id: routes(:route_one_one).id
+      assert_response :success, response.body
+      assert_equal 1, JSON.parse(response.body)['routes'].size
+
+    ensure
+      Stop.class_eval do
+        def after_init
+        end
+      end
+    end
   end
 
   test 'Apply Zonings' do

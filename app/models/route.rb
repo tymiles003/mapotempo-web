@@ -40,10 +40,10 @@ class Route < ApplicationRecord
   after_create :complete_geojson
 
   scope :for_customer_id, ->(customer_id) { joins(:planning).where(plannings: {customer_id: customer_id}) }
-  scope :includes_vehicle_usages, -> { includes({vehicle_usage: [:vehicle_usage_set, :vehicle]}) }
+  scope :includes_vehicle_usages, -> { includes(vehicle_usage: [:vehicle_usage_set, :vehicle]) }
   scope :includes_stops, -> { includes(:stops) }
   # The second visit is for counting the visit index from all the visits of the destination
-  scope :includes_destinations, -> { includes({stops: {visit: [:tags, {destination: [:visits, :tags, :customer]}]}}) }
+  scope :includes_destinations, -> { includes(stops: {visit: [:tags, destination: [:visits, :tags, :customer]]}) }
 
   include RefSanitizer
 
@@ -489,7 +489,7 @@ class Route < ApplicationRecord
   end
 
   def outdated=(value)
-    if vehicle_usage && value
+    if vehicle_usage_id && value
       self.optimized_at = nil unless optimized_at_changed?
       self.last_sent_to = self.last_sent_at = nil
     end

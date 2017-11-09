@@ -31,6 +31,8 @@ class Stop < ApplicationRecord
 
   before_update :outdated
 
+  scope :includes_destinations, -> { includes(visit: [:tags, destination: [:visits, :tags, :customer]]) }
+
   amoeba do
     enable
   end
