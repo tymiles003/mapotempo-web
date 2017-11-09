@@ -35,6 +35,14 @@ module TimeAttr
             hour_value.length < 8 ? '00:00:00'[0..7 - hour_value.length] + hour_value : hour_value
           end
         end
+
+        # Override changed? method because ScheduleType send back a new value each time even if not modified
+        define_method("#{name}_changed?") do
+          new_value = send(name)
+          previous_value = send("#{name}_was")
+
+          new_value != previous_value
+        end
       end
     end
   end
