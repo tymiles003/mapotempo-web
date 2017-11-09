@@ -52,6 +52,7 @@ class ApiV01 < Grape::API
       contact_url: Mapotempo::Application.config.api_contact_url,
       license: 'GNU Affero General Public License 3',
       license_url: 'https://raw.githubusercontent.com/Mapotempo/mapotempo-web/master/LICENSE',
+      version: '0.1',
       description: '
 [Simplified view of domain model](' + Mapotempo::Application.config.swagger_docs_base_path + '/api/0.1/Model-simpel.svg).
 ## Model
