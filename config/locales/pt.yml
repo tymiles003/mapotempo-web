@@ -9,10 +9,10 @@ pt:
   distance_miles:
     unit:
       one: mi.
-      other: mi
+      other: mi.
     thousand:
-      one: mi
-      other: mi
+      one: mi.
+      other: mi.
   time:
     hour: Hora
     minute: Minuto
@@ -27,13 +27,13 @@ pt:
       datepicker: '%d-%m-%Y'
   schedule_type:
     invalid: Valor de hora inválido
-  default_time_zone: Lisbon
+  default_time_zone: Lisboa
   activemodel:
     models:
       import_csv: CSV Import
       import_csvs:
-        one: CSV Import
-        other: CSV Imports
+        one: Importação CSV
+        other: Importações CSV
       import_tomtom: Importação TomTom
       import_tomtoms:
         one: Importação TomTom
@@ -51,14 +51,14 @@ pt:
       customers:
         one: cliente
         other: clientes
-      deliverable_unit: Unidade de envio
+      deliverable_unit: Unidade de despacho
       deliverable_units:
-        one: unidade de envio
-        other: unidades de envio
-      destination: Ponto
+        one: unidade de despacho
+        other: unidades de despacho
+      destination: Destino
       destinations:
-        one: ponto
-        other: pontos
+        one: destino
+        other: destinos
       layer: Mapa base
       layers:
         one: mapa base
@@ -257,6 +257,7 @@ pt:
         tag_operation:
           and: todos
           or: ou
+        out_of_route: Não planeado
       profile:
         name: Nome
         layers: Mapa base
@@ -266,7 +267,7 @@ pt:
         name: Nome
       reseller:
         host: Host
-        name: Nome
+        name: Nome do revendedor
         welcome_url: URL de acolhimento
         help_url: URL de ajuda
         contact_url: URL de contacto
@@ -275,6 +276,11 @@ pt:
         favicon: Favicon
         website_url: URL do sítio web
         url_protocol: Tipo de conexão
+        application_name: Nome da aplicação
+        subscription_url: URL de subscrição
+        facebook_url: URL de Facebook
+        twitter_url: URL de Twitter
+        linkedin_url: URL do Linkedin
       route:
         distance: Distância
         emission: Emissões
@@ -574,6 +580,7 @@ pt:
       already_optimizing: Já se encontra em curso uma otimização de plano
       deadlock: 'Aviso: Falha na atualização dos dados. Foi realizada outra atualização
         em simultâneo, provavelmente efetuou diversas operações demasiado rápido.'
+      automatic_insert_no_result: Impossível afetar paragens
   import:
     csv:
       line: Linha %{s}
@@ -619,6 +626,13 @@ pt:
           substituído pela língua como « en », « fr » (ie: https://www.mapotempo.com/{LG}/).'
         protocol_url_http: HTTP
         protocol_url_https: HTTPS
+        application_name_help: Sítio Web do revendedor
+        subscription_url_help: 'Endereço da página web contendo o formulário de ubscrição
+          para uma conta de teste. Poderá utilizar "{LG}" o qual será substituído  pela
+          língua como « en », « fr » (ie: https://www.mapotempo.com/{LG}/mapotempo-web-subscription-request).'
+        facebook_url_help: Link do Facebook do revendedor
+        twitter_url_help: Link do Twitter do revendedor
+        linkedin_url_help: Link do Linkedin do revendedor
     users:
       menu:
         users: Utilizadores
@@ -1051,7 +1065,8 @@ pt:
       import_stores: Importar armazéns
       tags: Etiquetas
       clear: Apagar todos os destinos
-      clear_confirm: Tem a certeza que pretende apagar todos os destinos?
+      clear_confirm: Tem a certeza que pretende apagar todos os destinos? As rotas
+        existentes serão perdidas.
     form:
       ref_help: Referência livre
       detail_help: Complemento do endereço não geocodificável, por exemplo o numero
@@ -1088,7 +1103,8 @@ pt:
         inalteradas) é efetuada sendo os novos adicionados à aplicação.
       replace_yes: Apagar destinos anteriores
       replace_yes_help: Eliminar e substituir todos os destinos anteriores pelos da
-        importação. Todos os destinos serão reescritos. A rotas serão igualmente perdidas.
+        importação. Todos os destinos serão reescritos. A rotas anteriores serão igualmente
+        perdidas.
       replace_confirm: Ao apagar todos os destinos afetará o planeamento das rotas
         antigas ficando apenas os novos destinos, não planificados. Tem a certeza?
       plannings: Planeamentos
@@ -1354,7 +1370,7 @@ pt:
       title: Defina a sua palavra passe
       welcome: Benvindo a %{name} !
       detail:
-        content: Obrigado por ter escolhido testar a solução de planificação e otimização
+        content: Obrigado por ter escolhido a solução de planificação e otimização
           de rotas %{application_name}%{limit}.
         limit: ' por um período de <b>%{days} dias</b>'
         define: 'Antes de se ligar à sua conta%{test}, por favor defina a sua palavra
@@ -1370,9 +1386,13 @@ pt:
       welcome: Parabéns. Pode agora entrar na sua conta.
       detail:
         content: 'Para se ligar, '
-        id: 'utilize a palavra passe e utilizador que definiu: %{login} e palavra
-          passe'
+        id: 'utilize a palavra passe e utilizador que definiu: %{login}.'
         link: Ligação
+    footer:
+      first_step: 'Passo 1: Defina a sua password'
+      second_step: 'Passo 2: Entre na aplicação'
+    accompanying_team:
+      header: A nossa equipa acompanhá-lo-á
   plannings:
     menu:
       plannings: Planos
