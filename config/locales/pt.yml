@@ -2029,10 +2029,6 @@ pt:
       create: Criar %{model}
       update: Guardar %{model}
       submit: Guardar %{model}
-  number:
-    format:
-      delimiter: ' '
-      separator: ','
   devise:
     shared:
       links:

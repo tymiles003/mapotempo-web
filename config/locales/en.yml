@@ -2117,10 +2117,6 @@ en:
       create: Create %{model}
       update: Save %{model}
       submit: Save %{model}
-  number:
-    format:
-      delimiter: ','
-      separator: .
   devise:
     shared:
       links:

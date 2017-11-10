@@ -17,16 +17,14 @@ es:
     hour: hora
     minute: minuto
     formats:
-      default:
-      long:
-      short:
-      hour_minute:
-      hour_minute_second:
-      complete:
-      date:
-      datepicker:
-    hour: hora
-    minute: minuto
+      default: "%A, %-d de %B de %Y %H:%M:%S %z"
+      long: "%-d de %B de %Y %H:%M"
+      short: "%-d de %b %H:%M"
+      hour_minute: '%H:%M'
+      hour_minute_second: '%H:%M:%S'
+      complete: '%d-%m-%Y %H:%M:%S'
+      date: '%d/%m/%Y'
+      datepicker: '%d-%m-%Y'
   schedule_type:
     invalid: Formato de hora no valido
   default_time_zone: Madrid
@@ -1812,10 +1810,6 @@ es:
       create:
       update:
       submit:
-  number:
-    format:
-      delimiter:
-      separator:
   devise:
     shared:
       links:

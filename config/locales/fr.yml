@@ -2166,8 +2166,7 @@ fr:
       submit: Enregistrer %{model}
   number:
     format:
-      delimiter:  
-      separator: ','
+      delimiter: ' '
   devise:
     shared:
       links:
