@@ -575,7 +575,9 @@ fr:
     planning:
       import_too_routes: Tentative d'importer plus de tournées que de véhicules disponibles
       already_optimizing: Une optimisation de plan est déjà en cours
-      deadlock: "Attention : Échec de la mise à jour des données. Une autre mise a jour été effectuée en simultané, vous avez peut-être réalisé plusieurs opérations trop rapidement."
+      deadlock: 'Attention : Échec de la mise à jour des données. Une autre mise a
+        jour été effectuée en simultané, vous avez peut-être réalisé plusieurs opérations
+        trop rapidement.'
       automatic_insert_no_result: Affectation des arrêts impossible
   import:
     csv:
@@ -618,9 +620,9 @@ fr:
         contact_url_help: 'Adresse de la page web contenant le formulaire de contact.
           Vous pouvez utiliser « {LG} » qui sera remplacé par la langue telle que
           « en », « fr » (par ex : https://www.mapotempo.com/{LG}/contact-support/).'
-        subscription_url_help: 'Adresse de la page web contenant le formulaire de souscription dans le cas d''un compte test.
-          Vous pouvez utiliser « {LG} » qui sera remplacé par la langue telle que
-          « en », « fr » (par ex : https://www.mapotempo.com/{LG}/mapotempo-web-subscription-request).'
+        subscription_url_help: 'Adresse de la page web contenant le formulaire de
+          souscription dans le cas d''un compte test. Vous pouvez utiliser « {LG} »
+          qui sera remplacé par la langue telle que « en », « fr » (par ex : https://www.mapotempo.com/{LG}/mapotempo-web-subscription-request).'
         facebook_url_help: Lien Facebook du revendeur
         twitter_url_help: Lien Twitter du revendeur
         linkedin_url_help: Lien linkedIn du revendeur
@@ -811,7 +813,8 @@ fr:
       import_stores: Importer dépôts
       tags: Libellés
       clear: Supprimer tous les clients
-      clear_confirm: Êtes-vous sûr de vouloir supprimer tous les clients ? Vos tournées existantes seront perdues.
+      clear_confirm: Êtes-vous sûr de vouloir supprimer tous les clients ? Vos tournées
+        existantes seront perdues.
     form:
       ref_help: Référence libre
       detail_help: Complément d'adresse non géocodable, ex. numéro d'escalier
@@ -850,15 +853,17 @@ fr:
       replace_yes: Supprimer anciens clients
       replace_yes_help: Efface et remplace tous les anciens clients par ceux de l'import.
         Les anciennes tournées seront également perdues.
-      replace_confirm: Le fait de supprimer les clients affectera vos plans des anciennes tournées
-        qui ne comporteront plus que des nouveaux clients non planifiés. Êtes-vous
-        sûr ?
+      replace_confirm: Le fait de supprimer les clients affectera vos plans des anciennes
+        tournées qui ne comporteront plus que des nouveaux clients non planifiés.
+        Êtes-vous sûr ?
       plannings: Plans
       delete_plannings: Supprimer anciens plans
-      delete_plannings_help: Supprime les anciens plans de tournées (permet notamment d'améliorer
-        la réactivité de l'application). Si des tournées sont présentes dans votre
-        fichier d'import, un nouveau plan sera tout de même créé après l'import.
-      delete_plannings_confirm: Supprimer tous les plans de vos anciennes tournées ?
+      delete_plannings_help: Supprime les anciens plans de tournées (permet notamment
+        d'améliorer la réactivité de l'application). Si des tournées sont présentes
+        dans votre fichier d'import, un nouveau plan sera tout de même créé après
+        l'import.
+      delete_plannings_confirm: Supprimer tous les plans de vos anciennes tournées
+        ?
       csv:
         title: Fichier CSV
         help: Importe les clients depuis un fichier CSV. Les fichiers CSV peuvent
@@ -1082,182 +1087,216 @@ fr:
       total: total
   route_mailer:
     send_kmz_route:
-      title: "Export Planning KMZ"
+      title: Export Planning KMZ
       hello: Bonjour
       content: Un export au format KMZ vient de vous être envoyé depuis %{s} en pièce
         jointe à cet e-mail.
-      vehicle: "Véhicule : %{name}"
-      planning: "Plan de tournées : %{name} %{date}"
-      planning_ref: "Référence du plan : %{ref}"
-      route_ref: "Référence de la tournée : %{ref}"
-      order_array: "Commandes : %{name}"
+      vehicle: 'Véhicule : %{name}'
+      planning: 'Plan de tournées : %{name} %{date}'
+      planning_ref: 'Référence du plan : %{ref}'
+      route_ref: 'Référence de la tournée : %{ref}'
+      order_array: 'Commandes : %{name}'
     send_computed_ics_route:
-      title: "Export plan iCalendar"
+      title: Export plan iCalendar
       hello: Bonjour
-      content: "Un export au format agenda iCalendar vient de vous être envoyé depuis %{s}, vous pouvez : Copier-coller le lien et l'importer dans votre agenda personnel (la mise à jour de votre agenda se fera de manière automatique à l'avenir) ou Cliquer sur le lien pour télécharger le contenu de l'agenda (pas de mise à jour automatique)."
-      vehicle: "Véhicule : %{name}"
-      planning: "Plan de tournées : %{name} %{date}"
-      planning_ref: "Référence du plan : %{ref}"
-      route_ref: "Référence de la tournée : %{ref}"
-      order_array: "Commandes : %{name}"
-      link: "Lien de téléchargement : <a href=%{link}>Plan iCalendar</a>"
+      content: 'Un export au format agenda iCalendar vient de vous être envoyé depuis
+        %{s}, vous pouvez : Copier-coller le lien et l''importer dans votre agenda
+        personnel (la mise à jour de votre agenda se fera de manière automatique à
+        l''avenir) ou Cliquer sur le lien pour télécharger le contenu de l''agenda
+        (pas de mise à jour automatique).'
+      vehicle: 'Véhicule : %{name}'
+      planning: 'Plan de tournées : %{name} %{date}'
+      planning_ref: 'Référence du plan : %{ref}'
+      route_ref: 'Référence de la tournée : %{ref}'
+      order_array: 'Commandes : %{name}'
+      link: 'Lien de téléchargement : <a href=%{link}>Plan iCalendar</a>'
   user_mailer:
     layout:
-      welcome: "Bienvenue chez %{name} !"
+      welcome: Bienvenue chez %{name} !
       staff:
-        content: "Pour vous l'expérience %{name} démarre dès maintenant !
-        Notre équipe est mobilisée pour garantir son succès."
-        greetings: "Bien à vous,"
-        signature: "L'équipe %{name}"
+        content: Pour vous l'expérience %{name} démarre dès maintenant ! Notre équipe
+          est mobilisée pour garantir son succès.
+        greetings: Bien à vous,
+        signature: L'équipe %{name}
       links:
-        title: "Suivez-nous !"
-        facebook: "Lien Facebook"
-        twitter: "Lien Twitter"
-        linkedin: "Lien LinkedIn"
+        title: Suivez-nous !
+        facebook: Lien Facebook
+        twitter: Lien Twitter
+        linkedin: Lien LinkedIn
     footer:
-      first_step: "⭐ Étape 1 : Définissez votre mot de passe"
-      second_step: "⭐ Étape 2 : Connectez-vous à l'application"
+      first_step: '⭐ Étape 1 : Définissez votre mot de passe'
+      second_step: '⭐ Étape 2 : Connectez-vous à l''application'
     password:
-      subject: "Définissez votre mot de passe pour %{name}"
-      title: "Définissez votre mot de passe"
-      welcome: "Bienvenue à %{name} !"
+      subject: Définissez votre mot de passe pour %{name}
+      title: Définissez votre mot de passe
+      welcome: Bienvenue à %{name} !
       detail:
-        content: "Merci d'avoir choisi la solution de planification et d'optimisation de tournées %{application_name}%{limit}."
-        limit: " pour une période de <b>%{days} jours</b>"
-        define: "Avant de vous connecter à votre compte%{test}, veuillez définir votre mot de passe :"
-        test: " de test"
-        link: "Définir mot de passe"
+        content: Merci d'avoir choisi la solution de planification et d'optimisation
+          de tournées %{application_name}%{limit}.
+        limit: ' pour une période de <b>%{days} jours</b>'
+        define: 'Avant de vous connecter à votre compte%{test}, veuillez définir votre
+          mot de passe :'
+        test: ' de test'
+        link: Définir mot de passe
     connection:
-      subject: "Connexion à votre compte %{name}"
-      title: "Connexion à votre compte"
-      welcome: "Félicitations ! Vous pouvez désormais vous connecter à votre compte."
+      subject: Connexion à votre compte %{name}
+      title: Connexion à votre compte
+      welcome: Félicitations ! Vous pouvez désormais vous connecter à votre compte.
       detail:
-        content: "Pour vous connecter, "
-        id: "veuillez utiliser le mot de passe que vous avez défini ainsi que votre identifiant : %{login}."
-        link: "Connexion"
+        content: 'Pour vous connecter, '
+        id: 'veuillez utiliser le mot de passe que vous avez défini ainsi que votre
+          identifiant : %{login}.'
+        link: Connexion
     accompanying_team:
-      header: "Notre équipe vous accompagne"
-      main_content: "Afin de vous offrir la meilleure expérience, vous pouvez compter sur notre équipe pour vous accompagner. Aussi, "
-      highlight: "pour toutes questions vous pouvez nous contacter."
-      contact_support: "Contacter le support"
-      panels_header: "Les ressources pour bien démarrer : 1er partie"
-      documentation: "documentation en ligne"
-      panels_subtitle: "Découvrez les <b>trois premières sections</b> de notre"
-      goal: "Objectifs :"
+      header: Notre équipe vous accompagne
+      main_content: 'Afin de vous offrir la meilleure expérience, vous pouvez compter
+        sur notre équipe pour vous accompagner. Aussi, '
+      highlight: 'pour toutes questions vous pouvez nous contacter : '
+      contact_support: Contacter le support
+      panels_header: 'Les ressources pour bien démarrer : 1er partie'
+      documentation: documentation en ligne
+      panels_subtitle: Découvrez les <b>trois premières sections</b> de notre
+      goal: 'Objectifs :'
       panel_one:
-        title: "Avant de commencer"
-        content: "quels sont les navigateurs supportés par %{name} ? Les types de véhicules pris en compte au sein de la solution ? Découvrez le fonctionnement de la cartographie Libre OpenStreetMap, du géocodage et des algorithmes d’optimisation."
-        time: "⏱3min."
-        doc_link: "Doc - Avant de commencer"
-        doc_href: "/manual/00-before_start.html"
-        img_src: "https://www.mapotempo.com/wp-content/uploads/2015/10/éclair.png"
+        title: Avant de commencer
+        content: quels sont les navigateurs supportés par %{name} ? Les types de véhicules
+          pris en compte au sein de la solution ? Découvrez le fonctionnement de la
+          cartographie Libre OpenStreetMap, du géocodage et des algorithmes d’optimisation.
+        time: ⏱3min.
+        doc_link: Doc - Avant de commencer
+        doc_href: /manual/00-before_start.html
+        img_src: https://www.mapotempo.com/wp-content/uploads/2015/10/éclair.png
       panel_two:
-        title: "Démarrage avec %{name}"
-        content: "comment se connecter au logiciel %{name} ? La présentation du principe d’utilisation de %{name} : l’import de données, l’optimisation de tournées et l’export de données."
-        time: "⏱2min."
-        doc_link: "Doc - Démarrage avec %{name}"
-        doc_href: "/manual/01-start.html"
-        img_src: "https://www.mapotempo.com/wp-content/uploads/2015/10/key.png"
+        title: Démarrage avec %{name}
+        content: 'comment se connecter au logiciel %{name} ? La présentation du principe
+          d’utilisation de %{name} : l’import de données, l’optimisation de tournées
+          et l’export de données.'
+        time: ⏱2min.
+        doc_link: Doc - Démarrage avec %{name}
+        doc_href: /manual/01-start.html
+        img_src: https://www.mapotempo.com/wp-content/uploads/2015/10/key.png
       panel_three:
-        title: "Paramétrage global et utilisateur"
-        content: "les paramétrages au niveau de votre compte avec votre mot de passe et votre identifiant. Au niveau de votre activité avec le type de véhicules, l’ajustement de la vitesse, la durée moyenne des visites. Enfin, au niveau de l’export vers des GPS ou sous forme de feuilles de route."
-        time: "⏱6min."
-        doc_link: "Doc - Paramétrage global et utilisateur"
-        doc_href: "/manual/02-global_settings_users.html"
-        img_src: "https://www.mapotempo.com/wp-content/uploads/2015/10/user.png"
-      footer: "Vous recevez ce message en tant qu'utilisateur de %{name}"
+        title: Paramétrage global et utilisateur
+        content: les paramétrages au niveau de votre compte avec votre mot de passe
+          et votre identifiant. Au niveau de votre activité avec le type de véhicules,
+          l’ajustement de la vitesse, la durée moyenne des visites. Enfin, au niveau
+          de l’export vers des GPS ou sous forme de feuilles de route.
+        time: ⏱6min.
+        doc_link: Doc - Paramétrage global et utilisateur
+        doc_href: /manual/02-global_settings_users.html
+        img_src: https://www.mapotempo.com/wp-content/uploads/2015/10/user.png
+      footer: Vous recevez ce message en tant qu'utilisateur de %{name}
     features:
-      header: "Vous avez des questions ? Notre équipe y répond !"
-      main_content: "Notre équipe est disponible pour répondre à l'ensemble de vos questions : "
-      highlight: ""
-      contact_support: "Contacter le support"
-      panels_header: "Les ressources pour bien démarrer : 2nd partie"
-      panels_subtitle: "Découvrez les <b>trois sections suivantes</b> de notre"
-      documentation: "documentation en ligne"
-      goal: "Objectifs :"
+      header: Vous avez des questions ? Notre équipe y répond !
+      main_content: 'Notre équipe est disponible pour répondre à l''ensemble de vos
+        questions : '
+      highlight: ''
+      contact_support: Contacter le support
+      panels_header: 'Les ressources pour bien démarrer : 2nd partie'
+      panels_subtitle: Découvrez les <b>trois sections suivantes</b> de notre
+      documentation: documentation en ligne
+      goal: 'Objectifs :'
       panel_one:
-        title: "Gestion des véhicules"
-        content: "configurer les véhicules, leur consommation, leur capacité. Définir le calculateur d’itinéraire selon le type de véhicule, configurer les dépôts."
-        time: "⏱15min."
-        doc_link: "Doc - Gestion des véhicules"
-        doc_href: "/manual/03-vehicles_configuration.html"
-        img_src: "https://www.mapotempo.com/wp-content/uploads/2015/10/truck.png"
+        title: Gestion des véhicules
+        content: configurer les véhicules, leur consommation, leur capacité. Définir
+          le calculateur d’itinéraire selon le type de véhicule, configurer les dépôts.
+        time: ⏱15min.
+        doc_link: Doc - Gestion des véhicules
+        doc_href: /manual/03-vehicles_configuration.html
+        img_src: https://www.mapotempo.com/wp-content/uploads/2015/10/truck.png
       panel_two:
-        title: "Gestion des clients"
-        content: "créer ou importer les données clients (référence, quantité, adresses, durée de visite, horaires de visite, libellées) et les supprimer. Exporter les données clients..."
-        time: "⏱9min."
-        doc_link: "Doc - Gestion des clients"
-        doc_href: "/manual/04-destinations.html"
-        img_src: "https://www.mapotempo.com/wp-content/uploads/2015/10/map-marker.png"
+        title: Gestion des clients
+        content: créer ou importer les données clients (référence, quantité, adresses,
+          durée de visite, horaires de visite, libellées) et les supprimer. Exporter
+          les données clients...
+        time: ⏱9min.
+        doc_link: Doc - Gestion des clients
+        doc_href: /manual/04-destinations.html
+        img_src: https://www.mapotempo.com/wp-content/uploads/2015/10/map-marker.png
       panel_three:
-        title: "Gestion des zonages "
-        content: "créer manuellement un zonage. Créer automatiquement un zonage depuis les tournées du planning ou en respectant un nombre de zones. Enfin, modifier un zonage."
-        time: "⏱5min."
-        doc_link: "Doc - Gestion des zonages"
-        doc_href: "/manual/05-zonings.html"
-        img_src: "https://www.mapotempo.com/wp-content/uploads/2015/10/ungroup.png"
-      footer: "Vous recevez ce message en tant qu'utilisateur de %{name}"
+        title: Gestion des zonages
+        content: créer manuellement un zonage. Créer automatiquement un zonage depuis
+          les tournées du planning ou en respectant un nombre de zones. Enfin, modifier
+          un zonage.
+        time: ⏱5min.
+        doc_link: Doc - Gestion des zonages
+        doc_href: /manual/05-zonings.html
+        img_src: https://www.mapotempo.com/wp-content/uploads/2015/10/ungroup.png
+      footer: Vous recevez ce message en tant qu'utilisateur de %{name}
       adds:
-        video: "Vidéos"
-        vehicules_params: "Paramétrage des véhicules"
-        destination_params: "Paramétrage client"
-        tags: "Présentation des libellés"
-        zonage: "Création zonage"
-        zonage_update: "Modification zonage"
+        video: Vidéos
+        vehicules_params: Paramétrage des véhicules
+        destination_params: Paramétrage client
+        tags: Présentation des libellés
+        zonage: Création zonage
+        zonage_update: Modification zonage
     advanced_options:
-      header: "Pouvons-nous vous aider à éclaircir certains points ?"
-      main_content: "Vous utilisez %{name} depuis maintenant 3 jours. Vous avez découvert un certain nombre de fonctionnalités. Si vous avez des questions concernant certaines d'entre elles, vous pouvez contacter notre équipe : "
-      highlight: ""
-      contact_support: "Contacter le support"
-      panels_header: "Les ressources pour bien démarrer : 3e partie"
-      panels_subtitle: "Découvrez les <b>trois dernières sections</b> de notre"
-      documentation: "documentation en ligne"
-      goal: "Objectifs :"
+      header: Pouvons-nous vous aider à éclaircir certains points ?
+      main_content: 'Vous utilisez %{name} depuis maintenant 3 jours. Vous avez découvert
+        un certain nombre de fonctionnalités. Si vous avez des questions concernant
+        certaines d''entre elles, vous pouvez contacter notre équipe : '
+      highlight: ''
+      contact_support: Contacter le support
+      panels_header: 'Les ressources pour bien démarrer : 3e partie'
+      panels_subtitle: Découvrez les <b>trois dernières sections</b> de notre
+      documentation: documentation en ligne.
+      goal: 'Objectifs :'
       panel_one:
-        title: "Gestion des plans et des tournées"
-        content: "créer un plan de tournées, appliquer un zonage, optimiser des tournées, exporter des tournées (feuille de route, mobile, gps, agenda, tableur)."
-        time: "⏱20min."
-        doc_link: "Doc - Gestion des plans de tournées"
-        doc_href: "/manual/06-plans.html"
-        img_src: "https://www.mapotempo.com/wp-content/uploads/2015/10/calendar.png"
+        title: Gestion des plans et des tournées
+        content: créer un plan de tournées, appliquer un zonage, optimiser des tournées,
+          exporter des tournées (feuille de route, mobile, gps, agenda, tableur).
+        time: ⏱20min.
+        doc_link: Doc - Gestion des plans de tournées
+        doc_href: /manual/06-plans.html
+        img_src: https://www.mapotempo.com/wp-content/uploads/2015/10/calendar.png
       panel_two:
-        title: "TomTom WEBFLEET (optionnel)"
-        content: " vous utilisez TomTom WEBFLEET ? Apprenez comment interfacer %{name} et TomTom WEBFLEET. Comment le planificateur peut réaliser l’interfaçage et comment les agents de terrain pourront l’utiliser au quotidien."
-        time: "⏱9min."
-        doc_link: "Doc - TomTom WEBFLEET"
-        doc_href: "/manual/07-tomtom_webfleet.html"
-        img_src: "https://www.mapotempo.com/wp-content/uploads/2015/10/globe.png"
+        title: TomTom WEBFLEET (optionnel)
+        content: ' vous utilisez TomTom WEBFLEET ? Apprenez comment interfacer %{name}
+          et TomTom WEBFLEET. Comment le planificateur peut réaliser l’interfaçage
+          et comment les agents de terrain pourront l’utiliser au quotidien.'
+        time: ⏱9min.
+        doc_link: Doc - TomTom WEBFLEET
+        doc_href: /manual/07-tomtom_webfleet.html
+        img_src: https://www.mapotempo.com/wp-content/uploads/2015/10/globe.png
       panel_three:
-        title: "Options avancées"
-        content: "utiliser les options avancées : créer des visites multiples avec des paramètres différents pour un même client etc."
-        time: "⏱4min."
-        doc_link: "Doc - Options avancées"
-        doc_href: "/manual/08-advanced_options.html"
-        img_src: "https://www.mapotempo.com/wp-content/uploads/2015/10/cog.png"
-      footer: "Vous recevez ce message en tant qu'utilisateur de %{name}"
+        title: Options avancées
+        content: 'utiliser les options avancées : créer des visites multiples avec
+          des paramètres différents pour un même client etc.'
+        time: ⏱4min.
+        doc_link: Doc - Options avancées
+        doc_href: /manual/08-advanced_options.html
+        img_src: https://www.mapotempo.com/wp-content/uploads/2015/10/cog.png
+      footer: Vous recevez ce message en tant qu'utilisateur de %{name}
       adds:
-        videos: "Vidéos"
-        plans: "Création d'un plan"
-        stops: "Gestion des points d'arrêt"
-        optimize: "Présentation de l'optimisation"
-        export: "Export des tournées"
-        gps: "Export des tournées vers GPS et terminaux mobiles"
-        webfleet: "Interfacer TomTom WEBFLEET"
+        videos: Vidéos
+        plans: Création d'un plan
+        stops: Gestion des points d'arrêt
+        optimize: Présentation de l'optimisation
+        export: Export des tournées
+        gps: Export des tournées vers GPS et terminaux mobiles
+        webfleet: Interfacer TomTom WEBFLEET
     accompanying_second:
-      title: "Notre équipe vous accompagne"
-      content: "Afin de vous offrir la meilleure expérience, vous pouvez compter sur notre équipe pour vous accompagner. Aussi, <b>pour toutes questions vous pouvez nous contacter</b>."
-      link: "Contacter le support"
-      footer: "Vous recevez ce message en tant qu'utilisateur de %{name}"
+      title: Notre équipe vous accompagne
+      content: 'Afin de vous offrir la meilleure expérience, vous pouvez compter sur
+        notre équipe pour vous accompagner. Aussi, <b>pour toutes questions vous pouvez
+        nous contacter</b> :'
+      link: Contacter le support
+      footer: Vous recevez ce message en tant qu'utilisateur de %{name}
     subscribe_message:
-      title: "Et si nous poursuivions l'aventure ensemble ?"
-      try_period_over: "Vous arrivez au terme de votre période d’essai. <b>Nous vous remercions de l’intérêt que vous portez à %{name} et nous espérons que l'expérience a répondu à vos attentes.</b>"
-      content: "Si vous souhaitez poursuivre l’aventure à nos côtés <b>vous pouvez dès à présent contacter notre service commercial par le biais de ce formulaire ou par téléphone au +33&nbsp;(0)5&nbsp;64&nbsp;27&nbsp;04&nbsp;59&nbsp;:</b>"
-      link: "Je demande à m'abonner à %{name}"
+      title: Et si nous poursuivions l'aventure ensemble ?
+      try_period_over: Vous arrivez au terme de votre période d’essai. <b>Nous vous
+        remercions de l’intérêt que vous portez à %{name} et nous espérons que l'expérience
+        a répondu à vos attentes.</b>
+      content: Si vous souhaitez poursuivre l’aventure à nos côtés <b>vous pouvez
+        dès à présent contacter notre service commercial par le biais de ce formulaire
+        ou par téléphone au +33&nbsp;(0)5&nbsp;64&nbsp;27&nbsp;04&nbsp;59&nbsp;:</b>
+      link: Je demande à m'abonner à %{name}
   plannings:
     menu:
       plannings: Plans
       plannings_limit:
-        menu_message: Vous possédez trop de plans. Retrouvez tous vos plans en cliquant sur Liste.
+        menu_message: Vous possédez trop de plans. Retrouvez tous vos plans en cliquant
+          sur Liste.
     index:
       title: Liste plans de tournées
       new: Nouveau plan
@@ -1267,7 +1306,8 @@ fr:
         icalendar_email: Agenda iCal par email
         spreadsheet: Tableur CSV / Excel
         none_planning: Veuillez sélectionner au moins un plan à exporter
-      list_message: "Vous avez atteint la limite conseillée de plans de tournées associés à votre compte (Limite : %{limit})"
+      list_message: 'Vous avez atteint la limite conseillée de plans de tournées associés
+        à votre compte (Limite : %{limit})'
     edit:
       vehicles: Véhicules
       marker_clusters: Activer/Désactiver les groupes de points
@@ -1285,27 +1325,31 @@ fr:
       last_sent_to: Envoi
       title: Modifier plan
       stops: arrêts
-      without_stops_title: Les arrêts de ce plan de tournées volumineux n'ont pas été chargés
-        pour améliorer les performances de l'affichage
+      without_stops_title: Les arrêts de ce plan de tournées volumineux n'ont pas
+        été chargés pour améliorer les performances de l'affichage
       load_stops_out_of_route: Charger les arrêts non planifiés
       load_stops: Charger les arrêts de cette tournée
       optimized_at: Optimisé
       optimize_global:
         title: Optimisation globale
-        all_help: Optimiser le plan de tournées dans son ensemble excepté les tournées verrouillées
-          (vos arrêts pourront être attribués à une autre tournée qu'actuellement), en déplaçant tous les arrêts même inactifs
-        active_help: Optimiser le plan de tournées dans son ensemble excepté les tournées verrouillées
-          (vos arrêts pourront être attribués à une autre tournée qu'actuellement), en déplaçant uniquement les arrêts actifs
+        all_help: Optimiser le plan de tournées dans son ensemble excepté les tournées
+          verrouillées (vos arrêts pourront être attribués à une autre tournée qu'actuellement),
+          en déplaçant tous les arrêts même inactifs
+        active_help: Optimiser le plan de tournées dans son ensemble excepté les tournées
+          verrouillées (vos arrêts pourront être attribués à une autre tournée qu'actuellement),
+          en déplaçant uniquement les arrêts actifs
         all_stops: Optimiser avec les arrêts inactifs
         active_stops: Uniquement les arrêts actifs
-        confirm: Optimiser l'ensemble du plan de tournées ? (vos arrêts pourront être attribués
-          à une autre tournée qu'actuellement)
+        confirm: Optimiser l'ensemble du plan de tournées ? (vos arrêts pourront être
+          attribués à une autre tournée qu'actuellement)
       optimize_each:
         title: Optimisation de chaque tournée
-        all_help: Optimiser toutes les tournées non verrouillées une à une
-          (vos arrêts resteront dans chaque tournée initiale), en déplaçant tous les arrêts même inactifs
-        active_help: Optimiser toutes les tournées non verrouillées une à une
-          (vos arrêts resteront dans chaque tournée initiale), en déplaçant uniquement les arrêts actifs
+        all_help: Optimiser toutes les tournées non verrouillées une à une (vos arrêts
+          resteront dans chaque tournée initiale), en déplaçant tous les arrêts même
+          inactifs
+        active_help: Optimiser toutes les tournées non verrouillées une à une (vos
+          arrêts resteront dans chaque tournée initiale), en déplaçant uniquement
+          les arrêts actifs
         all_stops: Optimiser avec les arrêts inactifs
         active_stops: Uniquement les arrêts actifs
         confirm: Lancer un calcul d'optimisation pour chacune des tournées ? (vos
@@ -1369,8 +1413,8 @@ fr:
       open_planning_panel: Déployer le panneau du plan de tournées
       collapse_planning_panel: Minifier le panneau du plan de tournées
       refresh: Actualiser
-      refresh_help: Des paramètres ou des clients utilisés par ce plan de tournées ont été
-        modifiés, il est nécessaire de le recalculer
+      refresh_help: Des paramètres ou des clients utilisés par ce plan de tournées
+        ont été modifiés, il est nécessaire de le recalculer
       outdated_zoning: Le zonage a été modifié. Appliquez à nouveau pour actualiser.
       stops_help: Arrêts planifiés / total
       duration_help: Somme des durées des tournées
@@ -1380,7 +1424,8 @@ fr:
       toggle_help: Affiche ou cache les arrêts sur la carte
       locked_unplanned_help: Verrouille les non-planifiés pour les opérations globales
         sur le plan de tournées
-      locked_help: Verrouille la tournée pour les opérations globales sur le plan de tournées
+      locked_help: Verrouille la tournée pour les opérations globales sur le plan
+        de tournées
       vehicle_help: Paramétrer le véhicule
       export_help: Exporter la tournée
       route_stops_active_help: Sélectionner les arrêts actifs
@@ -1392,7 +1437,8 @@ fr:
       edit_store_help: Modifier les informations du dépôt
       edit_visit_help: Modifier les informations du client
       marker_help: Visualiser sur la carte
-      automatic_insert_help: Propose un endroit pour insérer ce client dans une tournée (le résultat peut ne plus être optimisé)
+      automatic_insert_help: Propose un endroit pour insérer ce client dans une tournée
+        (le résultat peut ne plus être optimisé)
       automatic_insert_help_multiple: Propose un endroit pour insérer les clients
         dans des tournées (le résultat ne sera plus optimisé)
       automatic_insert_confirm: Affecter tous les arrêts non planifiés à des tournées ?
@@ -1409,7 +1455,8 @@ fr:
       vehicle_last_position_time: 'Dernier relevé :'
       route_change_color_help: Changer la couleur de la tournée
       popup:
-        outdated: Tracé de la tournée obsolète. Veuillez recalculer votre plan de tournées (bouton Actualiser).
+        outdated: Tracé de la tournée obsolète. Veuillez recalculer votre plan de
+          tournées (bouton Actualiser).
         open_close1: 'Plage horaire 1 : '
         open1: début 1
         close1: fin 1
@@ -1750,7 +1797,7 @@ fr:
       router_options_desc: forcer l'utilisation les options du calculateur d'itinéraire
       speed_multiplicator: ajustement de la vitesse
       speed_multiplicator_desc: une valeur supérieure à 100% signifie une vitesse
-        plus élevée.
+        plus élevée
       color: couleur
       color_desc: couleur associée au véhicule
       devices: appareils
@@ -1881,7 +1928,8 @@ fr:
     import:
       title: Importer une nouvelle configuration de véhicules
       vehicle_usage_set: Configuration de véhicules
-      default_configuration_replaced: La configuration par défaut de tous les véhicules sera remplacée par les données importées
+      default_configuration_replaced: La configuration par défaut de tous les véhicules
+        sera remplacée par les données importées
       replace_yes: Remplacer la configuration existante
       replace_yes_help: La configuration existante sera supprimée et remplacée par
         la configuration importée.
@@ -1911,7 +1959,9 @@ fr:
             types de valeurs suivants :'
           columns_vehicle: Colonnes des véhicules
           columns_vehicle_usage_set: Colonnes de la configuration des véhicules
-          columns_vehicle_usage_set_default: Si une colonne contient des données identiques pour tous les véhicules alors elle sera utilisée comme configuration par défaut et enlevée pour chaque véhicule
+          columns_vehicle_usage_set_default: Si une colonne contient des données identiques
+            pour tous les véhicules alors elle sera utilisée comme configuration par
+            défaut et enlevée pour chaque véhicule
       name_vehicle_usage_set: nom configuration
       name_desc: nom de la configuration par défaut
       open: horaire début
@@ -2021,8 +2071,8 @@ fr:
     form:
       hide_out_of_route: Cacher les clients non planifiés
       all_destinations: Afficher tous les clients
-      from_planning_help: Vous pouvez aussi afficher les clients d'un unique plan de tournées
-        en modifiant ce zonage depuis le plan en question
+      from_planning_help: Vous pouvez aussi afficher les clients d'un unique plan
+        de tournées en modifiant ce zonage depuis le plan en question
       stops_from_planning: Clients chargés depuis le plan « %{s} »
       generate: Générer
       automatic:
@@ -2153,12 +2203,15 @@ fr:
       _yes: oui
       _no: non
     subscribe:
-      planning_unavailable: Le plan de tournées n’est pas modifiable pour le moment, la date
-        de votre abonnement a expiré. Veuillez contacter votre revendeur afin de renouveler
-        votre abonnement.
-      expiration_date: "Votre période d'utilisation expire bientôt. Date de fin le %{date}. Si vous souhaitez le renouveler vous pouvez contacter %{reseller}."
-      expiration_date_test: "Votre compte de test expire  le %{date}. Pour continuer d’utiliser notre solution, vous pouvez contacter notre équipe."
-      expiration_date_over: "Votre période d'utilisation a expiré le %{date}. Si vous souhaitez le renouveler vous pouvez contacter %{reseller}."
+      planning_unavailable: Le plan de tournées n’est pas modifiable pour le moment,
+        la date de votre abonnement a expiré. Veuillez contacter votre revendeur afin
+        de renouveler votre abonnement.
+      expiration_date: Votre période d'utilisation expire bientôt. Date de fin le
+        %{date}. Si vous souhaitez le renouveler vous pouvez contacter %{reseller}.
+      expiration_date_test: Votre compte de test expire  le %{date}. Pour continuer
+        d’utiliser notre solution, vous pouvez contacter notre équipe.
+      expiration_date_over: Votre période d'utilisation a expiré le %{date}. Si vous
+        souhaitez le renouveler vous pouvez contacter %{reseller}.
   helpers:
     submit:
       create: Créer %{model}
@@ -2166,7 +2219,7 @@ fr:
       submit: Enregistrer %{model}
   number:
     format:
-      delimiter: ' '
+      delimiter:  
   devise:
     shared:
       links:
