@@ -182,6 +182,10 @@ fr:
         description_help: Détails sur le compte et les utilisateurs courants
         enable_vehicle_position: Activer la position des véhicules
         enable_stop_status: Activer les statuts des visites
+        plannings_limitation: Max plans
+        zonings_limitation: Max zonages
+        destinations_limitation: Max clients
+        vehicle_usage_sets_limitation: Max configuration des véhicules
       deliverable_unit:
         label: Libellé
         ref: Référence
@@ -701,6 +705,7 @@ fr:
       name: Compte
       default_value: Valeurs par défaut
       outputs: Diffusion des tournées
+      limits: Limites
       options: Options
       optimization_parameters: Paramètres d'optimisation
       router_help: Profil utilisé pour les calculs d'itinéraires par défaut
@@ -732,6 +737,14 @@ fr:
         les interdictions au plus près et passera outre l'interdiction uniquement
         s'il ne peut pas faire autrement.
       take_over_help: Durée de visite moyenne par client
+      plannings_limitation_default: '%{n} (valeur par défaut)'
+      plannings_limitation_help: Nombre maximal de plans autorisés dans le compte.
+      zonings_limitation_default: '%{n} (valeur par défaut)'
+      zonings_limitation_help: Nombre maximal de zonages autorisés dans le compte.
+      destinations_limitation_default: '%{n} (valeur par défaut)'
+      destinations_limitation_help: Nombre maximal de clients autorisés dans le compte.
+      vehicle_usage_sets_limitation_default: '%{n} (valeur par défaut)'
+      vehicle_usage_sets_limitation_help: Nombre maximal de configuration des véhicules autorisés dans le compte.
       optimization_max_split_size_default: '%{n} (valeur par défaut)'
       optimization_max_split_size_help: Nombre de points maximal à regrouper dans
         le cas d'un problème à optimiser trop gros. Plus la valeur est grande, meilleur

@@ -156,7 +156,6 @@ Rails.application.configure do
 
   config.self_care = true # Allow subscription and resiliation by the user himself
 
-  config.max_destinations = 3000
   config.max_destinations_editable = 500
   config.manage_vehicles_only_admin = false
 

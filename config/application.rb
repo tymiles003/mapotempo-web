@@ -106,6 +106,9 @@ module Mapotempo
 
     # Warn for plannings limitation in coming
     config.plannings_limitation = nil
+    config.zonings_limitation = nil
+    config.max_destinations = 3000 # Max number of destinations allowed by customer account
+    config.vehicle_usage_sets_limitation = nil
   end
 end
 

@@ -121,7 +121,6 @@ Rails.application.configure do
 
   config.self_care = true # Allow subscription and termination by the user himself
 
-  config.max_destinations = 3000 # Max number of destinations allowed by customer account
   config.max_destinations_editable = 500 # After this limit the destinations index list switch to readonly
   config.manage_vehicles_only_admin = false # Whether the user can change himself the number of vehicle of this own account
 

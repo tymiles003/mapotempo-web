@@ -248,12 +248,12 @@ class Customer < ApplicationRecord
     end
   end
 
+  def plannings_limitation_default
+    plannings_limitation || Rails.configuration.plannings_limitation
+  end
+
   def too_many_plannings?
-    if !Rails.configuration.plannings_limitation.nil?
-      Rails.configuration.plannings_limitation < self.plannings.length
-    else
-      false
-    end
+    !plannings_limitation_default.nil? && plannings_limitation_default < self.plannings.length
   end
 
   private

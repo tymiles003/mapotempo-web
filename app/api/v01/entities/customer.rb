@@ -58,6 +58,11 @@ class V01::Entities::Customer < Grape::Entity
   expose(:optimization_force_start, documentation: { type: 'Boolean', desc: EDIT_ONLY_ADMIN })
   expose(:advanced_options, documentation: { type: String, desc: 'Advanced options in a serialized json format' })
 
+  expose(:plannings_limitation, documentation: { type: Integer, desc: EDIT_ONLY_ADMIN })
+  expose(:zonings_limitation, documentation: { type: Integer, desc: EDIT_ONLY_ADMIN })
+  expose(:destinations_limitation, documentation: { type: Integer, desc: EDIT_ONLY_ADMIN })
+  expose(:vehicle_usage_sets_limitation, documentation: { type: Integer, desc: EDIT_ONLY_ADMIN })
+
   expose(:devices, documentation: { type: Hash, desc: EDIT_ONLY_ADMIN })
 
   # # Devices: Alyacom

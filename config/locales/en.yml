@@ -181,6 +181,10 @@ en:
         description_help: Account and users details
         enable_vehicle_position: Enable vehicles's position
         enable_stop_status: Enable visits status
+        plannings_limitation: Max plans
+        zonings_limitation: Max zonings
+        destinations_limitation: Max destinations
+        vehicle_usage_sets_limitation: Max vehicles base settings
       deliverable_unit:
         label: Label
         ref: Reference
@@ -694,6 +698,7 @@ en:
       name: Account
       default_value: Default values
       outputs: Outputs
+      limits: Limits
       options: Options
       optimization_parameters: Optimization settings
       router_help: Profile used by route plan by default
@@ -724,6 +729,14 @@ en:
       router_options_strict_restriction: If not checked the router will try to strictly
         respect the limitations and override limitations only if it's the only way.
       take_over_help: Average time per account
+      plannings_limitation_default: '%{n} (default value)'
+      plannings_limitation_help: Maximum number of allowed plans into the account.
+      zonings_limitation_default: '%{n} (default value)'
+      zonings_limitation_help: Maximum number of allowed zonings into the account.
+      destinations_limitation_default: '%{n} (default value)'
+      destinations_limitation_help: Maximum number of allowed destinations into the account.
+      vehicle_usage_sets_limitation_default: '%{n} (default value)'
+      vehicle_usage_sets_limitation_help: Maximum number of allowed vehicle base settings into the account.
       optimization_max_split_size_default: '%{n} (default value)'
       optimization_max_split_size_help: Maximum number of points to group in case problem
         is too much heavy to optimize. Greater the value is, better the result of
