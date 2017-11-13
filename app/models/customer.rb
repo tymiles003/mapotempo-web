@@ -63,14 +63,22 @@ class Customer < ApplicationRecord
   validates :router_dimension, presence: true
   validates :name, presence: true
   validates :default_country, presence: true
+  # TODO default_max_destinations
   validates :stores, length: { maximum: Mapotempo::Application.config.max_destinations / 10, message: :over_max_limit }
-  validates :destinations, length: { maximum: Mapotempo::Application.config.max_destinations, message: :over_max_limit }
+  validate :validate_plannings_length
+  validate :validate_zonings_length
+  validate :validate_destinations_length
+  validate :validate_vehicle_usage_sets_length
   validates :optimization_cluster_size, numericality: { greater_than_or_equal_to: 0 }, allow_nil: true
   validates :max_vehicles, numericality: { greater_than: 0 }
   validate do
     errors.add(:max_vehicles, :not_an_integer) if @invalid_max_vehicle
     !@invalid_max_vehicle
   end
+  validates :max_plannings, numericality: { greater_than: 0, less_than_or_equal_to: Mapotempo::Application.config.max_plannings }, allow_nil: true
+  validates :max_zonings, numericality: { greater_than: 0, less_than_or_equal_to: Mapotempo::Application.config.max_zonings }, allow_nil: true
+  validates :max_destinations, numericality: { greater_than: 0, less_than_or_equal_to: Mapotempo::Application.config.max_destinations }, allow_nil: true
+  validates :max_vehicle_usage_sets, numericality: { greater_than: 0, less_than_or_equal_to: Mapotempo::Application.config.max_vehicle_usage_sets }, allow_nil: true
   validates :speed_multiplicator, numericality: { greater_than_or_equal_to: 0.5, less_than_or_equal_to: 1.5 }, if: :speed_multiplicator
 
   after_initialize :assign_defaults, :update_max_vehicles, if: :new_record?
@@ -218,18 +226,6 @@ class Customer < ApplicationRecord
     {lat: store ? store.lat : I18n.t('stores.default.lat'), lng: store ? store.lng : I18n.t('stores.default.lng')}
   end
 
-  def max_vehicles
-    @max_vehicles ||= vehicles.size
-  end
-
-  def max_vehicles=(max)
-    unless max.blank?
-      @max_vehicles = Integer(max.to_s, 10)
-    end
-  rescue ArgumentError
-    @invalid_max_vehicle = true
-  end
-
   def visits
     destinations.collect(&:visits).flatten
   end
@@ -248,12 +244,48 @@ class Customer < ApplicationRecord
     end
   end
 
-  def too_many_plannings?
-    if !Rails.configuration.plannings_limitation.nil?
-      Rails.configuration.plannings_limitation < self.plannings.length
-    else
-      false
+  def max_vehicles
+    @max_vehicles ||= vehicles.size
+  end
+
+  def max_vehicles=(max)
+    unless max.blank?
+      @max_vehicles = Integer(max.to_s, 10)
     end
+  rescue ArgumentError
+    @invalid_max_vehicle = true
+  end
+
+  def default_max_plannings
+    [Rails.configuration.max_plannings, max_plannings || Rails.configuration.max_plannings_default].compact.min
+  end
+
+  def too_many_plannings?
+    default_max_plannings && default_max_plannings <= self.plannings.where('id IS NOT NULL').length
+  end
+
+  def default_max_zonings
+    [Rails.configuration.max_zonings, max_zonings || Rails.configuration.max_zonings_default].compact.min
+  end
+
+  def too_many_zonings?
+    default_max_zonings && default_max_zonings <= self.zonings.where('id IS NOT NULL').length
+  end
+
+  def default_max_destinations
+    [Rails.configuration.max_destinations, max_destinations || Rails.configuration.max_destinations_default].compact.min
+  end
+
+  def too_many_destinations?
+    default_max_destinations && default_max_destinations <= self.destinations.where('id IS NOT NULL').length
+  end
+
+  def default_max_vehicle_usage_sets
+    [Rails.configuration.max_vehicle_usage_sets, max_vehicle_usage_sets || Rails.configuration.max_vehicle_usage_sets_default].compact.min
+  end
+
+  def too_many_vehicle_usage_sets?
+    default_max_vehicle_usage_sets && default_max_vehicle_usage_sets <= self.vehicle_usage_sets.where('id IS NOT NULL').length
   end
 
   private
@@ -408,6 +440,34 @@ class Customer < ApplicationRecord
       if k == 'distance' || k == 'weight' || k == 'weight_per_axle' || k == 'height' || k == 'width' || k == 'length' || k == 'max_walk_distance'
         self.router_options[k] = Customer.to_delocalized_decimal(v) if v.is_a?(String)
       end
+    end
+  end
+
+  def validate_plannings_length
+    if self.default_max_plannings && self.default_max_plannings < self.plannings.length
+      errors.add(:plannings, I18n.t('activerecord.errors.models.customer.attributes.plannings.over_max_limit'))
+      false
+    end
+  end
+
+  def validate_zonings_length
+    if self.default_max_zonings && self.default_max_zonings < self.zonings.length
+      errors.add(:zonings, I18n.t('activerecord.errors.models.customer.attributes.zonings.over_max_limit'))
+      false
+    end
+  end
+
+  def validate_destinations_length
+    if self.default_max_destinations && self.default_max_destinations < self.destinations.length
+      errors.add(:destinations, I18n.t('activerecord.errors.models.customer.attributes.destinations.over_max_limit'))
+      false
+    end
+  end
+
+  def validate_vehicle_usage_sets_length
+    if self.default_max_vehicle_usage_sets && self.default_max_vehicle_usage_sets < self.vehicle_usage_sets.length
+      errors.add(:vehicle_usage_sets, I18n.t('activerecord.errors.models.customer.attributes.vehicle_usage_sets.over_max_limit'))
+      false
     end
   end
 end

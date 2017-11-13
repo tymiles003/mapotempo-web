@@ -1,10 +1,12 @@
 <% content_for :title, t('.title') %>
-<div id="map" class="zoning_map"></div>
+<h1><%= t '.title' %></h1>
 
-<div class="box-wrapper">
-  <div class="box">
-    <h1><%= t '.title' %></h1>
-
-    <%= render 'form' %>
+<% if current_user.customer.too_many_zonings? %>
+  <div class="alert alert-warning" data-error="true">
+    <ul>
+      <p><%= t 'zonings.index.over_max_limit', limit: current_user.customer.default_max_zonings %></p>
+    </ul>
   </div>
-</div>
+<% else %>
+  <%= render 'form' %>
+<% end %>

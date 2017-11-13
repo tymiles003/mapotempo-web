@@ -21,7 +21,7 @@ require 'geocoder_stores_job'
 class ImporterStores < ImporterBase
 
   def max_lines
-    Mapotempo::Application.config.max_destinations / 10
+    @customer.default_max_destinations / 10
   end
 
   def columns

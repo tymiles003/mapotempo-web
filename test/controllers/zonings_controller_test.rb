@@ -41,7 +41,9 @@ class ZoningsControllerTest < ActionController::TestCase
 
   test 'should not create zoning' do
     assert_difference('Zoning.count', 0) do
-      post :create, zoning: { name: '' }
+      assert_difference('Zone.count', 0) do
+        post :create, zoning: { name: '', zones_attributes: [Zone.new(name: 'zone').attributes] }
+      end
     end
 
     assert_template :new
@@ -124,5 +126,28 @@ class ZoningsControllerTest < ActionController::TestCase
       assert_equal 1, JSON.parse(response.body)['zoning'].length
       assert_not_nil JSON.parse(response.body)['zoning'][0]['polygon']
     }
+  end
+
+  test 'should use limitation' do
+    customer = @zoning.customer
+    customer.zonings.delete_all
+    customer.max_zonings = 1
+    customer.save!
+
+    assert_difference('Zoning.count', 1) do
+      post :create, zoning: {
+        name: 'new dest',
+      }
+      assert_response :redirect
+    end
+
+    assert_difference('Zoning.count', 0) do
+      assert_difference('Zone.count', 0) do
+        post :create, zoning: {
+          name: 'new 2',
+          zones_attributes: [Zone.new(name: 'zone').attributes]
+        }
+      end
+    end
   end
 end

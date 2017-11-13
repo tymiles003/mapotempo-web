@@ -107,7 +107,7 @@
           <% end %>
         </td>
         <td><%= customer.destinations.count %></td>
-        <td><%= customer_plannings_count customer.plannings.count %></td>
+        <td><%= customer_plannings_count customer %></td>
         <td rowspan="2" class="text-right">
           <div class="btn-group" role="group" aria-label="Actions">
             <%= link_to [:duplicate, customer], method: :patch, class: "btn btn-default btn-sm", title: t('all.verb.duplicate'), data: { confirm: t('all.verb.destroy_confirm') } do %>

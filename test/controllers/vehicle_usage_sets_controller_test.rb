@@ -172,4 +172,25 @@ class VehicleUsageSetsControllerTest < ActionController::TestCase
 
     assert_redirected_to vehicle_usage_sets_path
   end
+
+  test 'should use limitation' do
+    customer = @vehicle_usage_set.customer
+    customer.max_vehicle_usage_sets = customer.vehicle_usage_sets.size + 1
+    customer.save!
+
+    assert_difference('VehicleUsageSet.count', 1) do
+      post :create, vehicle_usage_set: {
+        name: 'new dest',
+      }
+      assert_response :redirect
+    end
+
+    assert_difference('VehicleUsageSet.count', 0) do
+      assert_difference('VehicleUsage.count', 0) do
+        post :create, vehicle_usage_set: {
+          name: 'new 2',
+        }
+      end
+    end
+  end
 end

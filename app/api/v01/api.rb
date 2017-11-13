@@ -15,6 +15,8 @@
 # along with Mapotempo. If not, see:
 # <http://www.gnu.org/licenses/agpl.html>
 #
+require 'exceptions'
+
 class V01::Api < Grape::API
   helpers do
     def session
@@ -107,6 +109,8 @@ class V01::Api < Grape::API
       rack_response(nil, 404)
     elsif e.is_a?(ActiveRecord::RecordInvalid) || e.is_a?(RangeError) || e.is_a?(Grape::Exceptions::ValidationErrors)
       rack_response(format_message(response, e.backtrace), 400)
+    elsif e.is_a?(Exceptions::OverMaxLimitError)
+      rack_response(format_message(response, e.backtrace), 403)
     elsif e.is_a?(Grape::Exceptions::MethodNotAllowed)
       rack_response(format_message(response, e.backtrace), 405)
     elsif e.is_a?(Exceptions::JobInProgressError)

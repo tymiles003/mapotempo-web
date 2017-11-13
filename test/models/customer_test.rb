@@ -345,4 +345,80 @@ class CustomerTest < ActiveSupport::TestCase
 
     assert plannings(:planning_one).routes.all? { |r| r.outdated }
   end
+
+  test 'should use limitation' do
+    @customer.delete_all_destinations
+    @customer.plannings.delete_all
+    @customer.zonings.delete_all
+    @customer.vehicle_usage_sets[1..-1].each{ |c| @customer.vehicle_usage_sets.destroy(c) }
+
+    @customer.max_plannings = 1
+    @customer.max_destinations = 1
+    @customer.max_zonings = 1
+    @customer.max_vehicle_usage_sets = 2
+    @customer.save!
+
+    assert_difference('Destination.count', 1) do
+      @customer.destinations.build(name: 'plop', city: 'Bordeaux', state: 'Midi-Pyrénées')
+      @customer.save!
+    end
+
+    assert_difference('Destination.count', 0) do
+      @customer.destinations.build(name: 'plop', city: 'Bordeaux', state: 'Midi-Pyrénées')
+      begin
+        @customer.save!
+        fail
+      rescue
+        # Should not save
+      end
+    end
+
+    @customer.reload
+    assert_difference('Planning.count', 1) do
+      @customer.plannings.build(name: 'plop', vehicle_usage_set: @customer.vehicle_usage_sets.first)
+      @customer.save!
+    end
+
+    assert_difference('Planning.count', 0) do
+      @customer.plannings.build(name: 'plop', vehicle_usage_set: @customer.vehicle_usage_sets.first)
+      begin
+        @customer.save!
+        fail
+      rescue
+        # Should not save
+      end
+    end
+
+    @customer.reload
+    assert_difference('Zoning.count', 1) do
+      @customer.zonings.build(name: 'plop')
+      @customer.save!
+    end
+
+    assert_difference('Zoning.count', 0) do
+      @customer.zonings.build(name: 'plop')
+      begin
+        @customer.save!
+        fail
+      rescue
+        # Should not save
+      end
+    end
+
+    @customer.reload
+    assert_difference('VehicleUsageSet.count', 1) do
+      @customer.vehicle_usage_sets.build(name: 'plop')
+      @customer.save!
+    end
+
+    assert_difference('VehicleUsageSet.count', 0) do
+      @customer.vehicle_usage_sets.build(name: 'plop')
+      begin
+        @customer.save!
+        fail
+      rescue
+        # Should not save
+      end
+    end
+  end
 end

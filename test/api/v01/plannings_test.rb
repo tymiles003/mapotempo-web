@@ -465,6 +465,26 @@ class V01::PlanningsTest < V01::PlanningsBaseTest
     assert json['outdated']
     assert json['out_of_date']
   end
+
+  test 'should use limitation' do
+    customer = @planning.customer
+    customer.plannings.delete_all
+    customer.max_plannings = 1
+    customer.save!
+
+    assert_difference('Planning.count', 1) do
+      post api(), @planning.attributes.merge({tag_operation: 'and'})
+      assert last_response.created?, last_response.body
+    end
+
+    assert_difference('Planning.count', 0) do
+      assert_difference('Route.count', 0) do
+        post api(), @planning.attributes.merge({tag_operation: 'and'})
+        assert last_response.forbidden?, last_response.body
+        assert_equal 'Maximum number of plans reached', JSON.parse(last_response.body)['message']
+      end
+    end
+  end
 end
 
 class V01::PlanningsErrorTest < V01::PlanningsBaseTest

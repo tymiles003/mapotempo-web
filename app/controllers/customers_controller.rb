@@ -137,6 +137,10 @@ class CustomersController < ApplicationController
                                                     :enable_global_optimization,
                                                     :enable_vehicle_position,
                                                     :enable_stop_status,
+                                                    :max_plannings,
+                                                    :max_zonings,
+                                                    :max_destinations,
+                                                    :max_vehicle_usage_sets,
                                                     router_options: [
                                                         :time,
                                                         :distance,

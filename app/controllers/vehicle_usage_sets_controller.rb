@@ -18,6 +18,7 @@
 class VehicleUsageSetsController < ApplicationController
   before_action :authenticate_user!
   before_action :set_vehicle_usage_set, only: [:show, :edit, :update, :destroy, :duplicate]
+  around_action :over_max_limit, only: [:create]
 
   load_and_authorize_resource
 
@@ -53,11 +54,11 @@ class VehicleUsageSetsController < ApplicationController
   end
 
   def create
-    p = vehicle_usage_set_params
-    time_with_day_params(params, p, [:open, :close, :rest_start, :rest_stop, :work_time])
-    @vehicle_usage_set = current_user.customer.vehicle_usage_sets.build(p)
-
     respond_to do |format|
+      p = vehicle_usage_set_params
+      time_with_day_params(params, p, [:open, :close, :rest_start, :rest_stop, :work_time])
+      @vehicle_usage_set = current_user.customer.vehicle_usage_sets.build(p)
+
       if @vehicle_usage_set.save
         format.html { redirect_to vehicle_usage_sets_path, notice: t('activerecord.successful.messages.created', model: @vehicle_usage_set.class.model_name.human) }
       else

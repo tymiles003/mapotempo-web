@@ -24,6 +24,7 @@ class PlanningsController < ApplicationController
   before_action :set_planning, only: [:show, :edit, :update, :destroy, :move, :refresh, :switch, :automatic_insert, :update_stop, :optimize_route, :active, :duplicate, :reverse_order, :apply_zonings, :optimize]
   before_action :check_no_existing_job, only: [:move, :refresh, :switch, :automatic_insert, :update_stop, :optimize_route, :active, :reverse_order, :apply_zonings, :optimize]
   around_action :includes_destinations, except: [:index, :show, :new, :create]
+  around_action :over_max_limit, only: [:create]
 
   load_and_authorize_resource
 

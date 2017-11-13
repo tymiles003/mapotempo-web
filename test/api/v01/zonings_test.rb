@@ -143,4 +143,26 @@ class V01::ZoningsTest < ActiveSupport::TestCase
     assert last_response.ok?, last_response.body
     assert_equal last_response.body, 'null'
   end
+
+  test 'should use limitation' do
+    customer = @zoning.customer
+    customer.zonings.delete_all
+    customer.max_zonings = 1
+    customer.save!
+
+    assert_difference('Zoning.count', 1) do
+      @zoning.name = 'new name 1'
+      post api(), @zoning.attributes
+      assert last_response.created?, last_response.body
+    end
+
+    assert_difference('Zoning.count', 0) do
+      assert_difference('Zone.count', 0) do
+        @zoning.name = 'new name 2'
+        post api(), @zoning.attributes
+        assert last_response.forbidden?, last_response.body
+        assert_equal 'Maximum number of zonings reached', JSON.parse(last_response.body)['message']
+      end
+    end
+  end
 end

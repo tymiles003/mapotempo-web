@@ -129,7 +129,11 @@ en:
       customer:
         enable_external_callback: Enable Callback URL
         end_subscription: End subscription
-        max_vehicles: Max vehicles
+        max_vehicles: Number vehicles
+        max_plannings: Max plans
+        max_zonings: Max zonings
+        max_destinations: Max destinations
+        max_vehicle_usage_sets: Max vehicles base settings
         take_over: Visit duration
         name: Name
         destinations: Destinations
@@ -531,10 +535,16 @@ en:
               invalid_json: is not a valid stringified json
         customer:
           attributes:
+            plannings:
+              over_max_limit: Maximum number of plans reached
+            zonings:
+              over_max_limit: Maximum number of zonings reached
             destinations:
               over_max_limit: Maximum number of destinations reached
             stores:
               over_max_limit: Maximum number of stores reached
+            vehicle_usage_sets:
+              over_max_limit: Maximum number of vehicle base settings reached
         store:
           at_least_one: At least one store needed
           icon_unknown: is not in font-awesome icons list
@@ -715,6 +725,7 @@ en:
       name: Account
       default_value: Default values
       outputs: Outputs
+      limits: Limits
       options: Options
       optimization_parameters: Optimization settings
       router_help: Profile used by route plan by default
@@ -745,6 +756,14 @@ en:
       router_options_strict_restriction: If not checked the router will try to strictly
         respect the limitations and override limitations only if it's the only way.
       take_over_help: Average time per account
+      max_plannings_default: '%{n} (default value)'
+      max_plannings_help: Maximum number of allowed plans into the account.
+      max_zonings_default: '%{n} (default value)'
+      max_zonings_help: Maximum number of allowed zonings into the account.
+      max_destinations_default: '%{n} (default value)'
+      max_destinations_help: Maximum number of allowed destinations into the account.
+      max_vehicle_usage_sets_default: '%{n} (default value)'
+      max_vehicle_usage_sets_help: Maximum number of allowed vehicle base settings into the account.
       optimization_max_split_size_default: '%{n} (default value)'
       optimization_max_split_size_help: Maximum number of points to group in case problem
         is too much heavy to optimize. Greater the value is, better the result of
@@ -937,6 +956,7 @@ en:
           move_help: Move points on the map if necessary
           dismiss: Dismiss
           sort_geocoding: Display non reliable geocoded results first
+      over_max_limit: "You have reached the destinations number limit for your account (Account Limit: %{limit})"
     new:
       title: New destination
     import_file:
@@ -1283,7 +1303,7 @@ en:
         icalendar_email: Calendar iCal by E-Mail
         spreadsheet: Spreadsheet CSV / Excel
         none_planning: Please select at least one plan to export
-      list_message: "You have reached the advised number of plans for your account (Account Limit: %{limit})"
+      over_max_limit: "You have reached the plans number limit for your account (Account Limit: %{limit})"
     edit:
       vehicles: Vehicles
       marker_clusters: Switch clusters of stops
@@ -1913,6 +1933,7 @@ en:
       stores: Start - End
       time: Open - Close
       service_time: Service Time
+      over_max_limit: "You have reached the vehicle configurations number limit for your account (Account Limit: %{limit})"
     new:
       title: New vehicles configuration
     import:
@@ -2055,6 +2076,7 @@ en:
     index:
       title: Listing zonings
       new: New Zoning
+      over_max_limit: "You have reached the zonings number limit for your account (Account Limit: %{limit})"
     new:
       title: New zoning
     form:

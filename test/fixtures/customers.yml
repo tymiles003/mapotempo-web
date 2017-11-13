@@ -17,6 +17,10 @@ customer_one:
   speed_multiplicator: 1
   default_country: France
   reseller: reseller_one
+  max_plannings: 10
+  max_zonings: 15
+  max_destinations: 66
+  max_vehicle_usage_sets: 5
   router_options:
     time: true
     distance: true
@@ -66,4 +70,3 @@ customer_two:
   speed_multiplicator: 1.1
   default_country: France
   reseller: reseller_two
-

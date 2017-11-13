@@ -40,7 +40,7 @@ class Planning < ApplicationRecord
   include Consistency
   validate_consistency :vehicle_usage_set, :order_array, :zonings, :tags
 
-  before_create :update_zonings
+  before_create :update_zonings, -> (m) { m.customer.send(:validate_plannings_length) != false || raise(Exceptions::OverMaxLimitError.new('Maximum number of plans reached')) }
   before_save :update_zonings
   before_save :update_vehicle_usage_set
 
@@ -486,7 +486,7 @@ class Planning < ApplicationRecord
   end
 
   def save_import
-    if valid? && Planning.import([self], recursive: true, validate: false)
+    if valid? && customer.send(:validate_plannings_length) != false && Planning.import([self], recursive: true, validate: false)
       # Import does not save has_and_belongs_to_many
       # So save it manually
       # https://github.com/zdennis/activerecord-import/pull/380
@@ -501,6 +501,7 @@ class Planning < ApplicationRecord
 
   def save_import!
     validate!
+    raise(Exceptions::OverMaxLimitError.new('Maximum number of plans reached')) if customer.send(:validate_plannings_length) == false
     Planning.import([self], recursive: true, validate: false)
 
     # Import does not save has_and_belongs_to_many

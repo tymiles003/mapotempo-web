@@ -129,7 +129,11 @@ fr:
       customer:
         enable_external_callback: Activer URL de rappel
         end_subscription: Fin de souscription
-        max_vehicles: Forfait
+        max_vehicles: Nombre véhicules
+        max_plannings: Max plans
+        max_zonings: Max zonages
+        max_destinations: Max clients
+        max_vehicle_usage_sets: Max configurations des véhicules
         take_over: Durée de visite des clients
         name: Nom
         destinations: Clients
@@ -533,10 +537,16 @@ fr:
               invalid_json: n'est pas une chaîne de caractères json valide
         customer:
           attributes:
+            plannings:
+              over_max_limit: dépassement du nombre maximal de plans
+            zonings:
+              over_max_limit: dépassement du nombre maximal de zonages
             destinations:
-              over_max_limit: Dépassement du nombre maximal de clients
+              over_max_limit: dépassement du nombre maximal de clients
             stores:
-              over_max_limit: Dépassement du nombre maximal de dépôts
+              over_max_limit: dépassement du nombre maximal de dépôts
+            vehicle_usage_sets:
+              over_max_limit: dépassement du nombre maximal de configurations des véhicules
         store:
           at_least_one: Au moins un dépôt est requis
           icon_unknown: n'est pas une icône font-awesome autorisée
@@ -722,6 +732,7 @@ fr:
       name: Compte
       default_value: Valeurs par défaut
       outputs: Diffusion des tournées
+      limits: Limites
       options: Options
       optimization_parameters: Paramètres d'optimisation
       router_help: Profil utilisé pour les calculs d'itinéraires par défaut
@@ -753,6 +764,15 @@ fr:
         les interdictions au plus près et passera outre l'interdiction uniquement
         s'il ne peut pas faire autrement.
       take_over_help: Durée de visite moyenne par client
+      max_plannings_default: '%{n} (valeur par défaut)'
+      max_plannings_help: Nombre maximal de plans autorisés dans le compte.
+      max_zonings_default: '%{n} (valeur par défaut)'
+      max_zonings_help: Nombre maximal de zonages autorisés dans le compte.
+      max_destinations_default: '%{n} (valeur par défaut)'
+      max_destinations_help: Nombre maximal de clients autorisés dans le compte.
+      max_vehicle_usage_sets_default: '%{n} (valeur par défaut)'
+      max_vehicle_usage_sets_help: Nombre maximal de configurations des véhicules
+        autorisées dans le compte.
       optimization_max_split_size_default: '%{n} (valeur par défaut)'
       optimization_max_split_size_help: Nombre de points maximal à regrouper dans
         le cas d'un problème à optimiser trop gros. Plus la valeur est grande, meilleur
@@ -960,6 +980,9 @@ fr:
           move_help: Déplacez les points manuellement sur la carte le cas échéant
           dismiss: Ignorer
           sort_geocoding: Montrer les géocodages peu fiables d'abord
+      over_max_limit: 'Vous avez atteint la limite de clients autorisés pour votre
+        compte (Limite : %{limit}), contactez le support si vous avez besoin de plus
+        de clients'
     new:
       title: Nouveau client
     import_file:
@@ -1351,8 +1374,9 @@ fr:
         icalendar_email: Agenda iCal par email
         spreadsheet: Tableur CSV / Excel
         none_planning: Veuillez sélectionner au moins un plan à exporter
-      list_message: 'Vous avez atteint la limite conseillée de plans de tournées associés
-        à votre compte (Limite : %{limit})'
+      over_max_limit: 'Vous avez atteint la limite de plans autorisés pour votre compte
+        (Limite : %{limit}), veuillez supprimer vos précédents plans ou contacter le support
+        si vous avez besoin de plus de plans.'
     edit:
       vehicles: Véhicules
       marker_clusters: Activer/Désactiver les groupes de points
@@ -1469,7 +1493,7 @@ fr:
       marker_help: Visualiser sur la carte
       automatic_insert_help: Propose un endroit pour insérer ce client dans une tournée
         (le résultat peut ne plus être optimisé)
-      automatic_insert_help_multiple: Propose un endroit pour insérer les clients
+      automatic_insert_help_multiple: Propose un bon endroit pour insérer les clients
         dans des tournées (le résultat ne sera plus optimisé)
       automatic_insert_confirm: Affecter tous les arrêts non planifiés à des tournées ?
         Le résultat ne sera plus optimisé. Les zonages sont recommandés pour affecter
@@ -1993,6 +2017,9 @@ fr:
       stores: Départ - Arrivée
       time: Début - Fin
       service_time: Durées de service
+      over_max_limit: 'Vous avez atteint la limite de configurations des véhicules
+        autorisées pour votre compte (Limite : %{limit}), contactez le support si
+        vous avez besoin de plus de configurations'
     new:
       title: Nouvelle configuration des véhicules
     import:
@@ -2147,6 +2174,9 @@ fr:
     index:
       title: Liste zonages
       new: Nouveau zonage
+      over_max_limit: 'Vous avez atteint la limite de zonages autorisés pour votre
+        compte (Limite : %{limit}), veuillez supprimer vos précédents zonages ou
+        contacter le support si vous avez besoin de plus de zonages'
     new:
       title: Nouveau zonage
     form:

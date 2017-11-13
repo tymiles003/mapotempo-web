@@ -20,6 +20,7 @@ class ZoningsController < ApplicationController
   before_action :set_zoning, only: [:show, :edit, :update, :destroy, :duplicate, :automatic, :from_planning, :isochrone, :isodistance]
   before_action :manage_zoning
   around_action :includes_destinations, only: [:show, :edit, :update, :automatic, :from_planning]
+  around_action :over_max_limit, only: [:create]
 
   load_and_authorize_resource
 
@@ -44,9 +45,8 @@ class ZoningsController < ApplicationController
   end
 
   def create
-    @zoning = current_user.customer.zonings.build(zoning_params)
-
     respond_to do |format|
+      @zoning = current_user.customer.zonings.build(zoning_params)
       if @zoning.save
         format.html { redirect_to edit_zoning_path(@zoning, planning_id: params.key?(:planning_id) ? params[:planning_id] : nil), notice: t('activerecord.successful.messages.created', model: @zoning.class.model_name.human) }
       else

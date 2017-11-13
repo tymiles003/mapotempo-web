@@ -145,6 +145,21 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  def over_max_limit
+    yield
+  rescue Exceptions::OverMaxLimitError => e
+    respond_to do |format|
+      flash.now[:alert] = current_user.customer.errors.full_messages.join(' ')
+      if action_name == 'create'
+        format.html { render action: 'new' }
+      elsif action_name.start_with? 'upload'
+        format.html { render action: 'import' }
+      else
+        format.html { render action: 'index' }
+      end
+    end
+  end
+
   def not_found_error(exception)
     # Display in logger
     Rails.logger.fatal(exception.class.to_s + ' : ' + exception.to_s)

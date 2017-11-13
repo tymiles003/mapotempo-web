@@ -16,11 +16,11 @@
 # <http://www.gnu.org/licenses/agpl.html>
 #
 module CustomersHelper
-  def customer_plannings_count(plannings_count)
+  def customer_plannings_count(customer)
     capture do
-      concat '<span style="color: red; font-weight: bold;">'.html_safe if Mapotempo::Application.config.plannings_limitation && plannings_count > Mapotempo::Application.config.plannings_limitation
-      concat plannings_count
-      concat '</span>'.html_safe if Mapotempo::Application.config.plannings_limitation && plannings_count > Mapotempo::Application.config.plannings_limitation
+      concat '<span style="color: red; font-weight: bold;">'.html_safe if Rails.configuration.max_plannings_default && Rails.configuration.max_plannings_default <= customer.plannings.count
+      concat customer.plannings.count
+      concat '</span>'.html_safe if Rails.configuration.max_plannings_default && Rails.configuration.max_plannings_default <= customer.plannings.count
     end
   end
 end

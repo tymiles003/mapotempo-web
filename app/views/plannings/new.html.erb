@@ -1,4 +1,12 @@
 <% content_for :title, t('.title') %>
 <h1><%= t '.title' %></h1>
 
-<%= render 'form' %>
+<% if current_user.customer.too_many_plannings? %>
+  <div class="alert alert-warning" data-error="true">
+    <ul>
+      <p><%= t 'plannings.index.over_max_limit', limit: current_user.customer.default_max_plannings %></p>
+    </ul>
+  </div>
+<% else %>
+  <%= render 'form' %>
+<% end %>

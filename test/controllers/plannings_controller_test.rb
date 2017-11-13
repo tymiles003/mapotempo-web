@@ -681,4 +681,28 @@ class PlanningsControllerTest < ActionController::TestCase
       new_connection.execute("UPDATE routes SET outdated=false WHERE id='#{route.id}'")
     end
   end
+
+  test 'should use limitation' do
+    customer = @planning.customer
+    customer.plannings.delete_all
+    customer.max_plannings = 1
+    customer.save!
+
+    assert_difference('Planning.count', 1) do
+      post :create, planning: {
+        name: 'new dest',
+        vehicle_usage_set_id: @planning.vehicle_usage_set_id
+      }
+      assert_response :redirect
+    end
+
+    assert_difference('Planning.count', 0) do
+      assert_difference('Route.count', 0) do
+        post :create, planning: {
+          name: 'new 2',
+          vehicle_usage_set_id: @planning.vehicle_usage_set_id
+        }
+      end
+    end
+  end
 end

@@ -22,6 +22,7 @@ class DestinationsController < ApplicationController
   before_action :authenticate_user!
   before_action :set_destination, only: [:show, :edit, :update, :destroy]
   after_action :warnings, only: [:create, :update]
+  around_action :over_max_limit, only: [:create]
 
   load_and_authorize_resource
 
@@ -59,11 +60,11 @@ class DestinationsController < ApplicationController
   end
 
   def create
-    p = destination_params
-    time_with_day_params(params, p, [:open1, :close1, :open2, :close2])
-    @destination = current_user.customer.destinations.build(p)
-
     respond_to do |format|
+      p = destination_params
+      time_with_day_params(params, p, [:open1, :close1, :open2, :close2])
+      @destination = current_user.customer.destinations.build(p)
+
       if @destination.save && current_user.customer.save
         format.html { redirect_to link_back || edit_destination_path(@destination), notice: t('activerecord.successful.messages.created', model: @destination.class.model_name.human) }
       else

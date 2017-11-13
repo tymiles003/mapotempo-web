@@ -694,4 +694,22 @@ class V01::DestinationsTest < ActiveSupport::TestCase
     assert_equal open_time, visit.reload.open1
     assert_equal close_time, visit.reload.close1
   end
+
+  test 'should use limitation' do
+    customer = @destination.customer
+    customer.destinations.delete_all
+    customer.max_destinations = 1
+    customer.save!
+
+    assert_difference('Destination.count', 1) do
+      post api(), @destination.attributes
+      assert last_response.created?, last_response.body
+    end
+
+    assert_difference('Destination.count', 0) do
+      post api(), @destination.attributes
+      assert last_response.forbidden?, last_response.body
+      assert_equal 'Maximum number of destinations reached', JSON.parse(last_response.body)['message']
+    end
+  end
 end

@@ -95,7 +95,11 @@ CREATE TABLE customers (
     with_state boolean DEFAULT false,
     devices jsonb DEFAULT '{}'::jsonb NOT NULL,
     optimization_force_start boolean DEFAULT false NOT NULL,
-    optimization_max_split_size integer
+    optimization_max_split_size integer,
+    max_plannings integer,
+    max_zonings integer,
+    max_destinations integer,
+    max_vehicle_usage_sets integer
 );
 
 
@@ -2705,3 +2709,4 @@ INSERT INTO schema_migrations (version) VALUES ('20171127101118');
 
 INSERT INTO schema_migrations (version) VALUES ('20171129104645');
 
+INSERT INTO schema_migrations (version) VALUES ('20171203134836');

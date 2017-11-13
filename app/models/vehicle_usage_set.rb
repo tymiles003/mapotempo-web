@@ -54,6 +54,7 @@ class VehicleUsageSet < ApplicationRecord
   validates :rest_duration, presence: {if: :rest_start?, message: ->(*_) { I18n.t('activerecord.errors.models.vehicle_usage_set.missing_rest_duration') }}
 
   after_initialize :assign_defaults, if: :new_record?
+  before_create -> (m) { m.customer.send(:validate_vehicle_usage_sets_length) != false || raise(Exceptions::OverMaxLimitError.new('Maximum number of vehicle usage sets reached')) }
   before_update :update_outdated
 
   amoeba do

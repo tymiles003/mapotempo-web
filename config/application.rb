@@ -104,8 +104,16 @@ module Mapotempo
       praxedo: Praxedo.new
     )
 
-    # Warn for plannings limitation in coming
-    config.plannings_limitation = nil
+    # Max number of models allowed by customer account
+    config.max_plannings = 200
+    config.max_plannings_default = nil
+    config.max_zonings = 100
+    config.max_zonings_default = nil
+    config.max_destinations = 30000
+    config.max_destinations_default = nil
+    config.max_destinations_editable = 300 # After this limit the destinations index list switch to readonly
+    config.max_vehicle_usage_sets = 100
+    config.max_vehicle_usage_sets_default = 1
 
     # Default values for icons
     config.tag_color_default = '#000000'.freeze

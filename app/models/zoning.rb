@@ -26,7 +26,7 @@ class Zoning < ApplicationRecord
   auto_strip_attributes :name
   validates :name, presence: true
 
-  before_create :update_outdated
+  before_create :update_outdated, -> (m) { m.customer.send(:validate_zonings_length) != false || raise(Exceptions::OverMaxLimitError.new('Maximum number of zonings reached')) }
   before_save :update_outdated
 
   attr_accessor :prefered_unit

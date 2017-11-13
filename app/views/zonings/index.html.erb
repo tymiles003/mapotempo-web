@@ -1,9 +1,17 @@
 <% content_for :title, t('.title') %>
 <h1><%= t '.title' %></h1>
 
+<% if current_user.customer.too_many_zonings? %>
+  <div class="alert alert-warning" data-error="true">
+    <ul>
+      <p><%= t 'zonings.index.over_max_limit', limit: current_user.customer.default_max_zonings %></p>
+    </ul>
+  </div>
+<% end %>
+
 <div class="row row-top">
   <div class="col-md-6">
-    <%= link_to new_zoning_path, class:"btn btn-primary btn-sm" do %><i class="fa fa-plus fa-fw"></i> <%= t '.new' %><% end %>
+    <%= link_to new_zoning_path, disabled: current_user.customer.too_many_zonings?, class:"btn btn-primary btn-sm" do %><i class="fa fa-plus fa-fw"></i> <%= t '.new' %><% end %>
   </div>
   <div class="col-md-6">
     <div class="pull-right">
@@ -28,7 +36,7 @@
         <td><%= check_box_tag("zonings[#{zoning.id}]") %></td>
         <td><%= zoning.name %></td>
         <td class="text-right">
-          <%= link_to zoning_duplicate_path(zoning), :class => "btn btn-default btn-sm", method: :patch do %><i class="fa fa-copy fa-fw"></i> <%= t 'all.verb.duplicate' %><% end %>
+          <%= link_to zoning_duplicate_path(zoning), disabled: current_user.customer.too_many_zonings?, :class => "btn btn-default btn-sm", method: :patch do %><i class="fa fa-copy fa-fw"></i> <%= t 'all.verb.duplicate' %><% end %>
           <%= link_to edit_zoning_path(zoning), :class => "btn btn-primary btn-sm" do %><i class="fa fa-edit fa-fw"></i> <%= t 'all.verb.edit' %><% end %>
           <%= link_to zoning, :class => "btn btn-danger btn-sm", method: :delete, data: { confirm: t('all.verb.destroy_confirm') } do %><i class="fa fa-trash-o fa-fw"></i> <%= t 'all.verb.destroy' %><% end %>
         </td>

@@ -14,13 +14,32 @@
 
   <%= f.text_field :name, t('.name'), required: true, disabled: !current_user.admin? %>
   <%= f.text_field :end_subscription, {value: @customer.end_subscription ? l(@customer.end_subscription.to_time, format: :datepicker) : nil, disabled:!current_user.admin?, input_group: content_tag('i', '', {class: 'fa fa-calendar fa-fw'})} %>
-  <%= f.number_field :max_vehicles, min:1, disabled: (Mapotempo::Application.config.manage_vehicles_only_admin && !current_user.admin?), input_group: content_tag('i', '', class: 'fa fa-truck fa-fw') %>
-
   <% if current_user.admin? %>
     <%= f.toggles t 'activerecord.attributes.customer.test' do %>
       <%= f.check_box :test, '', checked: @customer.id ? @customer.test : Mapotempo::Application.config.customer_test_default %>
     <% end %>
   <% end %>
+
+  <fieldset>
+    <legend class="scheduler-border">
+      <%= t '.limits' %>
+    </legend>
+    <%= f.number_field :max_vehicles, min: 1, required: (Mapotempo::Application.config.manage_vehicles_only_admin && current_user.admin?), disabled: (Mapotempo::Application.config.manage_vehicles_only_admin && !current_user.admin?), input_group: content_tag('i', '', class: 'fa fa-truck fa-fw') %>
+    <% if current_user.admin? %>
+      <%= f.number_field :max_plannings, placeholder: Mapotempo::Application.config.max_plannings_default && t('.max_plannings_default', n: LocalizedValues.localize_numeric_value(Mapotempo::Application.config.max_plannings_default)), min: 1, input_group: content_tag('i', '', class: 'fa fa-calendar-o fa-fw') do %>
+        <p class="help-block"><%= t '.max_plannings_help' %></p>
+      <% end %>
+      <%= f.number_field :max_zonings, placeholder: Mapotempo::Application.config.max_zonings_default && t('.max_zonings_default', n: LocalizedValues.localize_numeric_value(Mapotempo::Application.config.max_zonings_default)), min: 1, input_group: content_tag('i', '', class: 'fa fa-object-ungroup fa-fw') do %>
+        <p class="help-block"><%= t '.max_zonings_help' %></p>
+      <% end %>
+      <%= f.number_field :max_destinations, placeholder: Mapotempo::Application.config.max_destinations_default && t('.max_destinations_default', n: LocalizedValues.localize_numeric_value(Mapotempo::Application.config.max_destinations_default)), min: 1, input_group: content_tag('i', '', class: 'fa fa-map-marker fa-fw') do %>
+        <p class="help-block"><%= t '.max_destinations_help' %></p>
+      <% end %>
+      <%= f.number_field :max_vehicle_usage_sets, placeholder: Mapotempo::Application.config.max_vehicle_usage_sets_default && t('.max_vehicle_usage_sets_default', n: LocalizedValues.localize_numeric_value(Mapotempo::Application.config.max_vehicle_usage_sets_default)), min: 1, input_group: content_tag('i', '', class: 'fa fa-truck fa-fw') do %>
+        <p class="help-block"><%= t '.max_vehicle_usage_sets_help' %></p>
+      <% end %>
+    <% end %>
+  </fieldset>
 
   <fieldset>
     <legend class="scheduler-border">
@@ -272,6 +291,7 @@
     <% end %>
 
   </fieldset>
+
   <% if current_user.admin? %>
     <fieldset>
       <legend class="scheduler-border">

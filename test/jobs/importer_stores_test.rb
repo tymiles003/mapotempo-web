@@ -41,16 +41,14 @@ class ImporterStoresTest < ActionController::TestCase
     assert_difference('Store.count', 5) do
       assert ImportCsv.new(importer: ImporterStores.new(@customer), replace: false, file: tempfile('test/fixtures/files/import_stores_many-utf-8.csv', 'text.csv')).import
     end
-    # o = Store.find{|s| s.customer_id} # many items since we cannot destroy previous
-    # assert_equal 'Point 1', o.name
+    assert @customer.stores.map(&:name).include? 'Point 1'
   end
 
   test 'should import many-iso stores' do
     assert_difference('Store.count', 6) do
       assert ImportCsv.new(importer: ImporterStores.new(@customer), replace: false, file: tempfile('test/fixtures/files/import_stores_many-iso.csv', 'text.csv')).import
     end
-    # o = Store.find{|s| s.customer_id} # many items since we cannot destroy previous
-    # assert_equal 'Point 1', o.name
+    assert @customer.stores.map(&:name).include? 'Point 1'
   end
 
   test 'should not import store' do
