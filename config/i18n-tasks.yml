@@ -81,7 +81,8 @@ search:
 ## Do not consider these keys missing:
 ignore_missing:
 # - 'errors.messages.{accepted,blank,invalid,too_short,too_long}'
-- '{devise,leaflet_draw}.*'
+  - '{devise,leaflet_draw}.*'
+  - 'number.format.*'
 
 ## Consider these keys used:
 ignore_unused:
