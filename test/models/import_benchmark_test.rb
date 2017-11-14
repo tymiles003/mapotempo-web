@@ -30,17 +30,116 @@ if ENV['BENCHMARK'] == 'true'
       end
     end
 
-    test 'should upload 28 100 points with 165 vehicles in less than 1 hour (BENCHMARK)' do
+    focus
+    test 'should upload 900 destinations in less than 5 minutes (CSV - BENCHMARK)' do
       file = ActionDispatch::Http::UploadedFile.new({
-                                                      tempfile: File.new(Rails.root.join('test/fixtures/files/import_destinations_benchmark.csv'))
+                                                      tempfile: File.new(Rails.root.join('test/fixtures/files/import_destinations_benchmark_900.csv'))
                                                     })
-      file.original_filename = 'import_destinations_benchmark.csv'
+      file.original_filename = 'import_destinations_benchmark_900.csv'
 
       @time_elapsed = Benchmark.realtime do
         import_csv = ImportCsv.new(importer: @importer, replace: false, file: file)
         assert import_csv.valid?
         assert import_csv.import
       end.round
+
+      p "Time for uploading 900 points in CSV: #{@time_elapsed} seconds"
+
+      assert @time_elapsed <= 5 * 60
+    end
+
+    focus
+    test 'should upload 900 destinations in less than 5 minutes (JSON - BENCHMARK)' do
+      file = ActionDispatch::Http::UploadedFile.new({
+                                                      tempfile: File.new(Rails.root.join('test/fixtures/files/import_destinations_benchmark_900.json'))
+                                                    })
+      file.original_filename = 'import_destinations_benchmark_900.json'
+
+      @time_elapsed = Benchmark.realtime do
+        destinations = JSON.parse(file.read)
+        import_json = ImportJson.new(importer: @importer, replace: false, json: destinations['destinations'])
+
+        assert import_json.valid?
+        assert import_json.import
+      end.round
+
+      p "Time for uploading 900 points in JSON: #{@time_elapsed} seconds"
+
+      assert @time_elapsed <= 5 * 60
+    end
+
+    focus
+    test 'should upload 4000 destinations in less than 12 minutes (CSV - BENCHMARK)' do
+      file = ActionDispatch::Http::UploadedFile.new({
+                                                      tempfile: File.new(Rails.root.join('test/fixtures/files/import_destinations_benchmark_4000.csv'))
+                                                    })
+      file.original_filename = 'import_destinations_benchmark_4000.csv'
+
+      @time_elapsed = Benchmark.realtime do
+        import_csv = ImportCsv.new(importer: @importer, replace: false, file: file)
+        assert import_csv.valid?
+        assert import_csv.import
+      end.round
+
+      p "Time for uploading 4000 points in CSV: #{@time_elapsed} seconds"
+
+      assert @time_elapsed <= 12 * 60
+    end
+
+    focus
+    test 'should upload 4000 destinations in less than 5 minutes (JSON - BENCHMARK)' do
+      file = ActionDispatch::Http::UploadedFile.new({
+                                                      tempfile: File.new(Rails.root.join('test/fixtures/files/import_destinations_benchmark_4000.json'))
+                                                    })
+      file.original_filename = 'import_destinations_benchmark_4000.json'
+
+      @time_elapsed = Benchmark.realtime do
+        destinations = JSON.parse(file.read)
+        import_json = ImportJson.new(importer: @importer, replace: false, json: destinations['destinations'])
+
+        assert import_json.valid?
+        assert import_json.import
+      end.round
+
+      p "Time for uploading 4000 points in JSON: #{@time_elapsed} seconds"
+
+      assert @time_elapsed <= 5 * 60
+    end
+
+    focus
+    test 'should upload 28 100 destinations in less than 120 minutes (CSV - BENCHMARK)' do
+      file = ActionDispatch::Http::UploadedFile.new({
+                                                      tempfile: File.new(Rails.root.join('test/fixtures/files/import_destinations_benchmark_28100.csv'))
+                                                    })
+      file.original_filename = 'import_destinations_benchmark_28100.csv'
+
+      @time_elapsed = Benchmark.realtime do
+        import_csv = ImportCsv.new(importer: @importer, replace: false, file: file)
+        assert import_csv.valid?
+        assert import_csv.import
+      end.round
+
+      p "Time for uploading 28 100 points in CSV: #{@time_elapsed} seconds"
+
+      assert @time_elapsed <= 60 * 60
+    end
+
+    focus
+    test 'should upload 28 100 destinations in less than 120 minutes (JSON - BENCHMARK)' do
+      file = ActionDispatch::Http::UploadedFile.new({
+                                                      tempfile: File.new(Rails.root.join('test/fixtures/files/import_destinations_benchmark_28100.json'))
+                                                    })
+      file.original_filename = 'import_destinations_benchmark_28100.json'
+
+      @time_elapsed = Benchmark.realtime do
+        destinations = JSON.parse(file.read)
+        import_json = ImportJson.new(importer: @importer, replace: false, json: destinations['destinations'])
+
+        assert import_json.valid?
+        assert import_json.import
+      end.round
+
+      p "Time for uploading 28 100 points in JSON: #{@time_elapsed} seconds"
 
       assert @time_elapsed <= 60 * 60
     end

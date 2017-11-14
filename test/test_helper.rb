@@ -85,57 +85,59 @@ def suppress_output
 end
 
 
-require 'capybara/rails'
-require 'capybara/minitest'
+if ENV['BENCHMARK'] == 'true'
+  require 'capybara/rails'
+  require 'capybara/minitest'
 
 # Browser testing configuration
-class ActionDispatch::IntegrationTest
+  class ActionDispatch::IntegrationTest
 
-  self.use_transactional_fixtures = false
+    self.use_transactional_fixtures = false
 
-  include Devise::Test::IntegrationHelpers
+    include Devise::Test::IntegrationHelpers
 
-  # Make the Capybara DSL available in all integration tests
-  include Capybara::DSL
-  # Make `assert_*` methods behave like Minitest assertions
-  include Capybara::Minitest::Assertions
+    # Make the Capybara DSL available in all integration tests
+    include Capybara::DSL
+    # Make `assert_*` methods behave like Minitest assertions
+    include Capybara::Minitest::Assertions
 
-  def setup
-    Capybara.run_server = true
+    def setup
+      Capybara.run_server = true
 
-    Capybara.app_host = 'http://localhost:3020'
-    Capybara.server_host = 'localhost'
-    Capybara.server_port = '3020'
-    Capybara.configure do |config|
-      config.default_host = 'http://localhost:3020'
+      Capybara.app_host = 'http://localhost:3020'
+      Capybara.server_host = 'localhost'
+      Capybara.server_port = '3020'
+      Capybara.configure do |config|
+        config.default_host = 'http://localhost:3020'
+      end
+
+      # Full chrome version
+      Capybara.register_driver :selenium_chrome do |app|
+        browser_options = ::Selenium::WebDriver::Chrome::Options.new
+        browser_options.args << '--window-size=1920x1080'
+        Capybara::Selenium::Driver.new(app, browser: :chrome, options: browser_options)
+      end
+
+      # Headless chrome version
+      Capybara.register_driver :selenium_chrome_headless do |app|
+        browser_options = ::Selenium::WebDriver::Chrome::Options.new
+        browser_options.args << '--headless'
+        browser_options.args << '--window-size=1920x1080'
+        Capybara::Selenium::Driver.new(app, browser: :chrome, options: browser_options)
+      end
+
+      Capybara.javascript_driver = :selenium_chrome
+
+      Capybara.configure do |config|
+        config.default_max_wait_time = 30 # seconds
+      end
     end
 
-    # Full chrome version
-    Capybara.register_driver :selenium_chrome do |app|
-      browser_options = ::Selenium::WebDriver::Chrome::Options.new
-      browser_options.args << '--window-size=1920x1080'
-      Capybara::Selenium::Driver.new(app, browser: :chrome, options: browser_options)
+    # Reset sessions and driver between tests
+    # Use super wherever this method is redefined in your individual test classes
+    def teardown
+      Capybara.reset_sessions!
+      Capybara.use_default_driver
     end
-
-    # Headless chrome version
-    Capybara.register_driver :selenium_chrome_headless do |app|
-      browser_options = ::Selenium::WebDriver::Chrome::Options.new
-      browser_options.args << '--headless'
-      browser_options.args << '--window-size=1920x1080'
-      Capybara::Selenium::Driver.new(app, browser: :chrome, options: browser_options)
-    end
-
-    Capybara.javascript_driver = :selenium_chrome
-
-    Capybara.configure do |config|
-      config.default_max_wait_time = 30 # seconds
-    end
-  end
-
-  # Reset sessions and driver between tests
-  # Use super wherever this method is redefined in your individual test classes
-  def teardown
-    Capybara.reset_sessions!
-    Capybara.use_default_driver
   end
 end
