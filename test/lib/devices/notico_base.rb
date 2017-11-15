@@ -15,6 +15,6 @@ module NoticoBase
   def set_route
     @route = routes(:route_one_one)
     @vehicle = @route.vehicle_usage.vehicle
-    @vehicle.update!(devices: {agentId: '110110-3'})
+    @vehicle.update!(devices: {agent_id: '110110-3'})
   end
 end
