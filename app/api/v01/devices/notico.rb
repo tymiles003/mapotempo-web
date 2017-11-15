@@ -40,7 +40,7 @@ class V01::Devices::Notico < Grape::API
         requires :planning_id, type: Integer, desc: 'Planning ID'
       end
       post '/send_multiple' do
-        device_send_routes device_id: :agentId
+        device_send_routes device_id: :agent_id
       end
 
       desc 'Clear Route',
@@ -60,7 +60,7 @@ class V01::Devices::Notico < Grape::API
         requires :planning_id, type: Integer, desc: 'Planning ID'
       end
       delete '/clear_multiple' do
-        device_clear_routes device_id: :agentId
+        device_clear_routes device_id: :agent_id
       end
     end
   end
