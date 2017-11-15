@@ -1056,7 +1056,7 @@ en:
       total: total
   route_mailer:
     send_kmz_route:
-      title: "Planning KMZ export"
+      title: "Plan KMZ export"
       hello: Hello
       content: A KMZ file containing route informations has been attached to this
         E-Mail from %{s}.
@@ -1239,7 +1239,7 @@ en:
         icalendar: Calendar iCal
         icalendar_email: Calendar iCal by E-Mail
         spreadsheet: Spreadsheet CSV / Excel
-        none_planning: Please select at least one plannning to export
+        none_planning: Please select at least one plan to export
       list_message: "You have reached the advised number of plans for your account (Account Limit: %{limit})"
     edit:
       vehicles: Vehicles
