@@ -28,6 +28,8 @@ class ApplicationController < ActionController::Base
   rescue_from ActionController::UnknownController, with: :not_found_error
   rescue_from ActiveRecord::StaleObjectError, with: :deadlock
   rescue_from PG::TRDeadlockDetected, with: :deadlock
+  rescue_from ActiveRecord::StatementInvalid, with: :deadlock
+  rescue_from PG::TRSerializationFailure, with: :deadlock
   rescue_from Exceptions::JobInProgressError, with: :job_in_progress
 
   layout :layout_by_resource

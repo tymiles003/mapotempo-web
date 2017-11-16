@@ -576,4 +576,30 @@ class PlanningsControllerTest < ActionController::TestCase
     assert !planning.outdated
     assert !planning.zoning_outdated
   end
+
+  test 'should update active while automatic insert is in progress' do
+    planning = @planning # @planning not visible in stub_any_instance
+    route = routes(:route_one_one) # routes is another function in stub_any_instance
+    stop = stops(:stop_one_one)
+    @planning.routes.each{ |r| r.update(locked: true) if r.vehicle_usage_id && r.id != routes(:route_one_one).id }
+    assert_no_difference('Stop.count') do
+      # Simulate update active while stop is added in route
+      Planning.stub_any_instance(:automatic_insert, lambda { |*a|
+        new_connection = Planning.connection_pool.checkout
+        new_connection.execute("UPDATE stops SET active=false WHERE id='#{stop.id}'")
+        new_connection.execute("UPDATE routes SET outdated=true WHERE id='#{route.id}'")
+        send('__minitest_any_instance_stub__automatic_insert', *a)
+      }) do
+
+        patch :automatic_insert, id: @planning.id, format: :json, stop_ids: [stops(:stop_unaffected).id]
+
+        # Needs new connection to be outside transaction
+        ActiveRecord::Base.establish_connection(ActiveRecord::Base.connection_config)
+
+      end
+    end
+
+    assert !stop.reload.active
+    assert_nil stops(:stop_unaffected).reload.route.vehicle_usage_id
+  end
 end
