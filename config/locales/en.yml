@@ -1378,7 +1378,7 @@ en:
       marker_help: Show on map
       automatic_insert_help: Find best place in a route to insert this stop (results could not
         be optimized anymore)
-      automatic_insert_help_multiple: Find best places in routes to insert stops (results will not
+      automatic_insert_help_multiple: Find a good places in routes to insert stops (results will not
         be optimized anymore)
       automatic_insert_confirm: Find a route for each stop? Results will not be optimized.
         Zonings are recommended to find a route for each stop with accuracy (Ok to
