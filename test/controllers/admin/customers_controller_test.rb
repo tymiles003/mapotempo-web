@@ -81,6 +81,19 @@ class Admin::CustomersControllerTest < ActionController::TestCase
     assert_redirected_to edit_customer_path(assigns(:customer))
   end
 
+  test 'should update customer by decreasing vehicles' do
+    assert_difference('Vehicle.count', -1) do
+      assert_difference('VehicleUsage.count', -@customer.vehicle_usage_sets.size) do
+        assert_difference('Route.count', -@customer.plannings.length) do
+          Routers::RouterWrapper.stub_any_instance(:compute_batch, lambda { |url, mode, dimension, segments, options| segments.collect{ |i| [1, 1, '_ibE_seK_seK_seK'] } } ) do
+            patch :update, id: @customer, customer: { max_vehicles: @customer.max_vehicles - 1 }
+          end
+        end
+      end
+    end
+    assert_redirected_to edit_customer_path(assigns(:customer))
+  end
+
   test 'should update customer with locale' do
     orig_locale = I18n.locale
     begin
