@@ -21,7 +21,7 @@ class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
 
   # Handle exceptions
-  rescue_from StandardError, with: :server_error if ENV['RAILS_ENV'] != 'development'
+  rescue_from StandardError, with: :server_error if ENV['RAILS_ENV'] == 'production'
   rescue_from ActionController::InvalidAuthenticityToken, with: :server_error
   rescue_from ActiveRecord::RecordNotFound, with: :not_found_error
   rescue_from AbstractController::ActionNotFound, with: :not_found_error
