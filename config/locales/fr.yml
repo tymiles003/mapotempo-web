@@ -744,7 +744,8 @@ fr:
       destinations_limitation_default: '%{n} (valeur par défaut)'
       destinations_limitation_help: Nombre maximal de clients autorisés dans le compte.
       vehicle_usage_sets_limitation_default: '%{n} (valeur par défaut)'
-      vehicle_usage_sets_limitation_help: Nombre maximal de configuration des véhicules autorisés dans le compte.
+      vehicle_usage_sets_limitation_help: Nombre maximal de configuration des véhicules
+        autorisés dans le compte.
       optimization_max_split_size_default: '%{n} (valeur par défaut)'
       optimization_max_split_size_help: Nombre de points maximal à regrouper dans
         le cas d'un problème à optimiser trop gros. Plus la valeur est grande, meilleur
@@ -1470,7 +1471,7 @@ fr:
       marker_help: Visualiser sur la carte
       automatic_insert_help: Propose un endroit pour insérer ce client dans une tournée
         (le résultat peut ne plus être optimisé)
-      automatic_insert_help_multiple: Propose un endroit pour insérer les clients
+      automatic_insert_help_multiple: Propose un bon endroit pour insérer les clients
         dans des tournées (le résultat ne sera plus optimisé)
       automatic_insert_confirm: Affecter tous les arrêts non planifiés à des tournées ?
         Le résultat ne sera plus optimisé. Les zonages sont recommandés pour affecter
