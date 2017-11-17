@@ -22,23 +22,23 @@ require 'tempfile'
 class Notico < DeviceBase
   def definition
     {
-        device: 'notico',
-        label: 'Notico Deliv',
-        label_small: 'Notico',
-        route_operations: [:send, :clear],
-        has_sync: false,
-        help: true,
-        forms: {
-            settings: {
-                ftp_url: :text,
-                ftp_path: :text,
-                username: :text,
-                password: :password
-            },
-            vehicle: {
-                agent_id: :text
-            },
-        }
+      device: 'notico',
+      label: 'Notico Deliv',
+      label_small: 'Notico',
+      route_operations: [:send, :clear],
+      has_sync: false,
+      help: true,
+      forms: {
+        settings: {
+          ftp_url: :text,
+          ftp_path: :text,
+          username: :text,
+          password: :password
+        },
+        vehicle: {
+          agent_id: :text
+        },
+      }
     }
   end
 
@@ -54,35 +54,35 @@ class Notico < DeviceBase
       labels = stop.visit.destination.tags.pluck(:label).join(', ')
       if interventions[stop.visit.destination.ref] && interventions[stop.visit.destination.ref][:tourId] == stop.route_id
         interventions[stop.visit.destination.ref][:items] << {
-            col_1: stop.visit.ref,
-            col_2: stop.comment || '',
-            col_3: quantities,
-            col_4: labels
+          col_1: stop.visit.ref,
+          col_2: stop.comment || '',
+          col_3: quantities,
+          col_4: labels
         }
       else
         interventions[stop.visit.destination.ref] = {
-            interId: stop.base_id,
-            contractId: stop.visit.destination.ref,
-            tourId: stop.route_id,
-            agentId: route.vehicle_usage.vehicle.devices[:agent_id],
+          interId: stop.base_id,
+          contractId: stop.visit.destination.ref,
+          tourId: stop.route_id,
+          agentId: route.vehicle_usage.vehicle.devices[:agent_id],
 
-            name: stop.name,
-            language: I18n.locale.to_s.upcase,
-            address: [stop.street, stop.detail].compact.join(' '),
-            zip_code: stop.postalcode,
-            city: stop.city,
-            country: stop.country || customer.default_country,
-            phone: stop.phone_number || '',
+          name: stop.name,
+          language: I18n.locale.to_s.upcase,
+          address: [stop.street, stop.detail].compact.join(' '),
+          zip_code: stop.postalcode,
+          city: stop.city,
+          country: stop.country || customer.default_country,
+          phone: stop.phone_number || '',
 
-            dt_firststart: p_time(route, stop.time).strftime('%F %H:%M'),
-            dt_firstend: p_time(route, stop.duration ? stop.time + stop.duration.seconds : stop.time).strftime('%F %H:%M'),
+          dt_firststart: p_time(route, stop.open1 || stop.open2 || stop.time).strftime('%F %H:%M'),
+          dt_firstend: p_time(route, stop.close1 || stop.close2 || (stop.duration ? stop.time + stop.duration.seconds : stop.time)).strftime('%F %H:%M'),
 
-            items: [{
-                        col_1: stop.visit.ref,
-                        col_2: stop.comment || '',
-                        col_3: quantities,
-                        col_4: labels
-                    }]
+          items: [{
+                    col_1: stop.visit.ref,
+                    col_2: stop.comment || '',
+                    col_3: quantities,
+                    col_4: labels
+                  }]
         }
       end
     end
