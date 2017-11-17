@@ -19,7 +19,7 @@ module Devices
   module Helpers
     def device_send_routes(options = {})
       planning = @current_customer.plannings.find params[:planning_id]
-      routes = planning.routes.select(&:vehicle_usage)
+      routes = planning.routes.select(&:vehicle_usage_id)
       routes = routes.select{ |route| route.vehicle_usage.vehicle.devices[options[:device_id]] } if options[:device_id]
       routes.select{ |r| r.stops.select{ |s| s.position? }.size > 0 }.each{ |route|
         Route.transaction do
@@ -41,7 +41,7 @@ module Devices
 
     def device_clear_routes(options = {})
       planning = @current_customer.plannings.find params[:planning_id]
-      routes = planning.routes.select(&:vehicle_usage)
+      routes = planning.routes.select(&:vehicle_usage_id)
       routes = routes.select{ |route| route.vehicle_usage.vehicle.devices[options[:device_id]] } if options[:device_id]
       routes.each{ |route|
         Route.transaction do
