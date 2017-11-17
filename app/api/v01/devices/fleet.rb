@@ -45,10 +45,9 @@ class V01::Devices::Fleet < Grape::API
         nickname: 'deviceFleetSendMultiple'
       params do
         requires :planning_id, type: Integer, desc: 'Planning ID'
-        requires :type, type: String, desc: 'Action Name', values: %w(waypoints orders)
       end
       post '/send_multiple' do
-        device_send_routes params.slice(:type).merge(device_id: :user)
+        device_send_routes params.slice(:type).merge(device_id: :fleet_user)
       end
 
       desc 'Clear Route',
@@ -68,7 +67,7 @@ class V01::Devices::Fleet < Grape::API
         requires :planning_id, type: Integer, desc: 'Planning ID'
       end
       delete '/clear_multiple' do
-        device_clear_routes device_id: :user
+        device_clear_routes device_id: :fleet_user
       end
 
       desc 'Sync Vehicles',

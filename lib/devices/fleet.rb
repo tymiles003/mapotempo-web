@@ -51,7 +51,7 @@ class Fleet < DeviceBase
 
   def check_auth(params)
     rest_client_get(get_user_url(params), params[:api_key])
-  rescue RestClient::Forbidden, RestClient::InternalServerError, RestClient::ResourceNotFound, RestClient::Unauthorized
+  rescue RestClient::Forbidden, RestClient::InternalServerError, RestClient::ResourceNotFound, RestClient::Unauthorized, Errno::ECONNREFUSED
     raise DeviceServiceError.new("Fleet: #{I18n.t('errors.fleet.invalid_account')}")
   end
 
@@ -200,27 +200,27 @@ class Fleet < DeviceBase
   end
 
   def get_users_url(params = {})
-    Addressable::Template.new("#{api_url}/api/v1/users{?with_vehicle*}").expand(params).to_s
+    Addressable::Template.new("#{api_url}/api/0.1/users{?with_vehicle*}").expand(params).to_s
   end
 
   def get_user_url(params)
-    "#{api_url}/api/v1/users/#{params[:user]}"
+    "#{api_url}/api/0.1/users/#{params[:user]}"
   end
 
   def get_vehicles_pos_url
-    "#{api_url}/api/v1/current_locations"
+    "#{api_url}/api/0.1/current_locations"
   end
 
   def get_missions_url(user = nil)
-    user ? "#{api_url}/api/v1/users/#{user}/missions" : "#{api_url}/api/v1/missions"
+    user ? "#{api_url}/api/0.1/users/#{user}/missions" : "#{api_url}/api/0.1/missions"
   end
 
   def set_missions_url(user)
-    "#{api_url}/api/v1/users/#{user}/missions/create_multiples"
+    "#{api_url}/api/0.1/users/#{user}/missions/create_multiples"
   end
 
   def delete_missions_url(user, destination_ids)
-    "#{api_url}/api/v1/users/#{user}/missions/destroy_multiples?ids=#{destination_ids}"
+    "#{api_url}/api/0.1/users/#{user}/missions/destroy_multiples?ids=#{destination_ids}"
   end
 
   def generate_mission_id(destination)
