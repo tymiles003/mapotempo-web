@@ -29,6 +29,15 @@ if route.vehicle_usage_id
   json.vehicle_usage_id route.vehicle_usage.id
   json.devices route.vehicle_usage.vehicle.devices
   json.vehicle_id route.vehicle_usage.vehicle.id
+  if route.drive_time != 0 && !route.drive_time.nil?
+    json.route_averages do
+      json.drive_time l(Time.at(route.drive_time).utc, format: :hour_minute)
+      json.speed route.speed_average(current_user.prefered_unit)
+
+      json.visits_duration l(Time.at(route.visits_duration).utc, format: :hour_minute) if route.visits_duration
+      json.wait_time l(Time.at(route.wait_time).utc, format: :hour_minute) if route.wait_time
+    end
+  end
   json.work_time '%i:%02i' % [(route.vehicle_usage.default_close - route.vehicle_usage.default_open) / 60 / 60, (route.vehicle_usage.default_close - route.vehicle_usage.default_open) / 60 % 60]
   # Devices
   route.planning.customer.device.configured_definitions.each do |key, definition|

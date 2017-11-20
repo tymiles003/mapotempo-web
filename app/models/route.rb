@@ -100,6 +100,9 @@ class Route < ApplicationRecord
     self.emission = 0
     self.start = self.end = nil
     last_lat, last_lng = nil, nil
+    self.drive_time = nil
+    self.wait_time = nil
+    self.visits_duration = nil
     if vehicle_usage && !stops.empty?
       service_time_start = service_time_start_value
       service_time_end = service_time_end_value
@@ -183,6 +186,7 @@ class Route < ApplicationRecord
           if stop.drive_time
             stops_drive_time[stop] = stop.drive_time
             stop.time = self.end + stop.drive_time
+            self.drive_time = (self.drive_time || 0) + stop.drive_time
           elsif stop.is_a?(StopRest) || self.end
             stop.time = self.end
           else
@@ -195,6 +199,7 @@ class Route < ApplicationRecord
             if open && stop.time < open
               stop.wait_time = open - stop.time
               stop.time = open
+              self.wait_time = (self.wait_time || 0) + stop.wait_time
             else
               stop.wait_time = nil
             end
@@ -202,6 +207,7 @@ class Route < ApplicationRecord
 
             self.distance += stop.distance if stop.distance
             self.end = stop.time + stop.duration
+            self.visits_duration = (self.visits_duration || 0) + stop.duration if stop.is_a?(StopVisit)
 
             if stop.visit.try(:default_quantities?)
               unless options[:no_quantities]
@@ -238,6 +244,7 @@ class Route < ApplicationRecord
         stops_drive_time[:stop] = drive_time
         self.end += drive_time
         self.stop_distance, self.stop_drive_time = distance, drive_time
+        self.drive_time = self.drive_time + self.stop_drive_time if self.drive_time
       end
       self.stop_no_path = vehicle_usage.default_store_stop.try(:position?) && stops_sort.any?{ |s| s.active && s.position? } && trace.nil?
 
@@ -609,6 +616,11 @@ class Route < ApplicationRecord
         end
       end.compact
     end
+  end
+
+  def speed_average(unit = 'km')
+    converter = (unit == 'km') ? 3.6 : 2.237
+    ((self.distance / (self.drive_time | 1)) * converter).round
   end
 
   private

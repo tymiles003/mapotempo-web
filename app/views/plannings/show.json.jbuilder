@@ -25,5 +25,19 @@ else
   json.stores (@planning.vehicle_usage_set.vehicle_usages.collect(&:default_store_start) + @planning.vehicle_usage_set.vehicle_usages.collect(&:default_store_stop) + @planning.vehicle_usage_set.vehicle_usages.collect(&:default_store_rest)).compact.uniq do |store|
     json.extract! store, :id, :name, :street, :postalcode, :city, :country, :lat, :lng, :color, :icon, :icon_size
   end
+
+  averages = @planning.averages(current_user.prefered_unit)
+  if averages
+    json.averages do
+      json.routes_visits_duration l(Time.at(averages[:routes_visits_duration]).utc, format: :hour_minute)
+      json.routes_drive_time l(Time.at(averages[:routes_drive_time]).utc, format: :hour_minute)
+      json.routes_wait_time l(Time.at(averages[:routes_wait_time]).utc, format: :hour_minute)
+      json.routes_speed_average averages[:routes_speed_average]
+      json.vehicles_used averages[:vehicles_used]
+      json.capacities averages[:capacities] unless averages[:capacities].zero?
+      json.quantities averages[:quantities] unless averages[:quantities].zero?
+    end
+  end
+
   json.routes (@routes || (@with_stops ? @planning.routes.includes_destinations : @planning.routes)), partial: 'routes/edit', as: :route
 end

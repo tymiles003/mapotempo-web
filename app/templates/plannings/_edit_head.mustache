@@ -1,4 +1,20 @@
 <span class="route-info"><i class="fa fa-check-square fa-fw" title="{{#i18n}}plannings.edit.stops_help{{/i18n}}"></i>{{size_active}}/{{size}}&nbsp;{{#i18n}}plannings.edit.stops{{/i18n}}</span>
-<span class="route-info"><i class="fa fa-clock-o fa-fw" title="{{#i18n}}plannings.edit.duration_help{{/i18n}}"></i>{{duration}}</span>
+<span class="route-info">
+  <span title="{{#i18n}}plannings.edit.duration_help{{/i18n}}"><i class="fa fa-clock-o fa-fw"></i>
+    {{duration}}
+  </span>
+  {{#averages}}
+    (<span title="{{#i18n}}plannings.edit.driving_time_help{{/i18n}}"><i class="fa fa-truck fa-fw"></i>{{averages.routes_drive_time}}</span><!--
+    -->{{#averages.routes_visits_duration}} <span title="{{#i18n}}plannings.edit.visit_duration_help{{/i18n}}"><i class="fa fa-clock-o fa-fw"></i>{{averages.routes_visits_duration}}</span>{{/averages.routes_visits_duration}}<!--
+    -->{{#averages.routes_wait_time}} <span title="{{#i18n}}plannings.edit.wait_time_help{{/i18n}}"><i class="fa fa-pause fa-fw"></i>{{averages.routes_wait_time}}</span>{{/averages.routes_wait_time}})
+  {{/averages}}
+</span>
 <span class="route-info"><i class="fa fa-road fa-fw" title="{{#i18n}}plannings.edit.distance_help{{/i18n}}"></i>{{distance}}</span>
 <span class="route-info"><i class="fa fa-flask fa-fw" title="{{#i18n}}plannings.edit.emission_help{{/i18n}}"></i>{{emission}}&nbsp;{{#i18n}}all.unit.kgco2e_html{{/i18n}}</span>
+{{#averages}}
+  <span class="route-info" title="{{#i18n}}plannings.edit.route_speed_average_help{{/i18n}}"><i class="fa fa-tachometer" aria-hidden="true"></i> {{averages.routes_speed_average}} {{prefered_unit}}/h</span>
+  <span class="route-info" title="{{#i18n}}plannings.edit.vehicles_used_help{{/i18n}}"><i class="fa fa-truck" aria-hidden="true"></i> {{averages.vehicles_used}} </span>
+  {{#averages.quantities}}<!--
+    --><span class="route-info" title="dd"><i class="fa fa-archive fa-fw" aria-hidden="true"></i>{{averages.quantities}}/{{averages.capacities}}</span>
+  {{/averages.quantities}}
+{{/averages}}

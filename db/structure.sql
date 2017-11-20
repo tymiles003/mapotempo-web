@@ -623,7 +623,10 @@ CREATE TABLE routes (
     geojson_points text[],
     stop_no_path boolean,
     quantities hstore,
-    lock_version integer DEFAULT 0 NOT NULL
+    lock_version integer DEFAULT 0 NOT NULL,
+    visits_duration integer,
+    wait_time integer,
+    drive_time integer
 );
 
 
@@ -2654,3 +2657,6 @@ INSERT INTO schema_migrations (version) VALUES ('20171116151624');
 INSERT INTO schema_migrations (version) VALUES ('20171106100323');
 
 INSERT INTO schema_migrations (version) VALUES ('20171106110030');
+
+INSERT INTO schema_migrations (version) VALUES ('20171120111400');
+

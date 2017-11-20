@@ -83,6 +83,12 @@
         </ul>
       </div>
       <span class="route-info"><i class="fa fa-clock-o fa-fw" title="{{#i18n}}plannings.edit.route_duration_help{{/i18n}}"></i>{{duration}}/{{work_time}}</span>
+      {{#route_averages}}
+        (<span title="{{#i18n}}plannings.edit.route_driving_time_help{{/i18n}}"><i class="fa fa-truck fa-fw"></i>{{route_averages.drive_time}}</span><!--
+        -->{{#route_averages.visits_duration}} <span title="{{#i18n}}plannings.edit.route_visits_duration_help{{/i18n}}"><i class="fa fa-clock-o fa-fw"></i>{{route_averages.visits_duration}}</span>{{/route_averages.visits_duration}}<!--
+        -->{{#route_averages.wait_time}} <span title="{{#i18n}}plannings.edit.route_wait_time_help{{/i18n}}"><i class="fa fa-pause fa-fw"></i>{{route_averages.wait_time}}</span>{{/route_averages.wait_time}})
+        <span class="route-info" title="{{#i18n}}plannings.edit.route_speed_average_help{{/i18n}}"><i class="fa fa-tachometer" aria-hidden="true"></i> {{route_averages.speed}} {{prefered_unit}}/h</span>
+      {{/route_averages}}
       <span class="route-info"><i class="fa fa-road fa-fw" title="{{#i18n}}plannings.edit.route_distance_help{{/i18n}}"></i>{{distance}}</span>
       {{#quantities}}
         <span class="route-info"><i class="fa {{unit_icon}} fa-fw" title="{{#i18n}}plannings.edit.route_quantity_help{{/i18n}}"></i><span data-quantity_id="{{id}}">{{quantity}}</span></span>

@@ -510,6 +510,43 @@ class Planning < ApplicationRecord
     save!
   end
 
+  def averages(metric)
+    routes_distance = 0
+    converter = (metric == 'km') ? 3.6 : 2.237
+    result = {
+      routes_visits_duration: 0,
+      routes_speed_average: 0,
+      routes_drive_time: 0,
+      routes_wait_time: 0,
+      vehicles_used: 0,
+      quantities: 0,
+      capacities: 0
+    }
+
+    routes.each do |route|
+      if route.vehicle_usage && !route.drive_time.nil?
+        result[:routes_drive_time] += route.drive_time
+        result[:vehicles_used] += 1 if route.drive_time > 0
+
+        result[:routes_visits_duration] += route.visits_duration if route.visits_duration
+        result[:routes_wait_time] += route.wait_time if route.wait_time
+
+        result[:quantities] += route.compute_quantities.to_a.sum(0) { |q| q[1] || 0 }
+        result[:capacities] += route.vehicle_usage.vehicle.default_capacities.to_a.sum(0) { |c| c[1] || 0 }
+
+        routes_distance += route.distance
+      end
+    end
+
+    if result[:routes_drive_time] != 0
+      result[:routes_speed_average] = ((routes_distance / result[:routes_drive_time]) * converter).round
+    else
+      result = nil
+    end
+
+    result
+  end
+
   private
 
   # To reduce matrix computation with only one route... remove code?
