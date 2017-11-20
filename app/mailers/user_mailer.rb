@@ -10,7 +10,7 @@ class UserMailer < ApplicationMailer
       @test = user.customer.test
 
       @title = t('user_mailer.password.title')
-      @confirmation_link = user.customer.reseller.url_protocol + "://" + user.customer.reseller.host + password_user_path(user, token: user.confirmation_token)
+      @confirmation_link = password_user_url(user, token: user.confirmation_token, host: user.customer.reseller.url_protocol + '://' + user.customer.reseller.host)
       @subscription_duration = user.customer.end_subscription && (user.customer.end_subscription - Date.today).to_i > 1 ? (user.customer.end_subscription - Date.today).to_i : nil
       @home_link = user.customer.reseller.url_protocol + '://' + user.customer.reseller.host
 
