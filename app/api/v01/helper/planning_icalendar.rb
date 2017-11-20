@@ -40,7 +40,7 @@ module PlanningIcalendar
   def planning_calendar(planning)
     calendar = Icalendar::Calendar.new
     Route.includes_destinations.scoping do
-      planning.routes.select(&:vehicle_usage).each do |route|
+      planning.routes.select(&:vehicle_usage_id).each do |route|
         add_route_to_calendar calendar, route
       end
     end
@@ -51,7 +51,7 @@ module PlanningIcalendar
     calendar = Icalendar::Calendar.new
     Route.includes_destinations.scoping do
       plannings.each do |planning|
-        planning.routes.select(&:vehicle_usage).each do |route|
+        planning.routes.select(&:vehicle_usage_id).each do |route|
           add_route_to_calendar calendar, route
         end
       end

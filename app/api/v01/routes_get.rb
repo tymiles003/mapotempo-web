@@ -80,7 +80,7 @@ class V01::RoutesGet < Grape::API
         get ':id' do
           r = current_customer.plannings.where(ParseIdsRefs.read(params[:planning_id])).first!.routes.where(ParseIdsRefs.read(params[:id])).first!
           if params.key?(:email)
-            vehicle = r.vehicle_usage && r.vehicle_usage.vehicle
+            vehicle = r.vehicle_usage_id && r.vehicle_usage.vehicle
             if vehicle
               route_to_send = Hash[
                 vehicle.contact_email,

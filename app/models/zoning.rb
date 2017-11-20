@@ -87,7 +87,7 @@ class Zoning < ApplicationRecord
 
   def automatic_clustering(planning, n, out_of_route = true)
     if planning
-      routes = out_of_route ? planning.routes : planning.routes.select(&:vehicle_usage)
+      routes = out_of_route ? planning.routes : planning.routes.select(&:vehicle_usage_id)
       stops = routes.map(&:stops).flatten.uniq
     end
     positions = (stops || customer.destinations).select(&:position?).map{ |position| [position.lat, position.lng] }.compact.uniq
@@ -101,14 +101,14 @@ class Zoning < ApplicationRecord
 
   def from_planning(planning)
     zones.clear
-    clusters = planning.routes.select(&:vehicle_usage).collect{ |route|
+    clusters = planning.routes.select(&:vehicle_usage_id).collect{ |route|
       route.stops.select{ |stop| stop.is_a?(StopVisit) }.collect{ |stop|
         if stop.position?
           [stop.lat, stop.lng]
         end
       }.compact.uniq
     }
-    routes = planning.routes.select(&:vehicle_usage)
+    routes = planning.routes.select(&:vehicle_usage_id)
     Clustering.hulls(clusters).each{ |hull|
       route = routes.shift
       if hull

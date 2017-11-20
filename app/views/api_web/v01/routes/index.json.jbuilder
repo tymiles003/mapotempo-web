@@ -13,7 +13,7 @@ json.routes @routes do |route|
   unless @planning.customer.enable_orders
     json.quantities route.quantities
   end
-  if route.vehicle_usage
+  if route.vehicle_usage_id
     json.vehicle_id route.vehicle_usage.vehicle.id
     json.work_time '%i:%02i' % [(route.vehicle_usage.default_close - route.vehicle_usage.default_open) / 60 / 60, (route.vehicle_usage.default_close - route.vehicle_usage.default_open) / 60 % 60]
   end
@@ -22,7 +22,7 @@ json.routes @routes do |route|
     json.extract! route.vehicle_usage.default_store_start, :id, :name, :street, :postalcode, :city, :country, :lat, :lng
     (json.time route.start_time) if route.start
     (json.time_day number_of_days(route.start)) if route.start
-  end if route.vehicle_usage && route.vehicle_usage.default_store_start
+  end if route.vehicle_usage_id && route.vehicle_usage.default_store_start
   json.stops route.stops do |stop|
     (json.error true) if (stop.is_a?(StopVisit) && !stop.position?) || stop.out_of_window || stop.out_of_capacity || stop.out_of_drive_time || stop.no_path
     json.stop_id stop.id
@@ -41,7 +41,7 @@ json.routes @routes do |route|
     (json.time stop.time_time) if stop.time
     (json.time_day number_of_days(stop.time)) if stop.time
     (json.active true) if stop.active
-    (json.number number += 1) if route.vehicle_usage && stop.active
+    (json.number number += 1) if route.vehicle_usage_id && stop.active
     json.distance (stop.distance || 0) / 1000
     if stop.is_a?(StopVisit)
       json.visits true
@@ -67,7 +67,7 @@ json.routes @routes do |route|
         end
       else
         # Hash { id, quantity, icon, label } for deliverable units
-        json.quantities visit_quantities(visit, route.vehicle_usage && route.vehicle_usage.vehicle)
+        json.quantities visit_quantities(visit, route.vehicle_usage_id && route.vehicle_usage.vehicle)
       end
     elsif stop.is_a?(StopRest)
       json.rest do
@@ -86,7 +86,7 @@ json.routes @routes do |route|
     json.stop_out_of_drive_time route.stop_out_of_drive_time
     out_of_drive_time |= route.stop_out_of_drive_time
     (json.no_path true) if route.stop_no_path
-  end if route.vehicle_usage && route.vehicle_usage.default_store_stop
+  end if route.vehicle_usage_id && route.vehicle_usage.default_store_stop
   if route.no_geolocalization || route.out_of_window || route.out_of_capacity || route.out_of_drive_time || route.no_path
     json.route_error true
     json.route_no_geolocalization route.no_geolocalization

@@ -181,11 +181,11 @@ class PlanningsController < ApplicationController
         Planning.transaction do
           Stop.includes_destinations.scoping do
             route = @planning.routes.find{ |route| route.id == Integer(params[:route_id]) }
-            vehicle_usage_id_was = route.vehicle_usage.id
+            vehicle_usage_id_was = route.vehicle_usage_id
             vehicle_usage = @planning.vehicle_usage_set.vehicle_usages.find(Integer(params[:vehicle_usage_id]))
             if route && vehicle_usage && @planning.switch(route, vehicle_usage) && @planning.save! && @planning.compute && @planning.save!
               @routes = [route]
-              @routes << @planning.routes.find{ |r| r.vehicle_usage && r.vehicle_usage.id == vehicle_usage_id_was } if vehicle_usage_id_was != route.vehicle_usage.id
+              @routes << @planning.routes.find{ |r| r.vehicle_usage_id == vehicle_usage_id_was } if vehicle_usage_id_was != route.vehicle_usage.id
               format.json { render action: 'show', location: @planning }
             else
               format.json { render json: @planning.errors, status: :unprocessable_entity }
@@ -206,7 +206,7 @@ class PlanningsController < ApplicationController
           stops = @planning.routes.flat_map{ |r| r.stops.select{ |s| stop_ids.include? s.id } }
           route_ids = stops.collect(&:route_id).uniq
         else
-          stops = @planning.routes.detect{ |r| !r.vehicle_usage }.stops
+          stops = @planning.routes.detect{ |r| !r.vehicle_usage_id }.stops
           route_ids = stops.any? ? [stops[0].route_id] : []
         end
         raise ActiveRecord::RecordNotFound if stops.empty?

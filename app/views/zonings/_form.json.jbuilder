@@ -8,15 +8,15 @@ json.zoning @zoning.zones do |zone|
 end
 if @planning
   json.planning @planning.routes do |route|
-    if route.vehicle_usage
-      json.vehicle_id route.vehicle_usage.vehicle.id
+    if route.vehicle_usage_id
+      json.vehicle_id route.vehicle_usage.vehicle_id
     end
     json.stops route.stops.select { |stop| stop.is_a?(StopVisit) }.collect do |stop|
       visit = stop.visit
       json.extract! visit, :id
       json.extract! visit.destination, :id, :name, :street, :detail, :postalcode, :city, :country, :lat, :lng, :phone_number, :comment
       json.ref visit.ref if @zoning.customer.enable_references
-      json.active route.vehicle_usage && stop.active
+      json.active route.vehicle_usage_id && stop.active
       unless @planning.customer.enable_orders
         json.quantities visit.default_quantities.map { |k, v|
           {deliverable_unit_id: k, quantity: v, unit_icon: @planning.customer.deliverable_units.find { |du| du.id == k }.try(:default_icon)} unless v.nil?

@@ -510,7 +510,7 @@ class Route < ApplicationRecord
   end
 
   def default_color
-    self.color || (self.vehicle_usage && self.vehicle_usage.vehicle.color) || COLOR_DEFAULT
+    self.color || (self.vehicle_usage_id && self.vehicle_usage.vehicle.color) || COLOR_DEFAULT
   end
 
   def to_s

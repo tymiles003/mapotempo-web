@@ -110,7 +110,7 @@
             <% end %>
 
             <% @planning.customer.device.configured_definitions.each{ |key, definition| %>
-              <% if @planning.routes.any?{ |route| route.vehicle_usage && !route.vehicle_usage.vehicle.devices.key?(definition[:device]) } %>
+              <% if @planning.routes.any?{ |route| route.vehicle_usage_id && !route.vehicle_usage.vehicle.devices.key?(definition[:device]) } %>
                 <% definition[:route_operations].each{ |route_operation| %>
                   <li class="link device-operation" data-service="<%= definition[:device] %>" data-operation="<%= route_operation.is_a?(Hash) ? route_operation.keys[0] : route_operation %>"<% if route_operation.is_a?(Hash) %> data-type="<%= route_operation.values[0] %>"<% end %> data-planning-id="<%= @planning.id %>">
                     <i class="fa fa-mobile fa-rotate-90 fa-fw"></i>
@@ -128,12 +128,12 @@
             <li><%= link_to planning_path(@planning, format: :gpx) do %><i class="fa fa-mobile fa-fw"></i> <%= t '.export.gpx_route' %><% end %></li>
             <li><%= link_to planning_path(@planning, format: :gpx, track: true) do %><i class="fa fa-mobile fa-fw"></i> <%= t '.export.gpx_track' %><% end %></li>
             <li><%= link_to planning_path(@planning, format: :kmz) do %><i class="fa fa-mobile fa-fw"></i> <%= t '.export.kmz_track' %><% end %></li>
-            <% if @planning.routes.any?{|route| route.vehicle_usage && !route.vehicle_usage.vehicle.contact_email.blank? } %>
+            <% if @planning.routes.any?{|route| route.vehicle_usage_id && !route.vehicle_usage.vehicle.contact_email.blank? } %>
               <li class="kmz_email"><%= link_to planning_path(@planning, format: :kmz, email: 1) do %><i class="fa fa-envelope fa-fw"></i> <%= t '.export.kmz_email.action' %><% end %></li>
             <% end %>
             <li role="separator" class="divider"></li>
             <li><%= link_to api_planning_calendar_path(@planning, api_key: current_user.api_key) do %><i class="fa fa-calendar fa-fw"></i> <%= t '.export.icalendar.action' %><% end %></li>
-            <% if @planning.routes.any?{|route| route.vehicle_usage && !route.vehicle_usage.vehicle.contact_email.blank? } %>
+            <% if @planning.routes.any?{|route| route.vehicle_usage_id && !route.vehicle_usage.vehicle.contact_email.blank? } %>
               <li class="icalendar_email" data-email="true"><%= link_to api_planning_calendar_path(@planning, email: 1) do %><i class="fa fa-envelope fa-fw"></i> <%= t '.export.icalendar.action_email' %><% end %></li>
             <% end %>
           </ul>

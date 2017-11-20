@@ -22,7 +22,7 @@ unless @planning.customer.enable_orders
     json.unit_icon units[:unit_icon]
   end
 end
-if route.vehicle_usage
+if route.vehicle_usage_id
   json.name (route.ref ? "#{route.ref} " : '') + route.vehicle_usage.vehicle.name
   json.color route.color || route.vehicle_usage.vehicle.color
   json.contact_email route.vehicle_usage.vehicle.contact_email if route.vehicle_usage.vehicle.contact_email
@@ -88,7 +88,7 @@ if @with_stops
     (json.time_day number_of_days(stop.time)) if stop.time
     if stop.active
       json.active true
-      (json.number stop.index - inactive_stops) if route.vehicle_usage
+      (json.number stop.index - inactive_stops) if route.vehicle_usage_id
     else
       inactive_stops += 1
     end
@@ -119,7 +119,7 @@ if @with_stops
         end
       else
         # Hash { id, quantity, icon, label } for deliverable units
-        json.quantities visit_quantities(visit, route.vehicle_usage && route.vehicle_usage.vehicle)
+        json.quantities visit_quantities(visit, route.vehicle_usage_id && route.vehicle_usage.vehicle)
       end
       if stop.status && @planning.customer.enable_stop_status
         json.status t("plannings.edit.stop_status.#{stop.status.downcase}", default: stop.status)
@@ -151,7 +151,7 @@ json.store_stop do
   out_of_drive_time |= route.stop_out_of_drive_time
   json.stop_distance (route.stop_distance || 0) / 1000
   json.stop_drive_time route.stop_drive_time
-end if route.vehicle_usage && route.vehicle_usage.default_store_stop
+end if route.vehicle_usage_id && route.vehicle_usage.default_store_stop
 (json.end_without_service Time.at(display_end_time(route)).utc.strftime('%H:%M')) if display_end_time(route)
 (json.end_without_service_day number_of_days(display_end_time(route))) if display_end_time(route)
 
