@@ -47,7 +47,7 @@ class Stop < ApplicationRecord
   end
 
   def number(inactive_stop)
-    if self.active && self.route.vehicle_usage
+    if self.active && self.route.vehicle_usage_id
       self.index - inactive_stop
     else
       nil

@@ -273,7 +273,7 @@ class Route < ApplicationRecord
   # no_geojson
   # no_quantities
   def compute!(options = {})
-    if self.vehicle_usage
+    if self.vehicle_usage_id
       self.geojson_tracks = nil
       stops_sort, stops_drive_time, stops_time_windows = plan(nil, options)
 
@@ -510,7 +510,7 @@ class Route < ApplicationRecord
   end
 
   def default_color
-    self.color || (self.vehicle_usage && self.vehicle_usage.vehicle.color) || COLOR_DEFAULT
+    self.color || (self.vehicle_usage_id && self.vehicle_usage.vehicle.color) || COLOR_DEFAULT
   end
 
   def to_s
@@ -521,7 +521,7 @@ class Route < ApplicationRecord
     stores_geojson = []
 
     if include_stores
-      stores_geojson = routes.select { |r| r.vehicle_usage && (!respect_hidden || !r.hidden) }.map(&:vehicle_usage).flat_map { |vu| [vu.default_store_start, vu.default_store_stop, vu.default_store_rest] }.compact.uniq.select(&:position?).map do |store|
+      stores_geojson = routes.select { |r| r.vehicle_usage_id && (!respect_hidden || !r.hidden) }.map(&:vehicle_usage).flat_map { |vu| [vu.default_store_start, vu.default_store_stop, vu.default_store_rest] }.compact.uniq.select(&:position?).map do |store|
         coordinates = [store.lng, store.lat]
         {
           type: 'Feature',

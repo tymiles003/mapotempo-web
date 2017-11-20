@@ -157,7 +157,7 @@ class V01::Routes < Grape::API
         get ':id' do
           planning = current_customer.plannings.find_by! ParseIdsRefs.read(params[:planning_id])
           vehicle = current_customer.vehicles.find_by! ParseIdsRefs.read(params[:id])
-          route = planning.routes.find{ |route| route.vehicle_usage && route.vehicle_usage.vehicle == vehicle }
+          route = planning.routes.find{ |route| route.vehicle_usage_id && route.vehicle_usage.vehicle == vehicle }
           present route, with: V01::Entities::Route, geojson: params[:geojson]
         end
       end

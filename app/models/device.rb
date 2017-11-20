@@ -71,5 +71,5 @@ class Device
     has_stop_status
   end
 
-  # @planning.customer.device.configured?(:tomtom) && @planning.routes.any?{ |r| r.vehicle_usage && r.vehicle_usage.vehicle.devices[:tomtom_id] }
+  # @planning.customer.device.configured?(:tomtom) && @planning.routes.any?{ |r| r.vehicle_usage_id && r.vehicle_usage.vehicle.devices[:tomtom_id] }
 end

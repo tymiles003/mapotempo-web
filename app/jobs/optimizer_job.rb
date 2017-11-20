@@ -33,12 +33,12 @@ class OptimizerJob < Job.new(:planning_id, :route_id, :global, :active_only)
     Delayed::Worker.logger.info "OptimizerJob planning_id=#{planning_id} perform"
     planning = Planning.where(id: planning_id).first!
     routes = planning.routes.select { |r|
-      (route_id && r.id == route_id) || (!route_id && !global && r.vehicle_usage && r.size_active > 1) || (!route_id && global)
+      (route_id && r.id == route_id) || (!route_id && !global && r.vehicle_usage_id && r.size_active > 1) || (!route_id && global)
     }.reject(&:locked)
     optimize_time = planning.customer.optimization_time || @@optimize_time
 
     bars = Array.new(2, 0)
-    optimum = unless routes.select(&:vehicle_usage).empty?
+    optimum = unless routes.select(&:vehicle_usage_id).empty?
       begin
         planning.optimize(routes, global, active_only) do |positions, services, vehicles|
           optimum = Mapotempo::Application.config.optimize.optimize(
