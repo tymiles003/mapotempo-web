@@ -131,7 +131,7 @@
           <tr>
             <td class="button">
               <div>
-                <a target="_blank" class="button-mobile" href="<%= @contact_url %>" style="margin-bottom: 15px;padding:5px;font-weight:800; color:#13b0ca; border: 1px solid #13b0ca; border-radius: 2px; box-shadow: 3px 3px 1px rgba(25, 166, 190, 0.49);display:inline-block;font-family:'Cabin', Helvetica, Arial, sans-serif;font-size:14px;font-weight:normal;line-height:45px;text-align:center;text-decoration:none;width:155px;-webkit-text-size-adjust:none;mso-hide:all;">
+                <a target="_blank" class="button-mobile" href="<%= @contact_url + @parameters[:contact_params] %>" style="margin-bottom: 15px;padding:5px;font-weight:800; color:#13b0ca; border: 1px solid #13b0ca; border-radius: 2px; box-shadow: 3px 3px 1px rgba(25, 166, 190, 0.49);display:inline-block;font-family:'Cabin', Helvetica, Arial, sans-serif;font-size:14px;font-weight:normal;line-height:45px;text-align:center;text-decoration:none;width:155px;-webkit-text-size-adjust:none;mso-hide:all;">
                   <%= t("user_mailer.#{ @template }.contact_support") %>
                 </a>
               </div>
@@ -157,7 +157,7 @@
                   <%= t("user_mailer.#{ @template }.panels_header") %>
                   <p style="font-size:15px; font-weight:500;">
                     <%= raw t("user_mailer.#{ @template }.panels_subtitle") %>
-                    <a target="_blank" href="<%= @help_url %>/manual/index.html" style="color:#13b0ca; text-decoration:underline !important;">
+                    <a target="_blank" href="<%= @help_url %>/manual/index.html<%= @parameters[:help_params] %>" style="color:#13b0ca; text-decoration:underline !important;">
                     <%= t("user_mailer.#{ @template }.documentation") %>
                   </a></p>
                 </td>
@@ -177,7 +177,7 @@
                         <table cellpadding="0" cellspacing="0" width="100%">
                           <tr>
                             <td class="info-img">
-                              <a target="_blank" href="<%= @help_url + t("user_mailer.#{ @template }.panel_one.doc_href") %>">
+                              <a target="_blank" href="<%= @help_url + t("user_mailer.#{ @template }.panel_one.doc_href") + @parameters[:panel_first][:link] %>">
                                 <img class="info-img" src="<%= t("user_mailer.#{ @template }.panel_one.img_src") %>" alt="<%= t("user_mailer.#{ @template }.panel_one.title") %>"/>
                               </a>
                             </td>
@@ -187,7 +187,7 @@
                               <table cellspacing="0" cellpadding="0" width="100%" style="min-height: 260px;">
                                 <tr>
                                   <td style="text-align:left; width:80%; vertical-align: top;">
-                                    <a target="_blank" href="<%= @help_url + t("user_mailer.#{ @template }.panel_one.doc_href") %>">
+                                    <a target="_blank" href="<%= @help_url + t("user_mailer.#{ @template }.panel_one.doc_href") + @parameters[:panel_first][:link] %>">
                                       <span class="header-sm"><%= t("user_mailer.#{ @template }.panel_one.title") %></span>
                                     </a><br/>
                                     <p style="font-size:12px;">
@@ -208,7 +208,7 @@
                                <%= render "user_mailer/adds/panel_one_#{ @template }_links" %>
                               <% end %>
                               <div>
-                                <a target="_blank" class="button-mobile" href="<%= @help_url + t("user_mailer.#{ @template }.panel_one.doc_href") %>" style="font-size:12px;margin-bottom: 5px;padding:5px; color:#54dc9f; border: 1px solid #54dc9f; border-radius: 2px; box-shadow: 3px 3px 1px rgba(84, 220, 159, 0.51);display:inline-block;font-family:'Cabin', Helvetica, Arial, sans-serif;font-weight:normal;line-height:45px;text-align:center;text-decoration:none;width:228px;-webkit-text-size-adjust:none;mso-hide:all;">
+                                <a target="_blank" class="button-mobile" href="<%= @help_url + t("user_mailer.#{ @template }.panel_one.doc_href") + @parameters[:panel_first][:link] %>" style="font-size:12px;margin-bottom: 5px;padding:5px; color:#54dc9f; border: 1px solid #54dc9f; border-radius: 2px; box-shadow: 3px 3px 1px rgba(84, 220, 159, 0.51);display:inline-block;font-family:'Cabin', Helvetica, Arial, sans-serif;font-weight:normal;line-height:45px;text-align:center;text-decoration:none;width:228px;-webkit-text-size-adjust:none;mso-hide:all;">
                                   <%= t("user_mailer.#{ @template }.panel_one.doc_link", name: @name) %>
                                 </a>
                               </div>
@@ -228,7 +228,7 @@
                         <table cellpadding="0" cellspacing="0" width="100%">
                           <tr>
                             <td class="info-img">
-                              <a target="_blank" href="<%= @help_url + t("user_mailer.#{ @template }.panel_two.doc_href") %>">
+                              <a target="_blank" href="<%= @help_url + t("user_mailer.#{ @template }.panel_two.doc_href") + @parameters[:panel_second][:link] %>">
                                 <img class="info-img" src="<%= t("user_mailer.#{ @template }.panel_two.img_src") %>" alt="<%= t("user_mailer.#{ @template }.panel_two.title", name: @name) %>"/>
                               </a>
                             </td>
@@ -238,7 +238,7 @@
                               <table cellspacing="0" cellpadding="0" width="100%" style="min-height: 260px;">
                                 <tr>
                                   <td style="text-align:left; width:80%; vertical-align: top;">
-                                    <a target="_blank" href="<%= @help_url + t("user_mailer.#{ @template }.panel_two.doc_href") %>">
+                                    <a target="_blank" href="<%= @help_url + t("user_mailer.#{ @template }.panel_two.doc_href") + @parameters[:panel_second][:link] %>">
                                       <span class="header-sm"><%= t("user_mailer.#{ @template }.panel_two.title", name: @name) %></span>
                                     </a><br/>
                                     <p style="font-size:12px;">
@@ -259,7 +259,7 @@
                                 <% if @links %>
                                     <%= render "user_mailer/adds/panel_two_#{ @template }_links" %>
                                 <% end %>
-                                <a target="_blank" class="button-mobile" href="<%= @help_url + t("user_mailer.#{ @template }.panel_two.doc_href") %>" style="font-size:12px;margin-bottom: 5px;padding:5px; color:#54dc9f; border: 1px solid #54dc9f; border-radius: 2px; box-shadow: 3px 3px 1px rgba(84, 220, 159, 0.51);display:inline-block;font-family:'Cabin', Helvetica, Arial, sans-serif;font-weight:normal;line-height:45px;text-align:center;text-decoration:none;width:228px;-webkit-text-size-adjust:none;mso-hide:all;">
+                                <a target="_blank" class="button-mobile" href="<%= @help_url + t("user_mailer.#{ @template }.panel_two.doc_href") + @parameters[:panel_second][:link] %>" style="font-size:12px;margin-bottom: 5px;padding:5px; color:#54dc9f; border: 1px solid #54dc9f; border-radius: 2px; box-shadow: 3px 3px 1px rgba(84, 220, 159, 0.51);display:inline-block;font-family:'Cabin', Helvetica, Arial, sans-serif;font-weight:normal;line-height:45px;text-align:center;text-decoration:none;width:228px;-webkit-text-size-adjust:none;mso-hide:all;">
                                   <%= t("user_mailer.#{ @template }.panel_two.doc_link", name: @name) %>
                                 </a>
                               </div>
@@ -278,7 +278,7 @@
                         <table cellpadding="0" cellspacing="0" width="100%">
                           <tr>
                             <td class="info-img">
-                              <a target="_blank" href="<%= @help_url + t("user_mailer.#{ @template }.panel_three.doc_href") %>">
+                              <a target="_blank" href="<%= @help_url + t("user_mailer.#{ @template }.panel_three.doc_href") + @parameters[:panel_third][:link] %>">
                                 <img class="info-img" src="<%= t("user_mailer.#{ @template }.panel_three.img_src") %>" alt="<%= t("user_mailer.#{ @template }.panel_three.title") %>"/>
                               </a>
                             </td>
@@ -288,7 +288,7 @@
                               <table cellspacing="0" cellpadding="0" width="100%" style="min-height: 260px;">
                                 <tr>
                                   <td style="text-align:left; width:80%; vertical-align: top;">
-                                    <a target="_blank" href="<%= @help_url + t("user_mailer.#{ @template }.panel_three.doc_href") %>"><span class="header-sm"><%= t("user_mailer.#{ @template }.panel_three.title") %></span></a><br/>
+                                    <a target="_blank" href="<%= @help_url + t("user_mailer.#{ @template }.panel_three.doc_href") + @parameters[:panel_third][:link] %>"><span class="header-sm"><%= t("user_mailer.#{ @template }.panel_three.title") %></span></a><br/>
                                     <p style="font-size:12px;"><b><%= t("user_mailer.#{ @template }.goal") %></b>
                                       <%= t("user_mailer.#{ @template }.panel_three.content") %>
                                     </p>
@@ -306,7 +306,7 @@
                                 <% if @links %>
                                     <%= render "user_mailer/adds/panel_three_#{ @template }_links" %>
                                 <% end %>
-                                <a target="_blank" class="button-mobile" href="<%= @help_url + t("user_mailer.#{ @template }.panel_three.doc_href") %>" style="font-size:12px;margin-bottom: 5px;padding:5px; color:#54dc9f; border: 1px solid #54dc9f; border-radius: 2px; box-shadow: 3px 3px 1px rgba(84, 220, 159, 0.51);display:inline-block;font-family:'Cabin', Helvetica, Arial, sans-serif;font-weight:normal;line-height:45px;text-align:center;text-decoration:none;width:228px;-webkit-text-size-adjust:none;mso-hide:all;">
+                                <a target="_blank" class="button-mobile" href="<%= @help_url + t("user_mailer.#{ @template }.panel_three.doc_href") + @parameters[:panel_third][:link] %>" style="font-size:12px;margin-bottom: 5px;padding:5px; color:#54dc9f; border: 1px solid #54dc9f; border-radius: 2px; box-shadow: 3px 3px 1px rgba(84, 220, 159, 0.51);display:inline-block;font-family:'Cabin', Helvetica, Arial, sans-serif;font-weight:normal;line-height:45px;text-align:center;text-decoration:none;width:228px;-webkit-text-size-adjust:none;mso-hide:all;">
                                   <%= t("user_mailer.#{ @template }.panel_three.doc_link") %>
                                 </a>
                               </div>

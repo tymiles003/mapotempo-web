@@ -3,8 +3,7 @@ namespace :mail do
 
   task automation: :environment do
     desc 'Send automation mails at defined time'
-
-    request = User.joins(:customer).where('customers.test' => true, 'customers.end_subscription' => DateTime.now.in_time_zone.midnight + 1.days) | User.where(created_at: (Time.now.midnight - 9.days)..Time.now.midnight)
+    request = User.joins(:customer).where('customers.test' => true, 'customers.end_subscription' => DateTime.now.in_time_zone.midnight + 1.days) | User.where(created_at: (Time.now.midnight - 9.days)..Time.now.midnight).where.not(customer_id: nil)
 
     users = request.select { |user|
       /https?:\/\/www.mapotempo.com\/[^\/]+\/help-center/.match(user.customer.reseller.help_url) && /https?:\/\/www.mapotempo.com\/[^\/]+\/contact-support/.match(user.customer.reseller.contact_url)
@@ -13,7 +12,7 @@ namespace :mail do
     users.each do |user|
       begin
         date = user.created_at.midnight
-        locale = (user.locale) ? user.locale.to_sym : I18n.locale
+        locale = user.locale ? user.locale.to_sym : I18n.locale
 
         case DateTime.now.in_time_zone.midnight
           when date + 1.days
