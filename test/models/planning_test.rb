@@ -1,9 +1,11 @@
 require 'test_helper'
 require 'routers/router_wrapper'
 
-class D < Struct.new(:lat, :lng, :id, :open1, :close1, :open2, :close2, :duration, :vehicle_usage)
+class D < Struct.new(:lat, :lng, :id, :open1, :close1, :open2, :close2, :duration, :vehicle_usage, :quantities, :quantities_operations, :tags)
   def visit
-    self
+    # self
+    destination = Struct.new(:tags).new([])
+    Struct.new(:destination, :tags).new(destination, tags || [])
   end
   def default_quantities?
     false
@@ -497,33 +499,34 @@ class PlanningTest < ActiveSupport::TestCase
   end
 
   test 'should no amalgamate point at same position' do
-    o = routes(:route_one_one)
+    route = routes(:route_one_one)
 
-    positions = [D.new(1,1,1), D.new(2,2,2), D.new(3,3,3)]
-    ret = o.planning.send(:amalgamate_stops_same_position, positions, false) { |positions|
+    initial_positions = [D.new(1,1,1), D.new(2,2,2), D.new(3,3,3)]
+    ret = route.planning.send(:amalgamate_stops_same_position, initial_positions, false) { |positions|
       assert_equal 3, positions.size
       pos = positions.sort
       [pos.collect{ |p|
         p[2]
       }]
     }
-    assert_equal positions.size, ret[0].size
-    assert_equal 1.upto(positions.size).to_a, ret[0]
+    assert_equal initial_positions.size, ret[0].size
+    assert_equal 1.upto(initial_positions.size).to_a, ret[0]
   end
 
   test 'should amalgamate point at same position' do
     route = routes(:route_one_one)
 
-    positions = [D.new(1,1,1,nil,nil,nil,nil,0), D.new(2,2,2,nil,nil,nil,nil,0), D.new(2,2,3,nil,nil,nil,nil,0), D.new(3,3,4,nil,nil,nil,nil,0)]
-    ret = route.planning.send(:amalgamate_stops_same_position, positions, false) { |positions|
+    initial_positions = [D.new(1,1,1,nil,nil,nil,nil,0,nil,nil, nil,[Struct.new(:label).new('skills')]), D.new(2,2,2,nil,nil,nil,nil,0), D.new(2,2,3,nil,nil,nil,nil,0), D.new(3,3,4,nil,nil,nil,nil,0)]
+    ret = route.planning.send(:amalgamate_stops_same_position, initial_positions, false) { |positions|
       assert_equal 3, positions.size
       pos = positions.sort
       [pos.collect{ |p|
         p[2]
       }]
     }
-    assert_equal positions.size, ret[0].size
-    assert_equal 1.upto(positions.size).to_a, ret[0]
+    assert_equal initial_positions.size, ret[0].size
+    assert_equal 1.upto(initial_positions.size).to_a, ret[0]
+    assert_equal initial_positions.first.tags.size, 1
   end
 
   test 'should no amalgamate point at same position, tw' do
@@ -547,43 +550,43 @@ class PlanningTest < ActiveSupport::TestCase
   end
 
   test 'should optimize one route with one no-geoloc rest' do
-    o = routes(:route_one_one)
+    route = routes(:route_one_one)
     vehicle_usages(:vehicle_usage_one_one).update! store_rest: nil
     vehicle_usage_sets(:vehicle_usage_set_one).update! store_rest: nil
-    o.reload
-    optim = o.planning.optimize([o], false) { |*a|
+    route.reload
+    optim = route.planning.optimize([route], false) { |*a|
       optimizer_route(*a)
     }
-    assert_equal [o.stops.collect(&:id)], optim
+    assert_equal [route.stops.collect(&:id)], optim
   end
 
   test 'should optimize one route without any store' do
-    o = routes(:route_one_one)
+    route = routes(:route_one_one)
     vehicle_usages(:vehicle_usage_one_one).update! store_start: nil, store_stop: nil, store_rest: nil
     vehicle_usage_sets(:vehicle_usage_set_one).update! store_start: nil, store_stop: nil, store_rest: nil
-    o.reload
-    optim = o.planning.optimize([o], false) { |*a|
+    route.reload
+    optim = route.planning.optimize([route], false) { |*a|
       optimizer_route(*a)
     }
-    assert_equal [o.stops.collect(&:id)], optim
+    assert_equal [route.stops.collect(&:id)], optim
   end
 
   test 'should optimize one route with none geoloc store' do
-    o = routes(:route_three_one)
-    optim = o.planning.optimize([o], false) { |*a|
+    route = routes(:route_three_one)
+    optim = route.planning.optimize([route], false) { |*a|
       optimizer_route(*a)
     }
-    assert_equal [o.stops.collect(&:id)], optim
+    assert_equal [route.stops.collect(&:id)], optim
   end
 
   test 'should optimize global planning' do
-    o = plannings(:planning_one)
-    optim = o.optimize(o.routes, true) { |*a|
+    planning = plannings(:planning_one)
+    optim = planning.optimize(planning.routes, true) { |*a|
       optimizer_global(*a)
     }
     assert_equal 0, optim[0].size
-    assert_equal o.routes[2].stops.select{ |s| s.is_a? StopRest }.size, optim[2].size
-    assert_equal o.routes.map{ |r| r.stops.size }.reduce(&:+), optim.flatten.size
+    assert_equal planning.routes[2].stops.select{ |s| s.is_a? StopRest }.size, optim[2].size
+    assert_equal planning.routes.map{ |r| r.stops.size }.reduce(&:+), optim.flatten.size
   end
 
   test 'should return all or only active stops after optimization' do

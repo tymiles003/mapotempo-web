@@ -385,6 +385,7 @@ en:
         ref: Reference
         contact_email: E-Mail
         capacities: Capacities
+        tag_ids: Vehicle skills
       vehicle_usage:
         vehicle_id: Vehicle
         open: Open
@@ -400,6 +401,7 @@ en:
         store_rest_id: Rest place
         service_time_start: Service Time Before
         service_time_end: Service Time After
+        tag_ids: Skills
         vehicle: Vehicle
       vehicle_usage_set:
         name: Name
@@ -1769,6 +1771,9 @@ en:
       speed_multiplicator_desc: a value higher than 100% means higher speed
       color: color
       color_desc: color associated to vehicle
+      tags: vehicle skills
+      tags_desc: 'skills associated to vehicle. (Warning: if only one vehicle has skills so all other vehicles could not use this skill unless declared)'
+      tags_format: skill 1,skill 2
       devices: devices
       devices_desc: reference or ID of devices associated to vehicle
       missing_name: « name » of the vehicle missing
@@ -1809,6 +1814,8 @@ en:
           on settings is also used on computation.
       contact_email:
         help: Driver's device E-Mail
+      tags_empty: No skills found
+      tags_help: 'Skills associated to vehicle. (Warning: if only one vehicle has skills so all other vehicles could not use this skill unless declared)'
   vehicle_usages:
     menu:
       vehicle_usages: Vehicle configurations
@@ -1878,6 +1885,7 @@ en:
       devices:
         placeholder: Choose a device
         fieldset: GPS & Mobiles
+      tags_help: 'Skills associated to the curent configuration. (Warning: if only one vehicle has skills so all other vehicles could not use this skill unless declared)'
   vehicle_usage_sets:
     default:
       name: Default
@@ -1948,6 +1956,9 @@ en:
       service_time_start_desc: durations added before the first stop
       service_time_end: service Time After
       service_time_end_desc: durations added before the last stop
+      tags: skills
+      tags_desc: 'skills associated to the vehicle configuration. (Warning: if only one vehicle has skills so all other vehicles could not use this skill unless declared)'
+      tags_format: skill 1,skill 2
       format:
         string: text
         integer: integer

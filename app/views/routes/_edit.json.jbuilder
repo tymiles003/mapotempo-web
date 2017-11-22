@@ -38,7 +38,12 @@ if route.vehicle_usage_id
       json.wait_time l(Time.at(route.wait_time).utc, format: :hour_minute) if route.wait_time
     end
   end
-  json.work_time '%i:%02i' % [(route.vehicle_usage.default_close - route.vehicle_usage.default_open) / 60 / 60, (route.vehicle_usage.default_close - route.vehicle_usage.default_open) / 60 % 60]
+  json.work_or_window_time route.vehicle_usage.work_or_window_time
+  json.skills [route.vehicle_usage.tags, route.vehicle_usage.vehicle.tags].flatten.compact do |tag|
+    json.label tag.label
+    json.color tag.color || '#000000'
+  end
+
   # Devices
   route.planning.customer.device.configured_definitions.each do |key, definition|
     json.set!(key, true) if !definition[:route_operations].empty? && definition[:forms][:vehicle] && (definition[:forms][:vehicle].keys.empty? || !definition[:forms][:vehicle].keys.any?{ |k| route.vehicle_usage.vehicle.devices[k].blank? })

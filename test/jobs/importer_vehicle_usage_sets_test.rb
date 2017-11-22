@@ -132,6 +132,15 @@ class ImporterVehicleUsageSetsTest < ActionController::TestCase
     end
   end
 
+  test 'should import vehicle usage set with tags' do
+    assert_difference('VehicleUsageSet.count', 0) do
+      imported_data = ImportCsv.new(importer: ImporterVehicleUsageSets.new(@customer), replace_vehicles: true, file: tempfile('test/fixtures/files/import_vehicle_usage_sets_with_tags.csv', 'text.csv')).import
+
+      assert imported_data.first.tags.size, 1
+      assert imported_data.second.vehicle_usages.first.tags.size, 1
+    end
+  end
+
   test 'should import vehicle usage set with custom devices' do
     assert_difference('VehicleUsageSet.count', 0) do
       imported_data = ImportCsv.new(importer: ImporterVehicleUsageSets.new(@customer), replace_vehicles: true, file: tempfile('test/fixtures/files/import_vehicle_usage_sets_with_devices.csv', 'text.csv')).import

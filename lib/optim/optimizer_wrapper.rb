@@ -35,10 +35,10 @@ class OptimizerWrapper
 
     result = @cache.read(key)
     if !result
-      stores = vehicles.flat_map{ |v| v[:stores] }
       rests = vehicles.flat_map{ |v| v[:rests] }
       shift_stores = 0
       services_with_negative_quantities = []
+      use_skills = vehicles.any? { |v| v[:skills] && !v[:skills].empty? }
 
       services_late_multiplier = (options[:stop_soft_upper_bound] && options[:stop_soft_upper_bound] > 0) ? options[:stop_soft_upper_bound] : nil
       vehicles_cost_late_multiplier = (options[:vehicle_soft_upper_bound] && options[:vehicle_soft_upper_bound] > 0) ? options[:vehicle_soft_upper_bound] : nil
@@ -97,7 +97,8 @@ class OptimizerWrapper
                 limit: c[:capacity],
                 overload_multiplier: c[:overload_multiplier]
               } : nil
-            }.compact : []
+            }.compact : [],
+            skills: use_skills ? [vehicle[:skills]] : nil
           }.merge(vehicle[:router_options] || {})
           shift_stores += vehicle[:stores].size
           v
@@ -130,7 +131,8 @@ class OptimizerWrapper
                 fill: service[:quantities_operations][k] == 'fill' || nil,
                 empty: service[:quantities_operations][k] == 'empty' || nil
               }.compact : nil
-            }.compact : []
+            }.compact : [],
+            skills: use_skills ? service[:skills] : nil
           }.delete_if{ |k, v| !v }
         },
         relations: [{

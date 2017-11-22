@@ -26,6 +26,8 @@ class VehicleUsage < ApplicationRecord
   belongs_to :store_rest, class_name: 'Store', inverse_of: :vehicle_usage_rests
   has_many :routes, inverse_of: :vehicle_usage, autosave: true
 
+  has_and_belongs_to_many :tags, autosave: true, after_add: :update_tags_track, after_remove: :update_tags_track
+
   accepts_nested_attributes_for :vehicle, update_only: true
 
   nilify_blanks
@@ -47,6 +49,11 @@ class VehicleUsage < ApplicationRecord
   before_update :update_outdated
 
   before_save :update_routes
+
+  include Consistency
+  validate_consistency :tags, attr_consistency_method: ->(vehicle_usage) { vehicle_usage.vehicle.try(:customer_id) }
+
+  after_save -> { @tag_ids_changed = false }
 
   before_destroy :update_stops
 
@@ -187,6 +194,19 @@ class VehicleUsage < ApplicationRecord
       # New or changed rest
       routes.each(&:add_or_update_rest)
     end
+  end
+
+  def update_tags_track(_tag)
+    @tag_ids_changed = true
+  end
+
+  # Used by validate_consistency
+  def tag_ids_changed?
+    @tag_ids_changed
+  end
+
+  def changed?
+    tag_ids_changed? || super
   end
 
   private

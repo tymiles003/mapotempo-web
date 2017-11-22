@@ -386,6 +386,7 @@ fr:
         ref: Référence
         contact_email: Email
         capacities: Capacités
+        tag_ids: Compétences du véhicule
       vehicle_usage:
         vehicle_id: Véhicule
         open: Horaire début
@@ -401,6 +402,7 @@ fr:
         store_rest_id: Lieu de repos
         service_time_start: Durée de service avant
         service_time_end: Durée de service après
+        tag_ids: Compétences
         vehicle: Véhicule
       vehicle_usage_set:
         name: Nom
@@ -1850,6 +1852,9 @@ fr:
         plus élevée
       color: couleur
       color_desc: couleur associée au véhicule
+      tags: compétences du véhicule
+      tags_desc: 'compétences associées au véhicule. (Attention : si un seul véhicule possède des compétences alors tous les autres véhicules ne pourront utiliser cette compétence si non déclaré)'
+      tags_format: compétence 1,compétence 2
       devices: appareils
       devices_desc: référence ou ID de votre GPS associé aux véhicules
       missing_name: « nom » du véhicule manquant
@@ -1890,6 +1895,8 @@ fr:
           global au niveau du paramétrage est également utilisé lors des calculs.
       contact_email:
         help: Email du terminal du chauffeur
+      tags_empty: Pas de compétences trouvées
+      tags_help: 'Compétences associées au véhicule. (Attention : si un seul véhicule possède des compétences alors tous les autres véhicules ne pourront utiliser cette compétence si non déclaré)'
   vehicle_usages:
     menu:
       vehicle_usages: Configurations de véhicules
@@ -1958,6 +1965,7 @@ fr:
       devices:
         placeholder: Sélectionner un appareil
         fieldset: GPS & Mobiles
+      tags_help: 'Compétences associées à la configuration du véhicule. (Attention : si un seul véhicule possède des compétences alors tous les autres véhicules ne pourront utiliser cette compétence si non déclaré)'
   vehicle_usage_sets:
     default:
       name: Défaut
@@ -2037,6 +2045,9 @@ fr:
       service_time_end: durée de service après
       service_time_end_desc: durée de service après et sans tenir compte de la durée
         de pause
+      tags: compétences
+      tags_desc: 'compétences associées à la configuration du véhicule. (Attention : si un seul véhicule possède des compétences alors tous les autres véhicules ne pourront utiliser cette compétence si non déclaré)'
+      tags_format: compétence 1,compétence 2
       format:
         string: texte
         integer: nombre

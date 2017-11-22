@@ -52,6 +52,32 @@ var vehicle_usages_form = function(params) {
   devicesObserveVehicle.init(params);
 
   routerOptionsSelect('#vehicle_usage_vehicle_router', params);
+
+  var NoResults = I18n.t('vehicles.form.tags_empty');
+  $('select[name$=\\[tag_ids\\]\\[\\]]', '#vehicle_usage_vehicle_tag_ids_input').select2({
+    theme: 'bootstrap',
+    minimumResultsForSearch: -1,
+    templateSelection: templateTag,
+    templateResult: templateTag,
+    language: {
+      noResults: function () {
+        return NoResults;
+      }
+    },
+    width: '100%'
+  });
+  $('select[name$=\\[tag_ids\\]\\[\\]]', '#vehicle_usage_tag_ids_input').select2({
+    theme: 'bootstrap',
+    minimumResultsForSearch: -1,
+    templateSelection: templateTag,
+    templateResult: templateTag,
+    language: {
+      noResults: function () {
+        return NoResults;
+      }
+    },
+    width: '100%'
+  });
 };
 
 var devicesObserveVehicle = (function() {

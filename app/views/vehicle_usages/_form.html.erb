@@ -309,6 +309,12 @@
           <% end %>
         <% end %>
 
+        <div>
+          <%= f.select :tag_ids, t('activerecord.attributes.vehicle.tag_ids'), options_for_select(@vehicle_usage.vehicle.customer.tags.map{ |tag| [tag.label, tag.id, {'data-color' => tag.color && tag.color[1..-1], 'data-icon' => tag.icon}]}, @vehicle_usage.vehicle.tags.collect(&:id)), {}, {multiple: true, input_group: content_tag('i', '', class: 'fa fa-tags fa-fw')} do %>
+            <p class="help-block"><%= t('vehicles.form.tags_help') %></p>
+          <% end %>
+        </div>
+
         <div class="form-group">
           <label class="col-md-2 control-label" for="vehicle_usage_vehicle_color">
             <%= t("activerecord.attributes.vehicle.color") %>
@@ -453,6 +459,13 @@
         <p class="help-block"><%= t '.rest_start_stop_help' %></p>
       </div>
     </div>
+
+    <div>
+      <%= f.select :tag_ids, t('activerecord.attributes.vehicle_usage.tag_ids'), options_for_select(@vehicle_usage.vehicle.customer.tags.map{ |tag| [tag.label, tag.id, {'data-color' => tag.color && tag.color[1..-1], 'data-icon' => tag.icon}]}, @vehicle_usage.tags.collect(&:id)), {}, {multiple: true, input_group: content_tag('i', '', class: 'fa fa-tags fa-fw')} do %>
+        <p class="help-block"><%= t('vehicle_usages.form.tags_help') %></p>
+      <% end %>
+    </div>
+
   </fieldset>
 
   <%= f.actions do %>

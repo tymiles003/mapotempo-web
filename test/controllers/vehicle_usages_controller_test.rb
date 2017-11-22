@@ -44,6 +44,12 @@ class VehicleUsagesControllerTest < ActionController::TestCase
     assert_equal @vehicle_usage.reload.close, @vehicle_usage.default_close
   end
 
+  test 'should update vehicle usage and vehicle with tags' do
+    patch :update, id: @vehicle_usage, vehicle_usage: { tag_ids: [tags(:tag_one).id], vehicle: {tag_ids: [tags(:tag_two).id]} }
+    assert_equal @vehicle_usage.reload.tags.size, 1
+    assert_equal @vehicle_usage.vehicle.reload.tags.size, 1
+  end
+
   test 'should update vehicle_usage with time exceeding one day' do
     patch :update, id: @vehicle_usage, vehicle_usage: { open: '20:00', close: '08:00', close_day: '1', rest_start: '22:00', rest_stop: '23:00' }
     assert_redirected_to edit_vehicle_usage_path(@vehicle_usage)

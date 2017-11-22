@@ -23,6 +23,9 @@ class Vehicle < ApplicationRecord
   belongs_to :router
   has_many :vehicle_usages, inverse_of: :vehicle, dependent: :destroy, autosave: true
   has_many :zones, inverse_of: :vehicle, dependent: :nullify, autosave: true
+
+  has_and_belongs_to_many :tags, autosave: true, after_add: :update_tags_track, after_remove: :update_tags_track
+
   enum router_dimension: Router::DIMENSION
   serialize :capacities, DeliverableUnitQuantity
 
@@ -47,6 +50,12 @@ class Vehicle < ApplicationRecord
   before_create :create_vehicle_usage
   before_save :nilify_router_options_blanks
   before_update :update_outdated, :update_color
+
+  include Consistency
+  validate_consistency :tags
+
+  after_save -> { @tag_ids_changed = false }
+
   before_destroy :destroy_vehicle
 
   include RefSanitizer
@@ -153,6 +162,19 @@ class Vehicle < ApplicationRecord
 
   def capacities_changed?
     !capacities.empty? ? capacities.any?{ |i, q| q != capacities_was[i] } : !capacities_was.empty?
+  end
+
+  def update_tags_track(_tag)
+    @tag_ids_changed = true
+  end
+
+  # Used by validate_consistency
+  def tag_ids_changed?
+    @tag_ids_changed
+  end
+
+  def changed?
+    tag_ids_changed? || super
   end
 
   private

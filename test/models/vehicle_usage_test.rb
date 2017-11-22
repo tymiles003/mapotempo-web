@@ -109,6 +109,18 @@ class VehicleUsageTest < ActiveSupport::TestCase
     assert_equal vehicle_usage.open, 8 * 3_600
   end
 
+  test 'should have tags' do
+    vehicle_usage = vehicle_usages(:vehicle_usage_one_one)
+    assert vehicle_usage.update(tags: [tags(:tag_one), tags(:tag_two)])
+    assert_equal vehicle_usage.reload.tags.size, 2
+  end
+
+  test 'should not have tags from other customer' do
+    vehicle_usage = vehicle_usages(:vehicle_usage_one_one)
+    assert_not vehicle_usage.update(tags: [tags(:tag_three)])
+    assert_equal vehicle_usage.reload.tags.size, 0
+  end
+
   test 'should delete vehicle usage and place routes in out of route section' do
     planning = plannings(:planning_one)
     out_of_route = planning.routes.detect{|route| !route.vehicle_usage }

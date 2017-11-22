@@ -45,6 +45,7 @@ class ImporterVehicleUsageSets < ImporterBase
             router_options: { title: I18n.t('vehicles.import.router_options'), desc: I18n.t('vehicles.import.router_options_desc'), format: I18n.t('vehicles.import.format.json') + " [#{router_options.join(' | ')}]" },
             speed_multiplicator: { title: I18n.t('vehicles.import.speed_multiplicator'), desc: I18n.t('vehicles.import.speed_multiplicator_desc'), format: I18n.t('vehicles.import.format.integer') },
             color: { title: I18n.t('vehicles.import.color'), desc: I18n.t('vehicles.import.color_desc'), format: I18n.t('vehicles.import.format.string') },
+            tags_vehicle: { title: I18n.t('vehicles.import.tags'), desc: I18n.t('vehicles.import.tags_desc'), format: I18n.t('vehicles.import.tags_format') },
             devices: { title: I18n.t('vehicles.import.devices'), desc: I18n.t('vehicles.import.devices_desc'), format: I18n.t('vehicles.import.format.string') }
         }
     )
@@ -62,6 +63,7 @@ class ImporterVehicleUsageSets < ImporterBase
         store_rest_ref: { title: I18n.t('vehicle_usage_sets.import.store_rest_ref'), desc: I18n.t('vehicle_usage_sets.import.store_rest_desc'), format: I18n.t('vehicle_usage_sets.import.format.string') },
         service_time_start: { title: I18n.t('vehicle_usage_sets.import.service_time_start'), desc: I18n.t('vehicle_usage_sets.import.service_time_start_desc'), format: I18n.t('vehicle_usage_sets.import.format.hour') },
         service_time_end: { title: I18n.t('vehicle_usage_sets.import.service_time_end'), desc: I18n.t('vehicle_usage_sets.import.service_time_end_desc'), format: I18n.t('vehicle_usage_sets.import.format.hour') },
+        tags: { title: I18n.t('vehicle_usage_sets.import.tags'), desc: I18n.t('vehicle_usage_sets.import.tags_desc'), format: I18n.t('vehicle_usage_sets.import.tags_format') }
     }
   end
 
@@ -78,6 +80,9 @@ class ImporterVehicleUsageSets < ImporterBase
   end
 
   def before_import(name, data, options)
+    @tag_labels = Hash[@customer.tags.collect{ |tag| [tag.label, tag] }]
+    @tag_ids = Hash[@customer.tags.collect{ |tag| [tag.id, tag] }]
+
     if options[:line_shift] == 1
       # Create missing deliverable units if needed
       column_titles = data[0].is_a?(Hash) ? data[0].keys : data.size > 0 ? data[0].map { |a| a[0] } : []
@@ -121,6 +126,28 @@ class ImporterVehicleUsageSets < ImporterBase
     row[:capacities] = capacities if capacities.length > 0
   end
 
+  def prepare_tags(row, key)
+    if !row[key].nil?
+      if row[key].is_a?(String)
+        row[key] = row[key].split(',').select{ |k|
+          !k.empty?
+        }
+      end
+
+      row[key] = row[key].collect{ |tag|
+        if tag.is_a?(Fixnum)
+          @tag_ids[tag]
+        else
+          tag = tag.strip
+          @tag_labels[tag] = @customer.tags.build(label: tag) unless @tag_labels.key?(tag)
+          @tag_labels[tag]
+        end
+      }.compact
+    elsif row.key?(key)
+      row.delete key
+    end
+  end
+
   def import_row(_name, row, options)
     if (row[:open].nil? || row[:close].nil?) && @vehicle_usage_set.nil?
       raise ImportInvalidRow.new(I18n.t('vehicle_usage_sets.import.missing_open_close'))
@@ -129,6 +156,7 @@ class ImporterVehicleUsageSets < ImporterBase
     end
 
     prepare_capacities(row)
+    [:tags, :tags_vehicle].each{ |key| prepare_tags(row, key) }
 
     # For each vehicle, create vehicle and vehicle usage
     vehicle = if !row[:ref_vehicle].nil? && !row[:ref_vehicle].strip.empty? && @vehicles_by_ref[row[:ref_vehicle].strip]
@@ -145,6 +173,7 @@ class ImporterVehicleUsageSets < ImporterBase
       vehicle_attributes[:router] = Router.where(mode: vehicle_attributes.delete(:router_mode)).first
       # TODO: use typed options to automatically convert to the correct format
       vehicle_attributes[:router_options] = vehicle_attributes[:router_options] ? ActiveSupport::JSON.decode(vehicle_attributes.delete(:router_options).gsub(/(\d),(\d)/, '\1.\2')) : {}
+      vehicle_attributes[:tags] = vehicle_attributes.delete(:tags_vehicle) if vehicle_attributes.key?(:tags_vehicle)
       vehicle_attributes[:devices] = vehicle_attributes[:devices] ? ActiveSupport::JSON.decode(vehicle_attributes.delete(:devices)) : {}
       vehicle.assign_attributes(vehicle_attributes)
       vehicle.save!

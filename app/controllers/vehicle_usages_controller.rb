@@ -90,6 +90,7 @@ class VehicleUsagesController < ApplicationController
                                                        :store_rest_id,
                                                        :service_time_start,
                                                        :service_time_end,
+                                                       tag_ids: [],
                                                        vehicle: [
                                                            :contact_email,
                                                            :ref,
@@ -122,7 +123,8 @@ class VehicleUsagesController < ApplicationController
                                                                :snap,
                                                                :strict_restriction
                                                            ],
-                                                           devices: permit_devices
+                                                           devices: permit_devices,
+                                                           tag_ids: []
                                                        ])
     if parameters.key?(:vehicle)
       parameters[:vehicle_attributes] = parameters[:vehicle]

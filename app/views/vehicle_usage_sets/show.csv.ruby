@@ -15,6 +15,7 @@ CSV.generate { |csv|
     I18n.t('vehicles.import.router_options'),
     I18n.t('vehicles.import.speed_multiplicator'),
     I18n.t('vehicles.import.color'),
+    I18n.t('vehicles.import.tags'),
     I18n.t('vehicles.import.devices'),
 
     I18n.t('vehicle_usage_sets.import.open'),
@@ -26,7 +27,8 @@ CSV.generate { |csv|
     I18n.t('vehicle_usage_sets.import.rest_duration'),
     I18n.t('vehicle_usage_sets.import.store_rest_ref'),
     I18n.t('vehicle_usage_sets.import.service_time_start'),
-    I18n.t('vehicle_usage_sets.import.service_time_end')
+    I18n.t('vehicle_usage_sets.import.service_time_end'),
+    I18n.t('vehicle_usage_sets.import.tags')
   ]
 
   device_keys = {}
@@ -55,7 +57,8 @@ CSV.generate { |csv|
       vehicle_usage.vehicle.router_dimension,
       vehicle_usage.vehicle.router_options.to_json,
       vehicle_usage.vehicle.speed_multiplicator,
-      vehicle_usage.vehicle.color
+      vehicle_usage.vehicle.color,
+      vehicle_usage.vehicle.tags.collect(&:label).join(',')
     ]
 
     enabled_devices = {}
@@ -74,7 +77,8 @@ CSV.generate { |csv|
       vehicle_usage.default_rest_duration_time,
       vehicle_usage.default_store_rest.try(:ref),
       vehicle_usage.default_service_time_start,
-      vehicle_usage.default_service_time_end
+      vehicle_usage.default_service_time_end,
+      vehicle_usage.tags.collect(&:label).join(',')
     ]
 
     csv << vehicle_columns + vehicle_usage_columns
