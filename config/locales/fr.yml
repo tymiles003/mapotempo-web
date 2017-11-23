@@ -589,6 +589,7 @@ fr:
     tomtom:
       record: Enregistrement %{s}
     empty: Rien à importer, vérifiez vos données.
+    without_stop_type: Valeurs vides pour « type arrêt », retirez la colonne/clé ou renseignez une valeur parmi [visite | dépôt | pause].
     data: 'Vérifiez vos données :'
     data_erroneous:
       csv: Fichier invalide, ligne %{s}

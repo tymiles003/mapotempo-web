@@ -585,6 +585,7 @@ en:
     tomtom:
       record: Record %{s}
     empty: Nothing to import, check your data.
+    without_stop_type: Empty values for "stop type", remove this column/key or fill a value among [visit | store | rest].
     data: 'Check your data:'
     data_erroneous:
       csv: Invalid file, line %{s}
