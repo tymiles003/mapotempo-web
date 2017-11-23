@@ -525,10 +525,16 @@ en:
               invalid_json: is not a valid stringified json
         customer:
           attributes:
+            plannings:
+              over_max_limit: Maximum number of plans reached
+            zonings:
+              over_max_limit: Maximum number of zonings reached
             destinations:
               over_max_limit: Maximum number of destinations reached
             stores:
               over_max_limit: Maximum number of stores reached
+            vehicle_usage_sets:
+              over_max_limit: Maximum number of vehicle base settings reached
         store:
           at_least_one: At least one store needed
           icon_unknown: is not in font-awesome icons list
@@ -928,6 +934,7 @@ en:
           move_help: Move points on the map if necessary
           dismiss: Dismiss
           sort_geocoding: Display non reliable geocoded results first
+      over_max_limit: "You have reached the destinations number limit for your account (Account Limit: %{limit})"
     new:
       title: New destination
     import_file:
@@ -1268,7 +1275,7 @@ en:
         icalendar_email: Calendar iCal by E-Mail
         spreadsheet: Spreadsheet CSV / Excel
         none_planning: Please select at least one plan to export
-      list_message: "You have reached the advised number of plans for your account (Account Limit: %{limit})"
+      over_max_limit: "You have reached the plans number limit for your account (Account Limit: %{limit})"
     edit:
       vehicles: Vehicles
       marker_clusters: Switch clusters of stops
@@ -1870,6 +1877,7 @@ en:
       stores: Start - End
       time: Open - Close
       service_time: Service Time
+      over_max_limit: "You have reached the vehicle configurations number limit for your account (Account Limit: %{limit})"
     new:
       title: New vehicles configuration
     import:
@@ -2001,6 +2009,7 @@ en:
     index:
       title: Listing zonings
       new: New Zoning
+      over_max_limit: "You have reached the zonings number limit for your account (Account Limit: %{limit})"
     new:
       title: New zoning
     form:

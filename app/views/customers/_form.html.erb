@@ -280,17 +280,15 @@
       <%= f.number_field :plannings_limitation, { placeholder: Mapotempo::Application.config.plannings_limitation.nil? ? nil : t('.plannings_limitation_default', n: LocalizedValues.localize_numeric_value(Mapotempo::Application.config.plannings_limitation)), min: 1, input_group: content_tag('i', '', class: 'fa fa-calendar-o fa-fw')} do %>
         <p class="help-block"><%= t '.plannings_limitation_help' %></p>
       <% end %>
-<!--
       <%= f.number_field :zonings_limitation, { placeholder: Mapotempo::Application.config.zonings_limitation.nil? ? nil : t('.zonings_limitation_default', n: LocalizedValues.localize_numeric_value(Mapotempo::Application.config.zonings_limitation)), min: 1, input_group: content_tag('i', '', class: 'fa fa-object-ungroup fa-fw')} do %>
         <p class="help-block"><%= t '.zonings_limitation_help' %></p>
       <% end %>
-      <%= f.number_field :destinations_limitation, { placeholder: Mapotempo::Application.config.destinations_limitation.nil? ? nil : t('.destinations_limitation_default', n: LocalizedValues.localize_numeric_value(Mapotempo::Application.config.destinations_limitation)), min: 1, input_group: content_tag('i', '', class: 'fa fa-map-marker fa-fw')} do %>
+      <%= f.number_field :destinations_limitation, { placeholder: Mapotempo::Application.config.max_destinations.nil? ? nil : t('.destinations_limitation_default', n: LocalizedValues.localize_numeric_value(Mapotempo::Application.config.max_destinations)), min: 1, input_group: content_tag('i', '', class: 'fa fa-map-marker fa-fw')} do %>
         <p class="help-block"><%= t '.destinations_limitation_help' %></p>
       <% end %>
       <%= f.number_field :vehicle_usage_sets_limitation, { placeholder: Mapotempo::Application.config.vehicle_usage_sets_limitation.nil? ? nil : t('.vehicle_usage_sets_limitation_default', n: LocalizedValues.localize_numeric_value(Mapotempo::Application.config.vehicle_usage_sets_limitation)), min: 1, input_group: content_tag('i', '', class: 'fa fa-truck fa-fw')} do %>
         <p class="help-block"><%= t '.vehicle_usage_sets_limitation_help' %></p>
       <% end %>
--->
     </fieldset>
     <fieldset>
       <legend class="scheduler-border">

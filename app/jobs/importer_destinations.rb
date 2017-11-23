@@ -27,7 +27,7 @@ class ImporterDestinations < ImporterBase
   end
 
   def max_lines
-    Mapotempo::Application.config.max_destinations
+    @customer.destinations_limitation_default
   end
 
   def columns_route

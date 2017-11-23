@@ -125,4 +125,25 @@ class ZoningsControllerTest < ActionController::TestCase
       assert_not_nil JSON.parse(response.body)['zoning'][0]['polygon']
     }
   end
+
+  test 'should use limitation' do
+    customer = @zoning.customer
+    customer.zonings.delete_all
+    customer.zonings_limitation = 1
+    customer.save!
+
+    assert_difference('Zoning.count', 1) do
+      post :create, zoning: {
+        name: 'new dest',
+      }
+      assert_response :redirect
+    end
+
+    assert_difference('Zoning.count', 0) do
+      post :create, zoning: {
+        name: 'new 2',
+      }
+      assert_response 422
+    end
+  end
 end

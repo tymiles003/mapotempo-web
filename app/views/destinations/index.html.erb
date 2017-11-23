@@ -1,6 +1,14 @@
 <% content_for :title, t('.title') %>
 <h1><%= t '.title' %></h1>
 
+<% if current_user.customer.too_many_destinations? %>
+  <div class="alert alert-warning" data-error="true">
+    <ul>
+      <p><%= t 'destinations.index.over_max_limit', limit: current_user.customer.destinations_limitation_default %></p>
+    </ul>
+  </div>
+<% end %>
+
 <div class="row row-top">
   <div class="col-md-6">
     <button id="add" type="button" class="btn btn-primary btn-sm"><i class="fa fa-plus fa-fw"></i> <%= t '.new' %></button>

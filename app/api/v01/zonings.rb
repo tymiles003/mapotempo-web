@@ -69,7 +69,7 @@ class V01::Zonings < Grape::API
     end
     post do
       zoning = current_customer.zonings.build(zoning_params)
-      zoning.save!
+      zoning.customer.save!
       present zoning, with: V01::Entities::Zoning
     end
 

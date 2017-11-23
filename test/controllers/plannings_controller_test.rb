@@ -676,4 +676,27 @@ class PlanningsControllerTest < ActionController::TestCase
     assert !stop.reload.active
     assert_nil stops(:stop_unaffected).reload.route.vehicle_usage_id
   end
+
+  test 'should use limitation' do
+    customer = @planning.customer
+    customer.plannings.delete_all
+    customer.plannings_limitation = 1
+    customer.save!
+
+    assert_difference('Planning.count', 1) do
+      post :create, planning: {
+        name: 'new dest',
+        vehicle_usage_set_id: @planning.vehicle_usage_set_id
+      }
+      assert_response :redirect
+    end
+
+    assert_difference('Planning.count', 0) do
+      post :create, planning: {
+        name: 'new 2',
+        vehicle_usage_set_id: @planning.vehicle_usage_set_id
+      }
+      assert_response :error
+    end
+  end
 end

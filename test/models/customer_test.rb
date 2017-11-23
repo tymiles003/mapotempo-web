@@ -345,4 +345,80 @@ class CustomerTest < ActiveSupport::TestCase
 
     assert plannings(:planning_one).routes.all? { |r| r.outdated }
   end
+
+  test 'should use limitation' do
+    @customer.delete_all_destinations
+    @customer.plannings.delete_all
+    @customer.zonings.delete_all
+    @customer.vehicle_usage_sets[1..-1].each{ |c| @customer.vehicle_usage_sets.destroy(c) }
+
+    @customer.plannings_limitation = 1
+    @customer.destinations_limitation = 1
+    @customer.zonings_limitation = 1
+    @customer.vehicle_usage_sets_limitation = 2
+    @customer.save!
+
+    assert_difference('Destination.count', 1) do
+      @customer.destinations.build(name: 'plop', city: 'Bordeaux', state: 'Midi-Pyrénées')
+      @customer.save!
+    end
+
+    assert_difference('Destination.count', 0) do
+      @customer.destinations.build(name: 'plop', city: 'Bordeaux', state: 'Midi-Pyrénées')
+      begin
+        @customer.save!
+        fail
+      rescue
+        # Should not save
+      end
+    end
+
+    @customer.reload
+    assert_difference('Planning.count', 1) do
+      @customer.plannings.build(name: 'plop', vehicle_usage_set: @customer.vehicle_usage_sets.first)
+      @customer.save!
+    end
+
+    assert_difference('Planning.count', 0) do
+      @customer.plannings.build(name: 'plop', vehicle_usage_set: @customer.vehicle_usage_sets.first)
+      begin
+        @customer.save!
+        fail
+      rescue
+        # Should not save
+      end
+    end
+
+    @customer.reload
+    assert_difference('Zoning.count', 1) do
+      @customer.zonings.build(name: 'plop')
+      @customer.save!
+    end
+
+    assert_difference('Zoning.count', 0) do
+      @customer.zonings.build(name: 'plop')
+      begin
+        @customer.save!
+        fail
+      rescue
+        # Should not save
+      end
+    end
+
+    @customer.reload
+    assert_difference('VehicleUsageSet.count', 1) do
+      @customer.vehicle_usage_sets.build(name: 'plop')
+      @customer.save!
+    end
+
+    assert_difference('VehicleUsageSet.count', 0) do
+      @customer.vehicle_usage_sets.build(name: 'plop')
+      begin
+        @customer.save!
+        fail
+      rescue
+        # Should not save
+      end
+    end
+  end
 end

@@ -94,10 +94,12 @@ class V01::Destinations < Grape::API
       optional :tag_ids, type: Array[Integer], desc: 'Ids separated by comma.', coerce_with: CoerceArrayInteger, documentation: { param_type: 'form' }
     end
     post do
-      destination = current_customer.destinations.build(destination_params)
-      destination.save!
-      current_customer.save!
-      present destination, with: V01::Entities::Destination
+      Destination.transaction do
+        destination = current_customer.destinations.build(destination_params)
+        destination.save!
+        current_customer.save!
+        present destination, with: V01::Entities::Destination
+      end
     end
 
     desc 'Import destinations by upload a CSV file, by JSON or from TomTom.',

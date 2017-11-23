@@ -1,6 +1,14 @@
 <% content_for :title, t('.title') %>
 <h1><%= t '.title' %></h1>
 
+<% if current_user.customer.too_many_vehicle_usage_sets? && @customer.enable_multi_vehicle_usage_sets %>
+  <div class="alert alert-warning" data-error="true">
+    <ul>
+      <p><%= t 'vehicle_usage_sets.index.over_max_limit', limit: current_user.customer.vehicle_usage_sets_limitation_default %></p>
+    </ul>
+  </div>
+<% end %>
+
 <div class="row row-top">
   <div class="col-md-6">
     <% if @customer.enable_multi_vehicle_usage_sets %>

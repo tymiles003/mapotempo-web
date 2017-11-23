@@ -86,7 +86,7 @@ class V01::VehicleUsageSets < Grape::API
     end
     post do
       vehicle_usage_set = current_customer.vehicle_usage_sets.build(vehicle_usage_set_params)
-      vehicle_usage_set.save!
+      vehicle_usage_set.customer.save!
       present vehicle_usage_set, with: V01::Entities::VehicleUsageSet
     end
 

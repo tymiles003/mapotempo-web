@@ -308,4 +308,50 @@ class DestinationsControllerTest < ActionController::TestCase
     assert_template :import
     assert_valid response
   end
+
+  test 'should use limitation' do
+    customer = @destination.customer
+    customer.delete_all_destinations
+    customer.destinations_limitation = 1
+    customer.save!
+
+    assert_difference('Destination.count', 1) do
+      post :create, destination: {
+        city: 'Bordeaux',
+        name: 'new dest',
+        postalcode: '33000',
+        state: 'Aquitaine',
+        comment: 'comment',
+        phone_number: '+336123456789',
+        visits_attributes: [{
+          open1: '10:00',
+          close1: '18:00',
+          open2: '20:00',
+          close2: '21:00',
+          quantity1_1: '10',
+          tag_ids: [tags(:tag_one).id]
+        }]
+      }
+    end
+
+    assert_difference('Destination.count', 0) do
+      post :create, destination: {
+        city: 'B2',
+        name: 'new 2',
+        postalcode: '33000',
+        state: 'Aquitaine',
+        comment: 'comment',
+        phone_number: '+336123456789',
+        visits_attributes: [{
+          open1: '10:00',
+          close1: '18:00',
+          open2: '20:00',
+          close2: '21:00',
+          quantity1_1: '10',
+          tag_ids: [tags(:tag_one).id]
+        }]
+      }
+      assert_response :error
+    end
+  end
 end

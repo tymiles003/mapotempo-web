@@ -33,7 +33,7 @@
                 <li class="dropdown">
                   <%= link_to plannings_path, :class=>"dropdown-toggle", 'data-toggle'=>"dropdown" do %><i class="fa fa-calendar-o fa-fw"></i> <span class="menu_label"><%= t 'plannings.menu.plannings' %></span> <span class="caret"></span><% end %>
                   <ul class="dropdown-menu">
-                    <li><%= link_to new_planning_path do %><i class="fa fa-plus fa-fw"></i> <%= t 'all.verb.new' %><% end %></li>
+                    <li<% if current_user.customer.too_many_plannings? %> class="disabled"<% end %>><%= link_to new_planning_path do %><i class="fa fa-plus fa-fw"></i> <%= t 'all.verb.new' %><% end %></li>
                     <li><%= link_to plannings_path do %><i class="fa fa-calendar-o fa-fw"></i> <%= t 'all.verb.list' %><% end %></li>
                     <li class="divider"></li>
                     <li><%= link_to zonings_path do %><i class="fa fa-object-ungroup fa-fw"></i> <%= t 'zonings.menu.zonings' %><% end %></li>

@@ -58,10 +58,16 @@ class VehicleUsageSetsController < ApplicationController
     @vehicle_usage_set = current_user.customer.vehicle_usage_sets.build(p)
 
     respond_to do |format|
-      if @vehicle_usage_set.save
-        format.html { redirect_to vehicle_usage_sets_path, notice: t('activerecord.successful.messages.created', model: @vehicle_usage_set.class.model_name.human) }
-      else
-        format.html { render action: 'new' }
+      begin
+        VehicleUsageSet.transaction do
+          if @vehicle_usage_set.save && @vehicle_usage_set.customer.save!
+            format.html { redirect_to vehicle_usage_sets_path, notice: t('activerecord.successful.messages.created', model: @vehicle_usage_set.class.model_name.human) }
+          else
+            format.html { render action: 'new' }
+          end
+        end
+      rescue ActiveRecord::RecordInvalid => e
+        format.html { render action: 'new', status: :unprocessable_entity, alert: @vehicle_usage_set.customer.errors.full_messages } ##########################" Le message ne remonte pas
       end
     end
   end

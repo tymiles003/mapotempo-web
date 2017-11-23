@@ -59,16 +59,18 @@ class DestinationsController < ApplicationController
   end
 
   def create
-    p = destination_params
-    time_with_day_params(params, p, [:open1, :close1, :open2, :close2])
-    @destination = current_user.customer.destinations.build(p)
+    Destination.transaction do
+      p = destination_params
+      time_with_day_params(params, p, [:open1, :close1, :open2, :close2])
+      @destination = current_user.customer.destinations.build(p)
 
-    respond_to do |format|
-      if @destination.save && current_user.customer.save
-        format.html { redirect_to link_back || edit_destination_path(@destination), notice: t('activerecord.successful.messages.created', model: @destination.class.model_name.human) }
-      else
-        flash.now[:error] = @destination.customer.errors.full_messages unless @destination.customer.errors.empty?
-        format.html { render action: 'new' }
+      respond_to do |format|
+        if @destination.save && current_user.customer.save!
+          format.html { redirect_to link_back || edit_destination_path(@destination), notice: t('activerecord.successful.messages.created', model: @destination.class.model_name.human) }
+        else
+          flash.now[:error] = @destination.customer.errors.full_messages unless @destination.customer.errors.empty?
+          format.html { render action: 'new' }
+        end
       end
     end
   end

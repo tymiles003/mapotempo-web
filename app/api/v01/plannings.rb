@@ -48,11 +48,14 @@ class V01::Plannings < Grape::API
       optional :geojson, type: Symbol, values: [:true, :false, :point, :polyline], default: :false, desc: 'Fill the geojson field with route geometry: `point` to return only points, `polyline` to return with encoded linestring.'
     end
     post do
-      planning = current_customer.plannings.build(planning_params)
-      planning.default_routes
-      planning.compute
-      planning.save_import!
-      present planning, with: V01::Entities::Planning, geojson: params[:geojson]
+      Planning.transaction do
+        planning = current_customer.plannings.build(planning_params)
+        planning.default_routes
+        planning.compute
+        planning.save_import!
+        planning.customer.save!
+        present planning, with: V01::Entities::Planning, geojson: params[:geojson]
+      end
     end
 
     desc 'Update planning.',

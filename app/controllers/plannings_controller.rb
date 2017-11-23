@@ -96,14 +96,18 @@ class PlanningsController < ApplicationController
 
   def create
     respond_to do |format|
-      Planning.transaction do
-        @planning = current_user.customer.plannings.build(planning_params)
-        @planning.default_routes
-        if @planning.compute && @planning.save_import
-          format.html { redirect_to edit_planning_path(@planning), notice: t('activerecord.successful.messages.created', model: @planning.class.model_name.human) }
-        else
-          format.html { render action: 'new' }
+      begin
+        Planning.transaction do
+          @planning = current_user.customer.plannings.build(planning_params)
+          @planning.default_routes
+          if @planning.compute && @planning.save_import && @planning.customer.save!
+            format.html { redirect_to edit_planning_path(@planning), notice: t('activerecord.successful.messages.created', model: @planning.class.model_name.human) }
+          else
+            format.html { render action: 'new' }
+          end
         end
+      rescue ActiveRecord::RecordInvalid => e
+        format.html { render action: 'new', status: :unprocessable_entity, notice: @planning.customer.errors.full_messages }
       end
     end
   end

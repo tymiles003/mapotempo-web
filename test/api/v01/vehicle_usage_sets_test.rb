@@ -122,4 +122,20 @@ class V01::VehicleUsageSetsTest < ActiveSupport::TestCase
       assert_equal 57600, @customer.vehicle_usage_sets.last.close
     end
   end
+
+  test 'should use limitation' do
+    customer = @vehicle_usage_set.customer
+    customer.vehicle_usage_sets_limitation = customer.vehicle_usage_sets.count + 1
+    customer.save!
+
+    assert_difference('VehicleUsageSet.count', 1) do
+      post api(), @vehicle_usage_set.attributes
+      assert last_response.created?, last_response.body
+    end
+
+    assert_difference('VehicleUsageSet.count', 0) do
+      post api(), @vehicle_usage_set.attributes
+      assert_not last_response.created?, last_response.body
+    end
+  end
 end

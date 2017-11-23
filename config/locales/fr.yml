@@ -527,10 +527,16 @@ fr:
               invalid_json: n'est pas une chaîne de caractères json valide
         customer:
           attributes:
+            plannings:
+              over_max_limit: dépassement du nombre maximal
+            zonings:
+              over_max_limit: dépassement du nombre maximal
             destinations:
-              over_max_limit: Dépassement du nombre maximal de clients
+              over_max_limit: dépassement du nombre maximal
             stores:
-              over_max_limit: Dépassement du nombre maximal de dépôts
+              over_max_limit: dépassement du nombre maximal
+            vehicle_usage_sets:
+              over_max_limit: dépassement du nombre maximal
         store:
           at_least_one: Au moins un dépôt est requis
           icon_unknown: n'est pas une icône font-awesome autorisée
@@ -953,6 +959,8 @@ fr:
           move_help: Déplacez les points manuellement sur la carte le cas échéant
           dismiss: Ignorer
           sort_geocoding: Montrer les géocodages peu fiables d'abord
+      over_max_limit: 'Vous avez atteint la limite de client associés
+        à votre compte (Limite : %{limit})'
     new:
       title: Nouveau client
     import_file:
@@ -1338,7 +1346,7 @@ fr:
         icalendar_email: Agenda iCal par email
         spreadsheet: Tableur CSV / Excel
         none_planning: Veuillez sélectionner au moins un plan à exporter
-      list_message: 'Vous avez atteint la limite conseillée de plans de tournées associés
+      over_max_limit: 'Vous avez atteint la limite de plans associés
         à votre compte (Limite : %{limit})'
     edit:
       vehicles: Véhicules
@@ -1956,6 +1964,8 @@ fr:
       stores: Départ - Arrivée
       time: Début - Fin
       service_time: Durées de service
+      over_max_limit: 'Vous avez atteint la limite de configuration des véhicules associés
+        à votre compte (Limite : %{limit})'
     new:
       title: Nouvelle configuration des véhicules
     import:
@@ -2099,6 +2109,8 @@ fr:
     index:
       title: Liste zonages
       new: Nouveau zonage
+      over_max_limit: 'Vous avez atteint la limite de zonages associés
+        à votre compte (Limite : %{limit})'
     new:
       title: Nouveau zonage
     form:

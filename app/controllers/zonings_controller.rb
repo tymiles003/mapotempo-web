@@ -47,11 +47,17 @@ class ZoningsController < ApplicationController
     @zoning = current_user.customer.zonings.build(zoning_params)
 
     respond_to do |format|
-      if @zoning.save
-        format.html { redirect_to edit_zoning_path(@zoning, planning_id: params.key?(:planning_id) ? params[:planning_id] : nil), notice: t('activerecord.successful.messages.created', model: @zoning.class.model_name.human) }
-      else
-        @planning = params.key?(:planning_id) ? current_user.customer.plannings.find(params[:planning_id]) : nil
-        format.html { render action: 'new' }
+      begin
+        Zoning.transaction do
+          if @zoning.save && @zoning.customer.save!
+            format.html { redirect_to edit_zoning_path(@zoning, planning_id: params.key?(:planning_id) ? params[:planning_id] : nil), notice: t('activerecord.successful.messages.created', model: @zoning.class.model_name.human) }
+          else
+            @planning = params.key?(:planning_id) ? current_user.customer.plannings.find(params[:planning_id]) : nil
+            format.html { render action: 'new' }
+          end
+        end
+      rescue ActiveRecord::RecordInvalid => e
+        format.html { render action: 'new', status: :unprocessable_entity, alert: @zoning.customer.errors.full_messages } ##########################" Le message ne remonte pas
       end
     end
   end
