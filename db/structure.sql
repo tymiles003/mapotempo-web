@@ -2,8 +2,8 @@
 -- PostgreSQL database dump
 --
 
--- Dumped from database version 9.5.9
--- Dumped by pg_dump version 9.5.9
+-- Dumped from database version 9.5.10
+-- Dumped by pg_dump version 9.5.10
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -1006,7 +1006,8 @@ CREATE TABLE visits (
     close1 integer,
     take_over integer,
     open2 integer,
-    close2 integer
+    close2 integer,
+    quantities_operations hstore
 );
 
 
@@ -2665,3 +2666,5 @@ INSERT INTO schema_migrations (version) VALUES ('20171106110030');
 INSERT INTO schema_migrations (version) VALUES ('20171120111400');
 
 INSERT INTO schema_migrations (version) VALUES ('20171129104645');
+
+INSERT INTO schema_migrations (version) VALUES ('20171122115125');

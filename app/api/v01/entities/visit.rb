@@ -34,7 +34,13 @@ class V01::Entities::Visit < Grape::Entity
     end
   }
   expose(:quantities, using: V01::Entities::DeliverableUnitQuantity, documentation: { type: V01::Entities::DeliverableUnitQuantity, is_array: true, param_type: 'form' }) { |m|
-    m.quantities ? m.quantities.to_a.collect{ |a| {deliverable_unit_id: a[0], quantity: a[1]} } : []
+    m.destination.customer.deliverable_units.map{ |du|
+      {
+        deliverable_unit_id: du.id,
+        quantity: m.quantities[du.id],
+        operation: m.quantities_operations[du.id]
+      } if m.quantities[du.id] || m.quantities_operations[du.id]
+    }.compact
   }
   expose(:open, documentation: { type: DateTime, desc: 'Deprecated, use open1 instead.' }) { |m| m.open1_absolute_time_with_seconds }
   expose(:close, documentation: { type: DateTime, desc: 'Deprecated, use close2 instead.' }) { |m| m.close1_absolute_time_with_seconds }

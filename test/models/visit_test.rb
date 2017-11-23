@@ -179,6 +179,16 @@ class VisitTest < ActiveSupport::TestCase
     assert_nil visit.icon
   end
 
+  test 'should not changed with same attributes' do
+    visit = visits :visit_one
+
+    visit.assign_attributes(visit.attributes)
+    assert_not visit.changed?, visit.attributes.keys.select{ |k| visit.send("#{k}_changed?") }.map{ |k| "#{k} has changed" }.join(', ')
+
+    visit.assign_attributes(quantities_operations: {})
+    assert_not visit.changed?, visit.attributes.keys.select{ |k| visit.send("#{k}_changed?") }.map{ |k| "#{k} has changed" }.join(', ')
+  end
+
   test 'should return error if quantity is invalid' do
     visit = visits(:visit_one)
 
@@ -215,6 +225,16 @@ class VisitTest < ActiveSupport::TestCase
     visit.save!
     assert visit.stop_visits[-1].route.reload.outdated # Reload route because it not updated in main scope
     assert_equal -12.3, Visit.find(visit.id).quantities[customers(:customer_one).deliverable_units[0].id]
+  end
+
+  test 'should set quantity to 0 if fill/empty' do
+    visit = visits :visit_one
+    assert_not visit.stop_visits[-1].route.outdated
+    visit.quantities = {customers(:customer_one).deliverable_units[0].id => nil}
+    visit.quantities_operations = {customers(:customer_one).deliverable_units[0].id => 'empty'}
+    visit.save!
+    assert visit.stop_visits[-1].route.reload.outdated # Reload route because it not updated in main scope
+    assert_equal 0, Visit.find(visit.id).quantities[customers(:customer_one).deliverable_units[0].id]
   end
 
   test 'should outdate route after tag changed' do

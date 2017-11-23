@@ -988,6 +988,11 @@ en:
       take_over_desc: visit duration
       quantity: quantity
       quantity_desc: number of units to deliver.
+      quantity_operation: operation
+      quantity_operation_desc: specify to fill or empty vehicle.
+      quantity_operation_format: '[fill | empty]'
+      quantity_operation_fill: fill
+      quantity_operation_empty: empty
       quantity1_1: quantity 1_1
       quantity1_1_desc: 'deprecated: use "quantities" instead.'
       quantity1_2: quantity 1_2
@@ -1523,6 +1528,7 @@ en:
       ref_visit: reference visit
       duration: duration
       quantity: quantity
+      quantity_operation: operation
       orders: orders
       active: active
       open1: open 1
@@ -1981,8 +1987,12 @@ en:
         cancel.
       ref_help: A free reference. Important to avoid overwriting visits on import/export
       quantities:
+        fill: Fill (at least)
+        empty: Empty (at least)
         default: '%{n} (default value)'
-        help: Quantities to be delivered
+        help: Quantities to be delivered. In case of fill / empty, optimization engine will
+          decide itself quantities, if you specify a value it will be used as a minimum
+          to fill / empty.
       take_over_default: default
       take_over_help: If empty, use the default value
       open_close1: Time window 1

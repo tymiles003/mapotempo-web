@@ -402,6 +402,13 @@ var destinations_form = function(params, api) {
       },
       width: '100%'
     });
+
+    $('[name*=\\[quantities_operations\\]').change(function() {
+      var $this = $(this);
+      var quantity = $this.closest('[data-deliverable_unit_id]').find('[name*=\\[quantities\\]]');
+      if (($this.val() == 'fill' || $this.val() == 'empty') && !quantity.val())
+        quantity.val('0');
+    });
   };
   initVisits($('form[data-destination_id]'));
 

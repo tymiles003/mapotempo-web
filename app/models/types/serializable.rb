@@ -15,12 +15,34 @@
 # along with Mapotempo. If not, see:
 # <http://www.gnu.org/licenses/agpl.html>
 #
-class V01::Entities::DeliverableUnitQuantity < Grape::Entity
-  def self.entity_name
-    'V01_DeliverableUnitQuantity'
+class Serializable
+  def self.dump(input)
+    hash = input.is_a?(Hash) ? input : input.attributes
+    hash = hash.compact
+    hash.size > 0 ? hash : nil
   end
 
-  expose(:deliverable_unit_id, documentation: { type: Integer })
-  expose(:quantity, documentation: { type: Float })
-  expose(:operation, documentation: { type: Float, values: [:fill, :empty] })
+  def self.load(input)
+    new(input)
+  end
+
+  def initialize(input)
+    @hash = input || {}
+  end
+
+  def attributes
+    @hash
+  end
+
+  def ==(other)
+    @hash == other.attributes
+  end
+
+  def to_s
+    @hash.to_s
+  end
+
+  def method_missing(method_sym, *arguments, &block)
+    @hash.send(method_sym, *arguments, &block)
+  end
 end

@@ -212,7 +212,13 @@ class Route < ApplicationRecord
             if stop.visit.try(:default_quantities?)
               unless options[:no_quantities]
                 stop.route.planning.customer.deliverable_units.each{ |du|
-                  quantities_[du.id] = (quantities_[du.id] || 0) + (stop.visit.default_quantities[du.id] || 0)
+                  if stop.visit.quantities_operations[du.id] == 'fill'
+                    quantities_[du.id] = vehicle_usage.vehicle.default_capacities[du.id]
+                  elsif stop.visit.quantities_operations[du.id] == 'empty'
+                    quantities_[du.id] = 0
+                  else
+                    quantities_[du.id] = (quantities_[du.id] || 0) + (stop.visit.default_quantities[du.id] || 0)
+                  end
                 }
                 stop.out_of_capacity = stop.route.planning.customer.deliverable_units.any?{ |du|
                   (vehicle_usage.vehicle.default_capacities[du.id] && quantities_[du.id] > vehicle_usage.vehicle.default_capacities[du.id]) ||

@@ -28,7 +28,7 @@ class OptimizerWrapper
   end
 
   # positions with stores at the end
-  # services Array[Hash{start1: , end1: , duration: , stop_id: , vehicle_id: , quantities: []}]
+  # services Array[Hash{start1: , end1: , duration: , stop_id: , vehicle_id: , quantities: [], quantities_operations: []}]
   # vehicles Array[Hash{id: , open: , close: , stores: [], rests: [], capacities: []}]
   def optimize(positions, services, vehicles, options, &progress)
     key = Digest::MD5.hexdigest(Marshal.dump([positions, services, vehicles, options]))
@@ -120,8 +120,10 @@ class OptimizerWrapper
             quantities: service[:quantities] ? service[:quantities].each.map{ |k, v|
               v ? {
                 unit_id: "u#{k}",
-                value: v
-              } : nil
+                value: v,
+                fill: service[:quantities_operations][k] == 'fill' || nil,
+                empty: service[:quantities_operations][k] == 'empty' || nil
+              }.compact : nil
             }.compact : []
           }.delete_if{ |k, v| !v }
         },

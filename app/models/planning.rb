@@ -320,8 +320,8 @@ class Planning < ApplicationRecord
     stops_on = (routes.find{ |r| !r.vehicle_usage_id }.try(:stops) || []) + routes_with_vehicle.flat_map{ |r| r.stops_segregate(active_only)[true] }.compact
     o = amalgamate_stops_same_position(stops_on, global) { |positions|
       services_and_rests = positions.collect{ |position|
-        stop_id, open1, close1, open2, close2, duration, vehicle_id, quantities = position[2..9]
-        {stop_id: stop_id, start1: open1, end1: close1, start2: open2, end2: close2, duration: duration, vehicle_id: vehicle_id, quantities: quantities}
+        stop_id, open1, close1, open2, close2, duration, vehicle_id, quantities, quantities_operations = position[2..10]
+        {stop_id: stop_id, start1: open1, end1: close1, start2: open2, end2: close2, duration: duration, vehicle_id: vehicle_id, quantities: quantities, quantities_operations: quantities_operations}
       }
 
       unnil_positions(positions, services_and_rests) { |positions, services, rests|
@@ -560,7 +560,7 @@ class Planning < ApplicationRecord
     if tws_or_quantities || multiples_vehicles_with_capacities
       # Can't reduce cause of time windows, quantities or multiple vehicles
       positions_uniq = stops.collect{ |stop|
-        [stop.lat, stop.lng, stop.id, stop.open1.try(:to_f), stop.close1.try(:to_f), stop.open2.try(:to_f), stop.close2.try(:to_f), stop.duration, (!global || stop.is_a?(StopRest)) ? stop.route.vehicle_usage_id : nil, stop.is_a?(StopVisit) ? stop.visit.default_quantities : nil]
+        [stop.lat, stop.lng, stop.id, stop.open1.try(:to_f), stop.close1.try(:to_f), stop.open2.try(:to_f), stop.close2.try(:to_f), stop.duration, (!global || stop.is_a?(StopRest)) ? stop.route.vehicle_usage_id : nil, stop.is_a?(StopVisit) ? stop.visit.default_quantities : nil, stop.is_a?(StopVisit) ? stop.visit.quantities_operations : nil]
       }
 
       yield(positions_uniq)
@@ -574,7 +574,7 @@ class Planning < ApplicationRecord
 
       positions_uniq = Hash.new { [] }
       stock.each{ |k, v|
-        positions_uniq[v[0][0].id] = k + [v[0][0].id, nil, nil, nil, nil, v.sum{ |vs| vs[0].duration }, !global ? v[0][0].route.vehicle_usage_id : nil, v[0][0].is_a?(StopVisit) ? v[0][0].visit.default_quantities : nil]
+        positions_uniq[v[0][0].id] = k + [v[0][0].id, nil, nil, nil, nil, v.sum{ |vs| vs[0].duration }, !global ? v[0][0].route.vehicle_usage_id : nil, v[0][0].is_a?(StopVisit) ? v[0][0].visit.default_quantities : nil, v[0][0].is_a?(StopVisit) ? v[0][0].visit.quantities_operations : nil]
       }
 
       optim_uniq = yield(positions_uniq.collect{ |_k, v| v })

@@ -25,8 +25,9 @@ CSV.generate { |csv|
     I18n.t('destinations.import_file.tags_visit')
   ] + (@customer.enable_orders ?
     [] :
-    @customer.deliverable_units.map{ |du|
-      I18n.t('destinations.import_file.quantity') + (du.label ? '[' + du.label + ']' : '')
+    @customer.deliverable_units.flat_map{ |du|
+      [I18n.t('destinations.import_file.quantity') + (du.label ? '[' + du.label + ']' : ''),
+      I18n.t('destinations.import_file.quantity_operation') + (du.label ? '[' + du.label + ']' : '')]
     })
   @destinations.each { |destination|
     destination_columns = [
@@ -59,8 +60,9 @@ CSV.generate { |csv|
           visit.tags.collect(&:label).join(',')
         ] + (@customer.enable_orders ?
           [] :
-          @customer.deliverable_units.map{ |du|
-            visit.quantities[du.id]
+          @customer.deliverable_units.flat_map{ |du|
+            [visit.quantities[du.id],
+            visit.quantities_operations[du.id] && I18n.t("destinations.import_file.quantity_operation_#{visit.quantities_operations[du.id]}")]
           })
       }
     else

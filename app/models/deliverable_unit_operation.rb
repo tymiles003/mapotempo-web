@@ -1,4 +1,4 @@
-# Copyright © Mapotempo, 2016
+# Copyright © Mapotempo, 2017
 #
 # This file is part of Mapotempo.
 #
@@ -15,12 +15,14 @@
 # along with Mapotempo. If not, see:
 # <http://www.gnu.org/licenses/agpl.html>
 #
-class V01::Entities::DeliverableUnitQuantity < Grape::Entity
-  def self.entity_name
-    'V01_DeliverableUnitQuantity'
+class DeliverableUnitOperation < Serializable
+  def initialize(operations)
+    @hash = operations ? Hash[operations.map{ |k, v|
+      if v && !v.empty?
+        [Integer(k), v]
+      else
+        nil
+      end
+    }.compact] : {}
   end
-
-  expose(:deliverable_unit_id, documentation: { type: Integer })
-  expose(:quantity, documentation: { type: Float })
-  expose(:operation, documentation: { type: Float, values: [:fill, :empty] })
 end

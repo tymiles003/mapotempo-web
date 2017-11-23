@@ -15,21 +15,9 @@
 # along with Mapotempo. If not, see:
 # <http://www.gnu.org/licenses/agpl.html>
 #
-class DeliverableUnitQuantity
-  def self.dump(quantities)
-    hash = quantities.is_a?(Hash) ? quantities : quantities.attributes
-    hash = hash.delete_if{ |k, v|
-      !v
-    }
-    hash.size > 0 ? hash : nil
-  end
-
-  def self.load(quantities)
-    new(quantities)
-  end
-
+class DeliverableUnitQuantity < Serializable
   def initialize(quantities)
-    @quantities = quantities ? Hash[quantities.map{ |k, v|
+    @hash = quantities ? Hash[quantities.map{ |k, v|
       if v && !v.empty?
         # float value will be validated by the model
         value = Float(v) rescue v
@@ -38,21 +26,5 @@ class DeliverableUnitQuantity
         nil
       end
     }.compact] : {}
-  end
-
-  def attributes
-    @quantities
-  end
-
-  def ==(other)
-    @quantities == other.attributes
-  end
-
-  def to_s
-    @quantities.to_s
-  end
-
-  def method_missing(method_sym, *arguments, &block)
-    @quantities.send(method_sym, *arguments, &block)
   end
 end

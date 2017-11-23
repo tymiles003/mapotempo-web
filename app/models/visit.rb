@@ -24,6 +24,7 @@ class Visit < ApplicationRecord
   has_and_belongs_to_many :tags, after_add: :update_tags_track, after_remove: :update_tags_track
   delegate :lat, :lng, :name, :street, :postalcode, :city, :state, :country, :detail, :comment, :phone_number, to: :destination
   serialize :quantities, DeliverableUnitQuantity
+  serialize :quantities_operations, DeliverableUnitOperation
 
   nilify_blanks
   validates :destination, presence: true
@@ -46,7 +47,7 @@ class Visit < ApplicationRecord
   include Consistency
   validate_consistency :tags, attr_consistency_method: ->(visit) { visit.destination.try :customer_id }
 
-  before_save :update_tags, :create_orders
+  before_save :update_tags, :create_orders, :update_quantities
   before_update :update_outdated
   after_save -> { @tag_ids_changed = false }
 
@@ -66,6 +67,8 @@ class Visit < ApplicationRecord
       def copy.create_orders; end
 
       def copy.update_outdated; end
+
+      def copy.update_quantities; end
     })
   end
 
@@ -199,6 +202,14 @@ class Visit < ApplicationRecord
     if destination.customer && new_record?
       destination.customer.order_arrays.each{ |order_array|
         order_array.add_visit(self)
+      }
+    end
+  end
+
+  def update_quantities
+    if quantities_changed? || quantities_operations_changed?
+      quantities_operations.each{ |k, v|
+        quantities[k] = 0 if !quantities[k] && (v == 'fill' || v == 'empty')
       }
     end
   end

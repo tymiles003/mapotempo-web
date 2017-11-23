@@ -196,39 +196,52 @@ class DestinationsController < ApplicationController
       }
     end
 
-    params.require(:destination).permit(:ref,
-                                        :name,
-                                        :street,
-                                        :detail,
-                                        :postalcode,
-                                        :city,
-                                        :state,
-                                        :country,
-                                        :lat,
-                                        :lng,
-                                        :phone_number,
-                                        :comment,
-                                        :geocoding_accuracy,
-                                        :geocoding_level,
-                                        tag_ids: [],
-                                        visits_attributes: [:id,
-                                                            :ref,
-                                                            :take_over,
-                                                            :open1,
-                                                            :close1,
-                                                            :open2,
-                                                            :close2,
-                                                            :_destroy,
-                                                            tag_ids: [],
-                                                            quantities: current_user.customer.deliverable_units.map{ |du| du.id.to_s }])
+    o = params.require(:destination).permit(
+      :ref,
+      :name,
+      :street,
+      :detail,
+      :postalcode,
+      :city,
+      :state,
+      :country,
+      :lat,
+      :lng,
+      :phone_number,
+      :comment,
+      :geocoding_accuracy,
+      :geocoding_level,
+      tag_ids: [],
+      visits_attributes: [
+        :id,
+        :ref,
+        :take_over,
+        :open1,
+        :close1,
+        :open2,
+        :close2,
+        :_destroy,
+        tag_ids: [],
+        quantities: current_user.customer.deliverable_units.map{ |du| du.id.to_s },
+        quantities_operations: current_user.customer.deliverable_units.map{ |du| du.id.to_s }
+      ]
+    )
+    o[:visits_attributes].each do |_k, v|
+      v[:quantities_operations].each{ |k, qo|
+        v[:quantities][k] = "#{-v[:quantities][k].to_f}" if v[:quantities][k].to_f > 0 && qo.to_sym == :empty
+      } if v && v[:quantities_operations]
+    end if o[:visits_attributes]
+    o
   end
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def import_csv_params
-    params.require(:import_csv).permit(:replace,
-                                       :file,
-                                       :delete_plannings,
-                                       column_def: ImporterDestinations.new(current_user.customer).columns.keys)
+    params.require(:import_csv).permit(
+      :replace,
+      :file,
+      :delete_plannings,
+      column_def: ImporterDestinations.new(current_user.customer).columns.keys
+    )
   end
 
   # Never trust parameters from the scary internet, only allow the white list through.

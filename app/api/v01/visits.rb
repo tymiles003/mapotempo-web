@@ -24,7 +24,10 @@ class V01::Visits < Grape::API
     def visit_params
       p = ActionController::Parameters.new(params)
       p = p[:visit] if p.key?(:visit)
-      p[:quantities] = Hash[p[:quantities].map{ |q| [q[:deliverable_unit_id].to_s, q[:quantity]] }] if p[:quantities]
+      if p[:quantities]
+        p[:quantities_operations] = Hash[p[:quantities].map{ |q| [q[:deliverable_unit_id].to_s, q[:operation]] }]
+        p[:quantities] = Hash[p[:quantities].map{ |q| [q[:deliverable_unit_id].to_s, q[:quantity]] }]
+      end
 
       # Deals with deprecated open and close
       p[:open1] = p.delete(:open) unless p[:open1]
@@ -39,7 +42,8 @@ class V01::Visits < Grape::API
         end
       end
 
-      p.permit(:ref, :take_over, :open1, :close1, :open2, :close2, tag_ids: [], quantities: current_customer.deliverable_units.map{ |du| du.id.to_s })
+      deliverable_unit_ids = current_customer.deliverable_units.map{ |du| du.id.to_s }
+      p.permit(:ref, :take_over, :open1, :close1, :open2, :close2, tag_ids: [], quantities: deliverable_unit_ids, quantities_operations: deliverable_unit_ids)
     end
 
     ID_DESC = 'Id or the ref field value, then use "ref:[value]".'.freeze

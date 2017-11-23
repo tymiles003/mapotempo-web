@@ -75,8 +75,9 @@ class ImporterDestinations < ImporterBase
       close2: {title: I18n.t('destinations.import_file.close2'), desc: I18n.t('destinations.import_file.close2_desc'), format: I18n.t('destinations.import_file.format.hour')},
       tags_visit: {title: I18n.t('destinations.import_file.tags_visit'), desc: I18n.t('destinations.import_file.tags_visit_desc'), format: I18n.t('destinations.import_file.tags_format')},
       take_over: {title: I18n.t('destinations.import_file.take_over'), desc: I18n.t('destinations.import_file.take_over_desc'), format: I18n.t('destinations.import_file.format.second')},
-    }.merge(Hash[@customer.deliverable_units.map{ |du|
-      ["quantity#{du.id}".to_sym, {title: I18n.t('destinations.import_file.quantity') + (du.label ? '[' + du.label + ']' : ''), desc: I18n.t('destinations.import_file.quantity_desc'), format: I18n.t('destinations.import_file.format.float')}]
+    }.merge(Hash[@customer.deliverable_units.flat_map{ |du|
+      [["quantity#{du.id}".to_sym, {title: I18n.t('destinations.import_file.quantity') + (du.label ? '[' + du.label + ']' : ''), desc: I18n.t('destinations.import_file.quantity_desc'), format: I18n.t('destinations.import_file.format.float')}],
+      ["quantity_operation#{du.id}".to_sym, {title: I18n.t('destinations.import_file.quantity_operation') + (du.label ? '[' + du.label + ']' : ''), desc: I18n.t('destinations.import_file.quantity_operation_desc'), format: I18n.t('destinations.import_file.quantity_operation_format')}]]
     }])
   end
 
@@ -84,6 +85,7 @@ class ImporterDestinations < ImporterBase
     columns_route.merge(columns_destination).merge(columns_visit).merge(
       without_visit: {title: I18n.t('destinations.import_file.without_visit'), desc: I18n.t('destinations.import_file.without_visit_desc'), format: I18n.t('destinations.import_file.format.yes_no')},
       quantities: {}, # only for json import
+      quantities_operations: {}, # only for json import
       # Deals with deprecated open and close
       open: {title: I18n.t('destinations.import_file.open'), desc: I18n.t('destinations.import_file.open_desc'), format: I18n.t('destinations.import_file.format.hour'), required: I18n.t('destinations.import_file.format.deprecated')},
       close: {title: I18n.t('destinations.import_file.close'), desc: I18n.t('destinations.import_file.close_desc'), format: I18n.t('destinations.import_file.format.hour'), required: I18n.t('destinations.import_file.format.deprecated')},
@@ -167,12 +169,19 @@ class ImporterDestinations < ImporterBase
 
   def prepare_quantities(row)
     q = {}
+    qo = {}
     row.each{ |key, value|
       /^quantity([0-9]+)$/.match(key.to_s) { |m|
-        q.merge!({Integer(m[1]) => row.delete(m[0].to_sym)})
+        q.merge! Integer(m[1]) => row.delete(m[0].to_sym)
+      }
+      /^quantity_operation([0-9]+)$/.match(key.to_s) { |m|
+        o = row.delete(m[0].to_sym)
+        o = o == I18n.t('destinations.import_file.quantity_operation_fill') ? 'fill' : o == I18n.t('destinations.import_file.quantity_operation_empty') ? 'empty' : nil
+        qo.merge! Integer(m[1]) => o
       }
     }
-    row[:quantities] = q if q.length > 0
+    row[:quantities] = q unless q.empty?
+    row[:quantities_operations] = qo unless qo.empty?
 
     # Deals with deprecated quantity
     if !row.key?(:quantities)
