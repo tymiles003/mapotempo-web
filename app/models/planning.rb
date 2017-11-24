@@ -76,16 +76,16 @@ class Planning < ApplicationRecord
     if routes_visits.size <= routes.size - 1
       visits = routes_visits.values.flat_map{ |s| s[:visits] }.collect{ |visit_active| visit_active[0] }
       # Set all excluded visits out of route
-      routes.find{ |r| !r.vehicle_usage }.set_visits((customer.visits - visits).select{ |visit|
+      routes.find{ |r| !r.vehicle_usage? }.set_visits((customer.visits - visits).select{ |visit|
         tags_compatible?(visit.tags.to_a | visit.destination.tags.to_a)
       })
 
       index_routes = (1..routes.size).to_a
       routes_visits.each{ |_ref, r|
-        index_routes.delete(routes.index{ |rr| rr.vehicle_usage && rr.vehicle_usage.vehicle.ref == r[:ref_vehicle] }) if r[:ref_vehicle]
+        index_routes.delete(routes.index{ |rr| rr.vehicle_usage? && rr.vehicle_usage.vehicle.ref == r[:ref_vehicle] }) if r[:ref_vehicle]
       }
       routes_visits.each{ |ref, r|
-        i = routes.index{ |rr| r[:ref_vehicle] && rr.vehicle_usage && rr.vehicle_usage.vehicle.ref == r[:ref_vehicle] } || index_routes.shift
+        i = routes.index{ |rr| r[:ref_vehicle] && rr.vehicle_usage? && rr.vehicle_usage.vehicle.ref == r[:ref_vehicle] } || index_routes.shift
         routes[i].ref = ref
         routes[i].set_visits(r[:visits].select{ |visit|
           tags_compatible?(visit[0].tags.to_a | visit[0].destination.tags.to_a)
@@ -98,7 +98,7 @@ class Planning < ApplicationRecord
 
   def vehicle_usage_add(vehicle_usage, ignore_errors = false)
     route = routes.build(vehicle_usage: vehicle_usage, outdated: false)
-    vehicle_usage.routes << route if !vehicle_usage.id
+    vehicle_usage.routes << route unless vehicle_usage.id
     route.init_stops(true, ignore_errors)
   end
 
@@ -106,7 +106,7 @@ class Planning < ApplicationRecord
     route = routes.find{ |route| route.vehicle_usage == vehicle_usage}
     # route no longer exists if vehicle is disabled
     if route
-      out_of_route = routes.find{ |r| !r.vehicle_usage_id }
+      out_of_route = routes.find{ |r| !r.vehicle_usage? }
       route.stops.select{ |stop| stop.is_a?(StopVisit) }.map{ |stop|
         out_of_route.stops.build(type: StopVisit.name, visit: stop.visit, index: out_of_route.stops.length + 1)
       }
@@ -116,7 +116,7 @@ class Planning < ApplicationRecord
 
   def visit_add(visit)
     update_routes_changed
-    routes.find{ |r| !r.vehicle_usage_id }.add(visit)
+    routes.find{ |r| !r.vehicle_usage? }.add(visit)
   end
 
   def visit_remove(visit)
@@ -139,7 +139,7 @@ class Planning < ApplicationRecord
       default_empty_routes
 
       if !split_by_zones(visits_compatibles)
-        routes.find{ |r| !r.vehicle_usage }.default_stops
+        routes.find{ |r| !r.vehicle_usage? }.default_stops
       end
     end
   end
@@ -195,7 +195,7 @@ class Planning < ApplicationRecord
   end
 
   def move_stop(route, stop, index, force = false)
-    route, index = prefered_route_and_index([route], stop) unless index || !route.vehicle_usage_id
+    route, index = prefered_route_and_index([route], stop) unless index || !route.vehicle_usage?
     if stop.route != route
       if stop.is_a?(StopVisit)
         visit, active = stop.visit, stop.active
@@ -225,7 +225,7 @@ class Planning < ApplicationRecord
     available_routes = []
 
     # If already in route, stay in route
-    if stop.route.vehicle_usage_id
+    if stop.route.vehicle_usage?
       available_routes = [stop.route]
     end
 
@@ -234,7 +234,7 @@ class Planning < ApplicationRecord
       zone = Zoning.new(zones: zonings.collect(&:zones).flatten).inside(stop.visit.destination)
       if zone && zone.vehicle
         route = routes.find{ |route|
-          route.vehicle_usage_id && route.vehicle_usage.vehicle == zone.vehicle && !route.locked
+          route.vehicle_usage? && route.vehicle_usage.vehicle == zone.vehicle && !route.locked
         }
         (available_routes = [route]) if route
       end
@@ -243,7 +243,7 @@ class Planning < ApplicationRecord
     # It still no route get all routes
     if available_routes.empty? && options[:out_of_zone]
       available_routes = routes.select{ |route|
-        route.vehicle_usage_id && !route.locked
+        route.vehicle_usage? && !route.locked
       }
     end
 
@@ -303,7 +303,7 @@ class Planning < ApplicationRecord
     orders = Hash[orders]
 
     routes.each{ |route|
-      if route.vehicle_usage_id
+      if route.vehicle_usage?
         route.stops.each{ |stop|
           stop.active = orders.key?(stop.visit_id) && !orders[stop.visit_id].empty?
         }
@@ -316,12 +316,12 @@ class Planning < ApplicationRecord
   end
 
   def optimize(routes, global, active_only = true, &optimizer)
-    routes_with_vehicle = routes.select(&:vehicle_usage_id)
-    stops_on = (routes.find{ |r| !r.vehicle_usage_id }.try(:stops) || []) + routes_with_vehicle.flat_map{ |r| r.stops_segregate(active_only)[true] }.compact
+    routes_with_vehicle = routes.select(&:vehicle_usage?)
+    stops_on = (routes.find{ |r| !r.vehicle_usage? }.try(:stops) || []) + routes_with_vehicle.flat_map{ |r| r.stops_segregate(active_only)[true] }.compact
     o = amalgamate_stops_same_position(stops_on, global) { |positions|
       services_and_rests = positions.collect{ |position|
-        stop_id, open1, close1, open2, close2, duration, vehicle_id, quantities, quantities_operations = position[2..10]
-        {stop_id: stop_id, start1: open1, end1: close1, start2: open2, end2: close2, duration: duration, vehicle_id: vehicle_id, quantities: quantities, quantities_operations: quantities_operations}
+        stop_id, open1, close1, open2, close2, duration, vehicle_usage_id, quantities, quantities_operations = position[2..10]
+        {stop_id: stop_id, start1: open1, end1: close1, start2: open2, end2: close2, duration: duration, vehicle_usage_id: vehicle_usage_id, quantities: quantities, quantities_operations: quantities_operations}
       }
 
       unnil_positions(positions, services_and_rests) { |positions, services, rests|
@@ -346,7 +346,7 @@ class Planning < ApplicationRecord
             open: vehicle_open.to_f,
             close: vehicle_close.to_f,
             stores: [position_start && :start, position_stop && :stop].compact,
-            rests: rests.select{ |s| s[:vehicle_id] == r.vehicle_usage_id },
+            rests: rests.select{ |s| s[:vehicle_usage_id] == r.vehicle_usage_id },
             capacities: r.vehicle_usage.vehicle.default_capacities && r.vehicle_usage.vehicle.default_capacities.each.map{ |k, v|
               {
                 deliverable_unit_id: k,
@@ -358,11 +358,11 @@ class Planning < ApplicationRecord
         }
 
         # Remove out-of-route if no global optimization
-        optimizer.call(positions, services, vehicles)[(routes.find{ |r| !r.vehicle_usage_id } ? 0 : 1)..-1]
+        optimizer.call(positions, services, vehicles)[(routes.find{ |r| !r.vehicle_usage? } ? 0 : 1)..-1]
       }
     }
     routes_with_vehicle.each_with_index{ |r, i|
-      if o[routes.find{ |route| !route.vehicle_usage_id } ? i + 1 : i].size > 0
+      if o[routes.find{ |route| !route.vehicle_usage? } ? i + 1 : i].size > 0
         r.optimized_at = Time.now.utc
         r.last_sent_to = r.last_sent_at = nil
       elsif global
@@ -379,7 +379,7 @@ class Planning < ApplicationRecord
       flat_stop_ids = stop_ids.flatten.compact
       inactive_stop_ids = []
 
-      routes.select(&:vehicle_usage_id).each do |route|
+      routes.select(&:vehicle_usage?).each do |route|
         inactive_stop_ids += route.stops.reject(&:active).map(&:id)
       end
 
@@ -393,10 +393,10 @@ class Planning < ApplicationRecord
         i = 0
         ordered_stops.each{ |stop|
           # Don't change route for rests, but build index
-          if stop.is_a?(StopRest) && !route.vehicle_usage_id
+          if stop.is_a?(StopRest) && !route.vehicle_usage?
             flat_stop_ids.delete stop.id
           else
-            stop.active = true if route.vehicle_usage_id && inactive_stop_ids.exclude?(stop.id)
+            stop.active = true if route.vehicle_usage? && inactive_stop_ids.exclude?(stop.id)
             stop.index = i += 1
             stop.time = stop.distance = stop.drive_time = stop.out_of_window = stop.out_of_capacity = stop.out_of_drive_time = nil
             if stop.route_id != route.id
@@ -409,7 +409,7 @@ class Planning < ApplicationRecord
         # 2. Set index and active for other stops (inactive or not in optim for instance)
         other_inactive_stops = (stops_[true] ? stops_[true].select{ |s| s.route_id == route.id && flat_stop_ids.exclude?(s.id) }.sort_by(&:index) : []) - ordered_stops + (stops_[false] ? stops_[false].sort_by(&:index) : [])
         other_inactive_stops.each{ |stop|
-          stop.active = false if route.vehicle_usage_id
+          stop.active = false if route.vehicle_usage?
           stop.index = i += 1
           stop.time = stop.distance = stop.drive_time = stop.out_of_window = stop.out_of_capacity = stop.out_of_drive_time = nil
         }
@@ -429,7 +429,7 @@ class Planning < ApplicationRecord
   def fetch_stops_status
     Visit.transaction do
       if customer.enable_stop_status
-        stops_map = Hash[routes.select(&:vehicle_usage_id).collect(&:stops).flatten.collect { |stop| [(stop.is_a?(StopVisit) ? "v#{stop.visit_id}" : "r#{stop.id}"), stop] }]
+        stops_map = Hash[routes.select(&:vehicle_usage?).collect(&:stops).flatten.collect { |stop| [(stop.is_a?(StopVisit) ? "v#{stop.visit_id}" : "r#{stop.id}"), stop] }]
         stops_map.each { |ss| ss[1].assign_attributes status: nil, eta: nil }
         routes_quantities_changed = []
 
@@ -708,7 +708,7 @@ class Planning < ApplicationRecord
           vehicles_map[zone.vehicle].add_visits(visits.collect{ |d| [d, true] })
         else
           # Add to unplanned route even if the route is locked
-          routes.find{ |r| !r.vehicle_usage_id }.add_visits(visits.collect{ |d| [d, true] })
+          routes.find{ |r| !r.vehicle_usage? }.add_visits(visits.collect{ |d| [d, true] })
         end
       }
 

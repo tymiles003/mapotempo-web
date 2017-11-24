@@ -31,7 +31,7 @@ class PlanningTest < ActiveSupport::TestCase
   # return all services in reverse order in first route, rests at the end
   def optimizer_global(positions, services, vehicles)
     [[]] + vehicles.each_with_index.map{ |v, i|
-      ((i.zero? ? services.reject{ |s| s[:vehicle_id] } : []) + services.select{ |s| s[:vehicle_id] && s[:vehicle_id] == v[:id] } + v[:rests]).map{ |s|
+      ((i.zero? ? services.reject{ |s| s[:vehicle_usage_id] } : []) + services.select{ |s| s[:vehicle_usage_id] && s[:vehicle_usage_id] == v[:id] } + v[:rests]).map{ |s|
         s[:stop_id]
       }.reverse
     }

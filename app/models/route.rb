@@ -64,7 +64,7 @@ class Route < ApplicationRecord
 
   def init_stops(compute = true, ignore_errors = false)
     stops.clear
-    if vehicle_usage && vehicle_usage.default_rest_duration
+    if vehicle_usage? && vehicle_usage.default_rest_duration
       stops.build(type: StopRest.name, active: true, index: 1)
     end
 
@@ -80,11 +80,11 @@ class Route < ApplicationRecord
   end
 
   def service_time_start_value
-    vehicle_usage.default_service_time_start if vehicle_usage && vehicle_usage.default_service_time_start
+    vehicle_usage.default_service_time_start if vehicle_usage? && vehicle_usage.default_service_time_start
   end
 
   def service_time_end_value
-    vehicle_usage.default_service_time_end if vehicle_usage && vehicle_usage.default_service_time_end
+    vehicle_usage.default_service_time_end if vehicle_usage? && vehicle_usage.default_service_time_end
   end
 
   def plan(departure = nil, options = {})
@@ -103,7 +103,7 @@ class Route < ApplicationRecord
     self.drive_time = nil
     self.wait_time = nil
     self.visits_duration = nil
-    if vehicle_usage && !stops.empty?
+    if vehicle_usage? && !stops.empty?
       service_time_start = service_time_start_value
       service_time_end = service_time_end_value
       self.end = self.start = departure || vehicle_usage.default_open
@@ -286,7 +286,7 @@ class Route < ApplicationRecord
   # no_geojson
   # no_quantities
   def compute!(options = {})
-    if self.vehicle_usage
+    if self.vehicle_usage?
       self.geojson_tracks = nil
       stops_sort, stops_drive_time, stops_time_windows = plan(nil, options)
 
@@ -485,7 +485,7 @@ class Route < ApplicationRecord
   def compute_quantities
     Hash[planning.customer.deliverable_units.map{ |du|
       [du.id, stops.to_a.sum(0) { |stop|
-        stop.is_a?(StopVisit) && (stop.active || !vehicle_usage) ? (stop.visit.default_quantities[du.id] || 0) : 0
+        stop.is_a?(StopVisit) && (stop.active || !vehicle_usage?) ? (stop.visit.default_quantities[du.id] || 0) : 0
       }]
     }]
   end
@@ -502,11 +502,15 @@ class Route < ApplicationRecord
   end
 
   def outdated=(value)
-    if vehicle_usage_id && value
+    if vehicle_usage? && value
       self.optimized_at = nil unless optimized_at_changed?
       self.last_sent_to = self.last_sent_at = nil
     end
     self['outdated'] = value
+  end
+
+  def vehicle_usage?
+    self.vehicle_usage_id || self.vehicle_usage
   end
 
   def changed?
@@ -523,18 +527,18 @@ class Route < ApplicationRecord
   end
 
   def default_color
-    self.color || (self.vehicle_usage_id && self.vehicle_usage.vehicle.color) || COLOR_DEFAULT
+    self.color || (self.vehicle_usage? && self.vehicle_usage.vehicle.color) || COLOR_DEFAULT
   end
 
   def to_s
-    "#{ref}:#{vehicle_usage && vehicle_usage.vehicle.name}=>[" + stops.collect(&:to_s).join(', ') + ']'
+    "#{ref}:#{vehicle_usage? && vehicle_usage.vehicle.name}=>[" + stops.collect(&:to_s).join(', ') + ']'
   end
 
   def self.routes_to_geojson(routes, include_stores = true, respect_hidden = true, include_linestrings = :polyline, with_quantities = false)
     stores_geojson = []
 
     if include_stores
-      stores_geojson = routes.select { |r| r.vehicle_usage && (!respect_hidden || !r.hidden) }.map(&:vehicle_usage).flat_map { |vu| [vu.default_store_start, vu.default_store_stop, vu.default_store_rest] }.compact.uniq.select(&:position?).map do |store|
+      stores_geojson = routes.select { |r| r.vehicle_usage? && (!respect_hidden || !r.hidden) }.map(&:vehicle_usage).flat_map { |vu| [vu.default_store_start, vu.default_store_stop, vu.default_store_rest] }.compact.uniq.select(&:position?).map do |store|
         coordinates = [store.lng, store.lat]
         {
           type: 'Feature',
@@ -606,7 +610,7 @@ class Route < ApplicationRecord
               route_id: self.id,
               index: stop.index,
               active: stop.active,
-              number: vehicle_usage ? stop.number(inactive_stops) : nil,
+              number: vehicle_usage? ? stop.number(inactive_stops) : nil,
               color: stop.default_color,
               icon: stop.icon,
               icon_size: stop.icon_size
@@ -653,7 +657,7 @@ class Route < ApplicationRecord
           break
         end
       }
-      route_name = vehicle_usage ? "#{ref}:#{vehicle_usage && vehicle_usage.vehicle.name}" : I18n.t('activerecord.attributes.planning.out_of_route')
+      route_name = vehicle_usage? ? "#{ref}:#{vehicle_usage.vehicle.name}" : I18n.t('activerecord.attributes.planning.out_of_route')
       errors.add :stops, -> { I18n.t('activerecord.errors.models.route.attributes.stops.bad_index', index: bad_index || '', route: route_name) }
     end
     @no_stop_index_validation = nil
