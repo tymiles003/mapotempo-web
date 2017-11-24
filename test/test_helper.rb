@@ -53,6 +53,11 @@ class ActiveSupport::TestCase
     remove_request_stub(@stub_GeocodeRequest)
     remove_request_stub(@stub_LocationUtilityService)
     remove_request_stub(@stub_GeocodeMapotempo)
+
+    # FIXME: remove this code when errors due to locales are resolved
+    if I18n.locale != :fr
+      p "Wrong locale after test: #{self.class.name} > #{self.method_name}"
+    end
   end
 
   def assert_valid(response)
