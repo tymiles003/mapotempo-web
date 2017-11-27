@@ -29,7 +29,7 @@ var vehicle_usages_form = function(params) {
     return true;
   });
 
-  $('#vehicle_usage_open, #vehicle_usage_close, #vehicle_usage_rest_start, #vehicle_usage_rest_stop, #vehicle_usage_rest_duration, #vehicle_usage_service_time_start, #vehicle_usage_service_time_end').timeEntry({
+  $('#vehicle_usage_open, #vehicle_usage_close, #vehicle_usage_rest_start, #vehicle_usage_rest_stop, #vehicle_usage_rest_duration, #vehicle_usage_service_time_start, #vehicle_usage_service_time_end, #vehicle_usage_work_time').timeEntry({
     show24Hours: true,
     spinnerImage: '',
     defaultTime: '00:00'

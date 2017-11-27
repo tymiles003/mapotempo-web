@@ -15,7 +15,7 @@ json.routes @routes do |route|
   end
   if route.vehicle_usage_id
     json.vehicle_id route.vehicle_usage.vehicle.id
-    json.work_time '%i:%02i' % [(route.vehicle_usage.default_close - route.vehicle_usage.default_open) / 60 / 60, (route.vehicle_usage.default_close - route.vehicle_usage.default_open) / 60 % 60]
+    json.work_or_window_time route.vehicle_usage.work_or_window_time
   end
   number = 0
   json.store_start do
@@ -24,9 +24,9 @@ json.routes @routes do |route|
     (json.time_day number_of_days(route.start)) if route.start
   end if route.vehicle_usage_id && route.vehicle_usage.default_store_start
   json.stops route.stops do |stop|
-    (json.error true) if (stop.is_a?(StopVisit) && !stop.position?) || stop.out_of_window || stop.out_of_capacity || stop.out_of_drive_time || stop.no_path
+    (json.error true) if (stop.is_a?(StopVisit) && !stop.position?) || stop.out_of_window || stop.out_of_capacity || stop.out_of_drive_time || stop.out_of_work_time || stop.no_path
     json.stop_id stop.id
-    json.extract! stop, :name, :street, :detail, :postalcode, :city, :country, :comment, :phone_number, :lat, :lng, :drive_time, :out_of_window, :out_of_capacity, :out_of_drive_time, :no_path
+    json.extract! stop, :name, :street, :detail, :postalcode, :city, :country, :comment, :phone_number, :lat, :lng, :drive_time, :out_of_window, :out_of_capacity, :out_of_drive_time, :out_of_work_time, :no_path
     json.ref stop.ref if @planning.customer.enable_references
     json.open_close1 stop.open1 || stop.close1
     json.open1 stop.open1_time
@@ -82,17 +82,19 @@ json.routes @routes do |route|
     (json.time_day number_of_days(route.end)) if route.end
     json.stop_distance (route.stop_distance || 0) / 1000
     json.stop_drive_time route.stop_drive_time
-    (json.error true) if route.stop_out_of_drive_time || route.stop_no_path
+    (json.error true) if route.stop_out_of_drive_time || route.stop_out_of_work_time || route.stop_no_path
     json.stop_out_of_drive_time route.stop_out_of_drive_time
+    json.stop_out_of_work_time route.stop_out_of_work_time
     out_of_drive_time |= route.stop_out_of_drive_time
     (json.no_path true) if route.stop_no_path
   end if route.vehicle_usage_id && route.vehicle_usage.default_store_stop
-  if route.no_geolocalization || route.out_of_window || route.out_of_capacity || route.out_of_drive_time || route.no_path
+  if route.no_geolocalization || route.out_of_window || route.out_of_capacity || route.out_of_drive_time || route.out_of_work_time || route.no_path
     json.route_error true
     json.route_no_geolocalization route.no_geolocalization
     json.route_out_of_window route.out_of_window
     json.route_out_of_capacity route.out_of_capacity
     json.route_out_of_drive_time route.out_of_drive_time
+    json.route_out_of_work_time route.out_of_drive_time
     json.route_no_path route.no_path
   end
 end

@@ -407,6 +407,20 @@
         <p class="help-block"><%= t '.service_times_help' %></p>
       </div>
     </div>
+    <div id="vehicle_usage_set_work_time_input" class="form-group">
+      <label class="sr-only" for="vehicle_usage_work_time"><%= t 'activerecord.attributes.vehicle_usage.work_time' %></label>
+      <label class="col-md-2 control-label"><%= t '.work_time' %></label>
+      <div class="col-md-6">
+        <div class="input-group">
+          <%= text_field :vehicle_usage, :work_time,
+                         value: @vehicle_usage.work_time_time,
+                         placeholder: @vehicle_usage.vehicle_usage_set.work_time_time ? t('vehicle_usages.form.work_time_default', n: @vehicle_usage.vehicle_usage_set.work_time_time) : t('all.unit.hour_minute'),
+                         class: 'form-control' %>
+          <span class="input-group-addon"><i class="fa fa-repeat fa-fw"></i></span>
+        </div>
+        <p class="help-block"><%= t '.work_time_help' %></p>
+      </div>
+    </div>
     <div id="vehicle_usage_rest_input" class="form-group">
       <label class="sr-only" for="vehicle_usage_rest_duration"><%= t 'activerecord.attributes.vehicle_usage.rest_duration' %></label>
       <label class="sr-only" for="vehicle_usage_store_rest"><%= t 'activerecord.attributes.vehicle_usage.store_rest' %></label>

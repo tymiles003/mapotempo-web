@@ -14,6 +14,7 @@ if route.vehicle_usage_id && (!@params.key?(:stops) || @params[:stops].split('|'
     out_of_window: nil,
     out_of_capacity: nil,
     out_of_drive_time: nil,
+    out_of_work_time: nil,
 
     ref: route.vehicle_usage.default_store_start && route.vehicle_usage.default_store_start.ref,
     name: route.vehicle_usage.default_store_start && route.vehicle_usage.default_store_start.name,
@@ -71,6 +72,7 @@ route.stops.each { |stop|
       out_of_window: stop.out_of_window ? 'x' : '',
       out_of_capacity: stop.out_of_capacity ? 'x' : '',
       out_of_drive_time: stop.out_of_drive_time ? 'x' : '',
+      out_of_work_time: stop.out_of_work_time ? 'x' : '',
       status: stop.status && I18n.t("plannings.edit.stop_status.#{stop.status.downcase}", default: stop.status),
       eta: stop.eta && I18n.l(stop.eta, format: :hour_minute),
 
@@ -129,6 +131,7 @@ if route.vehicle_usage_id && (!@params.key?(:stops) || @params[:stops].split('|'
     out_of_window: nil,
     out_of_capacity: nil,
     out_of_drive_time: route.stop_out_of_drive_time ? 'x' : '',
+    out_of_work_time: route.stop_out_of_work_time ? 'x' : '',
 
     ref: route.vehicle_usage.default_store_stop && route.vehicle_usage.default_store_stop.ref,
     name: route.vehicle_usage.default_store_stop && route.vehicle_usage.default_store_stop.name,

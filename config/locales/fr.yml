@@ -402,6 +402,7 @@ fr:
         store_rest_id: Lieu de repos
         service_time_start: Durée de service avant
         service_time_end: Durée de service après
+        work_time: Durée de travail
         tag_ids: Compétences
         vehicle: Véhicule
       vehicle_usage_set:
@@ -419,6 +420,7 @@ fr:
         store_rest_id: Lieu de repos
         service_time_start: Durée de service avant
         service_time_end: Durée de service après
+        work_time: Durée de travail
       visit:
         ref: Référence
         ref_small: Réf.
@@ -499,6 +501,7 @@ fr:
           missing_rest_duration: doit être remplie si une plage de repos est remplie
           rest_range: La plage de repos doit être comprise entre %{start} et %{end}
           service_range: ne peut pas être supérieure ou égale au temps de travail
+          work_time_inside_window: doit être inférieure ou égal à la plage horaire de travail
         vehicle_usage_set:
           attributes:
             close:
@@ -508,6 +511,7 @@ fr:
           at_least_one: Au moins une configuration de véhicules est requise
           missing_rest_window: doit être rempli(e) si la durée de repos est remplie
           missing_rest_duration: doit être remplie si une plage de repos est remplie
+          work_time_inside_window: doit être inférieure ou égal à la plage horaire de travail
         visit:
           attributes:
             close1:
@@ -1449,7 +1453,7 @@ fr:
       vehicle_help: Paramétrer le véhicule
       export_help: Exporter la tournée
       route_stops_active_help: Sélectionner les arrêts actifs
-      route_duration_help: Durée de la tournée / Créneau horaire véhicule
+      route_duration_help: Durée de la tournée / Créneau horaire ou durée de travail véhicule
       route_distance_help: Distance de la tournée
       route_quantity_help: Quantité / Capacité véhicule
       route_speed_average_help: Vitesse moyenne du véhicule
@@ -1508,6 +1512,8 @@ fr:
         out_of_capacity_help: Capacité du véhicule dépassée
         out_of_drive_time: Hors créneau véhicule
         out_of_drive_time_help: Planifié en dehors des créneaux d'activité du véhicule
+        out_of_work_time: Hors durée de travail du véhicule
+        out_of_work_time_help: Planifié en dehors de la durée de travail du véhicule (service compris)
         no_path: Destination inaccessible
         no_path_help: 'Destination inaccessible : pas de voie d''accès ou itinéraire
           pour aller ou partir de la destination'
@@ -1622,6 +1628,7 @@ fr:
       out_of_window: hors créneau visite
       out_of_capacity: hors capacité véhicule
       out_of_drive_time: hors créneau véhicule
+      out_of_work_time: hors horaire de travail véhicule
       status: statut
       eta: eta
     form:
@@ -1962,6 +1969,9 @@ fr:
       service_time_end_addon: après
       service_times_help: Durées ajoutées avant le premier arrêt et après le dernier
         arrêt
+      work_time: Durée de travail
+      work_time_default: '%{n} (valeur par défaut)'
+      work_time_help: La durée de travail doit être inférieure ou égale à la plage horaire (service compris)
       devices:
         placeholder: Sélectionner un appareil
         fieldset: GPS & Mobiles
@@ -2045,6 +2055,8 @@ fr:
       service_time_end: durée de service après
       service_time_end_desc: durée de service après et sans tenir compte de la durée
         de pause
+      work_time: durée de travail
+      work_time_desc: durée de travail, inférieure ou égal à la plage de travail
       tags: compétences
       tags_desc: 'compétences associées à la configuration du véhicule. (Attention : si un seul véhicule possède des compétences alors tous les autres véhicules ne pourront utiliser cette compétence si non déclaré)'
       tags_format: compétence 1,compétence 2
@@ -2081,6 +2093,8 @@ fr:
       service_time_end_addon: après
       service_times_help: Durées ajoutées avant le premier arrêt et après le dernier
         arrêt.
+      work_time: Durée de travail
+      work_time_help: La durée de travail doit être inférieure à la plage horaire de travail (service compris)
       rest_duration_store: Durée de repos / lieu
       rest_duration:
         help: Requiert une plage de repos si renseigné

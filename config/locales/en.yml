@@ -401,6 +401,7 @@ en:
         store_rest_id: Rest place
         service_time_start: Service Time Before
         service_time_end: Service Time After
+        work_time: Work time
         tag_ids: Skills
         vehicle: Vehicle
       vehicle_usage_set:
@@ -418,6 +419,7 @@ en:
         store_rest_id: Rest place
         service_time_start: Service Time Before
         service_time_end: Service Time After
+        work_time: Work time
       visit:
         ref: Reference
         ref_small: Ref.
@@ -498,6 +500,7 @@ en:
           missing_rest_duration: can't be blank if rest time window is filled
           rest_range: Rest range must be between %{start} and %{end}
           service_range: can't be greater than working day range
+          work_time_inside_window: must be less or equal than working time window
         vehicle_usage_set:
           attributes:
             close:
@@ -507,6 +510,7 @@ en:
           at_least_one: At least one vehicle configuration needed
           missing_rest_window: can't be blank if rest duration is filled
           missing_rest_duration: can't be blank if rest time window is filled
+          work_time_inside_window: must be less or equal than working time window
         visit:
           attributes:
             close1:
@@ -1375,7 +1379,7 @@ en:
       vehicle_help: Vehicle parameters
       export_help: Export route
       route_stops_active_help: Select active stops
-      route_duration_help: Route duration / Vehicle time window
+      route_duration_help: Route duration / Vehicle window or work time
       route_distance_help: Route distance
       route_quantity_help: Quantity / Vehicle capacity
       route_speed_average_help: Vehicle's speed average
@@ -1433,6 +1437,8 @@ en:
         out_of_capacity_help: Vehicle capacity exceeded
         out_of_drive_time: Out of vehicle time window
         out_of_drive_time_help: Vehicle time window activity exceeded
+        out_of_work_time: Out of vehicle work time
+        out_of_work_time_help: Vehicle work time exceeded (service included)
         no_path: Unreachable destination
         no_path_help: 'Unreachable destination: missing or no path to or from the
           destination to find a route'
@@ -1546,6 +1552,7 @@ en:
       out_of_window: out of visit time window
       out_of_capacity: out of capacity
       out_of_drive_time: out of vehicle time window
+      out_of_work_time: out of vehicle work time
       status: status
       eta: eta
     form:
@@ -1882,6 +1889,9 @@ en:
       service_time_end_addon: after
       service_times_help: Durations added before the first stop and after the last
         stop
+      work_time: Work time
+      work_time_default: '%{n} (default value)'
+      work_time_help: Work time must less or equal than working window time (service included)
       devices:
         placeholder: Choose a device
         fieldset: GPS & Mobiles
@@ -1956,6 +1966,8 @@ en:
       service_time_start_desc: durations added before the first stop
       service_time_end: service Time After
       service_time_end_desc: durations added before the last stop
+      work_time: work time
+      work_time_desc: work time, less or equal than working window time
       tags: skills
       tags_desc: 'skills associated to the vehicle configuration. (Warning: if only one vehicle has skills so all other vehicles could not use this skill unless declared)'
       tags_format: skill 1,skill 2
@@ -1991,6 +2003,8 @@ en:
       service_time_end_addon: after
       service_times_help: Durations added before the first stop and after the last
         stop.
+      work_time: Work time
+      work_time_help: Work time must be less or equal than working window time (service included)
       rest_duration_store: Rest duration / place
       rest_duration:
         help: Requires rest time window if filled

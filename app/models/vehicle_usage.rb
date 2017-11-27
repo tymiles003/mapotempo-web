@@ -40,11 +40,13 @@ class VehicleUsage < ApplicationRecord
   attribute :rest_duration, ScheduleType.new
   attribute :service_time_start, ScheduleType.new
   attribute :service_time_end, ScheduleType.new
-  time_attr :open, :close, :rest_start, :rest_stop, :rest_duration, :service_time_start, :service_time_end
+  attribute :work_time, ScheduleType.new
+  time_attr :open, :close, :rest_start, :rest_stop, :rest_duration, :service_time_start, :service_time_end, :work_time
 
   validate :close_after_open
   validate :rest_stop_after_rest_start
   validate :rest_duration_range
+  validate :work_time_inside_window
 
   before_update :update_outdated
 
@@ -182,6 +184,22 @@ class VehicleUsage < ApplicationRecord
     service_time_end_time || vehicle_usage_set.service_time_end_time
   end
 
+  def default_work_time
+    work_time || vehicle_usage_set.work_time
+  end
+
+  def default_work_time_time
+    work_time_time || vehicle_usage_set.work_time_time
+  end
+
+  def outside_default_work_time?(start_time, current_time)
+    default_work_time ? current_time > start_time + (default_work_time) - ((default_service_time_start || 0) + (default_service_time_end || 0)) : false
+  end
+
+  def work_or_window_time
+    ChronicDuration.output(default_work_time || (default_close - default_open), limit_to_hours: true, format: :chrono, units: 5)
+  end
+
   def update_rest
     if default_rest_duration.nil?
       # No more rest
@@ -231,7 +249,7 @@ class VehicleUsage < ApplicationRecord
       update_rest
     end
 
-    if open_changed? || close_changed? || store_start_id_changed? || store_stop_id_changed? || rest_start_changed? || rest_stop_changed? || rest_duration_changed? || store_rest_id_changed? || service_time_start_changed? || service_time_end_changed?
+    if open_changed? || close_changed? || store_start_id_changed? || store_stop_id_changed? || rest_start_changed? || rest_stop_changed? || rest_duration_changed? || store_rest_id_changed? || service_time_start_changed? || service_time_end_changed? || work_time_changed?
       routes.each{ |route|
         route.outdated = true
       }
@@ -283,6 +301,12 @@ class VehicleUsage < ApplicationRecord
         end_day = (working_day_end / 86400).to_i
         errors.add(:base, I18n.t('activerecord.errors.models.vehicle_usage.rest_range', start: Time.at(working_day_start).utc.strftime('%H:%M') + (begin_day > 0 ? " (+#{begin_day})" : ''), end: Time.at(working_day_end).utc.strftime('%H:%M') + (end_day > 0 ? " (+#{end_day})" : '')))
       end
+    end
+  end
+
+  def work_time_inside_window
+    if self.work_time.present? && self.default_open.present? && self.default_close.present? && self.work_time > (self.default_close - self.default_open) - ((self.default_service_time_start || 0) + (self.default_service_time_end || 0))
+      errors.add(:work_time, I18n.t('activerecord.errors.models.vehicle_usage.work_time_inside_window'))
     end
   end
 end

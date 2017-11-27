@@ -45,6 +45,7 @@ class V01::Entities::Stop < Grape::Entity
   expose(:out_of_window, documentation: { type: 'Boolean' })
   expose(:out_of_capacity, documentation: { type: 'Boolean' })
   expose(:out_of_drive_time, documentation: { type: 'Boolean' })
+  expose(:out_of_work_time, documentation: { type: 'Boolean' })
   expose(:status, documentation: { type: String, desc: 'Status of stop.' })
   expose(:eta, documentation: { type: DateTime, desc: 'Estimated time of arrival from remote device.' })
 end

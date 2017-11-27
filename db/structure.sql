@@ -630,7 +630,8 @@ CREATE TABLE routes (
     lock_version integer DEFAULT 0 NOT NULL,
     visits_duration integer,
     wait_time integer,
-    drive_time integer
+    drive_time integer,
+    stop_out_of_work_time boolean
 );
 
 
@@ -686,6 +687,7 @@ CREATE TABLE stops (
     eta timestamp without time zone,
     "time" integer,
     no_path boolean,
+    out_of_work_time boolean,
     CONSTRAINT check_visit_id CHECK ((((type)::text <> 'StopVisit'::text) OR (visit_id IS NOT NULL)))
 );
 
@@ -901,7 +903,8 @@ CREATE TABLE vehicle_usage_sets (
     rest_stop integer,
     rest_duration integer,
     service_time_start integer,
-    service_time_end integer
+    service_time_end integer,
+    work_time integer
 );
 
 
@@ -944,7 +947,8 @@ CREATE TABLE vehicle_usages (
     rest_stop integer,
     rest_duration integer,
     service_time_start integer,
-    service_time_end integer
+    service_time_end integer,
+    work_time integer
 );
 
 
@@ -2677,9 +2681,9 @@ INSERT INTO schema_migrations (version) VALUES ('20170925081651');
 
 INSERT INTO schema_migrations (version) VALUES ('20171030141539');
 
-INSERT INTO schema_migrations (version) VALUES ('20171116151624');
-
 INSERT INTO schema_migrations (version) VALUES ('20171106100323');
+
+INSERT INTO schema_migrations (version) VALUES ('20171116151624');
 
 INSERT INTO schema_migrations (version) VALUES ('20171120151239');
 
@@ -2692,3 +2696,11 @@ INSERT INTO schema_migrations (version) VALUES ('20171120111400');
 INSERT INTO schema_migrations (version) VALUES ('20171129104645');
 
 INSERT INTO schema_migrations (version) VALUES ('20171122115125');
+
+INSERT INTO schema_migrations (version) VALUES ('20171123160420');
+
+INSERT INTO schema_migrations (version) VALUES ('20171123160424');
+
+INSERT INTO schema_migrations (version) VALUES ('20171127100417');
+
+INSERT INTO schema_migrations (version) VALUES ('20171127101118');

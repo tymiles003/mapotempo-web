@@ -11,6 +11,7 @@ stop_unaffected:
   out_of_window: false
   out_of_capacity: false
   out_of_drive_time: false
+  out_of_work_time: false
 
 stop_one_one:
   type: StopVisit
@@ -23,6 +24,7 @@ stop_one_one:
   out_of_window: false
   out_of_capacity: false
   out_of_drive_time: false
+  out_of_work_time: false
 
 stop_one_two:
   type: StopVisit
@@ -35,6 +37,7 @@ stop_one_two:
   out_of_window: false
   out_of_capacity: false
   out_of_drive_time: false
+  out_of_work_time: false
 
 stop_one_three:
   type: StopVisit
@@ -47,6 +50,7 @@ stop_one_three:
   out_of_window: false
   out_of_capacity: false
   out_of_drive_time: false
+  out_of_work_time: false
 
 # rest defined in vehicle_usage_set_one/vehicle_usage_one_three
 stop_one_four:
@@ -90,6 +94,7 @@ stop_two_one:
   out_of_window: false
   out_of_capacity: false
   out_of_drive_time: false
+  out_of_work_time: false
 
 # INVALID: visit_one referenced by stop_one_one
 stop_three_one:
@@ -103,6 +108,7 @@ stop_three_one:
   out_of_window: false
   out_of_capacity: false
   out_of_drive_time: false
+  out_of_work_time: false
 
 # rest defined in vehicle_usage_set_one/vehicle_usage_one_three
 stop_three_two:
@@ -125,6 +131,7 @@ stop_four_unaffected_one:
   out_of_window: false
   out_of_capacity: false
   out_of_drive_time: false
+  out_of_work_time: false
 
 stop_four_two:
   type: StopVisit
@@ -137,6 +144,7 @@ stop_four_two:
   out_of_window: false
   out_of_capacity: false
   out_of_drive_time: false
+  out_of_work_time: false
 
 stop_four_three:
   type: StopVisit
@@ -149,6 +157,7 @@ stop_four_three:
   out_of_window: false
   out_of_capacity: false
   out_of_drive_time: false
+  out_of_work_time: false
 
 stop_four_five:
   type: StopVisit
@@ -161,3 +170,4 @@ stop_four_five:
   out_of_window: false
   out_of_capacity: false
   out_of_drive_time: false
+  out_of_work_time: false

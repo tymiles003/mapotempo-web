@@ -28,6 +28,7 @@ class V01::Entities::VehicleUsage < Grape::Entity
   expose(:store_stop_id, documentation: { type: Integer })
   expose(:service_time_start, documentation: { type: DateTime }) { |m| m.service_time_start_absolute_time_with_seconds }
   expose(:service_time_end, documentation: { type: DateTime }) { |m| m.service_time_end_absolute_time_with_seconds }
+  expose(:work_time, documentation: { type: DateTime }) { |m| m.work_time_absolute_time_with_seconds }
   expose(:rest_start, documentation: { type: DateTime }) { |m| m.rest_start_absolute_time_with_seconds }
   expose(:rest_stop, documentation: { type: DateTime }) { |m| m.rest_stop_absolute_time_with_seconds }
   expose(:rest_duration, documentation: { type: DateTime }) { |m| m.rest_duration_absolute_time_with_seconds }

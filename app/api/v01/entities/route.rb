@@ -37,6 +37,7 @@ class V01::Entities::Route < Grape::Entity
   expose(:outdated, documentation: { type: 'Boolean' })
   expose(:stops, using: V01::Entities::Stop, documentation: { type: V01::Entities::Stop, is_array: true })
   expose(:stop_out_of_drive_time, documentation: { type: 'Boolean' })
+  expose(:stop_out_of_work_time, documentation: { type: 'Boolean' })
   expose(:stop_distance, documentation: { type: Float, desc: 'Distance between the vehicle\'s store_stop and last stop.' })
   expose(:stop_drive_time, documentation: { type: Integer, desc: 'Time in seconds between the vehicle\'s store_stop and last stop.' })
   expose(:color, documentation: { type: String, desc: 'Color code with #. For instance: #FF0000.' })

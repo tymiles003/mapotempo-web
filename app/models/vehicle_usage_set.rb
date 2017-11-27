@@ -38,7 +38,8 @@ class VehicleUsageSet < ApplicationRecord
   attribute :rest_duration, ScheduleType.new
   attribute :service_time_start, ScheduleType.new
   attribute :service_time_end, ScheduleType.new
-  time_attr :open, :close, :rest_start, :rest_stop, :rest_duration, :service_time_start, :service_time_end
+  attribute :work_time, ScheduleType.new
+  time_attr :open, :close, :rest_start, :rest_stop, :rest_duration, :service_time_start, :service_time_end, :work_time
 
   validates :customer, presence: true
   validates :name, presence: true
@@ -47,6 +48,7 @@ class VehicleUsageSet < ApplicationRecord
   validates :close, presence: true
   validate :close_after_open
   validate :rest_stop_after_rest_start
+  validate :work_time_inside_window
   validates :rest_start, presence: {if: :rest_duration?, message: ->(*_) { I18n.t('activerecord.errors.models.vehicle_usage_set.missing_rest_window') }}
   validates :rest_stop, presence: {if: :rest_duration?, message: ->(*_) { I18n.t('activerecord.errors.models.vehicle_usage_set.missing_rest_window') }}
   validates :rest_duration, presence: {if: :rest_start?, message: ->(*_) { I18n.t('activerecord.errors.models.vehicle_usage_set.missing_rest_duration') }}
@@ -98,14 +100,15 @@ class VehicleUsageSet < ApplicationRecord
       vehicle_usages.each(&:update_rest)
     end
 
-    if open_changed? || close_changed? || store_start_id_changed? || store_stop_id_changed? || rest_start_changed? || rest_stop_changed? ||
-      rest_duration_changed? || store_rest_id_changed? || service_time_start_changed? || service_time_end_changed?
+    if open_changed? || close_changed? || store_start_id_changed? || store_stop_id_changed? || rest_start_changed? || rest_stop_changed? || rest_duration_changed? || store_rest_id_changed? || service_time_start_changed? || service_time_end_changed? || work_time_changed?
       vehicle_usages.each{ |vehicle_usage|
         if (open_changed? && vehicle_usage.default_open == open) ||
           (close_changed? && vehicle_usage.default_close == close) ||
 
           (store_start_id_changed? && vehicle_usage.default_store_start == store_start) ||
           (store_stop_id_changed? && vehicle_usage.default_store_stop == store_stop) ||
+
+          (work_time_changed? && vehicle_usage.default_work_time == work_time) ||
 
           (rest_start_changed? && vehicle_usage.default_rest_start == rest_start) ||
           (rest_stop_changed? && vehicle_usage.default_rest_stop == rest_stop) ||
@@ -147,6 +150,12 @@ class VehicleUsageSet < ApplicationRecord
   def rest_stop_after_rest_start
     if self.rest_start.present? && self.rest_stop.present? && self.rest_stop < self.rest_start
       errors.add(:rest_stop, I18n.t('activerecord.errors.models.vehicle_usage_set.attributes.rest_stop.after'))
+    end
+  end
+
+  def work_time_inside_window
+    if self.work_time.present? && self.open.present? && self.close.present? && self.work_time > (self.close - self.open) - ((self.service_time_start || 0) + (self.service_time_end || 0))
+      errors.add(:work_time, I18n.t('activerecord.errors.models.vehicle_usage_set.work_time_inside_window'))
     end
   end
 end

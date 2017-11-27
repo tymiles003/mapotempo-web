@@ -29,7 +29,7 @@ class VehicleUsagesController < ApplicationController
   def update
     respond_to do |format|
       p = vehicle_usage_params
-      time_with_day_params(params, p, [:open, :close], [:rest_start, :rest_stop])
+      time_with_day_params(params, p, [:open, :close], [:rest_start, :rest_stop, :work_time])
       @vehicle_usage.assign_attributes(p)
 
       if @vehicle_usage.save
@@ -90,6 +90,7 @@ class VehicleUsagesController < ApplicationController
                                                        :store_rest_id,
                                                        :service_time_start,
                                                        :service_time_end,
+                                                       :work_time,
                                                        tag_ids: [],
                                                        vehicle: [
                                                            :contact_email,

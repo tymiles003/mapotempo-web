@@ -337,6 +337,7 @@ class Planning < ApplicationRecord
           vehicle_close = r.vehicle_usage.default_close
           vehicle_close -= r.vehicle_usage.default_service_time_end if r.vehicle_usage.default_service_time_end
           vehicle_skills = [r.vehicle_usage.tags, r.vehicle_usage.vehicle.tags].flatten.compact.map(&:label)
+          vehicle_time = r.vehicle_usage.default_work_time
           {
             id: r.vehicle_usage_id,
             router: r.vehicle_usage.vehicle.default_router,
@@ -346,6 +347,7 @@ class Planning < ApplicationRecord
             speed_multiplier_areas: Zoning.speed_multiplicator_areas(zonings),
             open: vehicle_open.to_f,
             close: vehicle_close.to_f,
+            work_time: vehicle_time && vehicle_time.to_f,
             stores: [position_start && :start, position_stop && :stop].compact,
             rests: rests.select{ |s| s[:vehicle_usage_id] == r.vehicle_usage_id },
             capacities: r.vehicle_usage.vehicle.default_capacities && r.vehicle_usage.vehicle.default_capacities.each.map{ |k, v|
@@ -400,7 +402,7 @@ class Planning < ApplicationRecord
           else
             stop.active = true if route.vehicle_usage? && inactive_stop_ids.exclude?(stop.id)
             stop.index = i += 1
-            stop.time = stop.distance = stop.drive_time = stop.out_of_window = stop.out_of_capacity = stop.out_of_drive_time = nil
+            stop.time = stop.distance = stop.drive_time = stop.out_of_window = stop.out_of_capacity = stop.out_of_drive_time = stop.out_of_work_time = nil
             if stop.route_id != route.id
               stop.route_id = route.id
               stop.save!
@@ -413,7 +415,7 @@ class Planning < ApplicationRecord
         other_inactive_stops.each{ |stop|
           stop.active = false if route.vehicle_usage?
           stop.index = i += 1
-          stop.time = stop.distance = stop.drive_time = stop.out_of_window = stop.out_of_capacity = stop.out_of_drive_time = nil
+          stop.time = stop.distance = stop.drive_time = stop.out_of_window = stop.out_of_capacity = stop.out_of_drive_time = stop.out_of_work_time = nil
         }
       }
 

@@ -54,7 +54,7 @@ class VehicleUsageSetsController < ApplicationController
 
   def create
     p = vehicle_usage_set_params
-    time_with_day_params(params, p, [:open, :close, :rest_start, :rest_stop])
+    time_with_day_params(params, p, [:open, :close, :rest_start, :rest_stop, :work_time])
     @vehicle_usage_set = current_user.customer.vehicle_usage_sets.build(p)
 
     respond_to do |format|
@@ -69,7 +69,7 @@ class VehicleUsageSetsController < ApplicationController
   def update
     respond_to do |format|
       p = vehicle_usage_set_params
-      time_with_day_params(params, p, [:open, :close, :rest_start, :rest_stop])
+      time_with_day_params(params, p, [:open, :close, :rest_start, :rest_stop, :work_time])
       @vehicle_usage_set.assign_attributes(p)
 
       if @vehicle_usage_set.save
@@ -165,7 +165,8 @@ class VehicleUsageSetsController < ApplicationController
                                               :rest_duration,
                                               :store_rest_id,
                                               :service_time_start,
-                                              :service_time_end)
+                                              :service_time_end,
+                                              :work_time)
   end
 
   def import_csv_params

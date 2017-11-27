@@ -92,11 +92,11 @@ class VehicleUsageSetTest < ActiveSupport::TestCase
     assert !customer.vehicle_usage_sets[0].destroy
   end
 
-  test 'should update outdated if service time changed' do
+  test 'should update outdated if service time or work time changed' do
     vehicle_usage_set = vehicle_usage_sets(:vehicle_usage_set_one)
     route = vehicle_usage_set.vehicle_usages.sample.routes.take
     assert !route.outdated
-    [:service_time_start, :service_time_end].shuffle.each do |attr|
+    [:service_time_start, :service_time_end, :work_time].shuffle.each do |attr|
       assert vehicle_usage_set.send(attr).nil?
       vehicle_usage_set.update! attr => 10.minutes.to_i
       assert route.reload.outdated
@@ -113,5 +113,17 @@ class VehicleUsageSetTest < ActiveSupport::TestCase
     vehicle_usage_set.rest_start = 10.hours.to_i
     vehicle_usage_set.rest_stop = 11.hours.to_i
     assert vehicle_usage_set.valid?
+  end
+
+  test 'should validate work time in relation to the working time range and service range' do
+    vehicle_usage_set = vehicle_usage_sets(:vehicle_usage_set_one)
+    vehicle_usage_set.update open: '08:00', close: '18:00', work_time: '09:00'
+    assert vehicle_usage_set.valid?
+    vehicle_usage_set.update open: '08:00', close: '18:00', work_time: '12:00'
+    assert_not vehicle_usage_set.valid?
+    assert_equal [:work_time], vehicle_usage_set.errors.keys
+    vehicle_usage_set.update open: '08:00', close: '18:00', service_time_start: '01:00', service_time_end: '01:00', work_time: '09:00'
+    assert_not vehicle_usage_set.valid?
+    assert_equal [:work_time], vehicle_usage_set.errors.keys
   end
 end

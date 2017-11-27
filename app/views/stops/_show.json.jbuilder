@@ -9,9 +9,9 @@ else
   json.automatic_insert true
 end
 
-(json.error true) if (stop.is_a?(StopVisit) && !stop.position?) || stop.out_of_window || stop.out_of_capacity || stop.out_of_drive_time || stop.no_path
+(json.error true) if (stop.is_a?(StopVisit) && !stop.position?) || stop.out_of_window || stop.out_of_capacity || stop.out_of_drive_time || stop.out_of_work_time || stop.no_path
 
-json.extract! stop, :name, :street, :detail, :postalcode, :city, :country, :comment, :phone_number, :lat, :lng, :drive_time, :out_of_window, :out_of_capacity, :out_of_drive_time, :no_path, :active
+json.extract! stop, :name, :street, :detail, :postalcode, :city, :country, :comment, :phone_number, :lat, :lng, :drive_time, :out_of_window, :out_of_capacity, :out_of_drive_time, :out_of_work_time, :no_path, :active
 json.ref stop.ref if stop.route.planning.customer.enable_references
 json.open_close1 stop.open1 || stop.close1
 (json.open1 stop.open1_time) if stop.open1

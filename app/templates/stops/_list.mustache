@@ -82,16 +82,16 @@
           {{/status_any}}
         </ul>
       </div>
-      <span class="route-info"><i class="fa fa-clock-o fa-fw" title="{{#i18n}}plannings.edit.route_duration_help{{/i18n}}"></i>{{duration}}/{{work_time}}</span>
+      <span class="route-info" title="{{#i18n}}plannings.edit.route_duration_help{{/i18n}}"><i class="fa fa-clock-o fa-fw"></i>{{duration}}/{{work_or_window_time}}</span>
       {{#route_averages}}
         (<span title="{{#i18n}}plannings.edit.route_driving_time_help{{/i18n}}"><i class="fa fa-truck fa-fw"></i>{{route_averages.drive_time}}</span><!--
         -->{{#route_averages.visits_duration}} <span title="{{#i18n}}plannings.edit.route_visits_duration_help{{/i18n}}"><i class="fa fa-clock-o fa-fw"></i>{{route_averages.visits_duration}}</span>{{/route_averages.visits_duration}}<!--
         -->{{#route_averages.wait_time}} <span title="{{#i18n}}plannings.edit.route_wait_time_help{{/i18n}}"><i class="fa fa-pause fa-fw"></i>{{route_averages.wait_time}}</span>{{/route_averages.wait_time}})
         <span class="route-info" title="{{#i18n}}plannings.edit.route_speed_average_help{{/i18n}}"><i class="fa fa-tachometer" aria-hidden="true"></i> {{route_averages.speed}} {{prefered_unit}}/h</span>
       {{/route_averages}}
-      <span class="route-info"><i class="fa fa-road fa-fw" title="{{#i18n}}plannings.edit.route_distance_help{{/i18n}}"></i>{{distance}}</span>
+      <span class="route-info" title="{{#i18n}}plannings.edit.route_distance_help{{/i18n}}"><i class="fa fa-road fa-fw"></i>{{distance}}</span>
       {{#quantities}}
-        <span class="route-info"><i class="fa {{unit_icon}} fa-fw" title="{{#i18n}}plannings.edit.route_quantity_help{{/i18n}}"></i><span data-quantity_id="{{id}}">{{quantity}}</span></span>
+        <span class="route-info" title="{{#i18n}}plannings.edit.route_quantity_help{{/i18n}}"><i class="fa {{unit_icon}} fa-fw"></i><span data-quantity_id="{{id}}">{{quantity}}</span></span>
       {{/quantities}}
       {{#route_error}}
         <ul class="ui-state-error">
@@ -107,6 +107,9 @@
           {{#route_out_of_drive_time}}
             <li title="{{#i18n}}plannings.edit.error.out_of_drive_time_help{{/i18n}}"><i class="fa fa-power-off fa-fw"></i> {{#i18n}}plannings.edit.error.out_of_drive_time{{/i18n}}</li>
           {{/route_out_of_drive_time}}
+          {{#route_out_of_work_time}}
+            <li title="{{#i18n}}plannings.edit.error.out_of_work_time{{/i18n}}"><i class="fa fa-repeat"> {{#i18n}}plannings.edit.error.out_of_work_time{{/i18n}}</i></li>
+          {{/route_out_of_work_time}}
           {{#route_no_path}}
             <li title="{{#i18n}}plannings.edit.error.no_path_help{{/i18n}}"><i class="fa fa-road fa-fw"></i> {{#i18n}}plannings.edit.error.no_path{{/i18n}}</li>
           {{/route_no_path}}
@@ -175,6 +178,9 @@
           {{#out_of_drive_time}}
             <i class="fa fa-power-off fa-fw" title="{{#i18n}}plannings.edit.error.out_of_drive_time_help{{/i18n}}"></i>
           {{/out_of_drive_time}}
+          {{#out_of_work_time}}
+            <i class="fa fa-repeat fa-fw" title="{{#i18n}}plannings.edit.error.out_of_work_time_help{{/i18n}}"></i>
+          {{/out_of_work_time}}
           {{#no_path}}
             <i class="fa fa-road fa-fw" title="{{#i18n}}plannings.edit.error.no_path_help{{/i18n}}"></i>
           {{/no_path}}
@@ -243,6 +249,9 @@
           {{#stop_out_of_drive_time}}
             <i class="fa fa-power-off fa-fw" title="{{#i18n}}plannings.edit.error.out_of_drive_time_help{{/i18n}}"></i>
           {{/stop_out_of_drive_time}}
+          {{#stop_out_of_work_time}}
+            <i class="fa fa-repeat fa-fw" title="{{#i18n}}plannings.edit.error.out_of_work_time_help{{/i18n}}"></i>
+          {{/stop_out_of_work_time}}
           {{#no_path}}
             <i class="fa fa-road fa-fw" title="{{#i18n}}plannings.edit.error.no_path_help{{/i18n}}"></i>
           {{/no_path}}
