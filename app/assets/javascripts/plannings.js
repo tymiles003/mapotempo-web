@@ -730,45 +730,39 @@ var plannings_edit = function(params) {
     }
   });
 
-  var dialog_optimizer;
-  var initOptimizerDialog = function() {
-    hideNotices(); // Clear Failed Optimization Notices
-    dialog_optimizer = bootstrap_dialog({
-      title: I18n.t('plannings.edit.dialog.optimizer.title'),
-      icon: 'fa-gear',
-      message: SMT['modals/optimize']({
-        i18n: mustache_i18n
-      })
-    });
-  };
-  initOptimizerDialog();
+  $('#optimize_all').click(function() {
+    $('#optimization-route_id').val('').trigger('change');
+  });
 
-  $('#optimize_each_all, #optimize_global_all, #optimize_each_actives, #optimize_global_actives').click(function() {
-    if (!confirm(I18n.t($(this).data('opti-global') ? 'plannings.edit.optimize_global.confirm' : 'plannings.edit.optimize_each.confirm'))) {
-      return false;
+  $('#optimization-route_id').change(function() {
+    var routeId = $(this).val();
+    if (routeId) {
+      $('div#optimization-global').hide();
+      var sizeActive = $('li[data-route_id=' + routeId + '] [data-size-active]');
+      $('div#optimization-active').css({display: (sizeActive.attr('data-size-active') == sizeActive.attr('data-size')) ? 'none' : 'block'});
+      var route = routes.filter(function(route) {
+        return route.route_id == routeId;
+      })[0];
+      var dimension;
+      for (var vehicleId in vehicles_usages_map) {
+        if (vehicles_usages_map[vehicleId].vehicle_usage_id == route.vehicle_usage_id)
+          dimension = vehicles_usages_map[vehicleId].router_dimension;
+      }
+      dimension = 'plannings.edit.dialog.optimization.vehicles.' + dimension;
+      $('#router-dimension-value').html(I18n.t(dimension));
     }
-    $.ajax({
-      type: 'GET',
-      url: '/plannings/' + planning_id + '/optimize.json',
-      data: {
-        with_stops: withStopsInSidePanel,
-        global: $(this).data('opti-global'),
-        active_only: $(this).data('active-only')
-      },
-      beforeSend: beforeSendWaiting,
-      success: function(data) {
-        displayPlanning(data, {
-          error: function() {
-            stickyError(I18n.t('plannings.edit.optimize_failed'));
-          },
-          success: function() {
-            notice(I18n.t('plannings.edit.optimize_complete'));
-          }
-        });
-      },
-      complete: completeAjaxMap,
-      error: ajaxError
-    });
+    else {
+      $('div#optimization-global').show();
+      var allStopsActive = true;
+      $.each($('li[data-route_id]:not(:first) [data-size-active]'), function() {
+        if ($(this).attr('data-size-active') != $(this).attr('data-size'))
+          allStopsActive = false;
+      });
+      $('div#optimization-active').css({display: allStopsActive ? 'none' : 'block'});
+      var dimensions = $.map(vehicles_usages_map, function(vehicle) { return vehicle.router_dimension; } )
+        .filter(function(elt, idx, array) { return idx == array.indexOf(elt); });
+      $('#router-dimension-value').html(dimensions.map(function(dim) { dim = 'plannings.edit.dialog.optimization.vehicles.' + dim; return I18n.t(dim); } ).join(' / '));
+    }
   });
 
   var sortPlanning = function(event, ui) {
@@ -1029,33 +1023,7 @@ var plannings_edit = function(params) {
           return false;
         })
         .on('click', '.optimize', function() {
-          initOptimizerDialog();
-          if (!confirm(I18n.t('plannings.edit.optimize_confirm')))
-            return;
-
-          var id = $(this).closest('[data-route_id]').attr('data-route_id');
-          // Call optimize_route
-          $.ajax({
-            type: 'GET',
-            url: '/plannings/' + planning_id + '/' + id + '/optimize.json',
-            data: {
-              with_stops: true,
-              active_only: $(this).data('active-only')
-            },
-            beforeSend: beforeSendWaiting,
-            success: function(data) {
-              updatePlanning(data, {
-                error: function() {
-                  stickyError(I18n.t('plannings.edit.optimize_failed'));
-                },
-                success: function() {
-                  notice(I18n.t('plannings.edit.optimize_complete'));
-                }
-              });
-            },
-            complete: completeAjaxMap,
-            error: ajaxError
-          });
+          $('#optimization-route_id').val($(this).closest('[data-route_id]').attr('data-route_id')).trigger('change');
         })
         .on("click", ".active_all, .active_reverse, .active_none, .active_status, .reverse_order", function() {
           var url = this.href;
@@ -1627,6 +1595,51 @@ var plannings_edit = function(params) {
       });
     });
   }
+
+  var dialog_optimizer;
+  var initOptimizerDialog = function() {
+    hideNotices(); // Clear Failed Optimization Notices
+    dialog_optimizer = bootstrap_dialog({
+      title: I18n.t('plannings.edit.dialog.optimizer.title'),
+      icon: 'fa-gear',
+      message: SMT['modals/optimize']({
+        i18n: mustache_i18n
+      })
+    });
+  };
+  initOptimizerDialog();
+
+  $('#optimize').click(function() {
+    initOptimizerDialog();
+    if (!confirm(I18n.t('plannings.edit.optimize_confirm')))
+      return;
+
+    var routeId = $('#optimization-route_id').val();
+    $.ajax({
+      type: 'GET',
+      url: '/plannings/' + planning_id + (routeId ? '/' + routeId : '') + '/optimize.json',
+      data: {
+        with_stops: routeId ? true : withStopsInSidePanel,
+        active_only: $('input[name="active_ony"]').val(),
+        global: !routeId && (($('input[name="sticky_vehicle"]:checked').val() == 'true') ? 'false' : 'true')
+      },
+      beforeSend: beforeSendWaiting,
+      success: function(data) {
+        var options = {
+          error: function() {
+            stickyError(I18n.t('plannings.edit.optimize_failed'));
+          },
+          success: function() {
+            notice(I18n.t('plannings.edit.optimize_complete'));
+          }
+        };
+        if (routeId) updatePlanning(data, options);
+        else displayPlanning(data, options);
+      },
+      complete: completeAjaxMap,
+      error: ajaxError
+    });
+  });
 
   $('#isochrone_size').timeEntry({
     show24Hours: true,

@@ -22,7 +22,7 @@ module PlanningsHelper
 
   def planning_vehicles_usages_map(planning)
     planning.vehicle_usage_set.vehicle_usages.active.each_with_object({}) do |vehicle_usage, hash|
-      hash[vehicle_usage.vehicle_id] = vehicle_usage.vehicle.slice(:name, :color, :capacities).merge(vehicle_usage_id: vehicle_usage.id, vehicle_id: vehicle_usage.vehicle_id)
+      hash[vehicle_usage.vehicle_id] = vehicle_usage.vehicle.slice(:name, :color, :capacities).merge(vehicle_usage_id: vehicle_usage.id, vehicle_id: vehicle_usage.vehicle_id, router_dimension: vehicle_usage.vehicle.default_router_dimension)
     end
   end
 end

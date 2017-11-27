@@ -28,11 +28,7 @@
         {{/manage_vehicle}}
 
         <div class="btn-group">
-          <button type="button" class="btn btn-primary btn-xs dropdown-toggle dropdown-white" data-toggle="dropdown" title="{{#i18n}}plannings.edit.optimize_help{{/i18n}}"{{#locked}}disabled="disabled"{{/locked}}><i class="fa fa-gear"></i><span class="caret"></span></button>
-          <ul class="dropdown-menu pull-right dropdown-optimize-each" role="menu">
-            <li><a class="optimize" href="#" data-active-only="true"><i class="fa fa-check-square-o fa-fw"></i>&nbsp;{{#i18n}}plannings.edit.optimize_actives{{/i18n}}</a></li>
-            <li><a class="optimize" href="#" data-active-only="false"><i class="fa fa-plus-square-o fa-fw"></i>&nbsp;{{#i18n}}plannings.edit.optimize_all{{/i18n}}</a></li>
-          </ul>
+          <button type="button" data-toggle="modal" data-target="#optimization-modal" data-keyboard="true" class="btn btn-primary btn-xs optimize" title="{{#i18n}}plannings.edit.optimize_help{{/i18n}}"{{#locked}}disabled="disabled"{{/locked}}><i class="fa fa-gear"></i></button>
         </div>
 
         <button type="button" class="toggle btn btn-default btn-xs" title="{{#i18n}}plannings.edit.toggle_help{{/i18n}}"><i class="fa fa-eye{{#hidden}}-slash{{/hidden}}"></i></button>

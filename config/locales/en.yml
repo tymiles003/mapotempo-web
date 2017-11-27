@@ -1298,33 +1298,12 @@ en:
         display performance
       load_stops_out_of_route: Load unplanned stops
       load_stops: Load stops in this route
-      optimized_at: Optimized
-      optimize_global:
-        title: Optimize the whole
-        all_help: Optimize the whole plan except locked routes
-          (stops can be reallocated to a different route), all stops are taken into account
-        active_help: Optimize the whole plan except locked routes
-          (stops can be reallocated to a different route), only active stops are taken into account
-        all_stops: All stops
-        active_stops: Only active stops
-        confirm: Optimize the whole plan? (stops can be reallocated to a different
-          route)
-      optimize_each:
-        title: Optimize each route
-        all_help: Optimize each unlocked routes one after one
-          (stops will stay in inital route), all stops are taken into account
-        active_help: Optimize each unlocked routes one after one
-          (stops will stay in inital route), only active stops are taken into account
-        all_stops: All stops
-        active_stops: Only active stops
-        confirm: Run an optimization calculation on each route? (stops will stay in
-          inital route)
-      optimize_all: Optimize all stops
-      optimize_actives: Optimize all active stops
+      optimize: Optimize all unlocked routes
       optimize_help: Optimize the route
       optimize_confirm: Run an optimization calculation?
       optimize_complete: Optimization Complete
       optimize_failed: Optimization Failed
+      optimized_at: Optimized
       zoning_confirm: Save and apply the new zoning? Routes will be updated
       page_change_zoning_confirm: Leave page and discard changes?
       route_placeholder: Route ref.
@@ -1460,6 +1439,32 @@ en:
           title: Refresh the plan
           confirm: You have performed changes that require a recomputation of the
             plan. Do you want to refresh the plan now?
+        optimization:
+          title: Optimization
+          visits:
+            title: Visits
+            sticky_vehicle: Keep all visits in same routes
+            sticky_vehicle_true_help: Optimization engine will treat each route
+              separatly to keep same route for all visits.
+            sticky_vehicle_false_help: Optimization engine will define itself the
+              best route for each visit.
+            active_only: Put unchecked visits at the end of route
+            active_only_true_help: Optimization will treat only checked visits in
+              routes.
+            active_only_false_help: Optimization will treat all visits in routes,
+              actives and inactives (unchecked visits will remain unchecked).
+            cost_late_multiplier: Authorize delay for visit
+          vehicles:
+            title: Vehicles
+            router_dimension: Router dimension
+            time: fastest
+            distance: shortest
+            cost_late_multiplier: Authorize delay for vehicle
+            force_start: Force start vehicle early
+          deliverable_units:
+            title: Deliverable units
+            overload_multiplier: Authorize overload
+          optimize: Optimize
         optimizer:
           title: Optimization
           in_progress: Please wait, processing.
@@ -2136,6 +2141,7 @@ en:
       dismiss: Dismiss
       import: Import
       save: Save
+      cancel: Cancel
     unit:
       m: m
       kms: km

@@ -188,7 +188,7 @@ fr:
         icon: Icône
         default_quantity: Quantité par défaut
         default_capacity: Capacité par défaut
-        optimization_overload_multiplier: Coefficient dépassement
+        optimization_overload_multiplier: Coefficient dépassement chargement
       destination:
         ref: Référence
         ref_small: Réf.
@@ -822,7 +822,7 @@ fr:
         si illimité).
       optimization_overload_multiplier_no: Non
       optimization_overload_multiplier_no_help: Lors de l'optimisation, si vous indiquez
-        une capacité pour vos véhicules, aucun dépassement ne sera autorisé.
+        une capacité pour vos véhicules, aucun dépassement de chargement ne sera autorisé.
       optimization_overload_multiplier_yes: Oui
       optimization_overload_multiplier_yes_help: Lors de l'optimisation, si vous indiquez
         une capacité pour vos véhicules, un dépassement est autorisé. Plus le coefficient
@@ -1367,37 +1367,12 @@ fr:
         été chargés pour améliorer les performances de l'affichage
       load_stops_out_of_route: Charger les arrêts non planifiés
       load_stops: Charger les arrêts de cette tournée
-      optimized_at: Optimisé
-      optimize_global:
-        title: Optimisation globale
-        all_help: Optimiser le plan de tournées dans son ensemble excepté les tournées
-          verrouillées (vos arrêts pourront être attribués à une autre tournée qu'actuellement),
-          en déplaçant tous les arrêts même inactifs
-        active_help: Optimiser le plan de tournées dans son ensemble excepté les tournées
-          verrouillées (vos arrêts pourront être attribués à une autre tournée qu'actuellement),
-          en déplaçant uniquement les arrêts actifs
-        all_stops: Optimiser avec les arrêts inactifs
-        active_stops: Uniquement les arrêts actifs
-        confirm: Optimiser l'ensemble du plan de tournées ? (vos arrêts pourront être
-          attribués à une autre tournée qu'actuellement)
-      optimize_each:
-        title: Optimisation de chaque tournée
-        all_help: Optimiser toutes les tournées non verrouillées une à une (vos arrêts
-          resteront dans chaque tournée initiale), en déplaçant tous les arrêts même
-          inactifs
-        active_help: Optimiser toutes les tournées non verrouillées une à une (vos
-          arrêts resteront dans chaque tournée initiale), en déplaçant uniquement
-          les arrêts actifs
-        all_stops: Optimiser avec les arrêts inactifs
-        active_stops: Uniquement les arrêts actifs
-        confirm: Lancer un calcul d'optimisation pour chacune des tournées ? (vos
-          arrêts resteront dans chaque tournée initiale)
-      optimize_all: Optimiser avec les arrêts inactifs
-      optimize_actives: Optimiser les arrêts actifs
+      optimize: Optimiser toutes les tournées non verrouillées
       optimize_help: Optimiser la tournée
       optimize_confirm: Lancer un calcul d'optimisation ?
       optimize_complete: Optimisation terminée
       optimize_failed: Échec lors de l'optimisation
+      optimized_at: Optimisé
       zoning_confirm: Enregistrer et appliquer le nouveau zonage ? Les tournées du
         plan vont être modifiées
       page_change_zoning_confirm: Souhaitez-vous quitter la page et perdre les changements
@@ -1539,6 +1514,32 @@ fr:
           title: Actualiser le plan de tournées
           confirm: Vous avez effectué des modifications qui nécessitent de recalculer
             votre plan de tournées. Souhaitez-vous l'actualiser maintenant ?
+        optimization:
+          title: Optimisation
+          visits:
+            title: Visites
+            sticky_vehicle: Conserver les visites dans les mêmes tournées
+            sticky_vehicle_true_help: Indiquer à l'optimisation de traiter les tournées indépendamment
+              les unes des autres afin de ne pas attribuer une nouvelle tournée pour une visite.
+            sticky_vehicle_false_help: Laisser à l'optimisation le choix d'attribution des tournées à
+              toutes les visites.
+            active_only: Placer les visites décochées en fin de tournée
+            active_only_true_help: Ne prendre en compte que les visites cochées dans les
+              tournées.
+            active_only_false_help: Optimiser toutes les visites d'une tournée, qu'elle
+              soient actives ou non (les visites décochées resteront décochées).
+            cost_late_multiplier: Autoriser les retards créneau visite
+          vehicles:
+            title: Véhicules
+            router_dimension: Calcul d'itinéraire
+            time: au plus rapide
+            distance: au plus court
+            cost_late_multiplier: Autoriser les retards créneau véhicule
+            force_start: Forcer le départ au début du créneau
+          deliverable_units:
+            title: Unités livrables
+            overload_multiplier: Autoriser le dépassement de chargement
+          optimize: Optimiser
         optimizer:
           title: Optimisation
           in_progress: Processus en cours, merci de patienter.
@@ -2234,6 +2235,7 @@ fr:
       dismiss: Ignorer
       import: Importer
       save: Sauvegarder
+      cancel: Annuler
     unit:
       m: m
       kms: km
