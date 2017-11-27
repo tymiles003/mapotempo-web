@@ -209,7 +209,14 @@ class Alyacom < DeviceBase
 
   def rest_client_post(url, params, data)
     Rails.logger.info data.inspect
-    RestClient::Request.execute method: :post, url: url, timeout: TIMEOUT_VALUE, headers: { content_type: :json, params: params }, payload: data.to_json
+    RestClient::Request.execute(method: :post, url: url, timeout: TIMEOUT_VALUE, headers: { content_type: :json, params: params }, payload: data.to_json) { |response, request, result|
+      case response.code
+      when 301, 302, 307
+        response.follow_redirection
+      else
+        response.return!
+      end
+    }
   rescue RestClient::RequestTimeout => e
     raise DeviceServiceError.new('Alyacom: %s' % [ I18n.t('errors.alyacom.timeout') ])
   end
