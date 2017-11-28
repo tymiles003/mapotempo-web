@@ -5,7 +5,7 @@ Delayed::Worker.logger = Logger.new(File.join(Rails.root, 'log', 'delayed_job.lo
 Delayed::Worker.class_eval do
   alias_method :run_was, :run
   def run(job)
-    Customer.transaction do
+    Customer.transaction isolation: :read_committed do
       run_was job
     end
   end
