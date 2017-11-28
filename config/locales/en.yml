@@ -731,8 +731,7 @@ en:
         optimization will be (but no solution found for the problem within available time
         could occur more often). Smaller the value is, faster the optimization will be (but
         solution coulb be with less quality). A value equal to 10-20 times the average size
-        of your routes is right. Take into account only if all vehicles are homogeneous
-        (router, stores, time windows, capacities...)
+        of your routes is right.
       optimization_cluster_size_default: '%{n} (default value)'
       optimization_cluster_size_help: Value in seconds between points to group before
         optimization. A great value will degrade optimization result (30 sec is already

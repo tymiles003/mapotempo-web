@@ -740,9 +740,7 @@ fr:
         problème soit trop complexe pour trouver une solution dans les temps impartis).
         Plus la valeur est faible, et plus l'optimisation trouvera une solution rapidement
         (mais la solution trouvée peut être de moins bonne qualité). Une valeur correspondant
-        à 10-20 fois la taille moyenne de vos tournées est adaptée. Option ne pouvant
-        pas être prise en compte si tous les véhicules ne sont pas homogènes (calculateur,
-        dépôts, créneaux horaires, capacités, etc...).
+        à 10-20 fois la taille moyenne de vos tournées est adaptée.
       optimization_cluster_size_default: '%{n} (valeur par défaut)'
       optimization_cluster_size_help: Valeur en secondes séparant les points à regrouper
         entre eux avant de les optimiser. Une valeur trop grande dégradera la qualité
