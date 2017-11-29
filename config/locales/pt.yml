@@ -182,6 +182,8 @@ pt:
           de pesados
         router_options_strict_restriction: Conformidade estrita com as limitações
           do camião
+        router_options_track: Utilizar vias
+        optimization_max_split_size: Dimensão da divisão de otimização
       deliverable_unit:
         label: Etiqueta
         ref: Referência
@@ -581,6 +583,8 @@ pt:
       deadlock: 'Aviso: Falha na atualização dos dados. Foi realizada outra atualização
         em simultâneo, provavelmente efetuou diversas operações demasiado rápido.'
       automatic_insert_no_result: Impossível afetar paragens
+      job_in_progress: Impossível realizar esta operação de momento, encontra-se a
+        decorrer uma operação (otimização) em "background"
   import:
     csv:
       line: Linha %{s}
@@ -725,9 +729,9 @@ pt:
       take_over_help: Duração média da visita por cliente
       optimization_cluster_size_default: '%{n} (valor por defeito)'
       optimization_cluster_size_help: Valor em segundos entre pontos a agrupar antes
-        da otimização. Um valor demasiado alto afetará a qualidade da otimização (30
-        segundos é já um valor expressivo). Considerar apenas para a otimização de
-        uma única rota, com atrasos.
+        da otimização. Um valor demasiado alto degradará a qualidade da otimização
+        (30 segundos é já um valor expressivo). Considerar apenas para a otimização
+        de uma única rota, com atrasos e sem capacidade sobre o veículo.
       optimization_time_default: '%{n} (valor por defeito)'
       optimization_time_help: A otimização pára automaticamente, por defeito. No entanto,
         poderá especificar aqui um valor limite por veículo, a não ultrapassar.
@@ -770,6 +774,18 @@ pt:
           Exemplo: http://www.example.com?p_id={PLANNING_ID}
 
           '
+      router_options_track_yes: Sim
+      router_options_track_no: Não
+      router_options_track_default: Por defeito (%{value})
+      optimization_max_split_size_default: '%{n} (valor por defeito)'
+      optimization_max_split_size_help: Numero máximo de pontos a agrupar caso um
+        problema seja demasiado extenso para otimizar. Quanto maior for o valor, melhor
+        será o resultado da otimização (poderá, no entanto, ser mais frequente o caso
+        em que não é encontrada solução para o tempo requerido). Quanto menor for
+        o valor, tanto mais rápida será a otimização (mas a solução encontrada poderá
+        ser de inferior qualidade). Um valor correspondente a 10 a 20 vezes o tamanho
+        das rotas, será correto. Considerar apenas em casos em que os veículos são
+        homogéneos (router, stores, time windows, capacities...)
   stores:
     default:
       lat: '38.78280'
@@ -1393,6 +1409,107 @@ pt:
       second_step: 'Passo 2: Entre na aplicação'
     accompanying_team:
       header: A nossa equipa acompanhá-lo-á
+      main_content: 'Afim de lhe oferecer a melhor experiência, poderá contar com
+        a nossa equipa para o acompanhar. Assim, '
+      highlight: 'para qualquer questão, poderá contactarnos: '
+      contact_support: Contacte o suporte
+      panels_header: 'Recursos para iniciar: 1ª parte'
+      documentation: documentação online
+      panels_subtitle: Conheça as três primeiras secções do nosso
+      goal: 'Objetivos:'
+      panel_one:
+        title: Antes de começar
+        content: quais são os navegadores suportados por %{name}? Os tipos de veículos
+          assumidos no seio da solução? Saiba como funcionam os algoritmos Open Source
+          para mapeamento, geocodificação e otimização.
+        time: ⏱3min.
+        doc_link: Doc - Antes de começar
+        doc_href: /manual/00-before_start.html
+        img_src: https://www.mapotempo.com/wp-content/uploads/2015/10/éclair.png
+      panel_two:
+        title: Inicio com %{name}
+        content: 'saiba como se ligar ao software %{name} e os respetivos principios
+          de utilização: importação de dados, otimização de rotas e exportação de
+          dados.'
+        time: ⏱2min.
+        doc_link: Doc - Início com %{name}
+        doc_href: /manual/01-start.html
+        img_src: https://www.mapotempo.com/wp-content/uploads/2015/10/key.png
+      panel_three:
+        title: Parâmetros globais e de utilizador
+        content: parâmetros da conta com palavra passe e utilizador. De atividade
+          como o tipo de veículos, duração média das visitas, exportação dos planos
+          otimizados para os dispositivos de GPS, exportação dos planos otimizados
+          para os mapas de rotas.
+        time: ⏱6min.
+        doc_link: Doc - Parâmetros globais e de utilizador
+        doc_href: /manual/02-global_settings_users.html
+        img_src: https://www.mapotempo.com/wp-content/uploads/2015/10/user.png
+      footer: Recebe este email como utilizador de %{name}
+    features:
+      header: Tem questões? A nossa equipa responde!
+      main_content: 'A nossa equipa está disponível para responder a todas as suas
+        questões: '
+      contact_support: Contactar o suporte
+      panels_header: 'Recursos para iniciar: 2ª parte'
+      panels_subtitle: Conheça as seguintes três secções do nosso
+      documentation: documentação online
+      goal: 'Objetivos:'
+      panel_one:
+        title: Gestão de veículos
+        content: configurar os veículos, o respetivo consumo, a capacidade. Definir
+          o calculador de itinerarios de acordo com o tipo de veículo, configurar
+          os entrepostos.
+        time: ⏱15min.
+        doc_link: Doc - Gestão de veículos
+        doc_href: /manual/03-vehicles_configuration.html
+        img_src: https://www.mapotempo.com/wp-content/uploads/2015/10/truck.png
+      panel_two:
+        title: Gestão de destinos
+        content: criar ou importar dados dos destinos (referencia, quantidade, moradas,
+          duração da visita, período de visita, etiquetas) e elimina-los. Exportar
+          dados dos destinos...
+        time: ⏱9min.
+        doc_link: Doc - Gestão de destinos
+        doc_href: /manual/04-destinations.html
+        img_src: https://www.mapotempo.com/wp-content/uploads/2015/10/map-marker.png
+      panel_three:
+        title: Gestão de zoneamentos
+        content: criar manualmente um zoneamento. Criar automaticamente um zoneamento
+          a partir do plano de rotas ou respeitante a um numero de zonas. Finalmente,
+          modificar um zoneamento.
+        time: ⏱5min.
+        doc_link: Doc - Gestão de zoneamentos
+        doc_href: /manual/05-zonings.html
+        img_src: https://www.mapotempo.com/wp-content/uploads/2015/10/ungroup.png
+      footer: Recebe este email como utilizador de %{name}
+      adds:
+        video: Videos
+        vehicules_params: Parametrização dos veículos
+        destination_params: Parametrização dos destinos
+        tags: Apresentação das etiquetas
+        zonage: Criação de zoneamento
+        zonage_update: Alteração de zoneamento
+    advanced_options:
+      header: Poderemos ajudá-lo a esclarecer alguns aspetos?
+      main_content: 'Está a utilizar o %{name} nos últimos 3 dias. Descobriu diversas
+        funcionalidades. Se tem questões relativas a alguma delas, poderá contactar
+        a nossa equipa. '
+      contact_support: Contactar o suporte
+      panels_header: 'Recursos para iniciar: 3ª parte'
+      panels_subtitle: Identifique as <b>três últimas secções</b> do nosso
+      documentation: documentação online.
+      goal: 'Objetivos:'
+      panel_one:
+        title: Gestão de planos e de rotas
+        content: criar um plano de rotas, aplicar um zoneamento, otimizar rotas, exportar
+          rotas (mapa de rotas, telemóvel, GPS, calendário, folha de cálculo).
+        time: ⏱20min.
+        doc_link: Doc - Gestão dos planos de rotas
+        doc_href: /manual/06-plans.html
+        img_src: https://www.mapotempo.com/wp-content/uploads/2015/10/calendar.png
+      panel_two:
+        title: TomTom WEBFLEET (opcional)
   plannings:
     menu:
       plannings: Planos
