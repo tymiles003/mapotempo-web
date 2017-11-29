@@ -1,5 +1,5 @@
 json.tags do
-  json.array! @tags, :id, :label, :color, :icon
+  json.array! @tags, :id, :label, :color, :icon, :icon_size
 end
 json.destinations @destinations, partial: 'api_web/v01/destinations/show', as: :destination
 json.stores do

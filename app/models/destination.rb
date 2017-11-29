@@ -69,6 +69,10 @@ class Destination < Location
     (tags | visits.flat_map(&:tags).uniq).find(&:icon).try(&:icon)
   end
 
+  def visits_icon_size
+    (tags | visits.flat_map(&:tags).uniq).find(&:icon).try(&:icon_size)
+  end
+
   private
 
   def update_outdated

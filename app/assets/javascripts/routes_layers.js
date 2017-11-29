@@ -700,13 +700,13 @@ var RoutesLayer = L.FeatureGroup.extend({
             overlappingMarkers.routeIds = [];
           }
 
-          var pAnchor = [-pointAnchor.x + this.map.iconSize[pointIconSize].size / 2, -pointAnchor.y + this.map.iconSize[pointIconSize].size / 2];
+          var popupAnchor = [-pointAnchor.x + this.map.iconSize[pointIconSize].size / 2, -pointAnchor.y + this.map.iconSize[pointIconSize].size / 2];
 
           icon = L.divIcon({
             html: '<span class="fa-stack" style="line-height: ' + this.map.iconSize[pointIconSize].size + 'px"><i class="fa ' + pointIcon + ' point-icon" style="color: ' + pointColor + ' !important; font-size: ' + this.map.iconSize[pointIconSize].size + 'px"></i><span class="fa-stack-1x point-icon-text">' + (geoJsonPoint.properties.number || '') + '</span></span>',
             iconSize: new L.Point(this.map.iconSize[pointIconSize].size, this.map.iconSize[pointIconSize].size),
             iconAnchor: pointAnchor,
-            popupAnchor: pAnchor,
+            popupAnchor: popupAnchor,
             className: 'point-icon-container'
           });
         }

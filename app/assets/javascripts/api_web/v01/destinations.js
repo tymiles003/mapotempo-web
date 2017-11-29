@@ -46,17 +46,24 @@ var api_web_v01_display_destinations_ = function(api, map, data) {
         className: 'store-icon-container'
       });
     } else {
-      licon = new L.icon({
-        iconUrl: '/images/' + (options.icon || 'point') + (options.color ? '-' + options.color.substr(1) : '') + '.svg',
-        iconSize: new L.Point(12, 12),
-        iconAnchor: new L.Point(6, 6),
-        popupAnchor: new L.Point(0, -6)
+      var pointIcon = options.icon || 'fa-circle';
+      var pointIconSize = options.icon_size || 'medium';
+      var pointColor = options.color || '#707070';
+      var pointAnchor = new L.Point(map.iconSize[pointIconSize].size / 2, map.iconSize[pointIconSize].size / 2);
+      var popupAnchor = [-pointAnchor.x + map.iconSize[pointIconSize].size / 2, -pointAnchor.y + map.iconSize[pointIconSize].size / 2];
+
+      licon = L.divIcon({
+        html: '<i class="fa ' + pointIcon + ' ' + map.iconSize[pointIconSize].name + ' store-icon" style="color: ' + pointColor + ';"></i>',
+        iconSize: new L.Point(map.iconSize[pointIconSize].size, map.iconSize[pointIconSize].size),
+        iconAnchor: pointAnchor,
+        popupAnchor: popupAnchor,
+        className: 'point-icon-container'
       });
     }
-    var marker = L.marker(new L.LatLng(options.lat, options.lng), {
+
+    return L.marker(new L.LatLng(options.lat, options.lng), {
       icon: licon
     }).addTo((options.store && api === 'destinations') ? map.storesLayers : map.markersLayers);
-    return marker;
   };
 
   if (data.tags) {

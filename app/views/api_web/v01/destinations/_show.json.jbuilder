@@ -40,3 +40,4 @@ end
 # TODO: display several icons
 (json.color destination.visits_color) if destination.visits_color
 (json.icon destination.visits_icon) if destination.visits_icon
+(json.icon_size destination.visits_icon_size) if destination.visits_icon_size
