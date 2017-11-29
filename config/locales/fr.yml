@@ -281,6 +281,10 @@ fr:
         logo_small: Petit logo
         favicon: Favicon
         url_protocol: Type de connexion
+        audience_url: URL d'audience
+        behavior_url: URL de comportement
+        customer_audience_url: URL d'audience compte
+        customer_behavior_url: URL de comportent compte
       route:
         distance: Distance
         emission: Émissions
@@ -610,6 +614,10 @@ fr:
         reseller: Revendeur
       edit:
         title: Modifier revendeur
+        logo: Logos & Favicon
+        help_urls: Liens centre d'aide & contact
+        social_urls: Liens réseaux sociaux
+        analysis_urls: Liens tableaux de bord analytiques
       form:
         host_help: Nom d'hôte et port de l'URL web utilisés pour détecter ce revendeur
         name_help: Marque du revendeur
@@ -631,6 +639,10 @@ fr:
         facebook_url_help: Lien Facebook du revendeur
         twitter_url_help: Lien Twitter du revendeur
         linkedin_url_help: Lien linkedIn du revendeur
+        audience_url_help: 'Adresse de la page web contenant votre tableau de bord d''audience. Vous pouvez utiliser « {ID} »  qui sera remplacé par la langue telle que « en », « fr » (par ex: https://analytics.mapotempo.com/public/dashboard/{ID}'
+        behavior_url_help: 'Adresse de la page web contenant votre tableau de bord de comportement. Vous pouvez utiliser « {ID} »  qui sera remplacé par la langue telle que « en », « fr » (par ex: https://analytics.mapotempo.com/public/dashboard/{ID}'
+        customer_audience_url_help: 'Adresse de la page web contenant votre tableau de bord d''audience pour un compte spécifique. Vous pouvez utiliser « {ID} »  qui sera remplacé par la langue telle que « en », « fr » (par ex: https://analytics.mapotempo.com/public/dashboard/{ID}'
+        customer_behavior_url_help: 'Adresse de la page web contenant votre tableau de bord de comportement pour un compte spécifique. Vous pouvez utiliser « {ID} »  qui sera remplacé par la langue telle que « en », « fr » (par ex: https://analytics.mapotempo.com/public/dashboard/{ID}'
         logo_large_help: Logo pleine page redimensionnable, de préférence au format
           SVG, à défaut en PNG.
         logo_small_help: Logo du menu, 150×40 pixels en SVG ou PNG.
@@ -690,6 +702,8 @@ fr:
       status_no_sign_in_user: Utilisateur jamais connecté
       status_inactive_user: Utilisateur inactif
       created_end_subscription: Créé - Fin de souscription
+      audience_url: Tableau de bord d'audience pour l'ensemble des comptes
+      behavior_url: Tableau de bord comportemental pour l'ensemble des comptes
     new:
       title: Nouveau compte client
     destroy:
@@ -771,6 +785,8 @@ fr:
       speed_multiplicator_default: '%{n} (valeur par défaut)'
       speed_multiplicator_help: Une valeur supérieure à 100% signifie une vitesse
         plus élevée.
+      audience_url_help: Se rendre sur le tableau de bord d'audience pour ce compte client
+      behavior_url_help: Se rendre sur le tableau de bord comportemental pour ce compte client
       submit: Enregistrer paramétrage global
       external_callback:
         title: URL de rappel

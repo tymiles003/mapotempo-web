@@ -30,73 +30,13 @@
     <p class="help-block"><%= t '.application_name_help' %></p>
   <% end %>
 
-  <%= f.text_field :website_url do %>
-    <p class="help-block"><%= t '.website_url_help' %></p>
-  <% end %>
+  <%= render 'help_urls', f: f %>
 
-  <%= f.text_field :welcome_url do %>
-    <p class="help-block"><%= t '.welcome_url_help' %></p>
-  <% end %>
+  <%= render 'analysis_urls', f: f %>
 
-  <%= f.text_field :help_url do %>
-    <p class="help-block"><%= t '.help_url_help' %></p>
-  <% end %>
+  <%= render 'social_urls', f: f %>
 
-  <%= f.text_field :contact_url do %>
-    <p class="help-block"><%= t '.contact_url_help' %></p>
-  <% end %>
-
-  <%= f.text_field :subscription_url do %>
-    <p class="help-block"><%= t '.subscription_url_help' %></p>
-  <% end %>
-
-  <%= f.text_field :facebook_url do %>
-    <p class="help-block"><%= t '.facebook_url_help' %></p>
-  <% end %>
-
-  <%= f.text_field :twitter_url do %>
-    <p class="help-block"><%= t '.twitter_url_help' %></p>
-  <% end %>
-
-  <%= f.text_field :linkedin_url do %>
-    <p class="help-block"><%= t '.linkedin_url_help' %></p>
-  <% end %>
-
-  <%= f.file_field :logo_large do %>
-    <p class="help-block"><%= t '.logo_large_help' %></p>
-  <% end %>
-
-  <% if @reseller.logo_large.url %>
-    <div class="form-group">
-      <div class="col-md-offset-2 col-md-6">
-        <%= image_tag @reseller.logo_large.url, width: '100%' %>
-      </div>
-    </div>
-  <% end %>
-
-  <%= f.file_field :logo_small do %>
-    <p class="help-block"><%= t '.logo_small_help' %></p>
-  <% end %>
-
-  <% if @reseller.logo_small.url %>
-    <div class="form-group">
-      <div class="col-md-offset-2 col-md-6">
-        <%= image_tag @reseller.logo_small.url, width: 150, height: 40 %>
-      </div>
-    </div>
-  <% end %>
-
-  <%= f.file_field :favicon do %>
-    <p class="help-block"><%= t '.favicon_help' %></p>
-  <% end %>
-
-  <% if @reseller.favicon.url %>
-    <div class="form-group">
-      <div class="col-md-offset-2 col-md-6">
-        <%= image_tag @reseller.favicon.url, width: 16, height: 16 %>
-      </div>
-    </div>
-  <% end %>
+  <%= render 'logo', f: f %>
 
   <%= f.actions do %>
     <%= f.submit %>

@@ -1,0 +1,18 @@
+<fieldset>
+  <legend>
+    <i class="fa fa-share-square-o" aria-hidden="true"></i> 
+    <%= t 'admin.resellers.edit.social_urls' %>
+  </legend> 
+
+  <%= f.text_field :facebook_url do %>
+    <p class="help-block"><%= t 'admin.resellers.form.facebook_url_help' %></p>
+  <% end %>
+
+  <%= f.text_field :twitter_url do %>
+    <p class="help-block"><%= t 'admin.resellers.form.twitter_url_help' %></p>
+  <% end %>
+
+  <%= f.text_field :linkedin_url do %>
+    <p class="help-block"><%= t 'admin.resellers.form.linkedin_url_help' %></p>
+  <% end %>
+</fieldset>

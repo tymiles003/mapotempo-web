@@ -1,0 +1,42 @@
+<fieldset>
+  <legend> 
+    <i class="fa fa-picture-o" aria-hidden="true"></i>
+    <%= t 'admin.resellers.edit.logo' %>
+  </legend>
+
+  <%= f.file_field :logo_large do %>
+    <p class="help-block"><%= t 'admin.resellers.form.logo_large_help' %></p>
+  <% end %>
+
+  <% if @reseller.logo_large.url %>
+    <div class="form-group">
+      <div class="col-md-offset-2 col-md-6">
+        <%= image_tag @reseller.logo_large.url, width: '100%' %>
+      </div>
+    </div>
+  <% end %>
+
+  <%= f.file_field :logo_small do %>
+    <p class="help-block"><%= t 'admin.resellers.form.logo_small_help' %></p>
+  <% end %>
+
+  <% if @reseller.logo_small.url %>
+    <div class="form-group">
+      <div class="col-md-offset-2 col-md-6">
+        <%= image_tag @reseller.logo_small.url, width: 150, height: 40 %>
+      </div>
+    </div>
+  <% end %>
+
+  <%= f.file_field :favicon do %>
+    <p class="help-block"><%= t 'admin.resellers.form.favicon_help' %></p>
+  <% end %>
+
+  <% if @reseller.favicon.url %>
+    <div class="form-group">
+      <div class="col-md-offset-2 col-md-6">
+        <%= image_tag @reseller.favicon.url, width: 16, height: 16 %>
+      </div>
+    </div>
+  <% end %>
+</fieldset>

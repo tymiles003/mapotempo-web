@@ -280,6 +280,10 @@ en:
         logo_small: Small logo
         favicon: Favicon
         url_protocol: Connection type
+        audience_url: Audience URL
+        behavior_url: Behavior URL
+        customer_audience_url: Customer's Audience URL
+        customer_behavior_url: Customer's Behavior URL
       route:
         distance: Distance
         emission: Emission
@@ -606,6 +610,10 @@ en:
         reseller: Reseller
       edit:
         title: Editing reseller
+        logo: Logos & Favicon
+        help_urls: Help center and contact urls
+        social_urls: Social networks urls
+        analysis_urls: Dashboard Analitics urls
       form:
         host_help: Web URL hostname and port used to match this reseller
         name_help: Reseller brand name
@@ -621,6 +629,10 @@ en:
           "{LG}" which will be replaced by language like « en », « fr » (ie: https://www.mapotempo.com/{LG}/contact-support/).'
         subscription_url_help: 'Web page address with subscription content for a test customer. It''s possible to use
           "{LG}" which will be replaced by language like « en », « fr » (ie: https://www.mapotempo.com/{LG}/mapotempo-web-subscription-request).'
+        audience_url_help: 'Web page adress that contains the audience Dashboard. It''s possible to use "{ID}" which will be replaced by language like « en », « fr »  (ie: https://analytics.mapotempo.com/public/dashboard/{ID}'
+        behavior_url_help: 'Web page adress that contains the behavior Dashboard. It''s possible to use "{ID}" which will be replaced by language like « en », « fr »  (ie: https://analytics.mapotempo.com/public/dashboard/{ID}'
+        customer_audience_url_help: 'Web page adress that contains the audience Dashboard for a customer. It''s possible to use "{ID}" which will be replaced by language like « en », « fr »  (ie: https://analytics.mapotempo.com/public/dashboard/{ID}'
+        customer_behavior_url_help: 'Web page adress that contains the behavior Dashboard for a customer. It''s possible to use "{ID}" which will be replaced by language like « en », « fr »  (ie: https://analytics.mapotempo.com/public/dashboard/{ID}'
         facebook_url_help: Reseller Facebook link
         twitter_url_help: Reseller Twitter link
         linkedin_url_help: Reseller linkedIn link
@@ -683,6 +695,8 @@ en:
       status_no_sign_in_user: User never signed-in
       status_inactive_user: Inactive user
       created_end_subscription: Created - End subscription
+      audience_url: Audience Dashboard for all accounts
+      behavior_url: Behavior Dashboard for all accounts
     new:
       title: New Account
     destroy:
@@ -758,6 +772,8 @@ en:
         title: Printing
       speed_multiplicator_default: '%{n} (default value)'
       speed_multiplicator_help: A value higher than 100% means higher speed.
+      audience_url_help: Go to the customer dashboard Audience page
+      behavior_url_help: Go to the customer dashboard Behavior page
       submit: Update Global settings
       external_callback:
         title: Callback URL

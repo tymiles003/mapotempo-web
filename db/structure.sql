@@ -532,7 +532,11 @@ CREATE TABLE resellers (
     twitter_url character varying,
     linkedin_url character varying,
     subscription_url character varying,
-    application_name character varying
+    application_name character varying,
+    audience_url character varying,
+    behavior_url character varying,
+    customer_audience_url character varying,
+    customer_behavior_url character varying
 );
 
 
@@ -2660,3 +2664,4 @@ INSERT INTO schema_migrations (version) VALUES ('20171106110030');
 
 INSERT INTO schema_migrations (version) VALUES ('20171120111400');
 
+INSERT INTO schema_migrations (version) VALUES ('20171129104645');
