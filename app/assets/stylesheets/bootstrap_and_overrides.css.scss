@@ -589,3 +589,10 @@ div.grid-container {
   color: #333;
   white-space: nowrap;
 }
+
+// Prevent ellipsis on [TextField/Btn] elements when media queries under 767px
+@media screen and (max-width: 767px) {
+  .input-group-btn:last-child>.btn, .input-group-btn:last-child>.btn-group {
+    margin: 0 !important;
+  }
+}
