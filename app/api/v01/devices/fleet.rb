@@ -68,6 +68,7 @@ class V01::Devices::Fleet < Grape::API
       end
       delete '/clear_multiple' do
         device_clear_routes device_id: :fleet_user
+        status 204
       end
 
       desc 'Sync Vehicles',

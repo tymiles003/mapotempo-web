@@ -112,7 +112,7 @@ class Fleet < DeviceBase
   end
 
   def send_route(customer, route, _options = {})
-    destinations = route.stops.select(&:active?).select(&:position?).sort_by(&:index).map do |destination|
+    destinations = route.stops.select(&:active?).select(&:position?).select { |stop| stop.is_a?(StopVisit) }.sort_by(&:index).map do |destination|
       {
         external_ref: generate_mission_id(destination),
         name: destination.name,
@@ -220,7 +220,7 @@ class Fleet < DeviceBase
   end
 
   def delete_missions_url(user, destination_ids)
-    "#{api_url}/api/0.1/users/#{user}/missions/destroy_multiples?ids=#{destination_ids}"
+    "#{api_url}/api/0.1/users/#{user}/missions/destroy_multiples?#{destination_ids.to_query('ids')}"
   end
 
   def generate_mission_id(destination)

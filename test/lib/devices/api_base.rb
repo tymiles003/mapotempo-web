@@ -11,6 +11,11 @@ module ApiBase
   def params_for(device, customer)
     device.to_sym unless device.is_a? Symbol
     case device
+      when :fleet
+        {
+          user: customer.devices[device][:user],
+          password: customer.devices[device][:password]
+        }
       when :teksat
         {
           url: customer.devices[device][:url],

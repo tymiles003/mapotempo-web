@@ -26,16 +26,6 @@ class FleetService < DeviceService
     end
   end
 
-  def list_vehicles(params)
-    if (customer.devices[service_name] && customer.devices[:fleet][:user]) || (params && params[:user])
-      with_cache [:list_vehicles, service_name, customer.id, customer.devices[:fleet][:user]] do
-        service.list_vehicles(customer, params)
-      end
-    else
-      []
-    end
-  end
-
   def get_vehicles_pos
     if customer.devices[service_name] && customer.devices[:fleet][:user]
       with_cache [:get_vehicles_pos, service_name, customer.id, customer.devices[:fleet][:user]] do
