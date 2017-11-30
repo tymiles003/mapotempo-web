@@ -40,6 +40,13 @@ class OptimizerWrapper
       shift_stores = 0
       services_with_negative_quantities = []
 
+      services_late_multiplier = (options[:stop_soft_upper_bound] && options[:stop_soft_upper_bound] > 0) ? options[:stop_soft_upper_bound] : nil
+      vehicles_cost_late_multiplier = (options[:vehicle_soft_upper_bound] && options[:vehicle_soft_upper_bound] > 0) ? options[:vehicle_soft_upper_bound] : nil
+      # FIXME: ortools is not able to support non null vehicle late multiplier for global optim
+      if vehicles.size > 1 && !services.all?{ |s| s[:vehicle_id] }
+        vehicles_cost_late_multiplier = nil unless options[:vehicle_soft_upper_bound] != Mapotempo::Application.config.optimize_vehicle_soft_upper_bound
+      end
+
       vrp = {
         units: vehicles.flat_map{ |v| v[:capacities] && v[:capacities].map{ |c| c[:deliverable_unit_id] } }.uniq.map{ |k|
           {id: "u#{k}"}
@@ -79,8 +86,7 @@ class OptimizerWrapper
             cost_distance_multiplier: vehicle[:router_dimension] == 'distance' ? 1 : 0,
             cost_time_multiplier: vehicle[:router_dimension] == 'time' ? 1 : 0,
             cost_waiting_time_multiplier: vehicle[:router_dimension] == 'time' ? options[:optimization_cost_waiting_time] : 0,
-            # FIXME: ortools is not able to support non null late multipliers both services & multiple vehicles
-            cost_late_multiplier: (options[:vehicle_soft_upper_bound] && options[:vehicle_soft_upper_bound] > 0 && (!options[:stop_soft_upper_bound] || options[:stop_soft_upper_bound] == 0 || vehicles.size == 1 || services.all?{ |s| s[:vehicle_id] })) ? options[:vehicle_soft_upper_bound] : nil,
+            cost_late_multiplier: vehicles_cost_late_multiplier,
             force_start: options[:force_start],
             rest_ids: vehicle[:rests].collect{ |rest|
               "r#{rest[:stop_id]}"
@@ -115,7 +121,7 @@ class OptimizerWrapper
                 },
               ].compact,
               duration: service[:duration],
-              late_multiplier: (options[:stop_soft_upper_bound] && options[:stop_soft_upper_bound] > 0) ? options[:stop_soft_upper_bound] : nil
+              late_multiplier: services_late_multiplier
             },
             quantities: service[:quantities] ? service[:quantities].each.map{ |k, v|
               v ? {

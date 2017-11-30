@@ -763,6 +763,21 @@ var plannings_edit = function(params) {
         .filter(function(elt, idx, array) { return idx == array.indexOf(elt); });
       $('#router-dimension-value').html(dimensions.map(function(dim) { dim = 'plannings.edit.dialog.optimization.vehicles.' + dim; return I18n.t(dim); } ).join(' / '));
     }
+    vehicleCostLate();
+  });
+  // FIXME: ortools is not able to support non null vehicle late multiplier for global optim
+  var originalVehicleCostLate = $('#optimization-vehicle-late label').text();
+  var vehicleCostLate = function() {
+    if (!$('#optimization-route_id').val() && $('[name=sticky_vehicle]:checked').val() == 'false') {
+      if ($('#optimization-vehicle-late label').text().trim() == I18n.t('all.value._yes'))
+        $('#optimization-vehicle-late label').text('-');
+    }
+    else
+      $('#optimization-vehicle-late label').text(originalVehicleCostLate);
+  };
+  vehicleCostLate();
+  $('[name=sticky_vehicle]').change(function() {
+    vehicleCostLate();
   });
 
   var sortPlanning = function(event, ui) {
