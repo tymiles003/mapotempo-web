@@ -474,12 +474,13 @@ class PlanningsControllerTest < ActionController::TestCase
 
   test 'should not update stop with error' do
     Route.stub_any_instance(:compute!, lambda { |*a| raise }) do
+      stop = stops(:stop_one_one)
       assert_raise do
-        patch :update_stop, planning_id: @planning, format: :json, route_id: routes(:route_one_one).id, stop_id: stops(:stop_one_one).id, stop: { active: false }
+        patch :update_stop, planning_id: @planning, format: :json, route_id: routes(:route_one_one).id, stop_id: stop.id, stop: { active: false }
         assert_valid response
         assert_response 422
       end
-      assert stops(:stop_one_one).reload.active
+      assert stop.reload.active
     end
   end
 
@@ -652,28 +653,32 @@ class PlanningsControllerTest < ActionController::TestCase
   end
 
   test 'should update active while automatic insert is in progress' do
-    planning = @planning # @planning not visible in stub_any_instance
     route = routes(:route_one_one) # routes is another function in stub_any_instance
     stop = stops(:stop_one_one)
-    @planning.routes.each{ |r| r.update(locked: true) if r.vehicle_usage_id && r.id != routes(:route_one_one).id }
-    assert_no_difference('Stop.count') do
-      # Simulate update active while stop is added in route
-      Planning.stub_any_instance(:automatic_insert, lambda { |*a|
-        new_connection = Planning.connection_pool.checkout
-        new_connection.execute("UPDATE stops SET active=false WHERE id='#{stop.id}'")
-        new_connection.execute("UPDATE routes SET outdated=true WHERE id='#{route.id}'")
-        send('__minitest_any_instance_stub__automatic_insert', *a)
-      }) do
+    begin
+      @planning.routes.each{ |r| r.update(locked: true) if r.vehicle_usage_id && r.id != routes(:route_one_one).id }
+      assert_no_difference('Stop.count') do
+        # Simulate update active while stop is added in route
+        Planning.stub_any_instance(:automatic_insert, lambda { |*a|
+          new_connection = Planning.connection_pool.checkout
+          new_connection.execute("UPDATE stops SET active=false WHERE id='#{stop.id}'")
+          new_connection.execute("UPDATE routes SET outdated=true WHERE id='#{route.id}'")
+          send('__minitest_any_instance_stub__automatic_insert', *a)
+        }) do
 
-        patch :automatic_insert, id: @planning.id, format: :json, stop_ids: [stops(:stop_unaffected).id]
+          patch :automatic_insert, id: @planning.id, format: :json, stop_ids: [stops(:stop_unaffected).id]
 
-        # Needs new connection to be outside transaction
-        ActiveRecord::Base.establish_connection(ActiveRecord::Base.connection_config)
-
+          # Needs new connection to be outside transaction
+          ActiveRecord::Base.establish_connection(ActiveRecord::Base.connection_config)
+        end
       end
-    end
 
-    assert !stop.reload.active
-    assert_nil stops(:stop_unaffected).reload.route.vehicle_usage_id
+      assert !stop.reload.active
+      assert_nil stops(:stop_unaffected).reload.route.vehicle_usage_id
+    ensure
+      new_connection = Planning.connection_pool.checkout
+      new_connection.execute("UPDATE stops SET active=true WHERE id='#{stop.id}'")
+      new_connection.execute("UPDATE routes SET outdated=false WHERE id='#{route.id}'")
+    end
   end
 end

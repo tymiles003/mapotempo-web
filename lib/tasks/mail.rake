@@ -1,8 +1,8 @@
 namespace :mail do
   desc 'Mail manager'
 
+  desc 'Send automation mails at defined time'
   task automation: :environment do
-    desc 'Send automation mails at defined time'
     request = User.joins(:customer).where('customers.test' => true, 'customers.end_subscription' => DateTime.now.in_time_zone.midnight + 1.days) | User.where(created_at: (Time.now.midnight - 9.days)..Time.now.midnight).where.not(customer_id: nil)
 
     users = request.select { |user|
