@@ -100,7 +100,7 @@ Rails.application.configure do
     ENV['OPTIMIZER_HOST'] || 'http://optim.mapotempo.com:1791/0.1',
     ENV['OPTIMIZER_API_KEY']
   )
-  config.optimize_time = 300
+  config.optimize_time = 30
   config.optimize_time_force = nil
   config.optimize_max_split_size = 500
   config.optimize_cluster_size = 0

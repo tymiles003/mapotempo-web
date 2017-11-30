@@ -65,7 +65,7 @@ Rails.application.configure do
     ENV['OPTIMIZER_HOST'] || 'http://localhost:1791/0.1',
     ENV['OPTIMIZER_API_KEY']
   )
-  config.optimize_time = 600
+  config.optimize_time = 60
   config.optimize_time_force = nil
   config.optimize_max_split_size = 500
   config.optimize_cluster_size = 0
