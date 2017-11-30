@@ -15,8 +15,8 @@
                 <label><%= t 'plannings.edit.dialog.optimization.visits.sticky_vehicle' %></label>
               </div>
               <div class="col-md-5">
-                <label data-toggle="tooltip" title="<%= t('plannings.edit.dialog.optimization.visits.sticky_vehicle_true_help') %>"><%= radio_button_tag :sticky_vehicle, :true, !current_user.customer.enable_global_optimization, disabled: !current_user.customer.enable_global_optimization %> <%= t 'all.value._yes' %></label>
-                <label data-toggle="tooltip" title="<%= t('plannings.edit.dialog.optimization.visits.sticky_vehicle_false_help') %>"><%= radio_button_tag :sticky_vehicle, :false, current_user.customer.enable_global_optimization, disabled: !current_user.customer.enable_global_optimization %> <%= t 'all.value._no' %></label>
+                <label data-toggle="tooltip" title="<%= t('plannings.edit.dialog.optimization.visits.sticky_vehicle_true_help') %>"><%= radio_button_tag :sticky_vehicle, :true, !current_user.customer.enable_global_optimization, disabled: !current_user.customer.enable_global_optimization && !current_user.customer.test %> <%= t 'all.value._yes' %></label>
+                <label data-toggle="tooltip" title="<%= t('plannings.edit.dialog.optimization.visits.sticky_vehicle_false_help') %>"><%= radio_button_tag :sticky_vehicle, :false, current_user.customer.enable_global_optimization, disabled: !current_user.customer.enable_global_optimization && !current_user.customer.test %> <%= t 'all.value._no' %></label>
               </div>
             </div>
             <div id="optimization-active" class="row">
