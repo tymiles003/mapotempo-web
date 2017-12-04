@@ -64,13 +64,14 @@ class V01::TagsTest < ActiveSupport::TestCase
 
   test 'should update a tag' do
     @tag.label = 'new label'
-    put api(@tag.id), label: 'riri', color: '#123456'
+    put api(@tag.id), label: 'riri', color: '#123456', icon_size: 'large'
     assert last_response.ok?, last_response.body
 
     get api(@tag.id)
     assert last_response.ok?, last_response.body
     assert_equal 'riri', JSON.parse(last_response.body)['label']
     assert_equal '#123456', JSON.parse(last_response.body)['color']
+    assert_equal 'large', JSON.parse(last_response.body)['icon_size']
   end
 
   test 'should destroy a tag' do

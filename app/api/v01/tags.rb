@@ -24,7 +24,7 @@ class V01::Tags < Grape::API
     def tag_params
       p = ActionController::Parameters.new(params)
       p = p[:tag] if p.key?(:tag)
-      p.permit(:label, :ref, :color, :icon)
+      p.permit(:label, :ref, :color, :icon, :icon_size)
     end
 
     ID_DESC = 'Id or the ref field value, then use "ref:[value]".'.freeze
