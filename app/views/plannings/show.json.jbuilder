@@ -16,7 +16,7 @@ else
   json.customer_external_callback_name current_user.customer.external_callback_name
   json.customer_external_callback_url current_user.customer.external_callback_url
   duration = @planning.routes.includes_vehicle_usages.select(&:vehicle_usage).to_a.sum(0){ |route| route.end && route.start ? route.end - route.start : 0 }
-  json.duration '%i:%02i' % [duration / 60 / 60, duration / 60 % 60]
+  json.duration time_over_day(duration)
   json.distance locale_distance(@planning.routes.to_a.sum(0){ |route| route.distance || 0 }, current_user.prefered_unit)
   json.emission number_to_human(@planning.routes.to_a.sum(0){ |route| route.emission || 0 }, precision: 4)
   (json.outdated true) if @planning.outdated
@@ -29,13 +29,13 @@ else
   averages = @planning.averages(current_user.prefered_unit)
   if averages
     json.averages do
-      json.routes_visits_duration l(Time.at(averages[:routes_visits_duration]).utc, format: :hour_minute)
-      json.routes_drive_time l(Time.at(averages[:routes_drive_time]).utc, format: :hour_minute)
-      json.routes_wait_time l(Time.at(averages[:routes_wait_time]).utc, format: :hour_minute)
+      json.routes_visits_duration time_over_day(averages[:routes_visits_duration]) if averages[:routes_visits_duration]
+      json.routes_drive_time time_over_day(averages[:routes_drive_time])
+      json.routes_wait_time time_over_day(averages[:routes_wait_time]) if averages[:routes_wait_time]
       json.routes_speed_average averages[:routes_speed_average]
       json.vehicles_used averages[:vehicles_used]
-      json.capacities averages[:capacities] unless averages[:capacities].zero?
-      json.quantities averages[:quantities] unless averages[:quantities].zero?
+      json.vehicles averages[:vehicles]
+      json.total_quantities planning_quantities(@planning)
     end
   end
 

@@ -77,4 +77,8 @@ module ApplicationHelper
 
     url.sub('{ID}', klass.id.to_s)
   end
+
+  def time_over_day(time_in_seconds)
+    '%02i:%02i' % [time_in_seconds / 3600, (time_in_seconds % 3600) / 60]
+  end
 end

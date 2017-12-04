@@ -1,6 +1,6 @@
 json.route_id route.id
 json.extract! route, :ref, :outdated
-(json.duration (route.start && route.end) ? '%i:%02i' % [(route.end - route.start) / 60 / 60, (route.end - route.start) / 60 % 60] : '0:00')
+(json.duration (route.start && route.end) ? time_over_day(route.end - route.start) : '00:00')
 (json.hidden true) if route.hidden
 (json.locked true) if route.locked
 json.distance locale_distance(route.distance || 0, current_user.prefered_unit)
@@ -31,11 +31,11 @@ if route.vehicle_usage_id
   json.vehicle_id route.vehicle_usage.vehicle.id
   if route.drive_time != 0 && !route.drive_time.nil?
     json.route_averages do
-      json.drive_time l(Time.at(route.drive_time).utc, format: :hour_minute)
+      json.drive_time time_over_day(route.drive_time)
       json.speed route.speed_average(current_user.prefered_unit)
 
-      json.visits_duration l(Time.at(route.visits_duration).utc, format: :hour_minute) if route.visits_duration
-      json.wait_time l(Time.at(route.wait_time).utc, format: :hour_minute) if route.wait_time
+      json.visits_duration time_over_day(route.visits_duration) if route.visits_duration && route.visits_duration > 0
+      json.wait_time time_over_day(route.wait_time) if route.wait_time
     end
   end
   json.work_or_window_time route.vehicle_usage.work_or_window_time

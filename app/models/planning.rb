@@ -523,8 +523,7 @@ class Planning < ApplicationRecord
       routes_drive_time: 0,
       routes_wait_time: 0,
       vehicles_used: 0,
-      quantities: 0,
-      capacities: 0
+      vehicles: 0
     }
 
     routes.each do |route|
@@ -535,15 +534,15 @@ class Planning < ApplicationRecord
         result[:routes_visits_duration] += route.visits_duration if route.visits_duration
         result[:routes_wait_time] += route.wait_time if route.wait_time
 
-        result[:quantities] += route.compute_quantities.to_a.sum(0) { |q| q[1] || 0 }
-        result[:capacities] += route.vehicle_usage.vehicle.default_capacities.to_a.sum(0) { |c| c[1] || 0 }
-
         routes_distance += route.distance
       end
+      result[:vehicles] += 1 if route.vehicle_usage
     end
 
     if result[:routes_drive_time] != 0
       result[:routes_speed_average] = ((routes_distance / result[:routes_drive_time]) * converter).round
+      result[:routes_wait_time] = result[:routes_wait_time] > 0 ? result[:routes_wait_time] : nil
+      result[:routes_visits_duration] = result[:routes_visits_duration] > 0 ? result[:routes_visits_duration] : nil
     else
       result = nil
     end

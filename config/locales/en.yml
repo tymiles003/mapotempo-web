@@ -1367,12 +1367,13 @@ en:
       stops_help: Plan stops / total
       duration_help: Total duration
       distance_help: Total distance
-      emission_help: Emission
+      emission_help: Total emission
       driving_time_help: Total driving time
       visit_duration_help: Total visits duration
       wait_time_help: Total waiting time
       speed_help: Speed average for the whole planning
-      vehicles_used_help: Vehicules used
+      vehicles_used_help: Vehicules used / Total
+      quantity_help: Quantities / Vehicles capacities
       out_of_route: Unaffected
       toggle_help: Toggle stops on map
       locked_unplanned_help: Lock the out of route on global plan operations

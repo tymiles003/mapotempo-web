@@ -25,4 +25,29 @@ module PlanningsHelper
       hash[vehicle_usage.vehicle_id] = vehicle_usage.vehicle.slice(:name, :color, :capacities).merge(vehicle_usage_id: vehicle_usage.id, vehicle_id: vehicle_usage.vehicle_id, router_dimension: vehicle_usage.vehicle.default_router_dimension)
     end
   end
+
+  def planning_quantities(planning)
+    hashy_map = {}
+    planning.routes.each do |route|
+      vehicle = route.vehicle_usage.try(:vehicle)
+      route.quantities.select{ |_k, v | v > 0 }.each do |id, v|
+        unit = route.planning.customer.deliverable_units.find{ |du| du.id == id }
+        next if !unit
+
+        if hashy_map.has_key?(unit.id)
+          hashy_map[unit.id][:quantity] += v
+          hashy_map[unit.id][:capacity] += (vehicle && vehicle.default_capacities[id]) || 0
+        else
+          hashy_map[unit.id] = {
+            id: unit.id,
+            label: unit.label,
+            unit_icon: unit.default_icon,
+            quantity: v,
+            capacity: (vehicle && vehicle.default_capacities[id]) || 0 
+          }
+        end
+      end
+    end
+    hashy_map.to_a.map { |a| a[1] if a[1] }
+  end
 end
