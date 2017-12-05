@@ -24,7 +24,7 @@ class ApiWeb::V01::RoutesController < ApiWeb::V01::ApiWebController
 
   swagger_api :index do
     summary 'Display all or some routes of one planning.'
-    param :path, :planning_id, :integer, :required, 'Zonning ids'
+    param :path, :planning_id, :integer, :required, 'Planning id'
     param :query, :ids, :array, :optional, 'Planning''s routes ids or refs (as "ref:[VALUE]") to be displayed, separated by commas', 'items' => { 'type' => 'string' }
   end
 
