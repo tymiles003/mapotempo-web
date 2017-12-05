@@ -13,6 +13,8 @@ services:
     links:
       - db
       - redis-cache
+    environment:
+      - http_proxy
     env_file:
       - ./db.env
       - ./rails.env
