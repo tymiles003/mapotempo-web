@@ -39,7 +39,7 @@ class Masternaut < DeviceBase
   end
 
   def savon_client_poi(customer)
-    @client_poi ||= Savon.client(basic_auth: [customer.devices[:masternaut][:username], customer.devices[:masternaut][:password]], wsdl: api_url + '/POI?wsdl', soap_version: 1) do
+    @client_poi ||= Savon.client({basic_auth: [customer.devices[:masternaut][:username], customer.devices[:masternaut][:password]], wsdl: api_url + '/POI?wsdl', soap_version: 1, proxy: ENV['http_proxy']}.compact) do
       #log true
       #pretty_print_xml true
       convert_request_keys_to :none
@@ -47,7 +47,7 @@ class Masternaut < DeviceBase
   end
 
   def savon_client_job(customer)
-    @client_job ||= Savon.client(basic_auth: [customer.devices[:masternaut][:username], customer.devices[:masternaut][:password]], wsdl: api_url + '/Job?wsdl', multipart: true, soap_version: 1) do
+    @client_job ||= Savon.client({basic_auth: [customer.devices[:masternaut][:username], customer.devices[:masternaut][:password]], wsdl: api_url + '/Job?wsdl', multipart: true, soap_version: 1, proxy: ENV['http_proxy']}.compact) do
       #log true
       #pretty_print_xml true
       convert_request_keys_to :none
@@ -55,7 +55,7 @@ class Masternaut < DeviceBase
   end
 
   def savon_client_geoloc(customer)
-    @client_geoloc ||= Savon.client(basic_auth: [customer.devices[:masternaut][:username], customer.devices[:masternaut][:password]], wsdl: api_url + '/Geoloc?wsdl', soap_version: 1) do
+    @client_geoloc ||= Savon.client({basic_auth: [customer.devices[:masternaut][:username], customer.devices[:masternaut][:password]], wsdl: api_url + '/Geoloc?wsdl', soap_version: 1, proxy: ENV['http_proxy']}.compact) do
       #log true
       #pretty_print_xml true
       convert_request_keys_to :none
@@ -117,7 +117,7 @@ class Masternaut < DeviceBase
   }
 
   def check_auth(params)
-    client ||= Savon.client(basic_auth: [params[:username] || '', params[:password] || ''], wsdl: api_url + '/Resources?wsdl', multipart: true, soap_version: 1) do
+    client ||= Savon.client({basic_auth: [params[:username] || '', params[:password] || ''], wsdl: api_url + '/Resources?wsdl', multipart: true, soap_version: 1, proxy: ENV['http_proxy']}.compact) do
       # log true
       # pretty_print_xml true
       convert_request_keys_to :none

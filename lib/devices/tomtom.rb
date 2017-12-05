@@ -42,7 +42,7 @@ class Tomtom < DeviceBase
   end
 
   def savon_client_objects
-    @client_objects ||= Savon.client(wsdl: api_url + '/objectsAndPeopleReportingService?wsdl', multipart: true, soap_version: 2, open_timeout: 60, read_timeout: 60) do
+    @client_objects ||= Savon.client({wsdl: api_url + '/objectsAndPeopleReportingService?wsdl', multipart: true, soap_version: 2, open_timeout: 60, read_timeout: 60, proxy: ENV['http_proxy']}.compact) do
       #log true
       #pretty_print_xml true
       convert_request_keys_to :none
@@ -50,7 +50,7 @@ class Tomtom < DeviceBase
   end
 
   def savon_client_address
-    @client_address ||= Savon.client(wsdl: api_url + '/addressService?wsdl', multipart: true, soap_version: 2, open_timeout: 60, read_timeout: 60) do
+    @client_address ||= Savon.client({wsdl: api_url + '/addressService?wsdl', multipart: true, soap_version: 2, open_timeout: 60, read_timeout: 60, proxy: ENV['http_proxy']}.compact) do
       #log true
       #pretty_print_xml true
       convert_request_keys_to :none
@@ -58,7 +58,7 @@ class Tomtom < DeviceBase
   end
 
   def savon_client_orders
-    @client_orders ||= Savon.client(wsdl: api_url + '/ordersService?wsdl', multipart: true, soap_version: 2, open_timeout: 60, read_timeout: 60) do
+    @client_orders ||= Savon.client({wsdl: api_url + '/ordersService?wsdl', multipart: true, soap_version: 2, open_timeout: 60, read_timeout: 60, proxy: ENV['http_proxy']}.compact) do
       #log true
       #pretty_print_xml true
       convert_request_keys_to :none

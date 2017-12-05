@@ -73,14 +73,15 @@ class SuiviDeFlotte < DeviceBase
   private
 
   def savon_client
-    client ||= Savon.client(
+    client ||= Savon.client({
       wsdl: api_url + '?wsdl',
       endpoint: api_url, # Need it to use ssl if api_key is defined with https
       soap_version: 1,
       # log: true,
       # pretty_print_xml: true,
       convert_request_keys_to: :none,
-    )
+      proxy: ENV['http_proxy']
+    }.compact)
   end
 
   def get(client, no_error_code, operation, message = {}, error_code)

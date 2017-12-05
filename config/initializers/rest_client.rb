@@ -20,3 +20,5 @@ class RestClient::Request
     alias_method_chain :execute, :capture_duration
   end
 end
+
+RestClient.proxy = ENV['http_proxy']

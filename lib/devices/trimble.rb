@@ -38,28 +38,30 @@ class Trimble < DeviceBase
   end
 
   def check_auth(credentials)
-    client_customer ||= Savon.client(
+    client_customer ||= Savon.client({
       basic_auth: [credentials[:username] || '', credentials[:password] || ''],
       wsdl: api_url + '/Customer?wsdl',
       soap_version: 1,
       # log: true,
       # pretty_print_xml: true,
-      convert_request_keys_to: :none
-    )
+      convert_request_keys_to: :none,
+      proxy: ENV['http_proxy']
+    }.compact)
 
     response = get(client_customer, nil, :get_customer_info, {}, {})
   end
 
   def send_route(customer, route, _options = {})
     credentials = customer.devices[:trimble]
-    client_planning ||= Savon.client(
+    client_planning ||= Savon.client({
       basic_auth: [credentials[:username] || '', credentials[:password] || ''],
       wsdl: api_url + '/Planning?wsdl',
       soap_version: 1,
       # log: true,
       # pretty_print_xml: true,
-      convert_request_keys_to: :none
-    )
+      convert_request_keys_to: :none,
+      proxy: ENV['http_proxy']
+    }.compact)
 
     tasks = []
     position = route.vehicle_usage.default_store_start
