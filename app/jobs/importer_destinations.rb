@@ -157,7 +157,7 @@ class ImporterDestinations < ImporterBase
     @visits_by_ref = Hash[@customer.destinations.flat_map(&:visits).select(&:ref).flat_map{ |visit| [["#{visit.destination.ref}/#{visit.ref}", visit], ["/#{visit.ref}", visit]] }.uniq]
 
     @@col_dest_keys ||= columns_destination.keys
-    @col_visit_keys = columns_visit.keys + [:quantities]
+    @col_visit_keys = columns_visit.keys + [:quantities, :quantities_operations]
     @@slice_attr ||= (@@col_dest_keys - [:customer_id, :lat, :lng, :geocoding_accuracy, :geocoding_level]).collect(&:to_s)
     @destinations_by_attributes = Hash[@customer.destinations.collect{ |destination| [destination.attributes.slice(*@@slice_attr), destination] }]
   end
