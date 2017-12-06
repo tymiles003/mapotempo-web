@@ -97,14 +97,12 @@ class PlanningsController < ApplicationController
 
   def create
     respond_to do |format|
-      Planning.transaction do
-        @planning = current_user.customer.plannings.build(planning_params)
-        @planning.default_routes
-        if @planning.compute && @planning.save_import
-          format.html { redirect_to edit_planning_path(@planning), notice: t('activerecord.successful.messages.created', model: @planning.class.model_name.human) }
-        else
-          format.html { render action: 'new' }
-        end
+      @planning = current_user.customer.plannings.build(planning_params)
+      @planning.default_routes
+      if @planning.compute && @planning.save_import
+        format.html { redirect_to edit_planning_path(@planning), notice: t('activerecord.successful.messages.created', model: @planning.class.model_name.human) }
+      else
+        format.html { render action: 'new' }
       end
     end
   end

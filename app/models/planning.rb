@@ -495,7 +495,7 @@ class Planning < ApplicationRecord
       self.tags, self.zonings = t, z
       # ActiveRecordImport doesn't call callbacks
       self.routes.each { |route| route.complete_geojson }
-      save!
+      save
     end
   end
 
