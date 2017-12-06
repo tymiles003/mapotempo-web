@@ -18,6 +18,8 @@
 require 'coerce'
 
 class V01::Stores < Grape::API
+  content_type :geojson, 'application/vnd.geo+json'
+
   helpers SharedParams
   helpers do
     # Never trust parameters from the scary internet, only allow the white list through.
@@ -46,7 +48,28 @@ class V01::Stores < Grape::API
       else
         current_customer.stores.load
       end
-      present stores, with: V01::Entities::Store
+
+      if env['api.format'] == :geojson
+        '{"type":"FeatureCollection","features":[' + stores.map { |store|
+          if store.position?
+            feat = {
+              type: 'Feature',
+              geometry: {
+                type: 'Point',
+                coordinates: [store.lng.round(5), store.lat.round(5)]
+              },
+              properties: {
+                store_id: store.id,
+                color: store.color,
+                icon: store.icon,
+                icon_size: store.icon_size
+              }
+            }.to_json
+          end
+        }.compact.join(',') + ']}'
+      else
+        present stores, with: V01::Entities::Store
+      end
     end
 
     desc 'Fetch store.',

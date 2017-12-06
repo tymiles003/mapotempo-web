@@ -65,7 +65,9 @@ var popupModule = (function() {
             'stores/' + marker.properties.store_id + '.json' :
             'routes/' + marker.properties.route_id + '/stops/by_index/' + marker.properties.index + '.json';
         } else {
-          url += 'visits/' + marker.properties.visit_id + '.json';
+          url += (marker.properties.store_id) ? 
+            'stores/' + marker.properties.store_id + '.json' :
+            'visits/' + marker.properties.visit_id + '.json';
         }
 
         getPopupContent(url, marker, map);
@@ -339,6 +341,10 @@ var RoutesLayer = L.FeatureGroup.extend({
       this.markerOptions.disableClusteringAtZoom = this.options.disableClusters ? 0 : 19;
     }
 
+    if (!planningId) {
+      this._loadAllStores(); // If !planningId: load all stores for zonning view
+    }
+
     // Clear layers if page is reloaded with turbolinks
     // this.hideAllRoutes();
   },
@@ -599,6 +605,18 @@ var RoutesLayer = L.FeatureGroup.extend({
         if (typeof callback === 'function') {
           callback();
         }
+      }.bind(this),
+      complete: completeAjaxMap,
+      error: ajaxError
+    });
+  },
+
+  _loadAllStores: function() {
+    $.ajax({
+      url: "/api/0.1/stores.geojson",
+      beforeSend: beforeSendWaiting,
+      success: function(data) {
+        this._addRoutes(data);
       }.bind(this),
       complete: completeAjaxMap,
       error: ajaxError
