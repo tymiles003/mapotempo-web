@@ -39,16 +39,16 @@ var api_web_v01_display_destinations_ = function(api, map, data) {
     var licon;
     if (options.store) {
       licon = L.divIcon({
-        html: '<i class="fa ' + (options.icon ||  'fa-home') + ' ' + map.iconSize[options.icon_size || 'large'].name + ' store-icon" style="color: ' + (options.color || 'black') + ';"></i>',
+        html: '<i class="fa ' + (options.icon || GlobalConfiguration.storeIconDefault) + ' ' + map.iconSize[options.icon_size || GlobalConfiguration.storeIconSizeDefault].name + ' store-icon" style="color: ' + (options.color || GlobalConfiguration.storeColorDefault) + ';"></i>',
         iconSize: new L.Point(map.iconSize[options.icon_size || 'large'].size, map.iconSize[options.icon_size || 'large'].size),
         iconAnchor: new L.Point(map.iconSize[options.icon_size || 'large'].size / 2, map.iconSize[options.icon_size || 'large'].size / 2),
         popupAnchor: new L.Point(0, -Math.floor(map.iconSize[options.icon_size || 'large'].size / 2.5)),
         className: 'store-icon-container'
       });
     } else {
-      var pointIcon = options.icon || 'fa-circle';
-      var pointIconSize = options.icon_size || 'medium';
-      var pointColor = options.color || '#707070';
+      var pointIcon = options.icon || GlobalConfiguration.destinationIconDefault;
+      var pointIconSize = options.icon_size || GlobalConfiguration.destinationIconSizeDefault;
+      var pointColor = options.color || GlobalConfiguration.destinationColorDefault;
       var pointAnchor = new L.Point(map.iconSize[pointIconSize].size / 2, map.iconSize[pointIconSize].size / 2);
       var popupAnchor = [-pointAnchor.x + map.iconSize[pointIconSize].size / 2, -pointAnchor.y + map.iconSize[pointIconSize].size / 2];
 

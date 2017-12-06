@@ -16,9 +16,6 @@
 # <http://www.gnu.org/licenses/agpl.html>
 #
 class Destination < Location
-  COLOR_DEFAULT = '#707070'.freeze
-  ICON_DEFAULT = 'circle'.freeze
-
   default_scope { order(:id) }
 
   has_many :visits, inverse_of: :destination, dependent: :delete_all, autosave: true

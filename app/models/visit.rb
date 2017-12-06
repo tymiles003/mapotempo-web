@@ -148,11 +148,11 @@ class Visit < ApplicationRecord
   end
 
   def default_color
-    color || Destination::COLOR_DEFAULT
+    color || Mapotempo::Application.config.destination_color_default
   end
 
   def default_icon
-    icon || Destination::ICON_DEFAULT
+    icon || Mapotempo::Application.config.destination_icon_default
   end
 
   def default_icon_size

@@ -108,14 +108,14 @@ class StoreTest < ActiveSupport::TestCase
   test 'should return default color' do
     store = stores :store_one
 
-    assert_equal Store::COLOR_DEFAULT, store.default_color
-    assert_equal Store::ICON_DEFAULT, store.default_icon
-    assert_equal Store::ICON_SIZE_DEFAULT, store.default_icon_size
+    assert_equal Mapotempo::Application.config.store_color_default, store.default_color
+    assert_equal Mapotempo::Application.config.store_icon_default, store.default_icon
+    assert_equal Mapotempo::Application.config.store_icon_size_default, store.default_icon_size
 
     store.color = '#beef'
     store.icon = 'beef'
     assert_equal store.color, store.default_color
     assert_equal store.icon, store.default_icon
-    assert_equal Store::ICON_SIZE_DEFAULT, store.default_icon_size
+    assert_equal Mapotempo::Application.config.store_icon_size_default, store.default_icon_size
   end
 end

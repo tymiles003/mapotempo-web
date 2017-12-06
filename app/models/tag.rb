@@ -17,9 +17,6 @@
 #
 class Tag < ApplicationRecord
   ICON_SIZE = %w(small medium large).freeze
-  COLOR_DEFAULT = '#000000'.freeze
-  ICON_DEFAULT = 'fa-circle'.freeze
-  ICON_SIZE_DEFAULT = 'medium'.freeze
 
   default_scope { order(:label) }
 
@@ -48,15 +45,15 @@ class Tag < ApplicationRecord
   end
 
   def default_color
-    color || COLOR_DEFAULT
+    color || Mapotempo::Application.config.tag_color_default
   end
 
   def default_icon
-    icon || ICON_DEFAULT
+    icon || Mapotempo::Application.config.tag_icon_default
   end
 
   def default_icon_size
-    icon_size || ICON_SIZE_DEFAULT
+    icon_size || Mapotempo::Application.config.tag_icon_size_default
   end
 
   private

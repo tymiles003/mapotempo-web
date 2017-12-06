@@ -30,9 +30,9 @@ class V01::Entities::Store < Grape::Entity
   expose(:country, documentation: { type: String })
   expose(:lat, documentation: { type: Float })
   expose(:lng, documentation: { type: Float })
-  expose(:color, documentation: { type: String, desc: "Color code with #. Default: #{::Store::COLOR_DEFAULT}." })
-  expose(:icon, documentation: { type: String, desc: "Icon name from font-awesome. Default: #{::Store::ICON_DEFAULT}." })
-  expose(:icon_size, documentation: { type: String, values: ::Store::ICON_SIZE, desc: "Icon size. Default: #{::Store::ICON_SIZE_DEFAULT}." })
+  expose(:color, documentation: { type: String, desc: "Color code with #. Default: #{Mapotempo::Application.config.store_color_default}." })
+  expose(:icon, documentation: { type: String, desc: "Icon name from font-awesome. Default: #{Mapotempo::Application.config.store_icon_default}." })
+  expose(:icon_size, documentation: { type: String, values: ::Store::ICON_SIZE, desc: "Icon size. Default: #{Mapotempo::Application.config.store_icon_size_default}." })
   expose(:geocoding_accuracy, documentation: { type: Float })
   expose(:geocoding_level, documentation: { type: String, values: ['point', 'house', 'street', 'intersection', 'city'] })
 end

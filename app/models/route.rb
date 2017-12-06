@@ -16,8 +16,6 @@
 # <http://www.gnu.org/licenses/agpl.html>
 #
 class Route < ApplicationRecord
-  COLOR_DEFAULT = '#707070'.freeze
-
   belongs_to :planning
   belongs_to :vehicle_usage
   has_many :stops, inverse_of: :route, autosave: true, dependent: :delete_all, after_add: :update_stops_track, after_remove: :update_stops_track
@@ -534,7 +532,7 @@ class Route < ApplicationRecord
   end
 
   def default_color
-    self.color || (self.vehicle_usage? && self.vehicle_usage.vehicle.color) || COLOR_DEFAULT
+    self.color || (self.vehicle_usage? && self.vehicle_usage.vehicle.color) || Mapotempo::Application.config.route_color_default
   end
 
   def to_s

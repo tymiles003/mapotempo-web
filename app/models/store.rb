@@ -19,9 +19,6 @@ require 'font_awesome'
 
 class Store < Location
   ICON_SIZE = %w(small medium large).freeze
-  COLOR_DEFAULT = '#000000'.freeze
-  ICON_DEFAULT = 'fa-home'.freeze
-  ICON_SIZE_DEFAULT = 'large'.freeze
 
   default_scope { order(:id) }
 
@@ -63,15 +60,15 @@ class Store < Location
   end
 
   def default_color
-    color || COLOR_DEFAULT
+    color || Mapotempo::Application.config.store_color_default
   end
 
   def default_icon
-    icon || ICON_DEFAULT
+    icon || Mapotempo::Application.config.store_icon_default
   end
 
   def default_icon_size
-    icon_size || ICON_SIZE_DEFAULT
+    icon_size || Mapotempo::Application.config.store_icon_size_default
   end
 
   private

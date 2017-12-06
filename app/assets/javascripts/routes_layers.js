@@ -646,9 +646,9 @@ var RoutesLayer = L.FeatureGroup.extend({
 
         // map.iconSize is defined in scaffold file
         if (storeId) {
-          var storeIcon = geoJsonPoint.properties.icon || 'fa-home';
-          var storeIconSize = geoJsonPoint.properties.icon_size || 'large';
-          var storeColor = geoJsonPoint.properties.color || 'black';
+          var storeIcon = geoJsonPoint.properties.icon || GlobalConfiguration.storeIconDefault;
+          var storeIconSize = geoJsonPoint.properties.icon_size || GlobalConfiguration.storeIconSizeDefault;
+          var storeColor = geoJsonPoint.properties.color || GlobalConfiguration.storeColorDefault;
           icon = L.divIcon({
             html: '<i class="fa ' + storeIcon + ' ' + this.map.iconSize[storeIconSize].name + ' store-icon" style="color: ' + storeColor + ';"></i>',
             iconSize: new L.Point(this.map.iconSize[storeIconSize].size, this.map.iconSize[storeIconSize].size),
@@ -658,11 +658,12 @@ var RoutesLayer = L.FeatureGroup.extend({
         } else {
           var radius, baseAngle, baseMultiplier = 6, baseModulo = 1, lowIndex = false;
 
-          var pointIcon = geoJsonPoint.properties.icon || 'fa-circle';
-          var pointIconSize = geoJsonPoint.properties.icon_size || 'medium';
-          var pointColor = geoJsonPoint.properties.color || '#707070';
-          if (!geoJsonPoint.properties.number)
+          var pointIcon = geoJsonPoint.properties.icon || GlobalConfiguration.destinationIconDefault;
+          var pointIconSize = geoJsonPoint.properties.icon_size || GlobalConfiguration.destinationIconSizeDefault;
+          var pointColor = geoJsonPoint.properties.color || GlobalConfiguration.destinationColorDefault;
+          if (!geoJsonPoint.properties.number) {
             pointColor = 'rgba(' + parseInt(pointColor.substring(1, 3), 16) + ',' + parseInt(pointColor.substring(3, 5), 16) + ',' + parseInt(pointColor.substring(5, 7), 16) + ',0.8)';
+          }
           var pointAnchor = new L.Point(this.map.iconSize[pointIconSize].size / 2, this.map.iconSize[pointIconSize].size / 2);
 
           if (overlappingMarkers[overlapKey]) {
