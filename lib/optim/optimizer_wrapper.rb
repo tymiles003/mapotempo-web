@@ -43,7 +43,7 @@ class OptimizerWrapper
       services_late_multiplier = (options[:stop_soft_upper_bound] && options[:stop_soft_upper_bound] > 0) ? options[:stop_soft_upper_bound] : nil
       vehicles_cost_late_multiplier = (options[:vehicle_soft_upper_bound] && options[:vehicle_soft_upper_bound] > 0) ? options[:vehicle_soft_upper_bound] : nil
       # FIXME: ortools is not able to support non null vehicle late multiplier for global optim
-      if vehicles.size > 1 && !services.all?{ |s| s[:vehicle_id] }
+      if vehicles.size > 1 && !services.all?{ |s| s[:vehicle_usage_id] }
         vehicles_cost_late_multiplier = nil unless options[:vehicle_soft_upper_bound] != Mapotempo::Application.config.optimize_vehicle_soft_upper_bound
       end
 
@@ -109,7 +109,7 @@ class OptimizerWrapper
           {
             id: "s#{service[:stop_id]}",
             type: 'service',
-            sticky_vehicle_ids: service[:vehicle_id] ? ["v#{service[:vehicle_id]}"] : nil, # to force an activity on a vehicle (for instance geoloc rests)
+            sticky_vehicle_ids: service[:vehicle_usage_id] ? ["v#{service[:vehicle_usage_id]}"] : nil, # to force an activity on a vehicle (for instance geoloc rests)
             activity: {
               point_id: "p#{index}",
               timewindows: [
