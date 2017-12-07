@@ -268,7 +268,7 @@ pt:
         code: Código
         name: Nome
       reseller:
-        host: Host
+        host: ''
         name: Nome do revendedor
         welcome_url: URL de acolhimento
         help_url: URL de ajuda
