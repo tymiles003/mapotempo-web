@@ -1864,7 +1864,7 @@ en:
         default: '%{n} (default)'
       open_close_days:
         default: '%{n}'
-      open_close: Hours
+      open_close: Time shift
       open_close_help: Deliveryman's working hours
       stores: Start / End
       store:
@@ -1893,7 +1893,7 @@ en:
         stop
       work_time: Work time
       work_time_default: '%{n} (default value)'
-      work_time_help: Work time must less or equal than working window time (service included)
+      work_time_help: Work time must less or equal than working time shift (service included without the rest)
       devices:
         placeholder: Choose a device
         fieldset: GPS & Mobiles
@@ -1994,7 +1994,7 @@ en:
       invalid_numeric_value: Invalid numeric value "%{value}".
       check_custom_columns: Check your columns definition.
     form:
-      open_close: Hours
+      open_close: Time shift
       open_close_help: Deliveryman's working hours
       stores: Start / End
       store:
@@ -2006,7 +2006,7 @@ en:
       service_times_help: Durations added before the first stop and after the last
         stop.
       work_time: Work time
-      work_time_help: Work time must be less or equal than working window time (service included)
+      work_time_help: Work time must be less or equal than working time shift (service included without the rest)
       rest_duration_store: Rest duration / place
       rest_duration:
         help: Requires rest time window if filled

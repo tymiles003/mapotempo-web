@@ -1,6 +1,21 @@
 <%= twitter_bootstrap_form_for @vehicle_usage_set, layout: :horizontal do |f| %>
   <%= render 'shared/error_messages', model: @vehicle_usage_set %>
   <%= f.text_field :name, required: true %>
+  <div id="vehicle_usage_set_store_input" class="form-group">
+    <label class="sr-only" for="vehicle_usage_set_store_start"><%= t 'activerecord.attributes.vehicle_usage_set.store_start' %></label>
+    <label class="sr-only" for="vehicle_usage_set_store_stop"><%= t 'activerecord.attributes.vehicle_usage_set.store_stop' %></label>
+    <label class="col-md-2 control-label"><%= t '.stores' %></label>
+    <div class="col-md-6">
+      <div class="input-group">
+        <%= collection_select :vehicle_usage_set, :store_start_id, @vehicle_usage_set.customer.stores, :id, :name, { include_blank: t('vehicle_usage_sets.form.store.none') }, {
+          class: 'form-control width_1_2' } %>
+        <%= collection_select :vehicle_usage_set, :store_stop_id, @vehicle_usage_set.customer.stores, :id, :name, { include_blank: t('vehicle_usage_sets.form.store.none')}, {
+          class: 'form-control width_1_2' } %>
+        <span class="input-group-addon"><%= content_tag('i', '', class: 'fa fa-home fa-fw') %></span>
+      </div>
+      <p class="help-block"><%= t '.stores_help' %></p>
+    </div>
+  </div>
   <div id="vehicle_usage_set_open_close_input" class="form-group">
     <label class="sr-only" for="vehicle_usage_set_open"><%= t 'activerecord.attributes.vehicle_usage_set.open' %></label>
     <label class="sr-only" for="vehicle_usage_set_close"><%= t 'activerecord.attributes.vehicle_usage_set.close' %></label>
@@ -34,21 +49,6 @@
         <span class="input-group-addon"><i class="fa fa-arrows-h fa-fw"></i></span>
       </div>
       <p class="help-block"><%= t '.open_close_help' %></p>
-    </div>
-  </div>
-  <div id="vehicle_usage_set_store_input" class="form-group">
-    <label class="sr-only" for="vehicle_usage_set_store_start"><%= t 'activerecord.attributes.vehicle_usage_set.store_start' %></label>
-    <label class="sr-only" for="vehicle_usage_set_store_stop"><%= t 'activerecord.attributes.vehicle_usage_set.store_stop' %></label>
-    <label class="col-md-2 control-label"><%= t '.stores' %></label>
-    <div class="col-md-6">
-      <div class="input-group">
-        <%= collection_select :vehicle_usage_set, :store_start_id, @vehicle_usage_set.customer.stores, :id, :name, { include_blank: t('vehicle_usage_sets.form.store.none') }, {
-          class: 'form-control width_1_2' } %>
-        <%= collection_select :vehicle_usage_set, :store_stop_id, @vehicle_usage_set.customer.stores, :id, :name, { include_blank: t('vehicle_usage_sets.form.store.none')}, {
-          class: 'form-control width_1_2' } %>
-        <span class="input-group-addon"><%= content_tag('i', '', class: 'fa fa-home fa-fw') %></span>
-      </div>
-      <p class="help-block"><%= t '.stores_help' %></p>
     </div>
   </div>
   <div id="vehicle_usage_set_service_time_input" class="form-group">

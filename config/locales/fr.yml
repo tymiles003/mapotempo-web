@@ -1944,8 +1944,8 @@ fr:
         default: '%{n} (défaut)'
       open_close_days:
         default: '%{n}'
-      open_close: Horaire
-      open_close_help: Horaire de travail livreur
+      open_close: Amplitude horaire
+      open_close_help: Plage horaire de travail du livreur
       stores: Départ / Arrivée
       store:
         default: Défaut
@@ -1973,7 +1973,7 @@ fr:
         arrêt
       work_time: Durée de travail
       work_time_default: '%{n} (valeur par défaut)'
-      work_time_help: La durée de travail doit être inférieure ou égale à la plage horaire (service compris)
+      work_time_help: La durée de travail doit être inférieure ou égale à l'amplitude horaire (service compris sans la pause)
       devices:
         placeholder: Sélectionner un appareil
         fieldset: GPS & Mobiles
@@ -2084,8 +2084,8 @@ fr:
       invalid_numeric_value: valeur numérique « %{value} » invalide.
       check_custom_columns: Vérifiez votre définition des colonnes à importer.
     form:
-      open_close: Horaire
-      open_close_help: Horaire de travail livreur
+      open_close: Amplitude horaire
+      open_close_help: Plage horaire de travail du livreur
       stores: Départ / Arrivée
       store:
         none: Aucun
@@ -2096,7 +2096,7 @@ fr:
       service_times_help: Durées ajoutées avant le premier arrêt et après le dernier
         arrêt.
       work_time: Durée de travail
-      work_time_help: La durée de travail doit être inférieure à la plage horaire de travail (service compris)
+      work_time_help: La durée de travail doit être inférieure à l'amplitude horaire de travail (service compris sans la pause)
       rest_duration_store: Durée de repos / lieu
       rest_duration:
         help: Requiert une plage de repos si renseigné
