@@ -51,7 +51,7 @@ class User < ApplicationRecord
   amoeba do
     enable
 
-    customize(lambda { |_original, copy|
+    customize(lambda { |original, copy|
       def copy.assign_defaults; end
 
       def copy.assign_defaults_layer; end
@@ -62,6 +62,7 @@ class User < ApplicationRecord
       copy.password = Devise.friendly_token
       copy.confirmation_token = nil
       copy.reset_password_token = nil
+      copy.layer = original.layer
       copy.api_key_random
     })
   end
@@ -114,10 +115,10 @@ class User < ApplicationRecord
   end
 
   def assign_defaults_layer
-     self.layer ||= if admin?
-       Layer.order(:id).find_by!(overlay: false)
-    else
-      customer && customer.profile.layers.order(:id).find_by!(overlay: false)
-    end
+    self.layer ||= if admin?
+                     Layer.order(:id).find_by!(overlay: false)
+                   else
+                     customer && customer.profile.layers.order(:id).find_by!(overlay: false)
+                   end
   end
 end
