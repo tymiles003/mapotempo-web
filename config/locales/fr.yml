@@ -1086,7 +1086,7 @@ fr:
       format:
         string: texte
         integer: nombre
-        float: '0.123'
+        float: '0,123'
         hour: HH:MM
         second: HH:MM:SS
         yes_no: oui/non
@@ -1796,7 +1796,7 @@ fr:
         string: texte
         integer: nombre
         hour: HH:MM
-        float: '0.123'
+        float: '0,123'
         required: obligatoire
         advisable: recommandé
         optionnal: optionnel

@@ -895,7 +895,7 @@ pt:
         string: texto
         integer: numero
         hour: HH:MM
-        float: 0,123
+        float: '0,123'
         required: obrigatório
         advisable: recomendado
         optionnal: opcional
@@ -1282,7 +1282,7 @@ pt:
       format:
         string: texto
         integer: numero inteiro
-        float: '0.123'
+        float: '0,123'
         hour: HH:MM
         second: HH:MM:SS
         yes_no: sim/não
