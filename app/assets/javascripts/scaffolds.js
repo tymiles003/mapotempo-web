@@ -413,11 +413,13 @@ L.disableClustersControl = function (map, routesLayer) {
       var button = L.DomUtil.create('a', '', container);
       button.title = I18n.t('plannings.edit.marker_clusters');
 
-      var icon = L.DomUtil.create('i', 'fa fa-certificate fa-lg', button);
+      var icon = L.DomUtil.create('i', 'cluster-icon fa fa-certificate fa-lg', button);
       icon.style.marginLeft = '2px';
 
       container.onclick = function () {
         routesLayer.switchMarkerClusters();
+
+        $('.cluster-icon').toggleClass('fa-certificate fa-circle-o');
       };
 
       return container;
