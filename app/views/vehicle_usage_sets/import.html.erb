@@ -21,7 +21,7 @@
             </a>
           </p>
 
-          <% unless @customer.enable_multi_vehicle_usage_sets %>
+          <% unless @customer.default_max_vehicle_usage_sets > 1 %>
             <p>
               <b><%= t('.default_configuration_replaced') %></b>
             </p>
@@ -29,7 +29,7 @@
         <% end %>
 
         <%= f.toggles t '.vehicles' do %>
-          <%= f.check_box :replace_vehicles, t('.replace_vehicles'), checked: !@customer.enable_multi_vehicle_usage_sets %>
+          <%= f.check_box :replace_vehicles, t('.replace_vehicles'), checked: @customer.default_max_vehicle_usage_sets <= 1 %>
           <p class="help-block"><%= t '.replace_vehicles_help' %></p>
         <% end %>
 

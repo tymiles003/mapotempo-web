@@ -166,7 +166,7 @@ class VehicleUsageSetsControllerTest < ActionController::TestCase
     )
     file.original_filename = 'import_vehicle_usage_sets_one.csv'
 
-    assert_no_difference('VehicleUsageSet.count') do
+    assert_difference('VehicleUsageSet.count', 1) do
       post :upload_csv, import_csv: { replace_vehicles: true, file: file }
     end
 

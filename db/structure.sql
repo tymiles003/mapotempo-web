@@ -73,7 +73,6 @@ CREATE TABLE customers (
     default_country character varying NOT NULL,
     job_store_geocoding_id integer,
     reseller_id integer NOT NULL,
-    enable_multi_vehicle_usage_sets boolean DEFAULT false NOT NULL,
     print_stop_time boolean DEFAULT true NOT NULL,
     ref character varying,
     enable_references boolean DEFAULT true,
@@ -2710,3 +2709,5 @@ INSERT INTO schema_migrations (version) VALUES ('20171127101118');
 INSERT INTO schema_migrations (version) VALUES ('20171129104645');
 
 INSERT INTO schema_migrations (version) VALUES ('20171203134836');
+
+INSERT INTO schema_migrations (version) VALUES ('20171211101451');

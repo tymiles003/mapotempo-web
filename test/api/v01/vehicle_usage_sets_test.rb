@@ -87,6 +87,10 @@ class V01::VehicleUsageSetsTest < ActiveSupport::TestCase
   end
 
   test 'should import vehicle usage set from csv without replacing vehicles' do
+    @customer.vehicle_usage_sets.reject{ |vu| vu == @vehicle_usage_set }.each(&:destroy)
+    @customer.update_attribute(:max_vehicle_usage_sets, 1)
+    @customer.reload
+
     assert_difference('VehicleUsageSet.count', 0) do
       put api(), replace_vehicles: false, file: fixture_file_upload('files/import_vehicle_usage_sets_one.csv', 'text/csv')
       assert last_response.ok?, last_response.body
@@ -100,7 +104,7 @@ class V01::VehicleUsageSetsTest < ActiveSupport::TestCase
   end
 
   test 'should import vehicle usage set from csv and replace vehicles' do
-    @customer.update_attribute(:enable_multi_vehicle_usage_sets, true)
+    @customer.update_attribute(:max_vehicle_usage_sets, 6)
 
     assert_difference('VehicleUsageSet.count', 1) do
       put api(), replace_vehicles: true, file: fixture_file_upload('files/import_vehicle_usage_sets_one.csv', 'text/csv')

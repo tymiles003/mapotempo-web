@@ -3,6 +3,11 @@ require 'test_helper'
 class ImporterVehicleUsageSetsTest < ActionController::TestCase
   setup do
     @customer = customers(:customer_one)
+    Routers::RouterWrapper.stub_any_instance(:compute_batch, lambda { |url, mode, dimension, segments, options| segments.collect{ |i| [1, 1, '_ibE_seK_seK_seK'] } } ) do
+      @customer.vehicle_usage_sets.reject{ |vu| vu == @vehicle_usage_set }.each(&:destroy)
+      @customer.update_attribute(:max_vehicle_usage_sets, 1)
+      @customer.reload
+    end
   end
 
   def tempfile(file, name)
@@ -12,8 +17,6 @@ class ImporterVehicleUsageSetsTest < ActionController::TestCase
   end
 
   test 'should import vehicle usage set and reuse the current vehicle usage set' do
-    @customer.update_attribute(:enable_multi_vehicle_usage_sets, false)
-
     assert_difference('VehicleUsageSet.count', 0) do
       assert_difference('VehicleUsage.count', 0) do
         assert_no_difference('Vehicle.count') do
@@ -27,7 +30,7 @@ class ImporterVehicleUsageSetsTest < ActionController::TestCase
   end
 
   test 'should import vehicle usage set and create a new vehicle usage set' do
-    @customer.update_attribute(:enable_multi_vehicle_usage_sets, true)
+    @customer.update_attribute(:max_vehicle_usage_sets, 2)
 
     assert_difference('VehicleUsageSet.count', 1) do
       assert_difference('VehicleUsage.count', 2) do

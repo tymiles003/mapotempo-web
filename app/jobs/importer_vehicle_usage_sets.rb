@@ -96,7 +96,7 @@ class ImporterVehicleUsageSets < ImporterBase
       @customer.save!
     end
 
-    if @customer.enable_multi_vehicle_usage_sets
+    if @customer.default_max_vehicle_usage_sets > 1
       # Use name of the file for default configuration name
       @vehicle_usage_set = @customer.vehicle_usage_sets.build(name: name)
     else

@@ -160,8 +160,6 @@ fr:
         print_map: Inclure la carte
         stores: Dépôts
         enable_orders: Activer les commandes
-        enable_multi_vehicle_usage_sets: Autoriser les configurations de véhicules
-          multiples
         enable_references: Montrer les références
         enable_multi_visits: Autoriser les visites multiples
         enable_global_optimization: Activer l'optimisation globale
