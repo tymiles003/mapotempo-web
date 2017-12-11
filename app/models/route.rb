@@ -106,6 +106,7 @@ class Route < ApplicationRecord
     self.drive_time = nil
     self.wait_time = nil
     self.visits_duration = nil
+    self.quantities = nil
     if vehicle_usage? && !stops.empty?
       service_time_start = service_time_start_value
       service_time_end = service_time_end_value

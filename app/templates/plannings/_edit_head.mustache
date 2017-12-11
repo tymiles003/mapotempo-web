@@ -3,8 +3,8 @@
   --><span class="route-info" title="{{#i18n}}plannings.edit.vehicles_used_help{{/i18n}}"><i class="fa fa-truck" aria-hidden="true"></i> {{averages.vehicles_used}}/{{averages.vehicles}} </span>
 {{/averages}}
 <span class="route-info">
-  <span title="{{#i18n}}plannings.edit.duration_help{{/i18n}}"><i class="fa fa-clock-o fa-fw"></i>
-    {{duration}}
+  <span title="{{#i18n}}plannings.edit.duration_help{{/i18n}}"><i class="fa fa-clock-o fa-fw"></i><!--
+    -->{{duration}}
   </span>
   {{#averages}}
     (<span title="{{#i18n}}plannings.edit.driving_time_help{{/i18n}}"><i class="fa fa-road fa-fw"></i>{{averages.routes_drive_time}}</span><!--
@@ -17,8 +17,10 @@
 <span class="route-info"><i class="fa fa-flask fa-fw" title="{{#i18n}}plannings.edit.emission_help{{/i18n}}"></i>{{emission}}&nbsp;{{#i18n}}all.unit.kgco2e_html{{/i18n}}</span>
 {{#averages}}
   {{#total_quantities}}
-    <i class="fa {{unit_icon}} fa-fw" title="{{#i18n}}plannings.edit.quantity_help{{/i18n}}"></i>
-    {{quantity}}/{{capacity}}
+    <span class='route-info'><!--
+      --><i class="fa {{unit_icon}} fa-fw" title="{{#i18n}}plannings.edit.quantity_help{{/i18n}}"></i>{{quantity}}{{#capacity}}/{{capacity}}{{/capacity}}<!--
+      -->{{#label}}&nbsp;{{label}}{{/label}}
+    </span>
   {{/total_quantities}}
 {{/averages}}
 

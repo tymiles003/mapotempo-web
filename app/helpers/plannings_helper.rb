@@ -31,7 +31,7 @@ module PlanningsHelper
     planning.routes.each do |route|
       vehicle = route.vehicle_usage.try(:vehicle)
       next if !vehicle
-      
+
       route.quantities.select{ |_k, v | v > 0 }.each do |id, v|
         unit = route.planning.customer.deliverable_units.find{ |du| du.id == id }
         next if !unit
@@ -50,6 +50,12 @@ module PlanningsHelper
         end
       end
     end
-    hashy_map.to_a.map { |a| a[1] if a[1] }
+
+    hashy_map.to_a.map { |unit|
+      unit[1][:quantity] = LocalizedValues.localize_numeric_value(unit[1][:quantity].round(2))
+      # Nil if no capacity
+      unit[1][:capacity] = unit[1][:capacity] > 0 ? LocalizedValues.localize_numeric_value(unit[1][:capacity].round(2)) : nil
+      unit[1]
+    }
   end
 end
