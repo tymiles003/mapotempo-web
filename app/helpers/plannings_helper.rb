@@ -30,20 +30,22 @@ module PlanningsHelper
     hashy_map = {}
     planning.routes.each do |route|
       vehicle = route.vehicle_usage.try(:vehicle)
+      next if !vehicle
+      
       route.quantities.select{ |_k, v | v > 0 }.each do |id, v|
         unit = route.planning.customer.deliverable_units.find{ |du| du.id == id }
         next if !unit
 
         if hashy_map.has_key?(unit.id)
           hashy_map[unit.id][:quantity] += v
-          hashy_map[unit.id][:capacity] += (vehicle && vehicle.default_capacities[id]) || 0
+          hashy_map[unit.id][:capacity] += vehicle.default_capacities[id] || 0
         else
           hashy_map[unit.id] = {
             id: unit.id,
             label: unit.label,
             unit_icon: unit.default_icon,
             quantity: v,
-            capacity: (vehicle && vehicle.default_capacities[id]) || 0 
+            capacity: vehicle.default_capacities[id] || 0 
           }
         end
       end
