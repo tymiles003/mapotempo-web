@@ -31,40 +31,38 @@ class ImporterVehicleUsageSets < ImporterBase
     router_options = @customer.profile.routers.pluck(:options).reduce(:merge).except('time', 'distance', 'isochrone', 'avoid_zones', 'isodistance').keys
 
     {
-        ref_vehicle: { title: I18n.t('vehicles.import.ref_vehicle'), desc: I18n.t('vehicles.import.ref_desc'), format: I18n.t('vehicles.import.format.string') },
-        name_vehicle: { title: I18n.t('vehicles.import.name_vehicle'), desc: I18n.t('vehicles.import.name_desc'), format: I18n.t('vehicles.import.format.string'), required: I18n.t('vehicle_usage_sets.import.format.required') },
-        contact_email: { title: I18n.t('vehicles.import.contact_email'), desc: I18n.t('vehicles.import.contact_email_desc'), format: I18n.t('vehicles.import.format.string') },
-        emission: { title: I18n.t('vehicles.import.emission'), desc: I18n.t('vehicles.import.emission_desc'), format: '[' + ::Vehicle.emissions_table.map { |emission| emission[0] }.join(' | ') + ']' },
-        consumption: { title: I18n.t('vehicles.import.consumption'), desc: I18n.t('vehicles.import.consumption_desc'), format: I18n.t('vehicles.import.format.float') }
+      ref_vehicle: { title: I18n.t('vehicles.import.ref_vehicle'), desc: I18n.t('vehicles.import.ref_desc'), format: I18n.t('vehicles.import.format.string') },
+      name_vehicle: { title: I18n.t('vehicles.import.name_vehicle'), desc: I18n.t('vehicles.import.name_desc'), format: I18n.t('vehicles.import.format.string'), required: I18n.t('vehicle_usage_sets.import.format.required') },
+      contact_email: { title: I18n.t('vehicles.import.contact_email'), desc: I18n.t('vehicles.import.contact_email_desc'), format: I18n.t('vehicles.import.format.string') },
+      emission: { title: I18n.t('vehicles.import.emission'), desc: I18n.t('vehicles.import.emission_desc'), format: '[' + ::Vehicle.emissions_table.map { |emission| emission[0] }.join(' | ') + ']' },
+      consumption: { title: I18n.t('vehicles.import.consumption'), desc: I18n.t('vehicles.import.consumption_desc'), format: I18n.t('vehicles.import.format.float') }
     }.merge(Hash[@customer.deliverable_units.map { |du|
       ["capacity#{du.id}".to_sym, { title: I18n.t('vehicles.import.capacities') + (du.label ? '[' + du.label + ']' : ''), desc: I18n.t('vehicles.import.capacities_desc'), format: I18n.t('vehicles.import.format.float') }]
     }]).merge(
-        {
-            router_mode: { title: I18n.t('vehicles.import.router_mode'), desc: I18n.t('vehicles.import.router_mode_desc'), format: "[#{router_modes.join(' | ')}]" },
-            router_dimension: { title: I18n.t('vehicles.import.router_dimension'), desc: I18n.t('vehicles.import.router_dimension_desc'), format: "[#{router_dimensions.join(' | ')}]" },
-            router_options: { title: I18n.t('vehicles.import.router_options'), desc: I18n.t('vehicles.import.router_options_desc'), format: I18n.t('vehicles.import.format.json') + " [#{router_options.join(' | ')}]" },
-            speed_multiplicator: { title: I18n.t('vehicles.import.speed_multiplicator'), desc: I18n.t('vehicles.import.speed_multiplicator_desc'), format: I18n.t('vehicles.import.format.integer') },
-            color: { title: I18n.t('vehicles.import.color'), desc: I18n.t('vehicles.import.color_desc'), format: I18n.t('vehicles.import.format.string') },
-            tags_vehicle: { title: I18n.t('vehicles.import.tags'), desc: I18n.t('vehicles.import.tags_desc'), format: I18n.t('vehicles.import.tags_format') },
-            devices: { title: I18n.t('vehicles.import.devices'), desc: I18n.t('vehicles.import.devices_desc'), format: I18n.t('vehicles.import.format.string') }
-        }
+      router_mode: { title: I18n.t('vehicles.import.router_mode'), desc: I18n.t('vehicles.import.router_mode_desc'), format: "[#{router_modes.join(' | ')}]" },
+      router_dimension: { title: I18n.t('vehicles.import.router_dimension'), desc: I18n.t('vehicles.import.router_dimension_desc'), format: "[#{router_dimensions.join(' | ')}]" },
+      router_options: { title: I18n.t('vehicles.import.router_options'), desc: I18n.t('vehicles.import.router_options_desc'), format: I18n.t('vehicles.import.format.json') + " [#{router_options.join(' | ')}]" },
+      speed_multiplicator: { title: I18n.t('vehicles.import.speed_multiplicator'), desc: I18n.t('vehicles.import.speed_multiplicator_desc'), format: I18n.t('vehicles.import.format.integer') },
+      color: { title: I18n.t('vehicles.import.color'), desc: I18n.t('vehicles.import.color_desc'), format: I18n.t('vehicles.import.format.string') },
+      tags_vehicle: { title: I18n.t('vehicles.import.tags'), desc: I18n.t('vehicles.import.tags_desc'), format: I18n.t('vehicles.import.tags_format') },
+      devices: { title: I18n.t('vehicles.import.devices'), desc: I18n.t('vehicles.import.devices_desc'), format: I18n.t('vehicles.import.format.string') }
     )
   end
 
   def columns_vehicle_usage_set
     {
-        open: { title: I18n.t('vehicle_usage_sets.import.open'), desc: I18n.t('vehicle_usage_sets.import.open_desc'), format: I18n.t('vehicle_usage_sets.import.format.hour') },
-        close: { title: I18n.t('vehicle_usage_sets.import.close'), desc: I18n.t('vehicle_usage_sets.import.close_desc'), format: I18n.t('vehicle_usage_sets.import.format.hour') },
-        store_start_ref: { title: I18n.t('vehicle_usage_sets.import.store_start_ref'), desc: I18n.t('vehicle_usage_sets.import.store_start_desc'), format: I18n.t('vehicle_usage_sets.import.format.string') },
-        store_stop_ref: { title: I18n.t('vehicle_usage_sets.import.store_stop_ref'), desc: I18n.t('vehicle_usage_sets.import.store_stop_desc'), format: I18n.t('vehicle_usage_sets.import.format.string') },
-        rest_start: { title: I18n.t('vehicle_usage_sets.import.rest_start'), desc: I18n.t('vehicle_usage_sets.import.rest_start_desc'), format: I18n.t('vehicle_usage_sets.import.format.hour') },
-        rest_stop: { title: I18n.t('vehicle_usage_sets.import.rest_stop'), desc: I18n.t('vehicle_usage_sets.import.rest_stop_desc'), format: I18n.t('vehicle_usage_sets.import.format.hour') },
-        rest_duration: { title: I18n.t('vehicle_usage_sets.import.rest_duration'), desc: I18n.t('vehicle_usage_sets.import.rest_duration_desc'), format: I18n.t('vehicle_usage_sets.import.format.hour') },
-        store_rest_ref: { title: I18n.t('vehicle_usage_sets.import.store_rest_ref'), desc: I18n.t('vehicle_usage_sets.import.store_rest_desc'), format: I18n.t('vehicle_usage_sets.import.format.string') },
-        service_time_start: { title: I18n.t('vehicle_usage_sets.import.service_time_start'), desc: I18n.t('vehicle_usage_sets.import.service_time_start_desc'), format: I18n.t('vehicle_usage_sets.import.format.hour') },
-        service_time_end: { title: I18n.t('vehicle_usage_sets.import.service_time_end'), desc: I18n.t('vehicle_usage_sets.import.service_time_end_desc'), format: I18n.t('vehicle_usage_sets.import.format.hour') },
-        work_time: { title: I18n.t('vehicle_usage_sets.import.work_time'), desc: I18n.t('vehicle_usage_sets.import.work_time_desc'), format: I18n.t('vehicle_usage_sets.import.format.hour') },
-        tags: { title: I18n.t('vehicle_usage_sets.import.tags'), desc: I18n.t('vehicle_usage_sets.import.tags_desc'), format: I18n.t('vehicle_usage_sets.import.tags_format') }
+      open: { title: I18n.t('vehicle_usage_sets.import.open'), desc: I18n.t('vehicle_usage_sets.import.open_desc'), format: I18n.t('vehicle_usage_sets.import.format.hour') },
+      close: { title: I18n.t('vehicle_usage_sets.import.close'), desc: I18n.t('vehicle_usage_sets.import.close_desc'), format: I18n.t('vehicle_usage_sets.import.format.hour') },
+      store_start_ref: { title: I18n.t('vehicle_usage_sets.import.store_start_ref'), desc: I18n.t('vehicle_usage_sets.import.store_start_desc'), format: I18n.t('vehicle_usage_sets.import.format.string') },
+      store_stop_ref: { title: I18n.t('vehicle_usage_sets.import.store_stop_ref'), desc: I18n.t('vehicle_usage_sets.import.store_stop_desc'), format: I18n.t('vehicle_usage_sets.import.format.string') },
+      rest_start: { title: I18n.t('vehicle_usage_sets.import.rest_start'), desc: I18n.t('vehicle_usage_sets.import.rest_start_desc'), format: I18n.t('vehicle_usage_sets.import.format.hour') },
+      rest_stop: { title: I18n.t('vehicle_usage_sets.import.rest_stop'), desc: I18n.t('vehicle_usage_sets.import.rest_stop_desc'), format: I18n.t('vehicle_usage_sets.import.format.hour') },
+      rest_duration: { title: I18n.t('vehicle_usage_sets.import.rest_duration'), desc: I18n.t('vehicle_usage_sets.import.rest_duration_desc'), format: I18n.t('vehicle_usage_sets.import.format.hour') },
+      store_rest_ref: { title: I18n.t('vehicle_usage_sets.import.store_rest_ref'), desc: I18n.t('vehicle_usage_sets.import.store_rest_desc'), format: I18n.t('vehicle_usage_sets.import.format.string') },
+      service_time_start: { title: I18n.t('vehicle_usage_sets.import.service_time_start'), desc: I18n.t('vehicle_usage_sets.import.service_time_start_desc'), format: I18n.t('vehicle_usage_sets.import.format.hour') },
+      service_time_end: { title: I18n.t('vehicle_usage_sets.import.service_time_end'), desc: I18n.t('vehicle_usage_sets.import.service_time_end_desc'), format: I18n.t('vehicle_usage_sets.import.format.hour') },
+      work_time: { title: I18n.t('vehicle_usage_sets.import.work_time'), desc: I18n.t('vehicle_usage_sets.import.work_time_desc'), format: I18n.t('vehicle_usage_sets.import.format.hour') },
+      tags: { title: I18n.t('vehicle_usage_sets.import.tags'), desc: I18n.t('vehicle_usage_sets.import.tags_desc'), format: I18n.t('vehicle_usage_sets.import.tags_format') }
     }
   end
 
@@ -99,14 +97,11 @@ class ImporterVehicleUsageSets < ImporterBase
     end
 
     if @customer.enable_multi_vehicle_usage_sets
-      @previous_vehicle_usage_set = @customer.vehicle_usage_sets.first
-      # use name of the file for default configuration name
-      @vehicle_usage_set = @customer.vehicle_usage_sets.create(name: name)
+      # Use name of the file for default configuration name
+      @vehicle_usage_set = @customer.vehicle_usage_sets.build(name: name)
     else
       @vehicle_usage_set = @customer.vehicle_usage_sets.last
     end
-
-    @vehicle_usages = []
 
     @common_configuration = {}
 
@@ -161,10 +156,10 @@ class ImporterVehicleUsageSets < ImporterBase
 
     # For each vehicle, create vehicle and vehicle usage
     vehicle = if !row[:ref_vehicle].nil? && !row[:ref_vehicle].strip.empty? && @vehicles_by_ref[row[:ref_vehicle].strip]
-                @vehicles_by_ref[row[:ref_vehicle].strip]
-              else
-                @vehicles_without_ref.shift
-              end
+      @vehicles_by_ref[row[:ref_vehicle].strip]
+    else
+      @vehicles_without_ref.shift
+    end
 
     if options[:replace_vehicles]
       vehicle_attributes = row.slice(*columns_vehicle.keys, :capacities)
@@ -177,16 +172,14 @@ class ImporterVehicleUsageSets < ImporterBase
       vehicle_attributes[:tags] = vehicle_attributes.delete(:tags_vehicle) if vehicle_attributes.key?(:tags_vehicle)
       vehicle_attributes[:devices] = vehicle_attributes[:devices] ? ActiveSupport::JSON.decode(vehicle_attributes.delete(:devices)) : {}
       vehicle.assign_attributes(vehicle_attributes)
-      vehicle.save!
     end
 
     vehicle_usage_attributes = row.slice(*columns_vehicle_usage_set.keys)
     vehicle_usage_attributes[:store_start] = @stores_by_ref[vehicle_usage_attributes.delete(:store_start_ref).to_s.strip]
     vehicle_usage_attributes[:store_stop] = @stores_by_ref[vehicle_usage_attributes.delete(:store_stop_ref).to_s.strip]
     vehicle_usage_attributes[:store_rest] = @stores_by_ref[vehicle_usage_attributes.delete(:store_rest_ref).to_s.strip]
-    vehicle_usage = @vehicle_usage_set.vehicle_usages.where(vehicle: vehicle).first
+    vehicle_usage = @vehicle_usage_set.vehicle_usages.find{ |vu| vu.vehicle == vehicle }
     vehicle_usage.assign_attributes(vehicle_usage_attributes.except(:name_vehicle_usage_set))
-    vehicle_usage.save!
 
     columns_vehicle_usage_set.keys.each do |key|
       if key == :store_start_ref
@@ -204,39 +197,22 @@ class ImporterVehicleUsageSets < ImporterBase
       end
     end
 
-    @vehicle_usages.push(vehicle_usage)
-
-    return vehicle
+    vehicle
   end
 
   def after_import(_name, _options)
-    @customer.save!
-
-    # Update or create a vehicle usage set for the imported vehicles
     # If all vehicles have the same parameters, set the parameter to the default configuration and remove it from vehicle
-    @common_configuration.each do |key, value|
-      if value
-        @vehicle_usage_set.update_attribute(key, value)
-
-        @vehicle_usages.each do |vehicle_usage|
-          vehicle_usage.update_attribute(key, nil)
-        end
-      end
+    @common_configuration.compact!
+    unless @common_configuration.keys.empty?
+      @vehicle_usage_set.assign_attributes @common_configuration
+      @vehicle_usage_set.vehicle_usages.each{ |vu| vu.assign_attributes Hash[@common_configuration.keys.map{ |k| [k, nil] }] }
+      @vehicle_usage_set.save!
     end
-    @vehicle_usage_set.save!
 
-    # Delete previous default configuration if only one is authorized
-    # Otherwise just add a new one
-    if !@customer.enable_multi_vehicle_usage_sets && @previous_vehicle_usage_set && @vehicle_usage_set && @vehicle_usage_set.persisted?
-      @previous_vehicle_usage_set.destroy!
-    end
+    @customer.save!
   end
 
   def finalize_import(_name, options)
-    @customer.save!
-
-    options[:dests].each do |vehicle|
-      vehicle.reload
-    end
+    options[:dests].each(&:reload)
   end
 end
