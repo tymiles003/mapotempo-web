@@ -28,7 +28,7 @@ var popupModule = (function() {
     _previousMarker,
     _activeClickMarker,
     _previousPopup,
-    _currentAjaxRequested,
+    _ajaxRequest = { current: null },
     _ajaxTimer = 100;
 
   var _ajaxCanBeProceeded = function() {
@@ -72,7 +72,7 @@ var popupModule = (function() {
 
         getPopupContent(url, marker, map);
 
-        _currentAjaxRequested.done(function() {
+        _ajaxRequest.current.done(function() {
           _previousPopup = marker.getPopup();
           marker.openPopup();
         });
@@ -84,10 +84,10 @@ var popupModule = (function() {
     if (marker.getPopup())
       return;
 
-    if (_currentAjaxRequested && _currentAjaxRequested.readyState !== 4)
+    if (_ajaxRequest.current && _ajaxRequest.current.readyState !== 4)
       return;
 
-    _currentAjaxRequested = $.ajax({
+    _ajaxRequest.current = $.ajax({
       url: url,
       beforeSend: beforeSendWaiting,
       success: function(data) {
@@ -138,10 +138,22 @@ var popupModule = (function() {
     _context = that;
   };
 
+  var _closeCurrentRequest = function() {
+    if (!_ajaxRequest.current) return;
+
+    _ajaxRequest.current.abort();
+    _ajaxRequest.current = null;
+  };
+
   return {
     initGlobal: initializeModule,
     getPopupContent: getPopupContent,
     createPopupForLayer: createPopupForLayer,
+    closeCurrentRequest: _closeCurrentRequest,
+
+    get isRequestDone() {
+      return !(_ajaxRequest.current && _ajaxRequest.current.readyState !== 4);
+    },
 
     // PreviousMarker setter/getter
     get previousMarker() {
@@ -375,18 +387,21 @@ var RoutesLayer = L.FeatureGroup.extend({
         }
       }
     }.bind(this)).on('mouseout', function(e) {
-      if (this.options.showPopupOnHover) {
-        if (e.layer instanceof L.Marker) {
-          popupModule.previousMarker = e.layer;
-          if (!e.layer.click && e.layer.getPopup()) {
-            e.layer.closePopup();
-          }
-        } else if (e.layer instanceof L.Path) {
-          e.layer.setStyle({
-            opacity: 0.5,
-            weight: 5
-          });
+      if (!this.options.showPopupOnHover) { return; }
+
+      if (e.layer instanceof L.Marker) {
+        popupModule.previousMarker = e.layer;
+        if (!e.layer.click && e.layer.getPopup()) {
+          e.layer.closePopup();
         }
+        if (!popupModule.isRequestDone) {
+          popupModule.closeCurrentRequest();
+        }
+      } else if (e.layer instanceof L.Path) {
+        e.layer.setStyle({
+          opacity: 0.5,
+          weight: 5
+        });
       }
     }.bind(this))
       .on('click', function(e) {
