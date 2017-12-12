@@ -18,9 +18,13 @@
 module FleetBase
 
   def set_route
+    planning = plannings(:planning_one)
+    planning.update!(date: 10.days.from_now)
+    planning.routes.select(&:vehicle_usage_id).each do |route|
+      route.update!(end: (route.start || 0) + 1.hour)
+    end
+
     @route = routes(:route_one_one)
-    @route.update!(end: @route.start + 5.hours)
-    @route.planning.update!(date: 10.days.from_now)
     @vehicle = @route.vehicle_usage.vehicle
     @vehicle.update!(devices: { fleet_user: 'driver1' })
   end
@@ -31,11 +35,7 @@ module FleetBase
       names.each do |name|
         case name
           when :auth
-            params = {
-              user: @customer.devices[:fleet][:user],
-              password: @customer.devices[:fleet][:password]
-            }
-            url = FleetService.new(customer: @customer).service.send(:get_user_url, params)
+            url = FleetService.new(customer: @customer).service.send(:get_user_url, @customer.devices[:fleet][:user])
             expected_response = {
               user: @customer.devices[:fleet][:user]
             }.to_json
@@ -99,12 +99,16 @@ module FleetBase
               ]
             }.to_json
             stubs << stub_request(:post, url).to_return(status: 200, body: expected_response)
-          when :delete_missions_url
-            route = routes(:route_one_one)
-            destination_ids = route.stops.collect { |stop| 'mission-' + (stop.is_a?(StopVisit) ? "v#{stop.visit_id}" : "r#{stop.id}") }
+          when :delete_missions_by_date_url
+            planning = plannings(:planning_one)
+            planning_date = planning.date ? planning.date.beginning_of_day.to_time : Time.zone.now.beginning_of_day
+            planning.routes.select(&:vehicle_usage_id).each do |route|
+              start_date = (planning_date + (route.start || 0)).strftime('%Y-%m-%d')
+              end_date = (planning_date + (route.end || 0)).strftime('%Y-%m-%d')
 
-            url = FleetService.new(customer: @customer).service.send(:delete_missions_url, 'driver1', destination_ids)
-            stubs << stub_request(:delete, url).to_return(status: 204, body: nil)
+              url = FleetService.new(customer: @customer).service.send(:delete_missions_by_date_url, 'driver1', start_date, end_date)
+              stubs << stub_request(:delete, url).to_return(status: 204, body: nil)
+            end
         end
       end
       yield

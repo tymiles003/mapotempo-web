@@ -28,7 +28,7 @@ class V01::Devices::FleetTest < ActiveSupport::TestCase
 
   setup do
     @customer = customers(:customer_one)
-    @customer.update(devices: { fleet: { enable: true, user: 'default', password: '123456', } }, enable_vehicle_position: true, enable_stop_status: true)
+    @customer.update(devices: { fleet: { enable: true, user: 'default', api_key: '123456' } }, enable_vehicle_position: true, enable_stop_status: true)
   end
 
   def planning_api(part = nil, param = {})
@@ -91,7 +91,7 @@ class V01::Devices::FleetTest < ActiveSupport::TestCase
 
   test 'should clear' do
     set_route
-    with_stubs [:delete_missions_url] do
+    with_stubs [:delete_missions_by_date_url] do
       route = routes(:route_one_one)
       delete api('devices/fleet/clear', { customer_id: @customer.id, route_id: route.id })
       assert_equal 200, last_response.status
@@ -103,7 +103,7 @@ class V01::Devices::FleetTest < ActiveSupport::TestCase
 
   test 'should clear multiple' do
     set_route
-    with_stubs [:delete_missions_url] do
+    with_stubs [:delete_missions_by_date_url] do
       planning = plannings(:planning_one)
       delete api('devices/fleet/clear_multiple', { customer_id: @customer.id, planning_id: planning.id })
       assert_equal 204, last_response.status, last_response.body

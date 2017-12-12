@@ -50,7 +50,7 @@ class Fleet < DeviceBase
   }
 
   def check_auth(params)
-    rest_client_get(get_user_url(params), params[:api_key])
+    rest_client_get(get_user_url(params[:user]), params[:api_key])
   rescue RestClient::Forbidden, RestClient::InternalServerError, RestClient::ResourceNotFound, RestClient::Unauthorized, Errno::ECONNREFUSED
     raise DeviceServiceError.new("Fleet: #{I18n.t('errors.fleet.invalid_account')}")
   end
@@ -142,17 +142,25 @@ class Fleet < DeviceBase
       }
     end
 
+    raise DeviceServiceError.new("Fleet: #{I18n.t('errors.fleet.no_missions')}") if destinations.empty?
+    raise DeviceServiceError.new("Fleet: #{I18n.t('errors.fleet.past_missions')}") if route.planning.date && route.planning.date < Date.today
+
     send_missions(route.vehicle_usage.vehicle.devices[:fleet_user], customer.devices[:fleet][:api_key], destinations)
   rescue RestClient::InternalServerError, RestClient::ResourceNotFound, RestClient::UnprocessableEntity
     raise DeviceServiceError.new("Fleet: #{I18n.t('errors.fleet.set_mission')}")
   end
 
-  def clear_route(customer, route)
-    destination_ids = route.stops.select(&:active?).select(&:position?).sort_by(&:index).map do |destination|
-      generate_mission_id(destination)
+  def clear_route(customer, route, use_date = true)
+    if use_date
+      start_date = (planning_date(route.planning) + (route.start || 0)).strftime('%Y-%m-%d')
+      end_date = (planning_date(route.planning) + (route.end || 0)).strftime('%Y-%m-%d')
+      delete_missions_by_date(route.vehicle_usage.vehicle.devices[:fleet_user], customer.devices[:fleet][:api_key], start_date, end_date)
+    else
+      destination_ids = route.stops.select(&:active?).select(&:position?).sort_by(&:index).map do |destination|
+        generate_mission_id(destination)
+      end
+      delete_missions(route.vehicle_usage.vehicle.devices[:fleet_user], customer.devices[:fleet][:api_key], destination_ids)
     end
-
-    delete_missions(route.vehicle_usage.vehicle.devices[:fleet_user], customer.devices[:fleet][:api_key], destination_ids)
   rescue RestClient::InternalServerError, RestClient::ResourceNotFound, RestClient::UnprocessableEntity
     raise DeviceServiceError.new("Fleet: #{I18n.t('errors.fleet.set_mission')}")
   end
@@ -169,6 +177,10 @@ class Fleet < DeviceBase
 
   def delete_missions(user, api_key, destination_ids)
     rest_client_delete(delete_missions_url(user, destination_ids), api_key)
+  end
+
+  def delete_missions_by_date(user, api_key, start_date, end_date)
+    rest_client_delete(delete_missions_by_date_url(user, start_date, end_date), api_key)
   end
 
   def rest_client_get(url, api_key, _options = {})
@@ -200,27 +212,31 @@ class Fleet < DeviceBase
   end
 
   def get_users_url(params = {})
-    Addressable::Template.new("#{api_url}/api/0.1/users{?with_vehicle*}").expand(params).to_s
+    URI.encode(Addressable::Template.new("#{api_url}/api/0.1/users{?with_vehicle*}").expand(params).to_s)
   end
 
-  def get_user_url(params)
-    "#{api_url}/api/0.1/users/#{params[:user]}"
+  def get_user_url(user)
+    URI.encode("#{api_url}/api/0.1/users/#{user}")
   end
 
   def get_vehicles_pos_url
-    "#{api_url}/api/0.1/current_locations"
+    URI.encode("#{api_url}/api/0.1/current_locations")
   end
 
   def get_missions_url(user = nil)
-    user ? "#{api_url}/api/0.1/users/#{user}/missions" : "#{api_url}/api/0.1/missions"
+    user ? URI.encode("#{api_url}/api/0.1/users/#{user}/missions") : URI.encode("#{api_url}/api/0.1/missions")
   end
 
   def set_missions_url(user)
-    "#{api_url}/api/0.1/users/#{user}/missions/create_multiples"
+    URI.encode("#{api_url}/api/0.1/users/#{user}/missions/create_multiples")
   end
 
   def delete_missions_url(user, destination_ids)
-    "#{api_url}/api/0.1/users/#{user}/missions/destroy_multiples?#{destination_ids.to_query('ids')}"
+    URI.encode("#{api_url}/api/0.1/users/#{user}/missions/destroy_multiples?#{destination_ids.to_query('ids')}")
+  end
+
+  def delete_missions_by_date_url(user, start_date, end_date)
+    URI.encode("#{api_url}/api/0.1/users/#{user}/missions/destroy_multiples?start_date=#{start_date}&end_date=#{end_date}")
   end
 
   def generate_mission_id(destination)
