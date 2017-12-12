@@ -655,6 +655,34 @@ class PlanningTest < ActiveSupport::TestCase
     assert planning.routes.flat_map{ |r| r.stops.select{ |s| s.is_a? StopRest }.map{ |s| s.route.vehicle_usage.id } }.size == planning.vehicle_usage_set.vehicle_usages.map(&:default_rest_duration?).size
   end
 
+  test 'should set stops with an unreachable stop' do
+    planning = plannings(:planning_one)
+    unaffected = stops(:stop_unaffected)
+    unaffected.visit.destination.update(lat: -33.137551, lng: 25.3125)
+    planning.reload
+
+    ordered_stops = planning.routes.each { |route|
+      ids = route.stops.map { |stop| stop.index }
+      next if ids.count == 1
+      route_ids_valid = true
+
+      # No duplication & Array is consecutive
+      ids.each_with_index do |id, i|
+        assert_equal id.abs, (i + 1)
+        value = id.abs - 1
+        
+        if (ids[value] < 0)
+          route_ids_valid = false
+          break
+        else
+          ids[value] = -ids[value]
+        end
+      end
+
+      assert route_ids_valid
+    }
+  end
+
   require Rails.root.join('test/lib/devices/tomtom_base')
   include TomtomBase
 
