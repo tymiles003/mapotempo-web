@@ -375,7 +375,15 @@ $sidebar-margins: 10px;
       }
 
       #out_of_route {
-        min-width: 288px;
+        color: #707070;
+
+        .panel-heading {
+          font-size: 1.2em;
+        }
+
+        .stops {
+          min-width: 288px;
+        }
       }
 
       ul.ui-state-error {
