@@ -184,9 +184,15 @@
       </div>
 
       <div class="route-skills">
-        {{#skills}}
-          <span class="badge" style="background:{{color}};">{{label}}</span>
-        {{/skills}}
+        <ul class="route-skills-list">
+          {{#skills}}
+            <li class="route-skills-item">
+              <span>
+                <i style="color: {{color}}" class="fa {{icon}}"></i>&nbsp;<span>{{label}}</span>
+              </span>
+            </li>
+          {{/skills}}
+        </ul>
       </div>
     {{/vehicle}}
   </div>

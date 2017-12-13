@@ -241,9 +241,17 @@ class Planning < ApplicationRecord
     end
 
     # It still no route get all routes
+    tags = stop.is_a?(StopVisit) ? (stop.visit.destination.tags | stop.visit.tags) : nil
     if available_routes.empty? && options[:out_of_zone]
       available_routes = routes.select{ |route|
-        route.vehicle_usage? && !route.locked
+        next unless route.vehicle_usage?
+
+        if skills?
+          common_tags = [route.vehicle_usage.tags, route.vehicle_usage.vehicle.tags].flatten & tags
+          !route.locked && !common_tags.empty?
+        else
+          !route.locked
+        end
       }
     end
 
@@ -551,6 +559,17 @@ class Planning < ApplicationRecord
     result
   end
 
+  def all_skills
+    routes.map do |r|
+      next unless r.vehicle_usage
+      [r.vehicle_usage.tags, r.vehicle_usage.vehicle.tags].flatten
+    end.flatten.compact
+  end
+
+  def skills?
+    all_skills.any?
+  end
+
   private
 
   # To reduce matrix computation with only one route... remove code?
@@ -564,7 +583,7 @@ class Planning < ApplicationRecord
     if tws_or_quantities || multiples_vehicles_with_capacities
       # Can't reduce cause of time windows, quantities or multiple vehicles
       positions_uniq = stops.collect{ |stop|
-        tags_label = stop.is_a?(StopVisit) ? (stop.visit.destination.tags | stop.visit.tags).map(&:label) : nil
+        tags_label = stop.is_a?(StopVisit) ? (stop.visit.destination.tags | stop.visit.tags).map(&:label) & all_skills.map(&:label) : nil
         [stop.lat, stop.lng, stop.id, stop.open1.try(:to_f), stop.close1.try(:to_f), stop.open2.try(:to_f), stop.close2.try(:to_f), stop.duration, (!global || stop.is_a?(StopRest)) ? stop.route.vehicle_usage_id : nil, stop.is_a?(StopVisit) ? stop.visit.default_quantities : nil, stop.is_a?(StopVisit) ? stop.visit.quantities_operations : nil, tags_label]
       }
 
@@ -579,7 +598,7 @@ class Planning < ApplicationRecord
 
       positions_uniq = Hash.new { [] }
       stock.each{ |k, v|
-        tags_label = v[0][0].is_a?(StopVisit) ? (v[0][0].visit.destination.tags | v[0][0].visit.tags).map(&:label) : nil
+        tags_label = v[0][0].is_a?(StopVisit) ? (v[0][0].visit.destination.tags | v[0][0].visit.tags).map(&:label) & all_skills.map(&:label) : nil
         positions_uniq[v[0][0].id] = k + [v[0][0].id, nil, nil, nil, nil, v.sum{ |vs| vs[0].duration }, !global ? v[0][0].route.vehicle_usage_id : nil, v[0][0].is_a?(StopVisit) ? v[0][0].visit.default_quantities : nil, v[0][0].is_a?(StopVisit) ? v[0][0].visit.quantities_operations : nil, tags_label]
       }
 

@@ -352,11 +352,13 @@
         <p class="help-block"><%= t '.stores_help' %></p>
       </div>
     </div>
-    <div>
-      <%= f.select :tag_ids, t('activerecord.attributes.vehicle_usage.tag_ids'), options_for_select(@vehicle_usage.vehicle.customer.tags.map{ |tag| [tag.label, tag.id, {'data-color' => tag.color && tag.color[1..-1], 'data-icon' => tag.icon}]}, @vehicle_usage.tags.collect(&:id)), {}, {multiple: true, input_group: content_tag('i', '', class: 'fa fa-tags fa-fw')} do %>
-        <p class="help-block"><%= t('vehicle_usages.form.tags_help') %></p>
-      <% end %>
-    </div>
+    <% if @vehicle_usage_sets.count > 1 || @vehicle_usage.tags.count > 0 %>
+      <div>
+        <%= f.select :tag_ids, t('activerecord.attributes.vehicle_usage.tag_ids'), options_for_select(@vehicle_usage.vehicle.customer.tags.map{ |tag| [tag.label, tag.id, {'data-color' => tag.color && tag.color[1..-1], 'data-icon' => tag.icon}]}, @vehicle_usage.tags.collect(&:id)), {}, {multiple: true, input_group: content_tag('i', '', class: 'fa fa-tags fa-fw')} do %>
+          <p class="help-block"><%= t('vehicle_usages.form.tags_help') %></p>
+        <% end %>
+      </div>
+    <% end %>
     <div id="vehicle_usage_open_close_input" class="form-group">
       <label class="sr-only" for="vehicle_usage_open"><%= t 'activerecord.attributes.vehicle_usage.open' %></label>
       <label class="sr-only" for="vehicle_usage_close"><%= t 'activerecord.attributes.vehicle_usage.close' %></label>

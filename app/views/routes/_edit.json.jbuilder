@@ -40,8 +40,9 @@ if route.vehicle_usage_id
   end
   json.work_or_window_time route.vehicle_usage.work_or_window_time
   json.skills [route.vehicle_usage.tags, route.vehicle_usage.vehicle.tags].flatten.compact do |tag|
+    json.icon tag.default_icon
     json.label tag.label
-    json.color tag.color || '#000000'
+    json.color tag.default_color
   end
 
   # Devices
