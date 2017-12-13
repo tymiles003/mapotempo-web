@@ -59,7 +59,7 @@ class DeliverableUnitsController < ApplicationController
   end
 
   def destroy
-    @deliverable_unit.destroy && current_user.customer.save
+    @deliverable_unit && current_user.customer.deliverable_units.delete(@deliverable_unit) && current_user.customer.save
     respond_to do |format|
       format.html { redirect_to deliverable_units_url }
     end

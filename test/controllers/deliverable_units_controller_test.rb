@@ -93,4 +93,29 @@ class DeliverableUnitsControllerTest < ActionController::TestCase
     @deliverable_unit.update! icon: "fa-home"
     assert_equal "fa-home", @deliverable_unit.default_icon, response.body
   end
+
+  test 'should remove unit when using enumarable' do
+    unit = customers(:customer_one).deliverable_units.build(label: 'plop', default_capacity: '-1,2')
+    customers(:customer_one).deliverable_units.delete(unit)
+
+    deleted_unit = customers(:customer_one).deliverable_units.where(id: unit.id).first
+
+    assert_nil deleted_unit
+  end
+
+  test 'shoud makes routes outdated on unit deletion' do
+    customer = customers(:customer_one)
+    unit = customer.deliverable_units.first
+    assert_difference('DeliverableUnit.count', -1) do
+      customer.deliverable_units.delete(unit)
+    end
+    customer.save
+
+    # Will be valid only if we keep the following logic : all routes == outdated on unit deletion
+    customer.plannings.each { |planning|
+      planning.routes.each { |route|
+        assert route.outdated
+      }
+    }
+  end
 end
