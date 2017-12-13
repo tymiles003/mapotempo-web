@@ -753,11 +753,21 @@ var plannings_edit = function(params) {
     }
     else {
       $('div#optimization-global').show();
+      var sizeRoutes = 0;
       var allStopsActive = true;
       $.each($('li[data-route_id]:not(:first) [data-size-active]'), function() {
-        if ($(this).attr('data-size-active') != $(this).attr('data-size'))
+        var sizeRoute = $(this).attr('data-size');
+        sizeRoutes += parseInt(sizeRoute);
+        if ($(this).attr('data-size-active') != sizeRoute)
           allStopsActive = false;
       });
+      if (!sizeRoutes) {
+        var g = $('#sticky_vehicle_false');
+        if (!g.prop('disabled')) {
+          g.prop('checked', true);
+          $('div#optimization-global').hide();
+        }
+      }
       $('div#optimization-active').css({display: allStopsActive ? 'none' : 'block'});
       var dimensions = $.map(vehicles_usages_map, function(vehicle) { return vehicle.router_dimension; } )
         .filter(function(elt, idx, array) { return idx == array.indexOf(elt); });
@@ -1626,8 +1636,6 @@ var plannings_edit = function(params) {
 
   $('#optimize').click(function() {
     initOptimizerDialog();
-    if (!confirm(I18n.t('plannings.edit.optimize_confirm')))
-      return;
 
     var routeId = $('#optimization-route_id').val();
     $.ajax({

@@ -1398,7 +1398,6 @@ fr:
       load_stops: Charger les arrêts de cette tournée
       optimize: Optimiser toutes les tournées non verrouillées
       optimize_help: Optimiser la tournée
-      optimize_confirm: Lancer un calcul d'optimisation ?
       optimize_complete: Optimisation terminée
       optimize_failed: Échec lors de l'optimisation
       optimized_at: Optimisé

@@ -1326,7 +1326,6 @@ en:
       load_stops: Load stops in this route
       optimize: Optimize all unlocked routes
       optimize_help: Optimize the route
-      optimize_confirm: Run an optimization calculation?
       optimize_complete: Optimization Complete
       optimize_failed: Optimization Failed
       optimized_at: Optimized
