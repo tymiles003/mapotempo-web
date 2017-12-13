@@ -345,7 +345,7 @@ class Planning < ApplicationRecord
           vehicle_close = r.vehicle_usage.default_close
           vehicle_close -= r.vehicle_usage.default_service_time_end if r.vehicle_usage.default_service_time_end
           vehicle_skills = [r.vehicle_usage.tags, r.vehicle_usage.vehicle.tags].flatten.compact.map(&:label)
-          vehicle_time = r.vehicle_usage.default_work_time
+          vehicle_time = r.vehicle_usage.default_work_time(true, true)
           {
             id: r.vehicle_usage_id,
             router: r.vehicle_usage.vehicle.default_router,
