@@ -149,6 +149,7 @@ en:
           complete: "Sync Complete"
           confirm: "Sync Vehicles?"
           action: "Sync Vehicles"
+          no_credentials: "No credentials given for the device"
         fleet_demo:
           help: "(DEMO ONY) Simulate vehicles' position and visit status (if these options are activated)
             for the last updated plan."

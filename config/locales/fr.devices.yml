@@ -151,6 +151,7 @@ fr:
           complete: "Synchronisation complète"
           confirm: "Synchroniser les véhicules ?"
           action: "Synchroniser les véhicules"
+          no_credentials: "Pas d'identifiants renseignés pour l'appareil"
         fleet_demo:
           help: "(DEMONSTRATEUR) Simule la position des véhicules et le statut des visites (si ces options sont actives)
             pour le dernier plan modifié."

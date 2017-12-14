@@ -219,7 +219,7 @@ var devicesObserveCustomer = (function() {
             (data && data.error) ? errorCallback(data.error) : successCallback();
           },
           error: function(jqXHR, textStatus, error) {
-            errorCallback(textStatus);
+            errorCallback(jqXHR.status === 400 && textStatus === 'error' ? I18n.t('customers.form.devices.sync.no_credentials') : textStatus);
           }
         }));
       });
