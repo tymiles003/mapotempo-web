@@ -243,10 +243,11 @@ class Planning < ApplicationRecord
     # It still no route get all routes
     tags = stop.is_a?(StopVisit) ? (stop.visit.destination.tags | stop.visit.tags) : nil
     if available_routes.empty? && options[:out_of_zone]
+      skill_tags = all_skills & tags
       available_routes = routes.select{ |route|
         next unless route.vehicle_usage?
 
-        if skills?
+        if !skill_tags.empty?
           common_tags = [route.vehicle_usage.tags, route.vehicle_usage.vehicle.tags].flatten & tags
           !route.locked && !common_tags.empty?
         else
