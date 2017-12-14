@@ -201,7 +201,7 @@ var progressDialog = function(delayedJob, dialog, url, callback, options) {
       }
     });
 
-    if (isProgressing) {
+    if (isProgressing || delayedJob.attempts > 0) {
       $(".dialog-inqueue", dialog).hide();
     } else {
       $(".dialog-inqueue", dialog).show();

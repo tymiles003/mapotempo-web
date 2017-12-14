@@ -167,6 +167,8 @@ class OptimizerWrapper
         elsif ['queued', 'working'].include?(result['job']['status'])
           if progress && m = /^(process ([0-9]+)\/([0-9]+) \- )?([a-z ]+)/.match(result['job']['avancement'])
             progress.call(m[4].start_with?('compute matrix') ? 0 : m[4].start_with?('run optimization') ? 1 : nil, m[1] && m[2].to_i, m[2] && m[3].to_i)
+          elsif result['job']['status'] == 'working'
+            progress.call(-1, -1, nil)
           end
           sleep(2)
           job_id = result['job']['id']
