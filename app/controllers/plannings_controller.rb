@@ -21,9 +21,10 @@ require 'zip'
 
 class PlanningsController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_planning, only: [:show, :edit, :update, :destroy, :move, :refresh, :switch, :automatic_insert, :update_stop, :optimize_route, :active, :duplicate, :reverse_order, :apply_zonings, :optimize]
-  before_action :check_no_existing_job, only: [:move, :refresh, :switch, :automatic_insert, :update_stop, :optimize_route, :active, :reverse_order, :apply_zonings, :optimize]
-  around_action :includes_destinations, except: [:index, :show, :new, :create]
+  UPDATE_ACTIONS = [:update, :move, :refresh, :switch, :automatic_insert, :update_stop, :active, :reverse_order, :apply_zonings, :optimize, :optimize_route]
+  before_action :set_planning, only: [:show, :edit, :duplicate, :destroy] + UPDATE_ACTIONS
+  before_action :check_no_existing_job, only: UPDATE_ACTIONS
+  around_action :includes_destinations, except: [:index, :new, :create]
   around_action :over_max_limit, only: [:create]
 
   load_and_authorize_resource
@@ -142,19 +143,17 @@ class PlanningsController < ApplicationController
       begin
         Planning.transaction do
           previous_route_id = Stop.find(Integer(params[:stop_id])).route_id
-          Stop.includes_destinations.scoping do
-            route = @planning.routes.find{ |route| route.id == Integer(params[:route_id]) }
-            stop = @planning.routes.find{ |r| r.id == previous_route_id }.stops.find { |s| s.id == Integer(params[:stop_id]) }
-            # save! is used to rollback all the transaction with associations
-            if @planning.move_stop(route, stop, params[:index] ? Integer(params[:index]) : nil) && @planning.compute && @planning.save!
-              @planning.reload
-              # Send in response only modified routes
-              @routes = [route]
-              @routes << @planning.routes.find{ |r| r.id == previous_route_id } if previous_route_id != route.id
-              format.json { render action: 'show', location: @planning }
-            else
-              format.json { render json: @planning.errors, status: :unprocessable_entity }
-            end
+          route = @planning.routes.find{ |route| route.id == Integer(params[:route_id]) }
+          stop = @planning.routes.find{ |r| r.id == previous_route_id }.stops.find { |s| s.id == Integer(params[:stop_id]) }
+          # save! is used to rollback all the transaction with associations
+          if @planning.move_stop(route, stop, params[:index] ? Integer(params[:index]) : nil) && @planning.compute && @planning.save!
+            @planning.reload
+            # Send in response only modified routes
+            @routes = [route]
+            @routes << @planning.routes.find{ |r| r.id == previous_route_id } if previous_route_id != route.id
+            format.json { render action: 'show', location: @planning }
+          else
+            format.json { render json: @planning.errors, status: :unprocessable_entity }
           end
         end
       rescue ActiveRecord::RecordInvalid => e
@@ -178,17 +177,15 @@ class PlanningsController < ApplicationController
     respond_to do |format|
       begin
         Planning.transaction do
-          Stop.includes_destinations.scoping do
-            route = @planning.routes.find{ |route| route.id == Integer(params[:route_id]) }
-            vehicle_usage_id_was = route.vehicle_usage_id
-            vehicle_usage = @planning.vehicle_usage_set.vehicle_usages.find(Integer(params[:vehicle_usage_id]))
-            if route && vehicle_usage && @planning.switch(route, vehicle_usage) && @planning.save! && @planning.compute && @planning.save!
-              @routes = [route]
-              @routes << @planning.routes.find{ |r| r.vehicle_usage_id == vehicle_usage_id_was } if vehicle_usage_id_was != route.vehicle_usage.id
-              format.json { render action: 'show', location: @planning }
-            else
-              format.json { render json: @planning.errors, status: :unprocessable_entity }
-            end
+          route = @planning.routes.find{ |route| route.id == Integer(params[:route_id]) }
+          vehicle_usage_id_was = route.vehicle_usage_id
+          vehicle_usage = @planning.vehicle_usage_set.vehicle_usages.find(Integer(params[:vehicle_usage_id]))
+          if route && vehicle_usage && @planning.switch(route, vehicle_usage) && @planning.save! && @planning.compute && @planning.save!
+            @routes = [route]
+            @routes << @planning.routes.find{ |r| r.vehicle_usage_id == vehicle_usage_id_was } if vehicle_usage_id_was != route.vehicle_usage.id
+            format.json { render action: 'show', location: @planning }
+          else
+            format.json { render json: @planning.errors, status: :unprocessable_entity }
           end
         end
       rescue ActiveRecord::RecordInvalid
@@ -243,16 +240,14 @@ class PlanningsController < ApplicationController
     respond_to do |format|
       begin
         Planning.transaction do
-          Stop.includes_destinations.scoping do
-            @route = @planning.routes.find{ |route| route.id == Integer(params[:route_id]) }
-            @stop = @route.stops.find{ |stop| stop.id == Integer(params[:stop_id]) } if @route
-            @stop.assign_attributes(stop_params) if @stop
-            if @stop && @route.compute! && @planning.save!
-              @routes = [@route]
-              format.json { render action: 'show', location: @planning }
-            else
-              format.json { render json: @planning.errors, status: :unprocessable_entity }
-            end
+          @route = @planning.routes.find{ |route| route.id == Integer(params[:route_id]) }
+          @stop = @route.stops.find{ |stop| stop.id == Integer(params[:stop_id]) } if @route
+          @stop.assign_attributes(stop_params) if @stop
+          if @stop && @route.compute! && @planning.save!
+            @routes = [@route]
+            format.json { render action: 'show', location: @planning }
+          else
+            format.json { render json: @planning.errors, status: :unprocessable_entity }
           end
         end
       rescue ActiveRecord::RecordInvalid => e
@@ -281,33 +276,29 @@ class PlanningsController < ApplicationController
   def optimize_route
     active_only = ValueToBoolean::value_to_boolean(params[:active_only])
     respond_to do |format|
-      Stop.includes_destinations.scoping do
-        route = @planning.routes.find{ |route| route.id == Integer(params[:route_id]) }
-        begin
-          if route && Optimizer.optimize(@planning, route, false, false, active_only) && @planning.customer.save
-            @routes = [route]
-            format.json { render action: 'show', location: @planning }
-          else
-            format.json { render json: @planning.errors, status: :unprocessable_entity }
-          end
-        rescue NoSolutionFoundError
-          @planning.errors[:base] = I18n.t('plannings.edit.dialog.optimizer.no_solution')
-          format.json { render json: @planning.errors, status: :unprocessable_entity }
-        end
-      end
-    end
-  end
-
-  def active
-    Stop.includes_destinations.scoping do
       route = @planning.routes.find{ |route| route.id == Integer(params[:route_id]) }
-      respond_to do |format|
-        if route && route.active(params[:active].to_s.to_sym) && route.compute! && @planning.save
+      begin
+        if route && Optimizer.optimize(@planning, route, false, false, active_only) && @planning.customer.save
           @routes = [route]
           format.json { render action: 'show', location: @planning }
         else
           format.json { render json: @planning.errors, status: :unprocessable_entity }
         end
+      rescue NoSolutionFoundError
+        @planning.errors[:base] = I18n.t('plannings.edit.dialog.optimizer.no_solution')
+        format.json { render json: @planning.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
+  def active
+    route = @planning.routes.find{ |route| route.id == Integer(params[:route_id]) }
+    respond_to do |format|
+      if route && route.active(params[:active].to_s.to_sym) && route.compute! && @planning.save
+        @routes = [route]
+        format.json { render action: 'show', location: @planning }
+      else
+        format.json { render json: @planning.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -321,35 +312,31 @@ class PlanningsController < ApplicationController
   end
 
   def reverse_order
-    Stop.includes_destinations.scoping do
-      route = @planning.routes.find{ |route| route.id == Integer(params[:route_id]) }
-      respond_to do |format|
-        if route && route.reverse_order && route.compute! && @planning.save
-          @routes = [route]
-          format.json { render action: 'show', location: @planning }
-        else
-          format.json { render json: @planning.errors, status: :unprocessable_entity }
-        end
+    route = @planning.routes.find{ |route| route.id == Integer(params[:route_id]) }
+    respond_to do |format|
+      if route && route.reverse_order && route.compute! && @planning.save
+        @routes = [route]
+        format.json { render action: 'show', location: @planning }
+      else
+        format.json { render json: @planning.errors, status: :unprocessable_entity }
       end
     end
   end
 
   def apply_zonings
-    Route.includes_destinations.scoping do
-      @planning.zonings = params[:planning] && planning_params[:zoning_ids] ? current_user.customer.zonings.find(planning_params[:zoning_ids]) : []
-      @planning.zoning_outdated = true
-      @planning.compute
-      if @planning.save && @planning.reload
-        respond_to do |format|
-          format.json do
-            render action: :show
-          end
+    @planning.zonings = params[:planning] && planning_params[:zoning_ids] ? current_user.customer.zonings.find(planning_params[:zoning_ids]) : []
+    @planning.zoning_outdated = true
+    @planning.compute
+    if @planning.save && @planning.reload
+      respond_to do |format|
+        format.json do
+          render action: :show
         end
-      else
-        respond_to do |format|
-          format.json do
-            render json: @planning.errors, status: :unprocessable_entity
-          end
+      end
+    else
+      respond_to do |format|
+        format.json do
+          render json: @planning.errors, status: :unprocessable_entity
         end
       end
     end
@@ -370,8 +357,11 @@ class PlanningsController < ApplicationController
   end
 
   def includes_destinations
-    # FIXME: use new scoping for route_id/route_ids
-    if @with_stops && ([:show, :edit, :optimize].exclude?(action_name.to_sym) || !request.format.html?) && !params[:route_id] && !params[:route_ids]
+    if @with_stops && (params[:route_id] || params[:route_ids] || [:automatic_insert, :optimize].include?(action_name.to_sym))
+      Stop.includes_destinations.scoping do
+        yield
+      end
+    elsif @with_stops && ([:show, :edit].exclude?(action_name.to_sym) || !request.format.html?)
       Route.includes_destinations.scoping do
         yield
       end
