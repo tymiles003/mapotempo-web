@@ -58,7 +58,7 @@ class OrderArraysController < ApplicationController
         data = render_to_string.gsub('\n', '\r\n')
         send_data Iconv.iconv('ISO-8859-1//translit//ignore', 'utf-8', data).join(''),
             type: 'text/csv',
-            filename: I18n.transliterate(@order_array.name.delete('"')) + '.csv'
+            filename: @order_array.name.delete('"').encode('Windows-1252', invalid: :replace, undef: :replace) + '.csv'
       end
       format.csv do
         response.headers['Content-Disposition'] = 'attachment; filename="' + I18n.transliterate(@order_array.name.delete('"')) + '.csv"'
