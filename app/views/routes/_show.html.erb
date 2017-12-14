@@ -134,7 +134,7 @@
                 </p>
               <% end %>
             <% elsif stop.visit.default_quantities? %>
-              <% visit_quantities(stop.visit, route.vehicle_usage.vehicle, with_default: true).each do |units| %>
+              <% visit_quantities(stop.visit, route.vehicle_usage.vehicle).each do |units| %>
                 <div class="quantity">
                   <i class="fa <%= units[:unit_icon] %> fa-fw"></i> <%= units[:quantity] %>
                 </div>

@@ -190,6 +190,8 @@ fr:
         icon: Icône
         default_quantity: Quantité par défaut
         default_capacity: Capacité par défaut
+        operation_fill: Remplissage
+        operation_empty: Vidage
         optimization_overload_multiplier: Coefficient dépassement chargement
       destination:
         ref: Référence

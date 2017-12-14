@@ -26,7 +26,7 @@ json.visits do
         json.multiple_quantities true
       end
       # Hash { id, quantity, icon, label } for deliverable units
-      json.quantities visit_quantities(visit, {})
+      json.quantities visit_quantities(visit, nil)
     end
     json.open1 visit.open1_absolute_time
     json.open1_day number_of_days(visit.open1)

@@ -190,6 +190,8 @@ en:
         icon: Icon
         default_quantity: Default quantity
         default_capacity: Default capacity
+        operation_fill: Fill
+        operation_empty: Empty
         optimization_overload_multiplier: Overload coefficient
       destination:
         ref: Reference

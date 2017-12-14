@@ -32,7 +32,7 @@ module RoutesHelper
       unit = route.planning.customer.deliverable_units.find{ |du| du.id == id }
       {
         id: id,
-        quantity: Route.localize_numeric_value(v.round(2)) + (vehicle && vehicle.default_capacities[id] ? '/' + Route.localize_numeric_value(vehicle.default_capacities[id].round(2)) : '') + (unit.label ? "\u202F" + unit.label : ''),
+        quantity: Route.localize_numeric_value(number_with_precision(v, strip_insignificant_zeros: true).to_f) + (vehicle && vehicle.default_capacities[id] ? '/' + Route.localize_numeric_value(number_with_precision(vehicle.default_capacities[id], strip_insignificant_zeros: true).to_f) : '') + (unit.label ? "\u202F" + unit.label : ''),
         unit_icon: unit.default_icon
       } if unit
     }.compact

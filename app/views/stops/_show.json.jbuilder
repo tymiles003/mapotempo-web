@@ -50,7 +50,7 @@ if stop.is_a?(StopVisit)
       json.orders order.products.collect(&:code).join(', ')
     end
   else
-    json.quantities visit_quantities(visit, stop.route.vehicle_usage && stop.route.vehicle_usage.vehicle) do |units|
+    json.quantities visit_quantities(visit, stop.route.vehicle_usage_id && stop.route.vehicle_usage.vehicle) do |units|
       json.quantity units[:quantity] if units[:quantity]
       json.unit_icon units[:unit_icon]
     end

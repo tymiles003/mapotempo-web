@@ -69,7 +69,7 @@ route.stops.each do |stop|
     <% if stop.close2 %><%= t('plannings.edit.popup.close2') %> <%= stop.close2_time + (number_of_days(stop.close2) ? " (+#{number_of_days(stop.close2)})" : '') %><% end %>
     <% if stop.time %><%= t('plannings.edit.popup.time') %> <%= stop.time_time + (number_of_days(stop.time) ? " (+#{number_of_days(stop.time)})" : '') %><% end %>
     <% if stop.is_a?(StopVisit) && stop.visit.default_quantities? %>
-      <%= t('plannings.edit.popup.quantity') %> <%= visit_quantities(stop.visit, route.vehicle_usage.try(&:vehicle), with_default: true).map{ |d| d[:quantity] }.join(' ') %>
+      <%= t('plannings.edit.popup.quantity') %> <%= visit_quantities(stop.visit, route.vehicle_usage.try(&:vehicle)).map{ |d| d[:quantity] }.join(' ') %>
     <% end %>
   </description>
   <styleUrl>#route-<%= route.id %>-point</styleUrl>
