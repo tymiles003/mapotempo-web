@@ -214,7 +214,7 @@ var progressDialog = function(delayedJob, dialog, url, callback, options) {
       $(".dialog-progress", dialog).hide();
       unfreezeProgressDialog(dialog, delayedJob, url, callback); // url should not contain dispatch_params_delayed_job
 
-      return true;
+      return false;
     }
 
     if (delayedJob.attempts) {
