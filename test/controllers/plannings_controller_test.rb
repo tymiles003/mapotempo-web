@@ -569,6 +569,32 @@ class PlanningsControllerTest < ActionController::TestCase
     assert_response 422
   end
 
+  test 'should automatic insert with skills' do
+    skill = Tag.first
+    route_with_skill = @planning.routes.last
+    route_with_skill.vehicle_usage.update!(tags: [skill])
+    unaffected_stop = stops(:stop_unaffected)
+    unaffected_stop.visit.update!(tags: [skill])
+    assert_nil unaffected_stop.route.vehicle_usage?
+
+    patch :automatic_insert, id: @planning.id, format: :json, stop_ids: [unaffected_stop.id]
+    assert_response :success
+    assert_equal unaffected_stop.reload.route, route_with_skill
+  end
+
+  test 'should not automatic insert without correct skills' do
+    skill = Tag.first
+    route_with_skill = @planning.routes.last
+    route_with_skill.vehicle_usage.update!(tags: [skill])
+    route_with_skill.update!(locked: true)
+    unaffected_stop = stops(:stop_unaffected)
+    unaffected_stop.visit.update!(tags: [skill])
+    assert_nil unaffected_stop.route.vehicle_usage?
+
+    patch :automatic_insert, id: @planning.id, format: :json, stop_ids: [unaffected_stop.id]
+    assert_response 422
+  end
+
   test 'should not automatic insert with none available routes' do
     @planning.routes.select(&:vehicle_usage_id).each{ |r| r.update locked: true }
 
