@@ -39,10 +39,10 @@ class DestinationsController < ApplicationController
         data = render_to_string.gsub("\n", "\r\n")
         send_data Iconv.iconv('ISO-8859-1//translit//ignore', 'utf-8', data).join(''),
             type: 'text/csv',
-            filename: t('activerecord.models.destinations.other').encode('Windows-1252', invalid: :replace, undef: :replace) + '.csv'
+            filename: format_filename(t('activerecord.models.destinations.other')) + '.csv'
       end
       format.csv do
-        response.headers['Content-Disposition'] = 'attachment; filename="' + I18n.transliterate(t('activerecord.models.destinations.other')) + '.csv"'
+        response.headers['Content-Disposition'] = 'attachment; filename="' + format_filename(t('activerecord.models.destinations.other')) + '.csv"'
       end
     end
   end
@@ -104,7 +104,7 @@ class DestinationsController < ApplicationController
         data = render_to_string.gsub('\n', '\r\n')
         send_data Iconv.iconv('ISO-8859-1//translit//ignore', 'utf-8', data).join(''),
             type: 'text/csv',
-            filename: 'import_template.csv'
+            filename: format_filename('import_template.csv')
       end
       format.csv
     end

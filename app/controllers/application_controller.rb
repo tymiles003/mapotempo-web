@@ -205,4 +205,8 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  def format_filename(filename)
+    filename
+  end
+
 end

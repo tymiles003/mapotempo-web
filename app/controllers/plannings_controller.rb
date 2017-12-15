@@ -388,9 +388,9 @@ class PlanningsController < ApplicationController
 
   def filename
     if @planning
-      export_filename @planning, @planning.ref
+      format_filename(export_filename(@planning, @planning.ref))
     else
-      I18n.transliterate(I18n.t('plannings.menu.plannings') + '_' + I18n.l(Time.now, format: :datepicker))
+      format_filename(I18n.t('plannings.menu.plannings') + '_' + I18n.l(Time.now, format: :datepicker))
     end
   end
 

@@ -7,7 +7,7 @@ module PlanningExport
     array << ref
     array << planning.order_array.name if planning.customer.enable_orders && planning.order_array
     array << I18n.l(planning.date) if planning.date
-    I18n.transliterate(array.join('_').tr('/', '-').delete('"'))
+    array.join('_').tr('/', '-').delete('"')
   end
 
   def kmz_string_io(options = {})

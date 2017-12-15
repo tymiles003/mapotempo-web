@@ -111,7 +111,7 @@ class StoresController < ApplicationController
         data = render_to_string.gsub('\n', '\r\n')
         send_data Iconv.iconv('ISO-8859-1//translit//ignore', 'utf-8', data).join(''),
             type: 'text/csv',
-            filename: 'import_template.csv'
+            filename: format_filename('import_template.csv')
       end
       format.csv
     end

@@ -61,7 +61,7 @@ class RoutesController < ApplicationController
         data = render_to_string.gsub("\n", "\r\n")
         send_data Iconv.iconv('ISO-8859-1//translit//ignore', 'utf-8', data).join(''),
           type: 'text/csv',
-          filename: filename.encode('Windows-1252', invalid: :replace, undef: :replace) + '.csv'
+          filename: filename + '.csv'
       end
       format.csv do
         @columns = (@params[:columns] && @params[:columns].split('|')) || export_columns
@@ -93,7 +93,7 @@ class RoutesController < ApplicationController
   end
 
   def filename
-    export_filename @route.planning, @route.ref || @route.vehicle_usage.vehicle.name
+    format_filename(export_filename(@route.planning, @route.ref || @route.vehicle_usage.vehicle.name))
   end
 
   def export_columns
