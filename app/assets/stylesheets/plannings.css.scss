@@ -382,19 +382,13 @@ $sidebar-margins: 10px;
       list-style-type: none;
       margin-bottom: 1em;
 
-      .panel-danger {
-        .stops li .title {
-          max-width: 190px;
-        }
-      }
-
       .panel-default {
         .fa-reorder {
           width: 24px;
           margin-right: 4px;
         }
         .stops li .title {
-          max-width: 190px;
+          max-width: 210px;
         }
       }
 
