@@ -1457,10 +1457,10 @@ en:
         out_of_window_help: Stop planned out of specified time windows
         out_of_capacity: Out of capacity
         out_of_capacity_help: Vehicle capacity exceeded
-        out_of_drive_time: Out of vehicle time window
-        out_of_drive_time_help: Vehicle time window activity exceeded
-        out_of_work_time: Out of vehicle work time
-        out_of_work_time_help: Vehicle work time exceeded (service included)
+        out_of_drive_time: Out of vehicle shift time
+        out_of_drive_time_help: Vehicle shift time exceeded
+        out_of_work_time: Out of work time
+        out_of_work_time_help: Driver work time exceeded (service included)
         no_path: Unreachable destination
         no_path_help: 'Unreachable destination: missing or no path to or from the
           destination to find a route'
@@ -1573,8 +1573,8 @@ en:
       tags_visit: tags visit
       out_of_window: out of visit time window
       out_of_capacity: out of capacity
-      out_of_drive_time: out of vehicle time window
-      out_of_work_time: out of vehicle work time
+      out_of_drive_time: out of vehicle time shift
+      out_of_work_time: out of work time
       status: status
       eta: eta
     form:

@@ -1535,10 +1535,10 @@ fr:
         out_of_window_help: Planifié en dehors des créneaux horaires définis
         out_of_capacity: Hors capacité véhicule
         out_of_capacity_help: Capacité du véhicule dépassée
-        out_of_drive_time: Hors créneau véhicule
-        out_of_drive_time_help: Planifié en dehors des créneaux d'activité du véhicule
-        out_of_work_time: Hors durée de travail du véhicule
-        out_of_work_time_help: Planifié en dehors de la durée de travail du véhicule (service compris)
+        out_of_drive_time: Hors amplitude horaire véhicule
+        out_of_drive_time_help: Planifié en dehors des amplitudes horaires du véhicule
+        out_of_work_time: Hors durée de travail
+        out_of_work_time_help: Planifié en dehors de la durée de travail du chauffeur (service compris)
         no_path: Destination inaccessible
         no_path_help: 'Destination inaccessible : pas de voie d''accès ou itinéraire
           pour aller ou partir de la destination'
@@ -1652,8 +1652,8 @@ fr:
       tags_visit: libellés visite
       out_of_window: hors créneau visite
       out_of_capacity: hors capacité véhicule
-      out_of_drive_time: hors créneau véhicule
-      out_of_work_time: hors horaire de travail véhicule
+      out_of_drive_time: hors amplitude horaire du véhicule
+      out_of_work_time: hors horaire de travail
       status: statut
       eta: eta
     form:
