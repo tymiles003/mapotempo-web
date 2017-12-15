@@ -203,7 +203,7 @@ class VehicleUsage < ApplicationRecord
   end
 
   def outside_default_work_time?(start_time, current_time)
-    default_work_time ? current_time > start_time + (default_work_time) - ((default_service_time_start || 0) + (default_service_time_end || 0)) : false
+    default_work_time ? current_time > start_time + default_work_time : false
   end
 
   def work_or_window_time
