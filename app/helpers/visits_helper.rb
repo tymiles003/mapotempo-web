@@ -21,8 +21,8 @@ module VisitsHelper
     quantities = visit.send(options[:with_default] ? :default_quantities : :quantities)
     visit.destination.customer.deliverable_units.map{ |du|
       if quantities && (quantities[du.id] && quantities[du.id] != 0 || visit.quantities_operations[du.id])
-        q = Visit.localize_numeric_value(number_with_precision(quantities[du.id], strip_insignificant_zeros: true).to_f)
-        q += '/' + Visit.localize_numeric_value(number_with_precision(vehicle.default_capacities[du.id], strip_insignificant_zeros: true).to_f) if vehicle && vehicle.default_capacities[du.id]
+        q = number_with_precision(quantities[du.id], precision: 2, delimiter: I18n.t('number.format.delimiter'), strip_insignificant_zeros: true).to_s
+        q += '/' + number_with_precision(vehicle.default_capacities[du.id], precision: 2, delimiter: I18n.t('number.format.delimiter'), strip_insignificant_zeros: true).to_s if vehicle && vehicle.default_capacities[du.id]
         q += "\u202F" + du.label if du.label
         q = I18n.t("activerecord.attributes.deliverable_unit.operation_#{visit.quantities_operations[du.id]}") + " (#{q})" if visit.quantities_operations[du.id]
         {
