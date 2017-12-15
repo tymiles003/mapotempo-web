@@ -322,7 +322,7 @@ class ImporterDestinations < ImporterBase
       visit.save!
 
       # Add visit to route if needed
-      if row.key?(:route) && !@visit_ids.include?(visit.id)
+      if row.key?(:route) && !row[:route].blank? && !@visit_ids.include?(visit.id)
         ref_route = row[:route] # ref has to be nil for out-of-route
         @routes[ref_route][:ref_vehicle] = row[:ref_vehicle].gsub(%r{[\./\\]}, ' ') if row[:ref_vehicle]
         @routes[ref_route][:visits] << [visit, ValueToBoolean.value_to_boolean(row[:active], true)]
@@ -358,7 +358,7 @@ class ImporterDestinations < ImporterBase
     @customer.save!
 
     unless @routes.keys.compact.empty?
-      @planning = @customer.plannings.find{ |p| p.ref == @planning_hash['ref'] } if @planning_hash.key?('ref')
+      @planning = @customer.plannings.find{ |p| p.ref == @planning_hash['ref'] } if @planning_hash.key?('ref') && !@planning_hash['ref'].blank?
       unless @planning
         # Do not link the planning to has_many of the customer, to avoid cascading while saving from customer.
         # The following save_import does not re-synchr the object in memory from database, unless explicitly requested.
