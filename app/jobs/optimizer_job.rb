@@ -31,6 +31,7 @@ class OptimizerJob < Job.new(:planning_id, :route_id, :global, :active_only)
     return true if @job.progress == 'no_solution' && @job.attempts > 0
 
     Delayed::Worker.logger.info "OptimizerJob planning_id=#{planning_id} perform"
+    job_progress_save '0;0;'
     planning = Planning.where(id: planning_id).first!
     routes = planning.routes.select { |r|
       (route_id && r.id == route_id) || (!route_id && !global && r.vehicle_usage_id && r.size_active > 1) || (!route_id && global)
