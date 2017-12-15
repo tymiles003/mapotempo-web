@@ -128,6 +128,8 @@ var mapInitialize = function(params) {
         geocoderLayer.removeLayer(focusGeocode);
       }, 2000);
     }).addTo(map);
+
+    $('.leaflet-control-geocoder-icon').prop('title', I18n.t('web.geocoder.tooltip'));
   }
 
   if (params.overlay_layers) {

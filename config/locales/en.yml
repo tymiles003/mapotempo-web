@@ -2141,6 +2141,7 @@ en:
     contact: Contact support
     choose_file: Choose file
     geocoder:
+      tooltip: Search an address
       search: Search an address...
       empty_result: No results found
   api_web:

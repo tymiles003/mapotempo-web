@@ -2242,6 +2242,7 @@ fr:
     contact: Contacter le support
     choose_file: Sélectionner fichier
     geocoder:
+      tooltip: Rechercher une adresse
       search: Recherche d'adresse...
       empty_result: Pas de résultat
   api_web:
