@@ -905,19 +905,6 @@ var plannings_edit = function(params) {
         $('.color_small', $('.vehicle_select', $(this).parent()).next()).hide();
       else
         $('.color_small', $('.vehicle_select', $(this).parent()).next()).show();
-      $.ajax({
-        type: 'PUT',
-        data: JSON.stringify({
-          color: color
-        }),
-        contentType: 'application/json',
-        url: '/api/0.1/plannings/' + planning_id + '/routes/' + id + '.json',
-        success: function() {
-          routesLayer.options.colorsByRoute[id] = color;
-          routesLayer.refreshRoutes([id]);
-        },
-        error: ajaxError
-      });
       routes.forEach(function(route) {
         if (route.route_id == id) {
           route.color = color;
@@ -928,6 +915,19 @@ var plannings_edit = function(params) {
             }
           }
         }
+      });
+      $.ajax({
+        type: 'PUT',
+        data: JSON.stringify({
+          color: color
+        }),
+        contentType: 'application/json',
+        url: '/api/0.1/plannings/' + planning_id + '/routes/' + id + '.json',
+        success: function() {
+          routesLayer.options.colorsByRoute[id] = color;
+          routesLayer.refreshRoutes([id], routes);
+        },
+        error: ajaxError
       });
       $('li[data-route_id=' + id + '] li[data-store_id] > i.fa').css('color', color);
       $('li[data-route_id=' + id + '] li[data-stop_id] .number:not(.color_force)').css('background', color);
@@ -1207,25 +1207,36 @@ var plannings_edit = function(params) {
       setRouteVariables(i, route);
 
       // update global routes
-      if (typeof options !== 'object' || options.partial != 'stops') {
-        var vehicle_usage = {};
-        $.each(vehicles_usages_map, function(i, v) {
-          if (v.vehicle_usage_id == route.vehicle_usage_id) vehicle_usage = v;
-        });
-        $.each(routes, function(i, rv) {
-          if (rv.route_id == route.route_id)
-            routes[i] = {
-              route_id: route.route_id,
-              color: route.color || vehicle_usage.color,
-              vehicle_usage_id: route.vehicle_usage_id,
-              ref: route.ref,
-              name: (route.ref ? (route.ref + ' ') : '') + vehicle_usage.name,
-              outdated: route.outdated
-            };
-        });
-        updateColorsForRoutesAndStops(i, route);
-      }
+      var vehicle_usage = {};
+      $.each(vehicles_usages_map, function(i, v) {
+        if (v.vehicle_usage_id == route.vehicle_usage_id) vehicle_usage = v;
+      });
+      $.each(routes, function(i, rv) {
+        if (rv.route_id == route.route_id)
+          routes[i] = {
+            route_id: route.route_id,
+            color: route.color || vehicle_usage.color,
+            vehicle_usage_id: route.vehicle_usage_id,
+            ref: route.ref,
+            name: (route.ref ? (route.ref + ' ') : '') + vehicle_usage.name,
+            outdated: route.outdated
+          };
+      });
+
+      updateColorsForRoutesAndStops(i, route);
     });
+
+    var refreshBtn = $('button#refresh');
+    if (refreshBtn.length) {
+      var outdated = true;
+      for (var id in routes) {
+        if (routes[id].outdated) {
+          outdated = false;
+          break;
+        }
+      }
+      if (outdated) refreshBtn.hide();
+    }
 
     // 1st case: the whole planning needs to be initialized and displayed
     if (typeof options !== 'object' || !options.partial) {
@@ -1312,7 +1323,7 @@ var plannings_edit = function(params) {
         });
       });
 
-      routesLayer.refreshRoutes(routeIds);
+      routesLayer.refreshRoutes(routeIds, routes);
     }
     // 3rd case: only stops needs to be refreshed, for instance after moving stop
     else if (typeof options === 'object' && options.partial === 'stops') {
@@ -1327,7 +1338,7 @@ var plannings_edit = function(params) {
         $(".route[data-route_id='" + route.route_id + "'] .route-details").html(SMT['stops/list'](route));
 
         if (!options || !options.skipMap) {
-          routesLayer.refreshRoutes([route.route_id]);
+          routesLayer.refreshRoutes([route.route_id], routes);
         }
       });
 

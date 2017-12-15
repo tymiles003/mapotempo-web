@@ -492,8 +492,9 @@ var RoutesLayer = L.FeatureGroup.extend({
     this._removeRoutes(routeIds);
   },
 
-  refreshRoutes: function(routeIds, geojson) {
+  refreshRoutes: function(routeIds, routes, geojson) {
     this._removeRoutes(routeIds);
+    this.options.routes = routes;
     // FIXME: callback could be used to avoid blink
     this.showRoutes(routeIds, geojson);
   },
