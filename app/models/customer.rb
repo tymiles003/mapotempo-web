@@ -138,6 +138,7 @@ class Customer < ApplicationRecord
 
       copy.vehicles.each{ |vehicle|
         vehicle.capacities = Hash[vehicle.capacities.to_a.map{ |q| deliverable_unit_ids_map[q[0]] && [deliverable_unit_ids_map[q[0]].id, q[1]] }.compact]
+        vehicle.tags = vehicle.tags.map{ |tag| tags_map[tag] }
         vehicle.save!(validate: false)
       }
 
@@ -151,6 +152,7 @@ class Customer < ApplicationRecord
           vehicle_usage.store_start = stores_map[vehicle_usage.store_start]
           vehicle_usage.store_stop = stores_map[vehicle_usage.store_stop]
           vehicle_usage.store_rest = stores_map[vehicle_usage.store_rest]
+          vehicle_usage.tags = vehicle_usage.tags.map{ |tag| tags_map[tag] }
           vehicle_usage.save!(validate: false)
         }
         vehicle_usage_set.save!(validate: false)
