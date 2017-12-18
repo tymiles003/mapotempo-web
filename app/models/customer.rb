@@ -162,6 +162,7 @@ class Customer < ApplicationRecord
         destination.visits.each{ |visit|
           visit.tags = visit.tags.collect{ |tag| tags_map[tag] }
           visit.quantities = Hash[visit.quantities.to_a.map{ |q| deliverable_unit_ids_map[q[0]] && [deliverable_unit_ids_map[q[0]].id, q[1]] }.compact]
+          visit.quantities_operations = Hash[visit.quantities_operations.to_a.map{ |q| deliverable_unit_ids_map[q[0]] && [deliverable_unit_ids_map[q[0]].id, q[1]] }.compact]
           visit.save!(validate: false)
         }
         destination.save!(validate: false)
@@ -182,6 +183,7 @@ class Customer < ApplicationRecord
         # All routes must be caught in memory, don't use scopes
         planning.routes.each{ |route|
           route.vehicle_usage = vehicle_usages_map[route.vehicle_usage]
+          route.quantities = Hash[route.quantities.to_a.map{ |q| deliverable_unit_ids_map[q[0]] && [deliverable_unit_ids_map[q[0]].id, q[1]] }.compact]
 
           route.stops.each{ |stop|
             stop.visit = visits_map[stop.visit]
