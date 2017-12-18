@@ -1396,6 +1396,7 @@ var plannings_edit = function(params) {
               i18n: mustache_i18n,
               planning_id: data.planning_id,
               routes: routesWithVehicle,
+              out_of_route_id: outOfRouteId,
               route_id: route.route_id,
               vehicle_name: route.vehicle && route.vehicle.name,
               popover: true,
