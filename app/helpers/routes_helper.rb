@@ -30,14 +30,16 @@ module RoutesHelper
       v > 0
     }.collect{ |id, v|
       unit = route.planning.customer.deliverable_units.find{ |du| du.id == id }
-      q = number_with_precision(v, precision: 2, delimiter: I18n.t('number.format.delimiter'), strip_insignificant_zeros: true).to_s
-      q += '/' + number_with_precision(vehicle.default_capacities[id], precision: 2, delimiter: I18n.t('number.format.delimiter'), strip_insignificant_zeros: true).to_s if vehicle && vehicle.default_capacities[id]
-      q += "\u202F" + unit.label if unit.label
-      {
-        id: id,
-        quantity: q,
-        unit_icon: unit.default_icon
-      } if unit
+      if unit
+        q = number_with_precision(v, precision: 2, delimiter: I18n.t('number.format.delimiter'), strip_insignificant_zeros: true).to_s
+        q += '/' + number_with_precision(vehicle.default_capacities[id], precision: 2, delimiter: I18n.t('number.format.delimiter'), strip_insignificant_zeros: true).to_s if vehicle && vehicle.default_capacities[id]
+        q += "\u202F" + unit.label if unit.label
+        {
+          id: id,
+          quantity: q,
+          unit_icon: unit.default_icon
+        }
+      end
     }.compact
   end
 
