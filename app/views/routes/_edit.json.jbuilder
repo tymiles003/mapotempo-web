@@ -47,7 +47,7 @@ if route.vehicle_usage_id
 
   # Devices
   route.planning.customer.device.configured_definitions.each do |key, definition|
-    json.set!(key, true) if !definition[:route_operations].empty? && definition[:forms][:vehicle] && (definition[:forms][:vehicle].keys.empty? || !definition[:forms][:vehicle].keys.any?{ |k| route.vehicle_usage.vehicle.devices[k].blank? })
+    json.set!(key, true) if !definition[:route_operations].empty? && definition[:forms][:vehicle] && definition[:forms][:vehicle].keys.all?{ |k| !route.vehicle_usage.vehicle.devices[k].blank? }
   end
   if @with_stops
     status_uniq = route.stops.map{ |stop|
