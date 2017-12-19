@@ -460,7 +460,7 @@ class Route < ApplicationRecord
   attr_localized :quantities
 
   def compute_quantities
-    quantities_ = {}
+    quantities_ = Hash.new(0)
 
     stops.each do |stop|
       if stop.active && stop.position? && stop.is_a?(StopVisit) && stop.visit.try(:default_quantities?)
@@ -468,7 +468,7 @@ class Route < ApplicationRecord
 
         stop.route.planning.customer.deliverable_units.each do |du|
           if stop.visit.quantities_operations[du.id] == 'fill'
-            quantities_[du.id] = vehicle_usage.vehicle.default_capacities[du.id]
+            quantities_[du.id] = vehicle_usage.vehicle.default_capacities[du.id] if vehicle_usage.vehicle.default_capacities[du.id]
           elsif stop.visit.quantities_operations[du.id] == 'empty'
             quantities_[du.id] = 0
           else
