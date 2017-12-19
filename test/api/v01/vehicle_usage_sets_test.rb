@@ -141,7 +141,7 @@ class V01::VehicleUsageSetsTest < ActiveSupport::TestCase
       assert_difference('VehicleUsage.count', 0) do
         post api(), @vehicle_usage_set.attributes
         assert last_response.forbidden?, last_response.body
-        assert_equal 'Maximum number of vehicle usage sets reached', JSON.parse(last_response.body)['message']
+        assert_equal 'dépassement du nombre maximal de configurations des véhicules', JSON.parse(last_response.body)['message']
       end
     end
   end

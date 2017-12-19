@@ -481,7 +481,7 @@ class V01::PlanningsTest < V01::PlanningsBaseTest
       assert_difference('Route.count', 0) do
         post api(), @planning.attributes.merge({tag_operation: 'and'})
         assert last_response.forbidden?, last_response.body
-        assert_equal 'Maximum number of plans reached', JSON.parse(last_response.body)['message']
+        assert_equal 'dépassement du nombre maximal de plans', JSON.parse(last_response.body)['message']
       end
     end
   end

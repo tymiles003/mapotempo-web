@@ -20,7 +20,7 @@
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
 [data-controller='vehicle_usage_sets'] {
-  &[data-action='index'] {
+  &[data-action='index'], &[data-action='duplicate'] {
     .usage-set-name {
       font-size: 1.5em;
       @media screen and (max-width: 767px) {

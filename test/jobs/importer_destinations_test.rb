@@ -475,4 +475,17 @@ class ImporterDestinationsTest < ActionController::TestCase
     end
   end
 
+  test 'should use limitation' do
+    @customer.max_plannings = @customer.plannings.size
+    @customer.save!
+
+    assert_difference('Planning.count', 0) do
+      assert_difference('Route.count', 0) do
+        import = ImportCsv.new(importer: ImporterDestinations.new(@customer), replace: false, file: tempfile('test/fixtures/files/import_destinations_one.csv', 'text.csv'))
+        assert_not import.import
+        assert_equal 'dépassement du nombre maximal de plans', import.errors.full_messages.join('')
+      end
+    end
+  end
+
 end

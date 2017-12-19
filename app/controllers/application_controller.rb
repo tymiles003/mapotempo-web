@@ -149,7 +149,7 @@ class ApplicationController < ActionController::Base
     yield
   rescue Exceptions::OverMaxLimitError => e
     respond_to do |format|
-      flash.now[:alert] = current_user.customer.errors.full_messages.join(' ')
+      flash.now[:alert] = I18n.t("activerecord.errors.models.customer.attributes.#{controller_name}.over_max_limit")
       if action_name == 'create'
         format.html { render action: 'new' }
       elsif action_name.start_with? 'upload'

@@ -709,7 +709,7 @@ class V01::DestinationsTest < ActiveSupport::TestCase
     assert_difference('Destination.count', 0) do
       post api(), @destination.attributes
       assert last_response.forbidden?, last_response.body
-      assert_equal 'Maximum number of destinations reached', JSON.parse(last_response.body)['message']
+      assert_equal 'dépassement du nombre maximal de clients', JSON.parse(last_response.body)['message']
     end
   end
 end

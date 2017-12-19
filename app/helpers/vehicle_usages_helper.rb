@@ -30,7 +30,7 @@ module VehicleUsagesHelper
       if vehicle_usage.vehicle.router
         concat [vehicle_usage.vehicle.router.translated_name, t("activerecord.attributes.router.router_dimensions.#{vehicle_usage.vehicle.router_dimension || @customer.router_dimension}")].join(' - ')
       else
-        concat span_tag([@customer.router.translated_name, t("activerecord.attributes.router.router_dimensions.#{@customer.router_dimension}")].join(' - '))
+        concat span_tag([current_user.customer.router.translated_name, t("activerecord.attributes.router.router_dimensions.#{current_user.customer.router_dimension}")].join(' - '))
       end
     end
   end
