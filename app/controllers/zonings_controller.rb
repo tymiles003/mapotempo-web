@@ -20,7 +20,7 @@ class ZoningsController < ApplicationController
   before_action :set_zoning, only: [:show, :edit, :update, :destroy, :duplicate, :automatic, :from_planning, :isochrone, :isodistance]
   before_action :manage_zoning
   around_action :includes_destinations, only: [:show, :edit, :update, :automatic, :from_planning]
-  around_action :over_max_limit, only: [:create]
+  around_action :over_max_limit, only: [:create, :duplicate]
 
   load_and_authorize_resource
 

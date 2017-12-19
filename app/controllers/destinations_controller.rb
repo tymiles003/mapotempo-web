@@ -22,7 +22,7 @@ class DestinationsController < ApplicationController
   before_action :authenticate_user!
   before_action :set_destination, only: [:show, :edit, :update, :destroy]
   after_action :warnings, only: [:create, :update]
-  around_action :over_max_limit, only: [:create]
+  around_action :over_max_limit, only: [:create, :duplicate]
 
   load_and_authorize_resource
 
