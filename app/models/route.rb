@@ -463,7 +463,7 @@ class Route < ApplicationRecord
     quantities_ = Hash.new(0)
 
     stops.each do |stop|
-      if stop.active && stop.position? && stop.is_a?(StopVisit) && stop.visit.try(:default_quantities?)
+      if stop.active && stop.position? && stop.is_a?(StopVisit)
         out_of_capacity = nil
 
         stop.route.planning.customer.deliverable_units.each do |du|
@@ -476,14 +476,19 @@ class Route < ApplicationRecord
           end
 
           out_of_capacity ||= (vehicle_usage.vehicle.default_capacities[du.id] && quantities_[du.id] > vehicle_usage.vehicle.default_capacities[du.id]) || quantities_[du.id] < 0 if vehicle_usage # FIXME with initial quantity
-          stop.out_of_capacity = out_of_capacity
-        end
+        end if stop.visit.try(:default_quantities?) # Avoid N+1 queries
+
+        stop.out_of_capacity = out_of_capacity
       end
     end
 
-    self.quantities = quantities_.each { |k, v|
-      v = v.round(3)
-    }
+    if planning.customer.deliverable_units.empty?
+      self.quantities = {}
+    else
+      self.quantities = quantities_.each { |k, v|
+        v = v.round(3)
+      }
+    end
   end
 
   def reverse_order

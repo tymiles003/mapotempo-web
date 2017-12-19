@@ -41,7 +41,7 @@ module PlanningsHelper
 
       route.quantities.select{ |_k, v | v > 0 }.each do |id, v|
         unit = route.planning.customer.deliverable_units.find{ |du| du.id == id }
-        next if !unit
+        next unless unit
 
         if hashy_map.has_key?(unit.id)
           hashy_map[unit.id][:quantity] += v
