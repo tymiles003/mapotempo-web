@@ -7,7 +7,7 @@
   <tr>
     <td>
       <p>
-        <%= I18n.t('user_mailer.connection.welcome', name: @name) %>
+        <%= I18n.t('user_mailer.connection.welcome', name: @user.customer.reseller.name) %>
       </p>
       <p>
         <%= I18n.t('user_mailer.connection.detail.content') %>
@@ -36,7 +36,7 @@
           <%= I18n.t('user_mailer.layout.staff.greetings').html_safe %>
         </p>
         <p class="signature">
-          <%= I18n.t('user_mailer.layout.staff.signature', name: @name).html_safe %>
+          <%= I18n.t('user_mailer.layout.staff.signature', name: @user.customer.reseller.name).html_safe %>
         </p>
       </div>
     </td>
@@ -45,7 +45,7 @@
 
 <% content_for :footer do %>
   <td align="center" valign="top" width="100%" style="background-color: #ffffff;  border-top: 1px solid #e5e5e5; border-bottom: 1px solid #e5e5e5;">
-    
+
     <div style="min-width:215.53px;margin:5px; padding:10px;display:inline-block; color:#838383; font-family:'Source Sans Pro', Helvetica, Calibri, sans-serif; line-height: 21px;font-size:12px;" class="align-center outlook-font">
       <b><%= I18n.t('user_mailer.footer.first_step').html_safe %></b>
     </div>
@@ -57,6 +57,6 @@
     <div style="min-width:215.53px;margin:5px; padding:10px;display:inline-block; color:#838383; font-family:'Source Sans Pro', Helvetica, Calibri, sans-serif; line-height: 21px;font-size:12px;" class="align-center outlook-font">
       <b><%= I18n.t('user_mailer.footer.second_step').html_safe %></b>
     </div>
-    
+
   </td>
 <% end %>

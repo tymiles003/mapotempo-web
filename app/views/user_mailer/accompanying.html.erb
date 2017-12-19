@@ -32,7 +32,7 @@
           <%= I18n.t('user_mailer.layout.staff.greetings').html_safe %>
         </p>
         <p class="signature">
-          <%= I18n.t('user_mailer.layout.staff.signature', name: @name).html_safe %>
+          <%= I18n.t('user_mailer.layout.staff.signature', name: @user.customer.reseller.name).html_safe %>
         </p>
       </div>
     </td>
@@ -40,5 +40,5 @@
 </table>
 
 <% content_for :footer do %>
-    <%= render 'user_mailer/user_mail_layouts/full_links_footer' %>
+  <%= render 'user_mailer/user_mail_layouts/full_links_footer' %>
 <% end %>

@@ -583,7 +583,7 @@ fr:
             d'essayer une autre action en attendant. Contactez le support si urgence.
           '404': La page n'a pas été trouvée sur le serveur, elle a peut être été
             supprimée.
-          '422': Vous n'avez pas l'autorisation d'exécuter cette action.
+          '422': L'action que vous avez tenté de réaliser est impossible.
           '500': Une erreur interne s'est produite. Le problème a été signalé, merci
             d'essayer une autre action en attendant. Contactez le support si urgence.
       back_button: Page précédente

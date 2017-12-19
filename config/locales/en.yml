@@ -575,13 +575,13 @@ en:
         title:
           default: An error occurred in the application
           '404': Cannot find the page
-          '422': Unauthorized request
+          '422': Unprocessable request
           '500': Internal error occurred
         explanation:
           default: An internal error occurred. The problem was reported, please try
             another action. Contact support if urgent.
           '404': This page was not found on server, perhaps it was deleted.
-          '422': You are not authorized to perform this action.
+          '422': The action you try to perform is impossible.
           '500': An internal error occurred. The problem was reported, please try
             another action. Contact support if urgent.
       back_button: Previous page
@@ -1201,7 +1201,7 @@ en:
         doc_link: "Doc - Global and user settings"
         doc_href: "/manual/02-global_settings_users.html"
         img_src: "https://www.mapotempo.com/wp-content/uploads/2015/10/user.png"
-      footer: "You receive this email as a user of %{name} Web"
+      footer: "You receive this email as a user of %{name}"
     features:
       header: "You have questions? Our team responds!"
       main_content: "Our team is available to answer all your questions: "
