@@ -65,17 +65,19 @@ var popupModule = (function() {
             'stores/' + marker.properties.store_id + '.json' :
             'routes/' + marker.properties.route_id + '/stops/by_index/' + marker.properties.index + '.json';
         } else {
-          url += (marker.properties.store_id) ? 
+          url += (marker.properties.store_id) ?
             'stores/' + marker.properties.store_id + '.json' :
             'visits/' + marker.properties.visit_id + '.json';
         }
 
         getPopupContent(url, marker, map);
 
-        _ajaxRequest.current.done(function() {
-          _previousPopup = marker.getPopup();
-          marker.openPopup();
-        });
+        if (_ajaxRequest.current) {
+          _ajaxRequest.current.done(function() {
+            _previousPopup = marker.getPopup();
+            marker.openPopup();
+          });
+        }
       }
     }
   };
@@ -347,6 +349,7 @@ var RoutesLayer = L.FeatureGroup.extend({
     popupModule.initGlobal(null, this);
     L.FeatureGroup.prototype.initialize.call(this);
     this.planningId = planningId;
+    this.clickPopupId = undefined;
     this.options = $.extend({}, this.defaultOptions, options); // Don't modify defaultOptions which can be reinitialized by turbolinks
 
     if (this.options.disableClusters) {
@@ -367,16 +370,18 @@ var RoutesLayer = L.FeatureGroup.extend({
     this.map = map;
     this.map.on('click', this.hideLastPopup).on('zoomstart', this.hideLastPopup);
 
-    this.on('mouseover', function(e) {
+    // Warning: Leaflet always called popup close event after marker click
+    this.off('mouseover').off('mouseout').off('click')
+      .on('mouseover', function(e) {
       if (this.options.showPopupOnHover) {
-        if (e.layer instanceof L.Marker && !popupModule.activeClickMarker) {
-          // Unbind pop when needed | != compare memory address between marker objects (Very same instance equality).
+        if (e.layer instanceof L.Marker) {
+          if (this.clickPopupId) {
+            return;
+          }
 
-          if (popupModule.previousMarker && (popupModule.previousMarker != e.layer))
+          if (popupModule.previousMarker && (popupModule.previousMarker._leaflet_id !== e.layer._leaflet_id)) {
             popupModule.previousMarker.closePopup();
-
-          if (e.layer.click)
-            e.layer.click = false; // Don't forget to re-init e.layer.click
+          }
 
           popupModule.createPopupForLayer(e.layer, this.map);
         } else if (e.layer instanceof L.Path) {
@@ -386,12 +391,13 @@ var RoutesLayer = L.FeatureGroup.extend({
           });
         }
       }
-    }.bind(this)).on('mouseout', function(e) {
+    }.bind(this))
+      .on('mouseout', function(e) {
       if (!this.options.showPopupOnHover) { return; }
 
       if (e.layer instanceof L.Marker) {
         popupModule.previousMarker = e.layer;
-        if (!e.layer.click && e.layer.getPopup()) {
+        if (!this.clickPopupId && e.layer.getPopup()) {
           e.layer.closePopup();
         }
         if (!popupModule.isRequestDone) {
@@ -407,26 +413,32 @@ var RoutesLayer = L.FeatureGroup.extend({
       .on('click', function(e) {
         // Open popup if only one is actually in a click statement.
         if (e.layer instanceof L.Marker) {
+          // Highlight stop in sidebar
           if (e.layer.properties.index) {
             this.fire('clickStop', {
               index: e.layer.properties.index,
               routeId: e.layer.properties.route_id
             });
           }
-          if (e.layer.click && (e.layer === popupModule.activeClickMarker)) {
-            e.layer.closePopup();
-            e.layer.click = false;
-          } else {
-            if (popupModule.activeClickMarker && e.layer !== popupModule.activeClickMarker) {
-              popupModule.activeClickMarker.click = false;
-              popupModule.activeClickMarker.closePopup();
-              popupModule.createPopupForLayer(e.layer, this.map);
-            } else if (popupModule.previousPopup) {
-              e.layer.bindPopup(popupModule.previousPopup.addTo(map));
-            }
-            e.layer.click = true;
-            popupModule.activeClickMarker = e.layer;
-          }
+
+          popupModule.createPopupForLayer(e.layer, this.map);
+          this.clickPopupId = e.layer._leaflet_id;
+
+          // FIXME: find another solution to reuse previous popup without double popup problem
+          // if (this.clickPopupId === e.layer._leaflet_id) {
+          //   e.layer.closePopup();
+          //   this.clickPopupId = undefined;
+          // } else {
+          //   if (this.clickPopupId) {
+          //     this.map.closePopup();
+          //   } else if (popupModule.previousPopup) {
+          //     e.layer.bindPopup(popupModule.previousPopup.addTo(map));
+          //   } else {
+          //     popupModule.createPopupForLayer(e.layer, this.map);
+          //   }
+          //
+          //   this.clickPopupId = e.layer._leaflet_id;
+          // }
         } else if (e.layer instanceof L.Path) {
           var content = '';
 
@@ -462,14 +474,16 @@ var RoutesLayer = L.FeatureGroup.extend({
             closeOnClick: true
           }).setLatLng(e.latlng).setContent(content).openOn(this.map);
         }
+
+        return false;
       }.bind(this))
       .on('popupopen', function(e) {
         // Silence is golden
       }.bind(this))
       .on('popupclose', function(e) {
-        // Silence is golden
+        // popupclose event received before click event ...
         e.layer.unbindPopup();
-        popupModule.activeClickMarker = void(0);
+        this.clickPopupId = undefined;
       }.bind(this));
   },
 
