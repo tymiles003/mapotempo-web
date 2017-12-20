@@ -182,6 +182,8 @@ class ImporterVehicleUsageSets < ImporterBase
     vehicle_usage.assign_attributes(vehicle_usage_attributes.except(:name_vehicle_usage_set))
 
     columns_vehicle_usage_set.keys.each do |key|
+      next if key == :tags
+
       if key == :store_start_ref
         key = :store_start
       elsif key == :store_stop_ref
@@ -190,7 +192,7 @@ class ImporterVehicleUsageSets < ImporterBase
         key = :store_rest
       end
 
-      if !@common_configuration.key?(key)
+      if !@common_configuration.key?(key) && !vehicle_usage_attributes[key].blank?
         @common_configuration[key] = vehicle_usage_attributes[key]
       elsif @common_configuration[key] != vehicle_usage_attributes[key]
         @common_configuration[key] = nil
