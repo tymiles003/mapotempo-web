@@ -388,7 +388,7 @@ $sidebar-margins: 10px;
           margin-right: 4px;
         }
         .stops li .title {
-          max-width: 210px;
+          max-width: 220px;
         }
       }
 
@@ -405,6 +405,15 @@ $sidebar-margins: 10px;
 
         .stops {
           min-width: 288px;
+
+          .fa-reorder {
+            width: 20px;
+            margin: 0;
+          }
+
+          li .title {
+            max-width: 195px; // because of DnD
+          }
         }
       }
 
