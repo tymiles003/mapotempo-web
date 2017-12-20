@@ -89,6 +89,7 @@ class SuiviDeFlotte < DeviceBase
 
     op_response = (operation.to_s + '_response').to_sym
     op_return = (operation.to_s + '_return').to_sym
+
     if no_error_code && response.body[op_response] && response.body[op_response][op_return] != no_error_code.to_s
       Rails.logger.info response.body[op_response]
       raise DeviceServiceError.new("Suivi De Flotte operation #{operation} returns error: #{error_code[response.body[op_response][op_return]] || response.body[op_response][op_return]}")
@@ -96,8 +97,8 @@ class SuiviDeFlotte < DeviceBase
     response.body
   rescue Savon::SOAPFault => error
     Rails.logger.info error
-    fault_code = error.to_hash[:fault][:faultcode]
-    raise DeviceServiceError.new("Suivi De Flotte: #{fault_code}")
+    fault_string = error.to_hash[:fault][:faultstring]
+    raise DeviceServiceError.new("Suivi De Flotte: #{fault_string}")
   rescue Savon::HTTPError => error
     if error.http.code == 401
       raise DeviceServiceError.new('Suivi De Flotte: ' + I18n.t('errors.suivi_de_flotte.invalid_account'))

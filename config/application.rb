@@ -11,7 +11,7 @@ require_relative '../lib/optim/optimizer_wrapper'
 require_relative '../lib/exceptions'
 
 require_relative '../lib/devices/device_base'
-['fleet_demo', 'fleet', 'alyacom', 'masternaut', 'orange', 'teksat', 'tomtom', 'trimble', 'locster', 'suivi_de_flotte', 'notico', 'praxedo'].each{|name|
+['fleet_demo', 'fleet', 'alyacom', 'masternaut', 'orange', 'teksat', 'tomtom', 'trimble', 'suivi_de_flotte', 'notico', 'praxedo'].each{|name|
   require_relative "../lib/devices/#{name}"
 }
 
@@ -98,7 +98,7 @@ module Mapotempo
       teksat: Teksat.new,
       tomtom: Tomtom.new,
       trimble: Trimble.new,
-      locster: Locster.new,
+      # locster: Locster.new,
       suivi_de_flotte: SuiviDeFlotte.new,
       notico: Notico.new,
       praxedo: Praxedo.new
