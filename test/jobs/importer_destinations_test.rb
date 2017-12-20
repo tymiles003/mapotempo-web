@@ -483,7 +483,7 @@ class ImporterDestinationsTest < ActionController::TestCase
       assert_difference('Route.count', 0) do
         import = ImportCsv.new(importer: ImporterDestinations.new(@customer), replace: false, file: tempfile('test/fixtures/files/import_destinations_one.csv', 'text.csv'))
         assert_not import.import
-        assert_equal 'dépassement du nombre maximal de plans', import.errors.full_messages.join('')
+        assert_equal 'Dépassement du nombre maximal de plans', import.errors.full_messages.join('')
       end
     end
   end
