@@ -588,9 +588,6 @@ var plannings_edit = function(params) {
       url: '/api/0.1/plannings/' + planning_id + '/update_routes',
       type: 'PATCH',
       data: {
-        route_ids: $.map(routes, function(route) {
-          return route.route_id;
-        }),
         selection: selection,
         action: action
       },

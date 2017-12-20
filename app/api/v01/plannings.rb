@@ -277,13 +277,14 @@ class V01::Plannings < Grape::API
       nickname: 'updateRoutes'
     params do
       requires :id, type: String, desc: ID_DESC
-      requires :route_ids, type: Array[Integer], documentation: { param_type: 'form' }, coerce_with: CoerceArrayInteger, desc: 'Ids separated by comma.'
       requires :selection, type: String, values: %w(all reverse none)
       requires :action, type: String, values: %w(toggle lock)
+      optional :route_ids, type: Array[Integer], documentation: { param_type: 'form' }, coerce_with: CoerceArrayInteger, desc: 'Ids separated by comma.'
     end
     patch ':id/update_routes' do
       planning = current_customer.plannings.where(ParseIdsRefs.read(params[:id])).first!
-      routes = planning.routes.select{ |r| params[:route_ids].include? r.id }
+      routes = planning.routes
+      routes = routes.select{ |r| params[:route_ids].include? r.id } unless !params[:route_ids] || params[:route_ids].empty?
       routes.each do |route|
         case params[:action].to_sym
           when :toggle
