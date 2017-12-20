@@ -1661,9 +1661,7 @@ fr:
       ref_help: Référence libre
       begin_end_date: Période de validité
       begin_end_date_help: Période durant laquelle le plan est valide
-      tags_help: Restreint les visites / clients dans le plan (les visites/clients
-        doivent soit avoir l'ensemble de tous ces libellés (TOUS), soit un des libellés
-        sélectionnés (OU), pour apparaître dans le plan).
+      tags_help: Permet de filtrer les visites qui seront présentes sur le plan selon leur libellé. Si «tous » est sélectionné, les visites/clients doivent avoir l’ensemble des libellés. Si « ou » est sélectionné un libellé de la liste suffit.
       order_array: Comm.
       zonings_help: Permet d'affecter automatiquement des visites/clients à des véhicules
         suivant des zones géographiques prédéfinies.
@@ -1886,7 +1884,7 @@ fr:
       color: couleur
       color_desc: couleur associée au véhicule
       tags: compétences du véhicule
-      tags_desc: 'compétences associées au véhicule. (Attention : si un seul véhicule possède des compétences alors tous les autres véhicules ne pourront utiliser cette compétence si non déclaré)'
+      tags_desc: 'compétences associées au véhicule. (Attention : lorsqu’un véhicule est associé à une compétence, lors de l’optimisation les visites ayant ce besoin de compétence seront automatiquement attribuées à ce véhicule.)'
       tags_format: compétence 1,compétence 2
       devices: appareils
       devices_desc: référence ou ID de votre GPS associé aux véhicules

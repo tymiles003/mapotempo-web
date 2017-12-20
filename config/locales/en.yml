@@ -1582,9 +1582,7 @@ en:
       ref_help: A free reference
       begin_end_date: Validity period
       begin_end_date_help: Period when plan is valid
-      tags_help: Restrict visits/destinations in the plan (visits/destinations should
-        have either all of these tags (ALL), or one of the selected tags (OR), to
-        be taken into account in the plan).
+      tags_help: Allow to filter visits displayed on plan depending to their tags. If "all" is selected, all visits/clients must be tagged with all the tags. If "or" is selected one tag from the list is sufficient.
       order_array: Orders
       zonings_help: Allow to automatically assign vehicles to visits/destinations
         with geographic zones.
@@ -1802,7 +1800,7 @@ en:
       color: color
       color_desc: color associated to vehicle
       tags: vehicle skills
-      tags_desc: 'skills associated to vehicle. (Warning: if only one vehicle has skills so all other vehicles could not use this skill unless declared)'
+      tags_desc: 'skills associated to vehicle. (Warning: if one vehicle is associated with a skill, when optimizing the plan the visits with this skill will be automatically moved to this vehicle.)'
       tags_format: skill 1,skill 2
       devices: devices
       devices_desc: reference or ID of devices associated to vehicle
