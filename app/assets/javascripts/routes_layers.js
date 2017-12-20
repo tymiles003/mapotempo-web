@@ -357,7 +357,7 @@ var RoutesLayer = L.FeatureGroup.extend({
     }
 
     if (!planningId) {
-      this._loadAllStores(); // If !planningId: load all stores for zonning view
+      this._loadAllStores(); // if no planning id: load all stores for zoning view
     }
 
     // Clear layers if page is reloaded with turbolinks
@@ -518,10 +518,36 @@ var RoutesLayer = L.FeatureGroup.extend({
     this._loadAll(options, callback);
   },
 
+  showClusters: function() {
+    for (var routeByClusterId in this.clustersByRoute) {
+      if (this.clustersByRoute.hasOwnProperty(routeByClusterId)) {
+        this.addLayer(this.clustersByRoute[routeByClusterId]);
+      }
+    }
+    for (var routeByLayerId in this.layersByRoute) {
+      if (this.layersByRoute.hasOwnProperty(routeByLayerId)) {
+        this.addLayer(this.layersByRoute[routeByLayerId]);
+      }
+    }
+  },
+
   hideAllRoutes: function() {
-    this.clearLayers();
-    this.layersByRoute = {};
-    this.clustersByRoute = {};
+    if (!this.planningId) {
+      for (var routeByClusterId in this.clustersByRoute) {
+        if (this.clustersByRoute.hasOwnProperty(routeByClusterId)) {
+          this.removeLayer(this.clustersByRoute[routeByClusterId]);
+        }
+      }
+      for (var routeByLayerId in this.layersByRoute) {
+        if (this.layersByRoute.hasOwnProperty(routeByLayerId)) {
+          this.removeLayer(this.layersByRoute[routeByLayerId]);
+        }
+      }
+    } else {
+      this.clearLayers();
+      this.layersByRoute = {};
+      this.clustersByRoute = {};
+    }
   },
 
   switchMarkerClusters: function() {

@@ -527,7 +527,7 @@ var zonings_edit = function(params) {
           });
         });
       } else {
-        map.addLayer(markersGroup);
+        markersGroup.showClusters();
         $('.zone-info').show();
       }
       $('.automatic.disabled').each(function() {
@@ -535,7 +535,7 @@ var zonings_edit = function(params) {
       });
       $('#generate').css('display', 'inline-block');
     } else {
-      map.removeLayer(markersGroup);
+      markersGroup.hideAllRoutes();
       $('.zone-info').hide();
       $('.automatic').each(function() {
         $(this).addClass('disabled');
