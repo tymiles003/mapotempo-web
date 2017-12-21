@@ -90,7 +90,7 @@ class ZoningsController < ApplicationController
   def duplicate
     respond_to do |format|
       @zoning = @zoning.duplicate
-      @zoning.save!(validate: false)
+      @zoning.save! validate: Mapotempo::Application.config.validate_during_duplication
       format.html { redirect_to edit_zoning_path(@zoning), notice: t('activerecord.successful.messages.updated', model: @zoning.class.model_name.human) }
     end
   end

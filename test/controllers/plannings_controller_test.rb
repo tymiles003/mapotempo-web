@@ -530,14 +530,21 @@ class PlanningsControllerTest < ActionController::TestCase
   end
 
   test 'should duplicate with error' do
-    assert_difference('Planning.count') do
-      @planning.routes[1].stops[0].index = 666
-      @planning.routes[1].stops[0].save!
+    begin
+      orig_validate_during_duplication = Mapotempo::Application.config.validate_during_duplication
+      Mapotempo::Application.config.validate_during_duplication = false
 
-      patch :duplicate, planning_id: @planning
+      assert_difference('Planning.count') do
+        @planning.routes[1].stops[0].index = 666
+        @planning.routes[1].stops[0].save!
+
+        patch :duplicate, planning_id: @planning
+      end
+
+      assert_redirected_to edit_planning_path(assigns(:planning))
+    ensure
+      Mapotempo::Application.config.validate_during_duplication = orig_validate_during_duplication
     end
-
-    assert_redirected_to edit_planning_path(assigns(:planning))
   end
 
   test 'should automatic insert one stop' do

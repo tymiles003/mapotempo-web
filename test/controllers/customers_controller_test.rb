@@ -95,12 +95,19 @@ class CustomersControllerTest < ActionController::TestCase
   end
 
   test 'should duplicate customer with error' do
-    @customer.plannings[1].routes[1].stops[0].index = 666
-    @customer.plannings[1].routes[1].stops[0].save!
+    begin
+      orig_validate_during_duplication = Mapotempo::Application.config.validate_during_duplication
+      Mapotempo::Application.config.validate_during_duplication = false
 
-    sign_in users(:user_admin)
-    assert_difference('Customer.count', 1) do
-      patch :duplicate, id: @customer.id
+      @customer.plannings[1].routes[1].stops[0].index = 666
+      @customer.plannings[1].routes[1].stops[0].save!
+
+      sign_in users(:user_admin)
+      assert_difference('Customer.count', 1) do
+        patch :duplicate, id: @customer.id
+      end
+    ensure
+      Mapotempo::Application.config.validate_during_duplication = orig_validate_during_duplication
     end
   end
 end

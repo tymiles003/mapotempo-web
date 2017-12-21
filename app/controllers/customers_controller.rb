@@ -81,7 +81,7 @@ class CustomersController < ApplicationController
   end
 
   def duplicate
-    @customer.duplicate.save!(validate: false)
+    @customer.duplicate.save! validate: Mapotempo::Application.config.validate_during_duplication
     redirect_to [:customers], notice: t('.success')
   end
 

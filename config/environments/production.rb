@@ -162,4 +162,6 @@ Rails.application.configure do
   config.enable_multi_visits = false
 
   config.display_javascript_errors_on_screen = false
+
+  config.validate_during_duplication = false
 end

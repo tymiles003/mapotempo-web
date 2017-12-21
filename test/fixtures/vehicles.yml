@@ -30,6 +30,7 @@ vehicle_three:
   color: "#00FF00"
   customer: customer_one
   speed_multiplicator:
+  tags: tag_one
 
 vehicle_four:
   name: vehicle_four

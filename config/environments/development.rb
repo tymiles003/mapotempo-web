@@ -138,4 +138,6 @@ Rails.application.configure do
     Bullet.add_footer           = false
     Bullet.counter_cache_enable = true
   end
+
+  config.validate_during_duplication = true
 end

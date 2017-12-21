@@ -306,7 +306,7 @@ class PlanningsController < ApplicationController
   def duplicate
     respond_to do |format|
       @planning = @planning.duplicate
-      @planning.save!(validate: false)
+      @planning.save! validate: Mapotempo::Application.config.validate_during_duplication
       format.html { redirect_to edit_planning_path(@planning), notice: t('activerecord.successful.messages.updated', model: @planning.class.model_name.human) }
     end
   end

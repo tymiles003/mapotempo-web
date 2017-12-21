@@ -125,7 +125,7 @@ class Customer < ApplicationRecord
 
       def copy.devices_update_vehicles; end
 
-      copy.save!(validate: false)
+      copy.save! validate: Mapotempo::Application.config.validate_during_duplication
 
       deliverable_unit_ids_map = Hash[original.deliverable_units.map(&:id).zip(copy.deliverable_units)].merge(nil => nil)
       vehicles_map = Hash[original.vehicles.zip(copy.vehicles)].merge(nil => nil)
@@ -139,7 +139,8 @@ class Customer < ApplicationRecord
       copy.vehicles.each{ |vehicle|
         vehicle.capacities = Hash[vehicle.capacities.to_a.map{ |q| deliverable_unit_ids_map[q[0]] && [deliverable_unit_ids_map[q[0]].id, q[1]] }.compact]
         vehicle.tags = vehicle.tags.map{ |tag| tags_map[tag] }
-        vehicle.save!(validate: false)
+        vehicle.force_check_consistency = true
+        vehicle.save! validate: Mapotempo::Application.config.validate_during_duplication
       }
 
       copy.vehicle_usage_sets.each{ |vehicle_usage_set|
@@ -153,9 +154,10 @@ class Customer < ApplicationRecord
           vehicle_usage.store_stop = stores_map[vehicle_usage.store_stop]
           vehicle_usage.store_rest = stores_map[vehicle_usage.store_rest]
           vehicle_usage.tags = vehicle_usage.tags.map{ |tag| tags_map[tag] }
-          vehicle_usage.save!(validate: false)
+          vehicle_usage.force_check_consistency = true
+          vehicle_usage.save! validate: Mapotempo::Application.config.validate_during_duplication
         }
-        vehicle_usage_set.save!(validate: false)
+        vehicle_usage_set.save! validate: Mapotempo::Application.config.validate_during_duplication
       }
 
       copy.destinations.each{ |destination|
@@ -165,15 +167,17 @@ class Customer < ApplicationRecord
           visit.tags = visit.tags.collect{ |tag| tags_map[tag] }
           visit.quantities = Hash[visit.quantities.to_a.map{ |q| deliverable_unit_ids_map[q[0]] && [deliverable_unit_ids_map[q[0]].id, q[1]] }.compact]
           visit.quantities_operations = Hash[visit.quantities_operations.to_a.map{ |q| deliverable_unit_ids_map[q[0]] && [deliverable_unit_ids_map[q[0]].id, q[1]] }.compact]
-          visit.save!(validate: false)
+          visit.force_check_consistency = true
+          visit.save! validate: Mapotempo::Application.config.validate_during_duplication
         }
-        destination.save!(validate: false)
+        destination.force_check_consistency = true
+        destination.save! validate: Mapotempo::Application.config.validate_during_duplication
       }
 
       copy.zonings.each{ |zoning|
         zoning.zones.each{ |zone|
           zone.vehicle = vehicles_map[zone.vehicle]
-          zone.save!(validate: false)
+          zone.save! validate: Mapotempo::Application.config.validate_during_duplication
         }
       }
 
@@ -189,14 +193,15 @@ class Customer < ApplicationRecord
 
           route.stops.each{ |stop|
             stop.visit = visits_map[stop.visit]
-            stop.save!(validate: false)
+            stop.save! validate: Mapotempo::Application.config.validate_during_duplication
           }
-          route.save!(validate: false)
+          route.save! validate: Mapotempo::Application.config.validate_during_duplication
         }
-        planning.save!(validate: false)
+        planning.force_check_consistency = true
+        planning.save! validate: Mapotempo::Application.config.validate_during_duplication
       }
 
-      copy.save!(validate: false)
+      copy.save! validate: Mapotempo::Application.config.validate_during_duplication
       copy.reload
     })
   end
@@ -207,7 +212,7 @@ class Customer < ApplicationRecord
       copy.name += " (#{I18n.l(Time.zone.now, format: :long)})"
       copy.ref = copy.ref ? Time.new.to_i.to_s : nil
       copy.test = Mapotempo::Application.config.customer_test_default
-      copy.save!(validate: false)
+      copy.save! validate: Mapotempo::Application.config.validate_during_duplication
       copy
     end
   end

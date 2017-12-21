@@ -19,6 +19,10 @@
 module Consistency
   extend ActiveSupport::Concern
 
+  included do
+    attr_accessor :force_check_consistency
+  end
+
   class_methods do
     # Attributes must have a defined #{attr_name}_changed? method
     def validate_consistency(*attributes)
@@ -36,7 +40,7 @@ module Consistency
           attributes.each{ |attr|
             attr = attr.to_s.gsub(/^(.+[^s])(s?)$/, '\1_id\2').to_sym unless attr.to_s =~ /_ids?$/
 
-            if record.send("#{attr}_changed?".to_sym)
+            if record.force_check_consistency || record.send("#{attr}_changed?".to_sym)
               model_name = attr.to_s.gsub(/_id(s?)$/, '\1').to_sym
               models = record.send(model_name)
               models = [models].compact unless models.is_a? ActiveRecord::Associations::CollectionProxy
