@@ -31,7 +31,40 @@ def destinations_url
   ).to_s
 end
 
+# EXAMPLE 1
+# get the destinations list from api_key user's customer
+response = RestClient.get destinations_url
+puts "Found %s destinations" % [ JSON.parse(response).length ]
+
+# EXAMPLE 2
+# post new destinations in json (will be automatically geocoded if lat/lng are missing)
 def destination_hash index
+  {
+    ref: "ref-#{index}",
+    name: "client-#{index}",
+    street: "#{index} Test",
+    postalcode: 33000,
+    city: "Bordeaux",
+    country: "France",
+    detail: "this is test #{index}",
+    tag_ids: [],
+    lat: 44.8798,
+    lng: -0.544917,
+    visits: [{
+      open1: "08:00",
+      close1: "12:00",
+      open2: "14:00",
+      close2: "18:00",
+      take_over: "00:10:00"
+    }]
+  }
+end
+response = RestClient.put destinations_url, { destinations: [destination_hash(1), destination_hash(2)] }.to_json, content_type: :json, accept: :json
+puts "Imported %s destinations" % [ JSON.parse(response).length ]
+
+# EXAMPLE 3
+# same and create a planning at the same time
+def destination_hash_with_route index
   {
     ref: "ref-#{index}",
     name: "client-#{index}",
@@ -49,19 +82,21 @@ def destination_hash index
       close1: "12:00",
       open2: "14:00",
       close2: "18:00",
-      take_over: "00:10:00"
+      take_over: "00:10:00",
+      route: "string",
+      active: true
     }]
   }
 end
+response = RestClient.put destinations_url, {
+  planning: {
+    name: 'my plan'
+    },
+  destinations: [destination_hash_with_route(1), destination_hash_with_route(2)] # note the "route" key defines the targeted route if you have already this info for each visit in created plan
+}.to_json, content_type: :json, accept: :json
+puts "Imported %s destinations and created plan" % [ JSON.parse(response).length ]
 
-# get the destinations list from api_key user's customer
-response = RestClient.get destinations_url
-puts "Found %s Destinations" % [ JSON.parse(response).length ]
-
-# post new destinations in json (will be automatically geocoded)
-response = RestClient.put destinations_url, { destinations: [destination_hash(1), destination_hash(2)] }.to_json, content_type: :json, accept: :json
-puts "Updated %s Destinations" % [ JSON.parse(response).length ]
-
+# EXAMPLE 4
 # import destinations and create a new planning by uploading csv using cURL
 CSV.open("/tmp/mapotempo_csv", "wb") do |csv|
   csv << ["référence","nom","voie","complément","code postal","ville","lat","lng","tournée","libellés","livré"]

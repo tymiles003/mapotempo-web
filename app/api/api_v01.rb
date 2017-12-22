@@ -101,7 +101,7 @@ Several default profiles are available and can be listed with an admin `api_key`
 ## Code samples
 * Create and display destinations or visits.
 Here some samples for these operations: [using PHP](' + Mapotempo::Application.config.swagger_docs_base_path + '/api/0.1/examples/php/example.php), [using Ruby](' + Mapotempo::Application.config.swagger_docs_base_path + '/api/0.1/examples/ruby/example.rb).
-Note you can import destinations/visits and create a planning at the same time if you know beforehand the route for each destination/visit.
+Note you can import destinations/visits and create a planning at the same time if you know beforehand the route for each destination/visit. See the details of importDestinations operation to import your data and create a planning in only one call.
 * Same operations are available for stores (note you have an existing default store).
 * With created destinations/visits, you can create a planning (routes and stops are automatically created depending of yours vehicles and destinations/visits)
 * In existing planning, you have availability to move stops (which represent visits) on a dedicated route (which represent a dedicated vehicle).
