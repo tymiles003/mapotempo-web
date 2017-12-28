@@ -147,7 +147,7 @@ class Fleet < DeviceBase
 
     send_missions(route.vehicle_usage.vehicle.devices[:fleet_user], customer.devices[:fleet][:api_key], destinations)
   rescue RestClient::InternalServerError, RestClient::ResourceNotFound, RestClient::UnprocessableEntity
-    raise DeviceServiceError.new("Fleet: #{I18n.t('errors.fleet.set_mission')}")
+    raise DeviceServiceError.new("Fleet: #{I18n.t('errors.fleet.set_missions')}")
   end
 
   def clear_route(customer, route, use_date = true)
@@ -162,7 +162,7 @@ class Fleet < DeviceBase
       delete_missions(route.vehicle_usage.vehicle.devices[:fleet_user], customer.devices[:fleet][:api_key], destination_ids)
     end
   rescue RestClient::InternalServerError, RestClient::ResourceNotFound, RestClient::UnprocessableEntity
-    raise DeviceServiceError.new("Fleet: #{I18n.t('errors.fleet.set_mission')}")
+    raise DeviceServiceError.new("Fleet: #{I18n.t('errors.fleet.clear_missions')}")
   end
 
   private

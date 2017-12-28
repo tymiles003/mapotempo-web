@@ -97,7 +97,8 @@ fr:
       fetch_stops: Impossible de récupérer la liste des missions
       no_missions: Aucune mission à envoyer
       past_missions: La date du plan doit être supérieure ou égale à aujourd'hui
-      set_mission: Échec lors de la création de la mission
+      set_missions: Échec lors de la création de la mission
+      clear_missions: Échec lors de la suppression des missions
       unauthorized: Non autorisé
       timeout: Délai d'attente depassé
     tomtom:

@@ -97,7 +97,8 @@ en:
       fetch_stops: Cannot get missions list
       no_missions: No missions to send
       past_missions: Plan date must be more or equal than today
-      set_mission: Failed to create mission
+      set_missions: Failed to create missions
+      clear_missions: Failed to destroy missions
       unauthorized: Unauthorized
       timeout: Request Timeout
     tomtom:
