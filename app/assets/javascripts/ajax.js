@@ -139,28 +139,28 @@ var progressDialog = function(delayedJob, dialog, url, callback, options) {
         // Inactive progress class
         $(e).parent().removeClass("active");
         $(e).css({
-          transition: 'linear 0s',
+          transition: 'none',
           width: '0%'
         });
       } else if (progress[i] === 0 || progress[i] === '0') {
         isProgressing = true;
         $(e).parent().removeClass("active");
         $(e).css({
-          transition: 'linear 0s',
+          transition: 'none',
           width: '0%'
         });
       } else if (progress[i] === 100 || progress[i] === '100') {
         isProgressing = true;
         $(e).parent().removeClass("active");
         $(e).css({
-          transition: 'linear 0s',
+          transition: 'none',
           width: '100%'
         });
       } else if (progress[i] === -1 || progress[i] === '-1') {
         isProgressing = true;
         $(e).parent().addClass("active");
         $(e).css({
-          transition: 'linear 0s',
+          transition: 'none',
           width: '100%'
         });
       } else if (progress[i].indexOf('ms') > -1) {
@@ -171,17 +171,15 @@ var progressDialog = function(delayedJob, dialog, url, callback, options) {
         }
         if (iteration != timeSpent[1] || $(".dialog-attempts-number", dialog).html() != delayedJob.attempts) {
           iteration = timeSpent[1];
-          $(e).css('transition', 'linear 0s');
-          $(e).css('width', '0%');
-
-          setTimeout(function() { // to be sure width is 0%
-            duration = parseInt(timeSpent[0]);
-            if (duration > timeout) {
-              $(e).parent().removeClass("active");
-              $(e).css("transition", "linear " + ((duration - timeout - 20) / 1000) + "s");
-              $(e).css("width", "100%");
-            }
-          }, 20);
+          duration = parseInt(timeSpent[0]);
+          if (duration > timeout) {
+            $(e).parent().removeClass("active");
+            $(e).css("transition", "linear " + ((duration - timeout) / 1000) + "s");
+            $(e).css("width", "100%");
+          } else {
+            $(e).css('transition', 'none');
+            $(e).css('width', '0%');
+          }
         }
       } else if (progress[i].indexOf('/') > -1) {
         // optimization or geocoding current/total
