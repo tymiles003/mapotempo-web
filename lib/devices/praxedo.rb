@@ -94,7 +94,7 @@ class Praxedo < DeviceBase
           equipmentName: options[:equipment_name]
         }.compact
       },
-      id: encode_order_id(options[:description], order_id),
+      id: encode_order_id(options[:description], order_id, planning_date(route.planning)),
       qualificationData: {
         type: {
           id: options[:code_type_inter],
@@ -122,7 +122,7 @@ class Praxedo < DeviceBase
 
   def send_route(customer, route, options = {})
     events = []
-    code_route_id = encode_order_id('', route.id)
+    code_route_id = encode_order_id('', route.id, planning_date(route.planning))
 
     start = route.vehicle_usage.default_store_start
     if start && !start.lat.nil? && !start.lng.nil?
