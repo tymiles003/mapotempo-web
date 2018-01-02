@@ -277,8 +277,8 @@ class V01::Plannings < Grape::API
       nickname: 'updateRoutes'
     params do
       requires :id, type: String, desc: ID_DESC
-      requires :selection, type: String, values: %w(all reverse none)
-      requires :action, type: String, values: %w(toggle lock)
+      requires :action, type: String, values: %w(visibility toggle lock), desc: 'Toogle is deprecated, use visibility instead'
+      requires :selection, type: String, values: %w(all reverse none), desc: 'Choose between: show/lock all routes, toggle all routes or hide/unlock all routes'
       optional :route_ids, type: Array[Integer], documentation: { param_type: 'form' }, coerce_with: CoerceArrayInteger, desc: 'Ids separated by comma.'
     end
     patch ':id/update_routes' do
@@ -287,7 +287,7 @@ class V01::Plannings < Grape::API
       routes = routes.select{ |r| params[:route_ids].include? r.id } unless !params[:route_ids] || params[:route_ids].empty?
       routes.each do |route|
         case params[:action].to_sym
-          when :toggle
+          when :toggle, :visibility
             case params[:selection].to_sym
               when :all
                 route.update! hidden: false
