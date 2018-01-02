@@ -57,14 +57,18 @@ class User < ApplicationRecord
 
       def copy.assign_defaults_layer; end
 
-      def copy.generate_confirmation_token; end
-
       copy.email = I18n.l(Time.zone.now, format: '%Y%m%d%H%M%S') + '_' + copy.email
       copy.password = Devise.friendly_token
-      copy.confirmation_token = nil
-      copy.reset_password_token = nil
       copy.layer = original.layer
       copy.api_key_random
+
+      # --------------------------
+      #  Clean devise operations
+      # --------------------------
+      copy.confirmed_at = nil
+      copy.confirmation_token = nil
+      copy.confirmation_sent_at = nil
+      copy.reset_password_token = nil
     })
   end
 

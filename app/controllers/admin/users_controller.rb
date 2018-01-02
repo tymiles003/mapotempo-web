@@ -60,6 +60,12 @@ class Admin::UsersController < ApplicationController
   end
 
   def send_email
+    if @user.confirmation_token.nil? || @user.confirmation_token.empty?
+      @user.confirmed_at = nil
+      @user.generate_confirmation_token
+      @user.save!
+    end
+
     @user.send_password_email
     redirect_to_default
   end
