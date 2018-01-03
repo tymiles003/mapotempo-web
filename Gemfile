@@ -115,7 +115,6 @@ gem 'bootstrap-select-rails'
 
 gem 'sanitize'
 gem 'iconv'
-gem 'redis-rails', group: :production
 
 gem 'pg'
 
@@ -182,4 +181,8 @@ gem 'chronic_duration'
 
 group :production do
   gem 'rails_12factor'
+
+  gem 'redis', '< 4' # Waiting Ruby 2.2 (dependency from resque)
+  gem 'redis-store', '~> 1.4.1' # Ensure redis-store dependency is at least 1.4.1 for CVE-2017-1000248 correction
+  gem 'redis-rails'
 end
