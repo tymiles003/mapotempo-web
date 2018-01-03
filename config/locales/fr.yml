@@ -997,7 +997,7 @@ fr:
       ref_vehicle: véhicule
       ref_vehicle_desc: référence ou nom du véhicule effectuant l'arrêt dans la tournée.
       stop_type: type arrêt
-      stop_type_desc: type d'arrêt dans la tournée.
+      stop_type_desc: type d'arrêt dans la tournée. La valeur par défaut est [visite]
       stop_type_visit: visite
       stop_type_visit_desc: ''
       stop_format: '[visite | dépôt | pause]'

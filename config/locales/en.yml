@@ -972,7 +972,7 @@ en:
       ref_vehicle_desc: reference or name of the vehicle which is used to perform
         the stop in the plan.
       stop_type: stop type
-      stop_type_desc: stop type in the plan.
+      stop_type_desc: stop type in the plan. The default value is [visit]
       stop_type_visit: visit
       stop_type_visit_desc: ''
       stop_format: '[visit | store | rest]'

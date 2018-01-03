@@ -230,7 +230,7 @@ class ImporterDestinations < ImporterBase
 
   def import_row(_name, row, _options)
     if row.key? :stop_type
-      raise ImportEmpty.new(I18n.t('import.without_stop_type')) unless row[:stop_type]
+      row[:stop_type] = I18n.t('destinations.import_file.stop_type_visit') unless row[:stop_type]
       return if row[:stop_type] != I18n.t('destinations.import_file.stop_type_visit')
     end
 
