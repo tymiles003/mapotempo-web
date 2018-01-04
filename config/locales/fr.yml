@@ -1196,6 +1196,7 @@ fr:
     password:
       subject: Définissez votre mot de passe pour %{name}
       title: Définissez votre mot de passe
+      preheader: Bienvenue et merci d'avoir choisi de tester %{name}
       welcome: Bienvenue à %{name} !
       detail:
         content: Merci d'avoir choisi la solution de planification et d'optimisation
@@ -1208,6 +1209,7 @@ fr:
     connection:
       subject: Connexion à votre compte %{name}
       title: Connexion à votre compte
+      preheader: Vous pouvez maintenant vous connecter à votre compte.
       welcome: Félicitations ! Vous pouvez désormais vous connecter à votre compte.
       detail:
         content: 'Pour vous connecter, '
@@ -1220,6 +1222,7 @@ fr:
         sur notre équipe pour vous accompagner. Aussi, '
       highlight: 'pour toutes questions vous pouvez nous contacter : '
       contact_support: Contacter le support
+      preheader: Découvrez la 1er partie des ressources pour bien démarrer.
       panels_header: 'Les ressources pour bien démarrer : 1er partie'
       documentation: documentation en ligne
       panels_subtitle: Découvrez les <b>trois premières sections</b> de notre
@@ -1259,6 +1262,7 @@ fr:
         questions : '
       highlight: ''
       contact_support: Contacter le support
+      preheader: Découvrez la 2nd partie des ressources pour bien démarrer.
       panels_header: 'Les ressources pour bien démarrer : 2nd partie'
       panels_subtitle: Découvrez les <b>trois sections suivantes</b> de notre
       documentation: documentation en ligne
@@ -1304,6 +1308,7 @@ fr:
         certaines d''entre elles, vous pouvez contacter notre équipe : '
       highlight: ''
       contact_support: Contacter le support
+      preheader: Découvrez la 3e partie des ressources pour bien démarrer.
       panels_header: 'Les ressources pour bien démarrer : 3e partie'
       panels_subtitle: Découvrez les <b>trois dernières sections</b> de notre
       documentation: documentation en ligne.
@@ -1348,6 +1353,7 @@ fr:
         notre équipe pour vous accompagner. Aussi, <b>pour toutes questions vous pouvez
         nous contacter</b> :'
       link: Contacter le support
+      preheader: Notre équipe est disponible pour répondre à l'ensemble de vos questions.
       footer: Vous recevez ce message en tant qu'utilisateur de %{name}
     subscribe:
       title: Et si nous poursuivions l'aventure ensemble ?
@@ -1358,6 +1364,7 @@ fr:
         dès à présent contacter notre service commercial par le biais de ce formulaire
         ou par téléphone au +33&nbsp;(0)5&nbsp;64&nbsp;27&nbsp;04&nbsp;59&nbsp;:</b>
       link: Je demande à m'abonner à %{name}
+      preheader: Vous arrivez au terme de votre période d’essai. Nous vous remercions de l’intérêt que vous portez à Mapotempo Web (resseler solution name) et nous espérons que l'expérience a répondu à vos attentes.
       footer: Vous recevez ce message en tant qu'utilisateur de %{name}
   plannings:
     menu:

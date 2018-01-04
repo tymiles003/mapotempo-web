@@ -10,6 +10,7 @@ class UserMailer < ApplicationMailer
       @confirmation_link = password_user_url(user, token: user.confirmation_token, host: user.customer.reseller.url_protocol + '://' + user.customer.reseller.host)
       @subscription_duration = user.customer.end_subscription && (user.customer.end_subscription - Date.today).to_i > 1 ? (user.customer.end_subscription - Date.today).to_i : nil
       @home_link = user.customer.reseller.url_protocol + '://' + user.customer.reseller.host
+      @template = 'password'
 
       mail to: user.email, from: "#{@user.customer.reseller.name} <#{Rails.application.config.default_from_mail}>", subject: t('user_mailer.password.subject', name: @user.customer.reseller.name) do |format|
         format.html { render 'user_mailer/password', locals: { user: user } }
@@ -23,6 +24,7 @@ class UserMailer < ApplicationMailer
       @name, @application_name = names(user) # To deprecate
       @title = t('user_mailer.connection.title')
       @home_link = user.customer.reseller.url_protocol + '://' + user.customer.reseller.host
+      @template = 'connection'
 
       mail to: user.email, from: "#{@user.customer.reseller.name} <#{Rails.application.config.default_from_mail}>", subject: t('user_mailer.connection.subject', name: @user.customer.reseller.name) do |format|
         format.html { render 'user_mailer/connection', locals: { user: user } }
