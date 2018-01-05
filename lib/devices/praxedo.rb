@@ -126,13 +126,13 @@ class Praxedo < DeviceBase
 
     start = route.vehicle_usage.default_store_start
     if start && !start.lat.nil? && !start.lng.nil?
-      order_id = -2
+      order_id = "#{route.id}-2"
       description = I18n.transliterate(start.name) || "#{start.lat} #{start.lng}"
       events << format_position(customer, route, start, order_id, appointment_time: route.start, schedule_time: route.start, duration: route.vehicle_usage.default_service_time_start, description: description, code_type_inter: customer.devices[:praxedo][:code_inter_start], instructions: [{id: customer.devices[:praxedo][:code_route], value: code_route_id}])
     end
 
     route.stops.select { |s| s.active && s.position? && !s.is_a?(StopRest) }.map do |stop|
-      order_id = stop.is_a?(StopVisit) ? "v#{stop.visit_id}" : "r#{stop.id}"
+      order_id = stop.is_a?(StopVisit) ? "#{route.id}-v#{stop.visit_id}" : "#{route.id}-r#{stop.id}"
       description = [
         stop.comment,
         stop.open1 || stop.close1 ? (stop.open1 ? stop.open1_time + number_of_days(stop.open1) : '') + (stop.open1 && stop.close1 ? '-' : '') + (stop.close1 ? (stop.close1_time + number_of_days(stop.close1) || '') : '') : nil,
@@ -144,7 +144,7 @@ class Praxedo < DeviceBase
 
     stop = route.vehicle_usage.default_store_stop
     if stop && !stop.lat.nil? && !stop.lng.nil?
-      order_id = -1
+      order_id = "#{route.id}-2"
       description = I18n.transliterate(stop.name) || "#{start.lat} #{start.lng}"
       events << format_position(customer, route, stop, order_id, appointment_time: route.end, schedule_time: route.end, duration: route.vehicle_usage.default_service_time_end, description: description, code_type_inter: customer.devices[:praxedo][:code_inter_stop], instructions: [{id: customer.devices[:praxedo][:code_route], value: code_route_id}])
     end
