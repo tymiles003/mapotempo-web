@@ -97,6 +97,7 @@ if @with_stops
     (json.open2_day number_of_days(stop.open2)) if stop.open2
     (json.close2 stop.close2_time) if stop.close2
     (json.close2_day number_of_days(stop.close2)) if stop.close2
+    (json.priority stop.priority) if stop.priority
     (json.wait_time '%i:%02i' % [stop.wait_time / 60 / 60, stop.wait_time / 60 % 60]) if stop.wait_time && stop.wait_time > 60
     (json.geocoded true) if stop.position?
     (json.time stop.time_time) if stop.time

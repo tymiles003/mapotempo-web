@@ -596,3 +596,17 @@ div.grid-container {
     margin: 0 !important;
   }
 }
+
+// Bootstrap slider in form
+.input-group {
+  .slider {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+  }
+
+  .slider-horizontal {
+    margin-left: 12px;
+  }
+}

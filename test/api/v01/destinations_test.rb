@@ -140,6 +140,7 @@ class V01::DestinationsTest < ActiveSupport::TestCase
                 close1: '18:00',
                 open2: '20:00',
                 close2: '21:00',
+                priority: 0,
                 take_over: nil,
                 route: 'useless_because_of_zoning_ids',
                 active: '1'
@@ -158,6 +159,8 @@ class V01::DestinationsTest < ActiveSupport::TestCase
           visits = planning.routes.find{ |r| !r.vehicle_usage }.stops.map(&:visit)
           assert_equal ['v1', 'v2'], visits.map(&:ref)
           assert_equal [1, 2], visits.flat_map{ |v| v.quantities.values }
+          assert_nil visits.first.priority
+          assert_nil visits.second.priority
 
           route = Route.last
           assert_equal [route.id], JSON.parse('[' + route.geojson_tracks.join(',') + ']').map{ |t| t['properties']['route_id'] }.uniq
@@ -218,6 +221,7 @@ class V01::DestinationsTest < ActiveSupport::TestCase
               close1: '18:00',
               open2: '32:00',
               close2: '36:00',
+              priority: -4,
               take_over: nil,
               route: 'useless_because_of_zoning_ids',
               active: '1'

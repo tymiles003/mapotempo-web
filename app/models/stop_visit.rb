@@ -22,6 +22,7 @@ class StopVisit < Stop
            :close1, :close1_time, :close1_absolute_time,
            :open2, :open2_time, :open2_absolute_time,
            :close2, :close2_time, :close2_absolute_time,
+           :priority, :priority_text,
            :name,
            :street,
            :postalcode,

@@ -76,6 +76,10 @@ class StopRest < Stop
     nil
   end
 
+  def priority
+    nil
+  end
+
   def duration
     route.vehicle_usage.default_rest_duration || 0
   end

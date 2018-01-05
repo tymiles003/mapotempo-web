@@ -21,6 +21,7 @@ json.visits destination.visits do |visit|
   (json.open2_day number_of_days(visit.open2)) if visit.open2
   json.close2 visit.close2_time
   (json.close2_day number_of_days(visit.close2)) if visit.close2
+  json.priority visit.priority
   tags = visit.tags | destination.tags
   unless tags.empty?
     json.tags_present do

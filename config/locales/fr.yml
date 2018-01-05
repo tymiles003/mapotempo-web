@@ -442,6 +442,7 @@ fr:
         close2_small: Fin 2
         open_close2_small: Début/Fin 2
         open2_close2_days: J+
+        priority: Priorité
         multi_visit: Multi
         tags: Libellés
         tag_ids: Libellés
@@ -1070,6 +1071,8 @@ fr:
       close2: horaire fin 2
       close2_desc: fin de la plage horaire 2 (peut dépasser 24:00) conseillée pour
         la visite.
+      priority: priorité
+      priority_desc: priorité d'inclusion lors de l'optimisation, de -4 (min) à 4 (max).
       comment: commentaire
       comment_desc: informations nécessaires pour la visite.
       phone_number: téléphone
@@ -1528,6 +1531,7 @@ fr:
         quantity: 'Quantité : '
         orders: 'Commandes : '
         duration: 'Durée : '
+        priority: 'Priorité : '
         tags: 'Libellés : '
         stop_drive_time: 'Durée :'
         stop_distance: 'Distance :'
@@ -1657,6 +1661,7 @@ fr:
       close1: horaire fin 1
       open2: horaire début 2
       close2: horaire fin 2
+      priority: priorité
       tags_visit: libellés visite
       out_of_window: hors créneau visite
       out_of_capacity: hors capacité véhicule
@@ -2152,10 +2157,16 @@ fr:
       take_over_help: Si vide utilise la valeur par défaut
       open_close1: Plage horaire 1
       open_close2: Plage horaire 2
+      priority: Priorité
+      priority_help: Priorité d'insertion lors de l'optimisation
       close_help: Sans tenir compte de la durée de visite
       tags_help: Catégories de la visite
       delete: Marquer à supprimer
       delete_help: Supprimer cette visite (le client sera conservé)
+    priority_level:
+      high: Haut
+      medium: Normal
+      low: Bas
   zonings:
     default:
       from_route: Tournée

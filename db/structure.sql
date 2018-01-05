@@ -1034,7 +1034,8 @@ CREATE TABLE visits (
     take_over integer,
     open2 integer,
     close2 integer,
-    quantities_operations hstore
+    quantities_operations hstore,
+    priority integer
 );
 
 
@@ -2711,3 +2712,6 @@ INSERT INTO schema_migrations (version) VALUES ('20171129104645');
 INSERT INTO schema_migrations (version) VALUES ('20171203134836');
 
 INSERT INTO schema_migrations (version) VALUES ('20171211101451');
+
+INSERT INTO schema_migrations (version) VALUES ('20180103153701');
+

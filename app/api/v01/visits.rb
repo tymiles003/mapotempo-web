@@ -43,7 +43,7 @@ class V01::Visits < Grape::API
       end
 
       deliverable_unit_ids = current_customer.deliverable_units.map{ |du| du.id.to_s }
-      p.permit(:ref, :take_over, :open1, :close1, :open2, :close2, tag_ids: [], quantities: deliverable_unit_ids, quantities_operations: deliverable_unit_ids)
+      p.permit(:ref, :take_over, :open1, :close1, :open2, :close2, :priority, tag_ids: [], quantities: deliverable_unit_ids, quantities_operations: deliverable_unit_ids)
     end
 
     ID_DESC = 'Id or the ref field value, then use "ref:[value]".'.freeze
@@ -99,7 +99,8 @@ class V01::Visits < Grape::API
               :close1,
               :take_over,
               :open2,
-              :close2)
+              :close2,
+              :priority)
 
           optional :tag_ids, type: Array[Integer], desc: 'Ids separated by comma.', coerce_with: CoerceArrayInteger, documentation: { param_type: 'form' }
 

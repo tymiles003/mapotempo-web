@@ -17,6 +17,7 @@ visit_one:
   take_over: 00:05:33
   open1: 10:00:00
   close1: 11:00:00
+  priority: 4
   tags: tag_one
 
 visit_two:

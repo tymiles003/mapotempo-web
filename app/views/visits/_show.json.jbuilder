@@ -12,6 +12,7 @@ json.open_close2 @visit.open2 || @visit.close2
 (json.open2_day number_of_days(@visit.open2)) if @visit.open2
 (json.close2 @visit.close2_time) if @visit.close2
 (json.close2_day number_of_days(@visit.close2)) if @visit.close2
+(json.priority @visit.priority) if @visit.priority
 (json.link_phone_number current_user.link_phone_number) if current_user.url_click2call
 json.visits true
 json.visit_id @visit.id

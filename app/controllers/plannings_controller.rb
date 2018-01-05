@@ -434,6 +434,7 @@ class PlanningsController < ApplicationController
       :close1,
       :open2,
       :close2,
+      :priority,
       :tags_visit
     ] + ((@customer || @planning.customer).enable_orders ?
       [:orders] :

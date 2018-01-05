@@ -42,6 +42,9 @@ class Visit < ApplicationRecord
   validate :close2_after_open2
   validate :open2_after_close1
 
+  before_validation :nilify_priority
+  validates :priority, numericality: { greater_than_or_equal_to: -4, less_than_or_equal_to: 4 }, allow_nil: true
+
   validate :quantities_validator
 
   include Consistency
@@ -159,7 +162,21 @@ class Visit < ApplicationRecord
     nil
   end
 
+  def priority_text
+    if !priority || priority == 0
+      I18n.t('visits.priority_level.medium')
+    elsif priority > 0 && priority <= 4
+      I18n.t('visits.priority_level.high')
+    elsif priority < 0 && priority >= -4
+      I18n.t('visits.priority_level.low')
+    end
+  end
+
   private
+
+  def nilify_priority
+    self.priority = nil if self.priority && (self.priority == 0 || self.priority == '0')
+  end
 
   def update_outdated
     if @tag_ids_changed || open1_changed? || close1_changed? || open2_changed? || close2_changed? || quantities_changed? || take_over_changed?

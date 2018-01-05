@@ -1,7 +1,7 @@
 require 'test_helper'
 require 'routers/router_wrapper'
 
-class D < Struct.new(:lat, :lng, :id, :open1, :close1, :open2, :close2, :duration, :vehicle_usage, :quantities, :quantities_operations, :tags)
+class D < Struct.new(:lat, :lng, :id, :open1, :close1, :open2, :close2, :priority, :duration, :vehicle_usage, :quantities, :quantities_operations, :tags)
   def visit
     # self
     destination = Struct.new(:tags).new([])
@@ -516,7 +516,7 @@ class PlanningTest < ActiveSupport::TestCase
   test 'should amalgamate point at same position' do
     route = routes(:route_one_one)
 
-    initial_positions = [D.new(1,1,1,nil,nil,nil,nil,0,nil,nil, nil,[Struct.new(:label).new('skills')]), D.new(2,2,2,nil,nil,nil,nil,0), D.new(2,2,3,nil,nil,nil,nil,0), D.new(3,3,4,nil,nil,nil,nil,0)]
+    initial_positions = [D.new(1,1,1,nil,nil,nil,nil,nil,0,nil,nil, nil,[Struct.new(:label).new('skills')]), D.new(2,2,2,nil,nil,nil,nil,nil,0), D.new(2,2,3,nil,nil,nil,nil,nil,0), D.new(3,3,4,nil,nil,nil,nil,nil,0)]
     ret = route.planning.send(:amalgamate_stops_same_position, initial_positions, false) { |positions|
       assert_equal 3, positions.size
       pos = positions.sort
@@ -532,7 +532,7 @@ class PlanningTest < ActiveSupport::TestCase
   test 'should no amalgamate point at same position, tw' do
     route = routes(:route_one_one)
 
-    positions = [D.new(1,1,1,nil,nil,nil,nil,0), D.new(2,2,2,nil,nil,nil,nil,0), D.new(2,2,3,10,20,nil,nil,0), D.new(3,3,4,nil,nil,nil,nil,0)]
+    positions = [D.new(1,1,1,nil,nil,nil,nil,nil,0), D.new(2,2,2,nil,nil,nil,nil,nil,0), D.new(2,2,3,10,20,nil,nil,nil,0), D.new(3,3,4,nil,nil,nil,nil,nil,0)]
     ret = route.planning.send(:amalgamate_stops_same_position, positions, false) { |positions|
       assert_equal 4, positions.size
       [(1..(positions.size)).to_a]
@@ -670,7 +670,7 @@ class PlanningTest < ActiveSupport::TestCase
       ids.each_with_index do |id, i|
         assert_equal id.abs, (i + 1)
         value = id.abs - 1
-        
+
         if (ids[value] < 0)
           route_ids_valid = false
           break

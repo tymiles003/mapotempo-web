@@ -36,6 +36,7 @@ json.visits do
     json.open2_day number_of_days(visit.open2)
     json.close2 visit.close2_absolute_time
     json.close2_day number_of_days(visit.close2)
+    json.priority visit.priority
     json.tag_ids do
       json.array! visit.tags.collect(&:id)
     end

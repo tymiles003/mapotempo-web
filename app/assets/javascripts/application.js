@@ -48,10 +48,10 @@
 // pt-PT not available, yet
 //= require bootstrap-datepicker/locales/bootstrap-datepicker.pt-BR.js
 //= require bootstrap-datepicker/locales/bootstrap-datepicker.es.js
+//= require bootstrap-slider
 //= require jquery-ui/sortable
 //= require jquery-ui/autocomplete
 //= require jquery-ui/dialog
-//= require jquery-ui/slider
 //= require jquery-tablesorter
 //= require jquery-tablesorter/widgets/widget-filter-formatter-html5
 //= require jquery-tablesorter/widgets/widget-filter-formatter-jui

@@ -442,6 +442,7 @@ en:
         close2_small: Close 2
         open_close2_small: Open/Close 2
         open2_close2_days: D+
+        priority: Priority
         multi_visit: Multi
         tags: Tags
         tag_ids: Tags
@@ -1038,6 +1039,8 @@ en:
       open2_desc: start time 2 (can go beyond 24:00) to visit destination.
       close2: close 2
       close2_desc: end time 2 (can go beyond 24:00) to visit destination.
+      priority: priority
+      priority_desc: inclusion priority when optimizing, from -4 (lowest) to 4 (highest).
       comment: comment
       comment_desc: complementary informations.
       phone_number: phone
@@ -1450,6 +1453,7 @@ en:
         quantity: 'Quantity:'
         orders: 'Orders:'
         duration: 'Visit duration:'
+        priority: 'Priority : '
         tags: 'Tags:'
         stop_drive_time: 'Duration:'
         stop_distance: 'Distance:'
@@ -1578,6 +1582,7 @@ en:
       close1: close 1
       open2: open 2
       close2: close 2
+      priority: priority
       tags_visit: tags visit
       out_of_window: out of visit time window
       out_of_capacity: out of capacity
@@ -2056,10 +2061,16 @@ en:
       take_over_help: If empty, use the default value
       open_close1: Time window 1
       open_close2: Time window 2
+      priority: Priority
+      priority_help: Insertion priority when optimizing
       close_help: Without taking into account visit duration
       tags_help: Visit categories
       delete: Flag for deletion
       delete_help: Delete this visit (destination will be kept)
+    priority_level:
+      high: High
+      medium: Normal
+      low: Low
   zonings:
     default:
       from_route: Route

@@ -29,6 +29,7 @@ if @planning
       (json.close1 stop.close1_time) if stop.close1
       (json.open2 stop.open2_time) if stop.open2
       (json.close2 stop.close2_time) if stop.close2
+      (json.priority stop.priority) if stop.priority
       (json.color visit.color) if visit.color
       (json.icon visit.icon) if visit.icon
     end

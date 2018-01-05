@@ -31,7 +31,6 @@
  * require jquery-ui/sortable
  *= require jquery-ui/autocomplete
  *= require jquery-ui/dialog
- *= require jquery-ui/slider
  *= require select2
  *= require select2-bootstrap
  *= require bootstrap-select
@@ -41,6 +40,7 @@
  *= require jquery.timeentry
  *= require bootstrap-wysihtml5
  *= require bootstrap-datepicker3
+ *= require bootstrap-slider
  *= require leaflet
  *= require leaflet.draw
  *= require Control.Geocoder

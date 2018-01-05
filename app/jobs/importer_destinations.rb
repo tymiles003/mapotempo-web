@@ -73,6 +73,7 @@ class ImporterDestinations < ImporterBase
       close1: {title: I18n.t('destinations.import_file.close1'), desc: I18n.t('destinations.import_file.close1_desc'), format: I18n.t('destinations.import_file.format.hour')},
       open2: {title: I18n.t('destinations.import_file.open2'), desc: I18n.t('destinations.import_file.open2_desc'), format: I18n.t('destinations.import_file.format.hour')},
       close2: {title: I18n.t('destinations.import_file.close2'), desc: I18n.t('destinations.import_file.close2_desc'), format: I18n.t('destinations.import_file.format.hour')},
+      priority: {title: I18n.t('destinations.import_file.priority'), desc: I18n.t('destinations.import_file.priority_desc'), format: I18n.t('destinations.import_file.format.integer')},
       tags_visit: {title: I18n.t('destinations.import_file.tags_visit'), desc: I18n.t('destinations.import_file.tags_visit_desc'), format: I18n.t('destinations.import_file.tags_format')},
       take_over: {title: I18n.t('destinations.import_file.take_over'), desc: I18n.t('destinations.import_file.take_over_desc'), format: I18n.t('destinations.import_file.format.second')},
     }.merge(Hash[@customer.deliverable_units.flat_map{ |du|

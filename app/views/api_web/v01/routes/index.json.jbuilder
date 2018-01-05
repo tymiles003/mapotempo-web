@@ -36,6 +36,7 @@ json.routes @routes do |route|
     json.open2 stop.open2_time
     json.close2 stop.close2_time
     json.open2_close2_days number_of_days(stop.close2)
+    json.priority stop.priority
     (json.wait_time '%i:%02i' % [stop.wait_time / 60 / 60, stop.wait_time / 60 % 60]) if stop.wait_time && stop.wait_time > 60
     (json.geocoded true) if stop.position?
     (json.time stop.time_time) if stop.time

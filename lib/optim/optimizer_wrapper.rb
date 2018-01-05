@@ -125,6 +125,7 @@ class OptimizerWrapper
               duration: service[:duration],
               late_multiplier: services_late_multiplier
             },
+            priority: service[:priority] && (service[:priority].to_i - 4).abs,
             quantities: service[:quantities] ? service[:quantities].each.map{ |k, v|
               v ? {
                 unit_id: "u#{k}",

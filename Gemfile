@@ -145,6 +145,8 @@ gem 'paloma', github: 'Mapotempo/paloma' # FIXME wait for https://github.com/Map
 gem 'browser'
 gem 'color'
 
+gem 'bootstrap-slider-rails'
+
 gem 'daemons'
 gem 'delayed_job'
 gem 'delayed_job_active_record'

@@ -186,6 +186,8 @@ GEM
       railties (>= 3.0)
     bootstrap-filestyle-rails (1.2.1)
     bootstrap-select-rails (1.12.1)
+    bootstrap-slider-rails (9.8.0)
+      railties (>= 3.2, < 6.0)
     bootstrap-wysihtml5-rails (0.3.3.8)
       railties (>= 3.0)
     brakeman (3.6.1)
@@ -674,6 +676,7 @@ DEPENDENCIES
   bootstrap-datepicker-rails
   bootstrap-filestyle-rails
   bootstrap-select-rails
+  bootstrap-slider-rails
   bootstrap-wysihtml5-rails
   brakeman
   browser

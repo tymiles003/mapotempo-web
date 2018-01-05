@@ -97,6 +97,17 @@
           <p class="help-block"><%= t '.close_help' %></p>
         </div>
       </div>
+
+      <div id="visit_priority_input" class="form-group <%= nested_has_error?(:priority, visit.id) %>">
+        <label class="col-md-2 control-label"><%= t '.priority' %></label>
+        <div class="col-md-6">
+          <div class="input-group">
+            <%= text_field "destination[visits_attributes][#{i}]", :priority, class: 'form-control', value: visit.priority, data: {'slider-value' => visit.priority || 0} %>
+          </div>
+          <p class="help-block"><%= t '.priority_help' %></p>
+        </div>
+      </div>
+
       <% if visit.destination.customer.enable_multi_visits || !visit.tags.empty? %>
         <%= f.select :tag_ids, t('activerecord.attributes.visit.tag_ids'), options_for_select(visit.destination.customer.tags.map{ |tag| [tag.label, tag.id, {'data-color' => tag.color && tag.color[1..-1], 'data-icon' => tag.icon}]}, visit.tags.collect(&:id)), {}, {multiple: true, input_group: content_tag('i', '', class: 'fa fa-tags fa-fw')} do %>
           <p class="help-block"><%= t '.tags_help' %></p>

@@ -179,6 +179,14 @@ class VisitTest < ActiveSupport::TestCase
     assert_nil visit.icon
   end
 
+  test 'should check priority value' do
+    visit = visits :visit_two
+    assert_nil visit.priority
+
+    assert_not visit.update(priority: 10)
+    assert visit.update(priority: 0)
+  end
+
   test 'should not changed with same attributes' do
     visit = visits :visit_one
 

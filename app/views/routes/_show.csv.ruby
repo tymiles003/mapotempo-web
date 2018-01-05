@@ -40,6 +40,7 @@ if route.vehicle_usage_id && (!@params.key?(:stops) || @params[:stops].split('|'
     close1: nil,
     open2: nil,
     close2: nil,
+    priority: nil,
     tags_visit: nil
   })
 
@@ -100,6 +101,7 @@ route.stops.each { |stop|
       close1: (stop.close1_absolute_time if stop.close1),
       open2: (stop.open2_absolute_time if stop.open2),
       close2: (stop.close2_absolute_time if stop.close2),
+      priority: (stop.priority if stop.priority),
       tags_visit: (stop.visit.tags.collect(&:label).join(',') if stop.is_a?(StopVisit))
     })
 
@@ -157,6 +159,7 @@ if route.vehicle_usage_id && (!@params.key?(:stops) || @params[:stops].split('|'
     close1: nil,
     open2: nil,
     close2: nil,
+    priority: nil,
     tags_visit: nil
   })
 

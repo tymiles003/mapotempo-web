@@ -47,7 +47,7 @@ class V01::Destinations < Grape::API
         end
       end
 
-      p.permit(:ref, :name, :street, :detail, :postalcode, :city, :state, :country, :lat, :lng, :comment, :phone_number, :geocoding_accuracy, :geocoding_level, tag_ids: [], visits_attributes: [:id, :ref, :take_over, :open1, :close1, :open2, :close2, tag_ids: [], quantities: current_customer.deliverable_units.map{ |du| du.id.to_s }])
+      p.permit(:ref, :name, :street, :detail, :postalcode, :city, :state, :country, :lat, :lng, :comment, :phone_number, :geocoding_accuracy, :geocoding_level, tag_ids: [], visits_attributes: [:id, :ref, :take_over, :open1, :close1, :open2, :close2, :priority, tag_ids: [], quantities: current_customer.deliverable_units.map{ |du| du.id.to_s }])
     end
 
     ID_DESC = 'Id or the ref field value, then use "ref:[value]".'.freeze

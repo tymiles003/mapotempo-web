@@ -221,6 +221,7 @@ class DestinationsController < ApplicationController
         :close1,
         :open2,
         :close2,
+        :priority,
         :_destroy,
         tag_ids: [],
         quantities: current_user.customer.deliverable_units.map{ |du| du.id.to_s },

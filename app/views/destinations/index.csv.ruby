@@ -22,6 +22,7 @@ CSV.generate { |csv|
     I18n.t('destinations.import_file.close1'),
     I18n.t('destinations.import_file.open2'),
     I18n.t('destinations.import_file.close2'),
+    I18n.t('destinations.import_file.priority'),
     I18n.t('destinations.import_file.tags_visit')
   ] + (@customer.enable_orders ?
     [] :
@@ -57,6 +58,7 @@ CSV.generate { |csv|
           visit.close1_absolute_time,
           visit.open2_absolute_time,
           visit.close2_absolute_time,
+          visit.priority,
           visit.tags.collect(&:label).join(',')
         ] + (@customer.enable_orders ?
           [] :
