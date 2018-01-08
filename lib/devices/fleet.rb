@@ -112,6 +112,8 @@ class Fleet < DeviceBase
   end
 
   def send_route(customer, route, _options = {})
+    raise DeviceServiceError.new("Fleet: #{I18n.t('errors.fleet.past_missions')}") if route.planning.date && route.planning.date < Date.today
+
     destinations = route.stops.select(&:active?).select(&:position?).select { |stop| stop.is_a?(StopVisit) }.sort_by(&:index).map do |destination|
       {
         external_ref: generate_mission_id(destination),
@@ -143,7 +145,6 @@ class Fleet < DeviceBase
     end
 
     raise DeviceServiceError.new("Fleet: #{I18n.t('errors.fleet.no_missions')}") if destinations.empty?
-    raise DeviceServiceError.new("Fleet: #{I18n.t('errors.fleet.past_missions')}") if route.planning.date && route.planning.date < Date.today
 
     send_missions(route.vehicle_usage.vehicle.devices[:fleet_user], customer.devices[:fleet][:api_key], destinations)
   rescue RestClient::InternalServerError, RestClient::ResourceNotFound, RestClient::UnprocessableEntity
@@ -151,6 +152,8 @@ class Fleet < DeviceBase
   end
 
   def clear_route(customer, route, use_date = true)
+    raise DeviceServiceError.new("Fleet: #{I18n.t('errors.fleet.past_missions')}") if route.planning.date && route.planning.date < Date.today
+
     if use_date
       start_date = (planning_date(route.planning) + (route.start || 0)).strftime('%Y-%m-%d')
       end_date = (planning_date(route.planning) + (route.end || 0)).strftime('%Y-%m-%d')
