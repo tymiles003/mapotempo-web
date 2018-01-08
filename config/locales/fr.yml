@@ -500,7 +500,7 @@ fr:
             close:
               after: doit être après l'horaire de début
             rest_stop:
-              after: doit être après l'horaire de début
+              after: doit être après l'horaire de début qui doit être présent
           missing_rest_window: doit être rempli(e) si la durée de repos est remplie
           missing_rest_duration: doit être remplie si une plage de repos est remplie
           rest_range: La plage de repos doit être comprise entre %{start} et %{end}

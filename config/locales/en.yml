@@ -500,7 +500,7 @@ en:
             close:
               after: must be after opening time
             rest_stop:
-              after: must be after opening time
+              after: must be after opening time which must be present
           missing_rest_window: can't be blank if rest duration is filled
           missing_rest_duration: can't be blank if rest time window is filled
           rest_range: Rest range must be between %{start} and %{end}

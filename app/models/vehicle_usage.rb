@@ -281,7 +281,7 @@ class VehicleUsage < ApplicationRecord
   end
 
   def rest_stop_after_rest_start
-    if self.rest_start.present? && self.rest_stop.present? && self.rest_stop < self.rest_start
+    if self.rest_stop.present? && ((self.rest_start.present? && self.rest_stop < self.rest_start) || !self.rest_start.present?)
       errors.add(:rest_stop, I18n.t('activerecord.errors.models.vehicle_usage.attributes.rest_stop.after'))
     end
   end
@@ -289,7 +289,7 @@ class VehicleUsage < ApplicationRecord
   def rest_duration_range
     errors.add(:rest_start, I18n.t('activerecord.errors.models.vehicle_usage.missing_rest_window')) if self.default_rest_duration && self.default_rest_start.nil?
     errors.add(:rest_stop, I18n.t('activerecord.errors.models.vehicle_usage.missing_rest_window')) if self.default_rest_duration && self.default_rest_stop.nil?
-    errors.add(:rest_duration, I18n.t('activerecord.errors.models.vehicle_usage.missing_rest_duration')) if self.default_rest_duration.nil? && self.default_rest_start
+    errors.add(:rest_duration, I18n.t('activerecord.errors.models.vehicle_usage.missing_rest_duration')) if self.default_rest_duration.nil? && (self.default_rest_start || self.default_rest_stop)
 
     open_duration = self.default_open || 0
     service_time_start_duration = self.default_service_time_start || 0

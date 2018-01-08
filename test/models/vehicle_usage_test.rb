@@ -51,13 +51,20 @@ class VehicleUsageTest < ActiveSupport::TestCase
     vehicle_usage = vehicle_usages(:vehicle_usage_one_one)
     vehicle_usage.update! rest_start: nil, rest_stop: nil, rest_duration: nil
     assert vehicle_usage.valid?
+
     vehicle_usage.vehicle_usage_set.update! rest_start: nil, rest_stop: nil, rest_duration: nil
     vehicle_usage.rest_duration = 15.minutes.to_i
-    assert !vehicle_usage.valid?
+    assert_not vehicle_usage.valid?
     assert_equal [:rest_start, :rest_stop], vehicle_usage.errors.keys
+
     vehicle_usage.rest_start = 10.hours.to_i
     vehicle_usage.rest_stop = 11.hours.to_i
     assert vehicle_usage.valid?
+
+    vehicle_usage.update! rest_start: nil, rest_stop: nil, rest_duration: nil
+    vehicle_usage.rest_stop = 11.hours.to_i
+    assert_not vehicle_usage.valid?
+    assert_equal [:rest_stop, :rest_duration], vehicle_usage.errors.keys
   end
 
   test 'should validate rest range in relation to the working time range' do
