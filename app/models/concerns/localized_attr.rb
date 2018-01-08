@@ -38,7 +38,12 @@ module LocalizedAttr
     def to_delocalized_decimal(str)
       delimiter = I18n.t('number.format.delimiter')
       separator = I18n.t('number.format.separator')
-      str && str.gsub(separator, '.').gsub(/#{delimiter}([0-9]{3})/, '\1')
+
+      str = str.gsub(separator, '.') if str
+      # Do not replace delimiter if it's a point. Because the default separator is a point.
+      str = str.gsub(/#{delimiter}([0-9]{3})/, '\1') if str && I18n.t('number.format.delimiter') != '.'
+
+      return str
     end
 
     def localize_numeric_value(float)
