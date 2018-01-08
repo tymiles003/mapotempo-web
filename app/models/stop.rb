@@ -29,8 +29,6 @@ class Stop < ApplicationRecord
 
   validates :route, presence: true
 
-  before_update :outdated
-
   scope :includes_destinations, -> { includes(visit: [:tags, destination: [:visits, :tags, :customer]]) }
 
   amoeba do
@@ -60,6 +58,13 @@ class Stop < ApplicationRecord
     (self.visit && visit.color) || route.default_color
   end
 
+  def active=(value)
+    self['active'] = value
+    if active_changed?
+      route.outdated = true if route
+    end
+  end
+
   private
 
   def eval_open_close(open, close, time)
@@ -77,9 +82,4 @@ class Stop < ApplicationRecord
     end
   end
 
-  def outdated
-    if active_changed?
-      route.outdated = true
-    end
-  end
 end

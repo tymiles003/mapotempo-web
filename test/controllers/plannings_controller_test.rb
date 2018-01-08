@@ -463,6 +463,7 @@ class PlanningsControllerTest < ActionController::TestCase
       patch :update_stop, planning_id: @planning, format: :json, route_id: routes(:route_one_one).id, stop_id: stops(:stop_one_one).id, stop: { active: false }
       assert_response :success
       assert_equal 1, JSON.parse(response.body)['routes'].size
+      assert_not JSON.parse(response.body)['routes'][0][:outdated]
 
     ensure
       Stop.class_eval do
