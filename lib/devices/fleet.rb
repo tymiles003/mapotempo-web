@@ -44,7 +44,7 @@ class Fleet < DeviceBase
   # Available status in Mapotempo: Planned / Started / Finished / Rejected
   @@order_status = {
     'To do' => 'Planned',
-    'Pending' => 'Started',
+    'In progress' => 'Started',
     'Completed' => 'Finished',
     'Uncompleted' => 'Rejected',
   }
@@ -76,16 +76,16 @@ class Fleet < DeviceBase
     response = rest_client_get(get_vehicles_pos_url, customer.devices[:fleet][:api_key])
     data = JSON.parse(response.body)
 
-    if response.code == 200 && data['current_locations']
-      data['current_locations'].map do |current_location|
+    if response.code == 200 && data['user_current_locations']
+      data['user_current_locations'].map do |current_location|
         {
           fleet_vehicle_id: current_location['sync_user'],
           device_name: current_location['sync_user'],
-          lat: current_location['locationDetail']['lat'],
-          lng: current_location['locationDetail']['lon'],
-          time: current_location['locationDetail']['time'],
-          speed: current_location['locationDetail']['speed'] && (current_location['locationDetail']['speed'].to_f * 3.6).round,
-          direction: current_location['locationDetail']['bearing']
+          lat: current_location['location_detail']['lat'],
+          lng: current_location['location_detail']['lon'],
+          time: current_location['location_detail']['time'],
+          speed: current_location['location_detail']['speed'] && (current_location['location_detail']['speed'].to_f * 3.6).round,
+          direction: current_location['location_detail']['bearing']
         }
       end
     else
@@ -223,7 +223,7 @@ class Fleet < DeviceBase
   end
 
   def get_vehicles_pos_url
-    URI.encode("#{api_url}/api/0.1/current_locations")
+    URI.encode("#{api_url}/api/0.1/user_current_locations")
   end
 
   def get_missions_url(user = nil)
