@@ -59,10 +59,10 @@ module FleetBase
           when :get_vehicles_pos_url
             url = FleetService.new(customer: @customer).service.send(:get_vehicles_pos_url)
             expected_response = {
-              current_locations: [
+              user_current_locations: [
                 {
                   sync_user: 'driver1',
-                  locationDetail: {
+                  location_detail: {
                     lat: 40.2,
                     lon: 4.5,
                     time: '20.11.2017',
