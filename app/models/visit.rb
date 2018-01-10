@@ -226,6 +226,7 @@ class Visit < ApplicationRecord
   def update_quantities
     if quantities_changed? || quantities_operations_changed?
       quantities_operations.each{ |k, v|
+        quantities[k] = -quantities[k] if v == 'empty' && quantities[k] && quantities[k] > 0
         quantities[k] = 0 if !quantities[k] && (v == 'fill' || v == 'empty')
       }
     end

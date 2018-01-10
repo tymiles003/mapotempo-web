@@ -105,7 +105,7 @@ class OptimizerWrapper
           v
         },
         services: services.each_with_index.collect{ |service, index|
-          services_with_negative_quantities.push("s#{service[:stop_id]}") if service[:quantities] && service[:quantities].values.any?{ |q| q && q < 0 }
+          services_with_negative_quantities.push("s#{service[:stop_id]}") if service[:quantities_operations] && service[:quantities_operations].values.any?{ |q| q == 'empty' } || service[:quantities] && service[:quantities].values.any?{ |q| q && q < 0 }
           {
             id: "s#{service[:stop_id]}",
             type: 'service',
