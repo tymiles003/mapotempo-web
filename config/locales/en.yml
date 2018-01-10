@@ -391,7 +391,39 @@ en:
         contact_email: E-Mail
         capacities: Capacities
         tag_ids: Vehicle skills
+      vehicles:
+        name: Name
+        emission: Emission
+        consumption: Consumption
+        color: Color
+        router: Routing Engine
+        router_id: Routing Engine
+        router_dimension: Router objective
+        speed_multiplicator: Speed multiplier
+        customised_color: Select a custom color
+        ref: Reference
+        contact_email: E-Mail
+        capacities: Capacities
+        tag_ids: Vehicle skills
       vehicle_usage:
+        vehicle_id: Vehicle
+        open: Open
+        close: Close
+        store_start: Store Start
+        store_start_id: Store Start
+        store_stop: Store Stop
+        store_stop_id: Store Stop
+        rest_start: Rest window start
+        rest_stop: Rest window stop
+        rest_duration: Rest duration
+        store_rest: Rest place
+        store_rest_id: Rest place
+        service_time_start: Service Time Before
+        service_time_end: Service Time After
+        work_time: Work time
+        tag_ids: Skills
+        vehicle: Vehicle
+      vehicle_usages:
         vehicle_id: Vehicle
         open: Open
         close: Close
@@ -464,6 +496,7 @@ en:
         close2_small: Close 2
         open_close2_small: Open/Close 2
         open2_close2_days: D+
+        priority: Priority
         multi_visit: Multi
         tags: Tags
         tag_ids: Tags
@@ -502,7 +535,7 @@ en:
               after: must be after opening time
             rest_stop:
               after: must be after opening time which must be present
-          missing_rest_window: can't be blank if rest duration is filled
+          missing_rest_window: can't be blank if rest duration or a time is filled
           missing_rest_duration: can't be blank if rest time window is filled
           rest_range: Rest range must be between %{start} and %{end}
           service_range: can't be greater than working day range
@@ -526,6 +559,7 @@ en:
               after: must be after %{s}
             close2:
               after: must be after %{s}
+            priority: must be between -4 and 4
             quantities:
               not_float: must be a number
               negative_value: must be positive value (%{value})

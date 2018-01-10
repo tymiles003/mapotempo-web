@@ -43,7 +43,7 @@ class Visit < ApplicationRecord
   validate :open2_after_close1
 
   before_validation :nilify_priority
-  validates :priority, numericality: { greater_than_or_equal_to: -4, less_than_or_equal_to: 4 }, allow_nil: true
+  validates :priority, numericality: { greater_than_or_equal_to: -4, less_than_or_equal_to: 4, message: I18n.t('activerecord.errors.models.visit.attributes.priority') }, allow_nil: true
 
   validate :quantities_validator
 
