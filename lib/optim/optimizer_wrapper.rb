@@ -155,7 +155,11 @@ class OptimizerWrapper
             iterations_without_improvment: 100,
             initial_time_out: [3000, options[:optimize_time] && (options[:optimize_time] / 20)].compact.max * vehicles.size,
             time_out_multiplier: 2
-          }  }
+          },
+          restitution: {
+            intermediate_solutions: false
+          }
+        }
       }
 
       resource_vrp = RestClient::Resource.new(@url + '/vrp/submit.json', timeout: nil)
