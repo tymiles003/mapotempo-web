@@ -145,9 +145,7 @@ class Zoning < ApplicationRecord
   private
 
   def update_outdated
-    if @collection_touched
-      flag_outdated
-    end
+    flag_outdated if @collection_touched
   end
 
   def touch_zones(_zone)

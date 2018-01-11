@@ -58,7 +58,7 @@ class ZoningsController < ApplicationController
 
   def update
     respond_to do |format|
-      if @zoning.update_attributes(zoning_params) && @zoning.save
+      if @zoning.update(zoning_params)
         format.html { redirect_to link_back || edit_zoning_path(@zoning, planning_id: params.key?(:planning_id) ? params[:planning_id] : nil), notice: t('activerecord.successful.messages.updated', model: @zoning.class.model_name.human) }
       else
         @planning = params.key?(:planning_id) ? current_user.customer.plannings.find(params[:planning_id]) : nil

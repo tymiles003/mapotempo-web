@@ -39,6 +39,35 @@ class ZoningsControllerTest < ActionController::TestCase
     assert_redirected_to edit_zoning_path(assigns(:zoning))
   end
 
+  test 'should not set @planning.zoning_outdated to true when modifying not relevant zone fields' do
+    patch :update, id: @zoning.id, zoning: { name: @zoning.name, zones_attributes: [{ id: @zoning.zones.first.id, name: 'ZoneName' }] }
+    assert_equal @zoning.plannings.map(&:zoning_outdated), [nil, nil]
+  end
+
+  test 'should not set @planning.zoning_outdated to true when modifying zonning name field' do
+    patch :update, id: @zoning.id, zoning: { name: 'ZonningName' }
+    assert_equal @zoning.plannings.map(&:zoning_outdated), [nil, nil]
+  end
+
+  test 'should set @planning.zoning_outdated to true when modifying relevant zone field: vehicle' do
+    vehicle_id = Vehicle.where(customer_id: @zoning.customer_id).second.id
+    patch :update, id: @zoning.id, zoning: { name: @zoning.name, zones_attributes: [{ id: @zoning.zones.first.id, vehicle_id: vehicle_id}] }
+    assert_equal @zoning.plannings.map(&:zoning_outdated), [true, true]
+  end
+
+  test 'should set @planning.zoning_outdated to true when modifying relevant zone field: polygon' do
+    polygon = JSON.parse @zoning.zones.first.polygon
+    polygon['geometry']['coordinates'][0][0] = [-0.2, 40]
+    patch :update, id: @zoning.id, zoning: { name: @zoning.name, zones_attributes: [{ id: @zoning.zones.first.id, polygon: JSON.generate(polygon)}] }
+    assert_equal @zoning.plannings.map(&:zoning_outdated), [true, true]
+  end
+
+  test 'should set @planning.zoning_outdated to true when modifying relevant zone field: speed_multiplicator' do
+    speed_multiplicator = 0
+    patch :update, id: @zoning.id, zoning: { name: @zoning.name, zones_attributes: [{ id: @zoning.zones.first.id, avoid_zone: true, speed_multiplicator: speed_multiplicator}] }
+    assert_equal @zoning.plannings.map(&:zoning_outdated), [true, true]
+  end
+
   test 'should not create zoning' do
     assert_difference('Zoning.count', 0) do
       assert_difference('Zone.count', 0) do

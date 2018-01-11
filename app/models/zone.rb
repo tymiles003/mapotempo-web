@@ -98,8 +98,6 @@ class Zone < ApplicationRecord
   end
 
   def update_outdated
-    if self.changed?
-      zoning.flag_outdated
-    end
+    zoning.flag_outdated if self.changed? && (polygon_changed? || vehicle_id_changed? || speed_multiplicator_changed?)
   end
 end
