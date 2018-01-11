@@ -1652,7 +1652,7 @@ var plannings_edit = function(params) {
       url: '/plannings/' + planning_id + (routeId ? '/' + routeId : '') + '/optimize.json',
       data: {
         with_stops: routeId ? true : withStopsInSidePanel,
-        active_only: $('input[name="active_ony"]').val(),
+        active_only: $('input[name="active_only"]:checked').val(),
         global: !routeId && (($('input[name="sticky_vehicle"]:checked').val() == 'true') ? 'false' : 'true')
       },
       beforeSend: beforeSendWaiting,
