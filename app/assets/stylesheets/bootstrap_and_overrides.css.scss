@@ -609,4 +609,13 @@ div.grid-container {
   .slider-horizontal {
     margin-left: 12px;
   }
+
+  .slider-tick.in-selection {
+    background: inherit;
+    background-image: linear-gradient(to bottom, #f9f9f9 0%, #f5f5f5 100%);
+  }
+
+  .slider-selection {
+    background: inherit;
+  }
 }
