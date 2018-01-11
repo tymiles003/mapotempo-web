@@ -438,7 +438,7 @@
                           when :text
                             f.text_field_tag name, @customer.devices[key] && @customer.devices[key][field], autocomplete: 'off', class: 'form-control'
                           when :password
-                            f.password_field_tag name, @customer.devices[key] && @customer.devices[key][field], autocomplete: 'off', class: 'form-control'
+                            f.password_field_tag name, @customer.devices[key] && @customer.devices[key][field], autocomplete: 'new-password', class: 'form-control'
                           end %>
                       </div>
                     </div>
