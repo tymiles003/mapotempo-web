@@ -38,7 +38,9 @@ class OptimizerWrapper
       rests = vehicles.flat_map{ |v| v[:rests] }
       shift_stores = 0
       services_with_negative_quantities = []
-      use_skills = vehicles.any? { |v| v[:skills] && !v[:skills].empty? }
+
+      all_skills = vehicles.map { |v| v[:skills] }.flatten.compact
+      use_skills = !all_skills.empty?
 
       services_late_multiplier = (options[:stop_soft_upper_bound] && options[:stop_soft_upper_bound] > 0) ? options[:stop_soft_upper_bound] : nil
       vehicles_cost_late_multiplier = (options[:vehicle_soft_upper_bound] && options[:vehicle_soft_upper_bound] > 0) ? options[:vehicle_soft_upper_bound] : nil
@@ -134,8 +136,8 @@ class OptimizerWrapper
                 empty: service[:quantities_operations][k] == 'empty' || nil
               }.compact : nil
             }.compact : [],
-            skills: use_skills ? service[:skills] : nil
-          }.delete_if{ |k, v| !v }
+            skills: (use_skills && service[:skills]) ? (all_skills & service[:skills]) : nil
+          }.delete_if{ |_, v| !v }
         },
         relations: [{
           id: :never_first,
