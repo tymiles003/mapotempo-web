@@ -163,7 +163,13 @@ class OptimizerWrapper
       }
 
       resource_vrp = RestClient::Resource.new(@url + '/vrp/submit.json', timeout: nil)
-      json = resource_vrp.post({api_key: @api_key, vrp: vrp}.to_json, content_type: :json, accept: :json)
+      json = resource_vrp.post({api_key: @api_key, vrp: vrp}.to_json, content_type: :json, accept: :json) { |response, request, result, &block|
+        if response.code != 200 && response.code != 201
+          json = (response && /json/.match(response.headers[:content_type]) && response.size > 1) ? JSON.parse(response) : nil
+          Delayed::Worker.logger.info "VRP submit #{response.code} " + (json && json['message'] ? json['message'] : '') + ' ' + request.to_json
+        end
+        response
+      }
 
       result = nil
       while json
