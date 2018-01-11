@@ -291,26 +291,22 @@ class PlanningTest < ActiveSupport::TestCase
   test 'should compute' do
     o = plannings(:planning_one)
     assert_no_difference('Stop.count') do
-      o.zoning_outdated = true
       o.compute
       o.routes.select{ |r| r.vehicle_usage }.each{ |r|
         assert_not r.outdated
       }
-      assert_not o.zoning_outdated
       o.save!
     end
   end
 
   test 'should compute with non geocoded' do
     o = plannings(:planning_one)
-    o.zoning_outdated = true
     d0 = o.routes[0].stops[0].visit.destination
     d0.lat = d0.lng = nil
     o.compute
     o.routes.select{ |r| r.vehicle_usage }.each{ |r|
       assert_not r.outdated
     }
-    assert_not o.zoning_outdated
   end
 
   test 'should outdated' do
@@ -327,6 +323,17 @@ class PlanningTest < ActiveSupport::TestCase
     o.zonings = [zonings(:zoning_two)]
     o.save!
     assert_not o.outdated
+  end
+
+  test 'should split by zone' do
+    o = plannings(:planning_one)
+    o.zoning_outdated = true
+    r = o.routes.find{ |r| !r.vehicle_usage }
+    assert_difference('r.stops.size', 2) do
+      o.split_by_zones(nil)
+      assert_not o.zoning_outdated
+      assert_equal 1, o.routes.select{ |route| route == routes(:route_three_one) }.first.stops.size
+    end
   end
 
   test 'should automatic insert' do

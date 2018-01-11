@@ -324,20 +324,21 @@ class PlanningsController < ApplicationController
   end
 
   def apply_zonings
-    @planning.zonings = params[:planning] && planning_params[:zoning_ids] ? current_user.customer.zonings.find(planning_params[:zoning_ids]) : []
-    @planning.zoning_outdated = true
-    @planning.compute
-    if @planning.save && @planning.reload
-      respond_to do |format|
-        format.json do
-          render action: :show
+    respond_to do |format|
+      @planning.zonings = params[:planning] && planning_params[:zoning_ids] ? current_user.customer.zonings.find(planning_params[:zoning_ids]) : []
+      @planning.zoning_outdated = true
+      begin
+        Planning.transaction do
+          @planning.split_by_zones(nil)
+          @planning.compute
+          if @planning.save!
+            format.json { render action: :show }
+          else
+            format.json { render json: @planning.errors, status: :unprocessable_entity }
+          end
         end
-      end
-    else
-      respond_to do |format|
-        format.json do
-          render json: @planning.errors, status: :unprocessable_entity
-        end
+      rescue ActiveRecord::RecordInvalid => e
+        format.json { render json: @planning.errors, status: :unprocessable_entity }
       end
     end
   end

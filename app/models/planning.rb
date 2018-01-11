@@ -145,14 +145,7 @@ class Planning < ApplicationRecord
   end
 
   def compute(options = {})
-    Planning.transaction do
-      if zoning_outdated
-        split_by_zones(nil)
-        zoning_outdated = false
-        @zoning_ids_changed = false
-      end
-      routes.each{ |r| r.compute(options) }
-    end
+    routes.each{ |r| r.compute(options) }
   end
 
   def switch(route, vehicle_usage)
@@ -322,6 +315,44 @@ class Planning < ApplicationRecord
 
     self.order_array = order_array
     self.date = order_array.base_date + shift
+  end
+
+  def split_by_zones(visits_free)
+    self.zoning_outdated = false
+    @zoning_ids_changed = false
+    if !zonings.empty? && !routes.empty?
+      # Make sure there is at least one Zone with Vehicle, else, don't apply Zones
+      return unless zonings.any?{ |zoning| zoning.zones.any?{ |zone| !zone.avoid_zone && !zone.vehicle_id.blank? } }
+
+      need_fetch_stop_status = routes.any?{ |r| r.stops.any?(&:status) }
+
+      vehicles_map = Hash[routes.group_by(&:vehicle_usage).map { |vehicle_usage, routes|
+        next if vehicle_usage && !vehicle_usage.active?
+        [vehicle_usage && vehicle_usage.vehicle, routes[0]]
+      }]
+
+      # Get free visits if not the first initial split on planning building
+      if !visits_free
+        visits_free = routes.reject(&:locked).flat_map(&:stops).select{ |stop| stop.is_a?(StopVisit) }.map(&:visit)
+
+        routes.each{ |route|
+          route.locked || route.set_visits([])
+        }
+      end
+
+      Zoning.new(zones: zonings.collect(&:zones).flatten).apply(visits_free).each{ |zone, visits|
+        if zone && zone.vehicle && vehicles_map[zone.vehicle] && !vehicles_map[zone.vehicle].locked
+          vehicles_map[zone.vehicle].add_visits(visits.collect{ |d| [d, true] })
+        else
+          # Add to unplanned route even if the route is locked
+          routes.find{ |r| !r.vehicle_usage? }.add_visits(visits.collect{ |d| [d, true] })
+        end
+      }
+
+      fetch_stops_status if need_fetch_stop_status
+
+      true
+    end
   end
 
   def optimize(routes, global, active_only = true, &optimizer)
@@ -707,53 +738,8 @@ class Planning < ApplicationRecord
     @tag_ids_changed
   end
 
-  def split_by_zones(visits_free)
-    self.zoning_outdated = false
-    if !zonings.empty? && !routes.empty?
-      # Make sure there is at least one Zone with Vehicle, else, don't apply Zones
-      return unless zonings.any?{ |zoning| zoning.zones.any?{ |zone| !zone.avoid_zone && !zone.vehicle_id.blank? } }
-
-      need_fetch_stop_status = routes.any?{ |r| r.stops.any?(&:status) }
-
-      vehicles_map = Hash[routes.group_by(&:vehicle_usage).map { |vehicle_usage, routes|
-        next if vehicle_usage && !vehicle_usage.active?
-        [vehicle_usage && vehicle_usage.vehicle, routes[0]]
-      }]
-
-      # Get free visits if not the first initial split on planning building
-      if !visits_free
-        visits_free = routes.reject(&:locked).flat_map(&:stops).select{ |stop| stop.is_a?(StopVisit) }.map(&:visit)
-
-        routes.each{ |route|
-          route.locked || route.set_visits([])
-        }
-      end
-
-      Zoning.new(zones: zonings.collect(&:zones).flatten).apply(visits_free).each{ |zone, visits|
-        if zone && zone.vehicle && vehicles_map[zone.vehicle] && !vehicles_map[zone.vehicle].locked
-          vehicles_map[zone.vehicle].add_visits(visits.collect{ |d| [d, true] })
-        else
-          # Add to unplanned route even if the route is locked
-          routes.find{ |r| !r.vehicle_usage? }.add_visits(visits.collect{ |d| [d, true] })
-        end
-      }
-
-      fetch_stops_status if need_fetch_stop_status
-
-      true
-    end
-  end
-
   def update_zonings
-    if @zoning_ids_changed
-      self.zoning_outdated = true
-    end
-
-    if !zonings.empty? && @zoning_ids_changed
-      self.zoning_outdated = true
-      split_by_zones(nil)
-    end
-    true
+    self.zoning_outdated = true if @zoning_ids_changed
   end
 
   def update_vehicle_usage_set

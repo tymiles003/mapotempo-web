@@ -195,8 +195,9 @@ class V01::Plannings < Grape::API
         planning = current_customer.plannings.where(ParseIdsRefs.read(params[:id])).first!
         raise Exceptions::JobInProgressError if Job.on_planning(planning.customer.job_optimizer, planning.id)
         planning.zoning_outdated = true
+        planning.split_by_zones(nil)
         planning.compute
-        planning.save! && planning.reload
+        planning.save!
         if params[:details]
           present planning, with: V01::Entities::Planning, geojson: params[:geojson]
         else

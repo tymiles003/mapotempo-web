@@ -389,13 +389,32 @@ class PlanningsControllerTest < ActionController::TestCase
     assert_response :success
   end
 
-  test 'should refresh zoning' do
+  test 'should apply none zoning' do
     @planning.zoning_outdated = true
     @planning.save!
-    get :refresh, planning_id: @planning, format: :json
-    assert_response :success
-    planning = assigns(:planning)
-    assert_not planning.zoning_outdated
+    stop_ids = @planning.routes.flat_map{ |r| r.stop_ids }
+    assert_no_difference('Stop.count') do
+      patch :apply_zonings, id: @planning, format: :json
+      assert_response :success
+      planning = assigns(:planning)
+      assert_not planning.zoning_outdated
+      assert_equal [], planning.zonings.map(&:id)
+      assert_equal stop_ids, planning.routes.flat_map{ |r| r.stop_ids }
+    end
+  end
+
+  test 'should apply zoning' do
+    @planning.zoning_outdated = true
+    @planning.save!
+    stop_ids = @planning.routes.flat_map{ |r| r.stop_ids }
+    assert_no_difference('Stop.count') do
+      patch :apply_zonings, id: @planning, format: :json, planning: { zoning_ids: [zonings(:zoning_one).id] }
+      assert_response :success
+      planning = assigns(:planning)
+      assert_not planning.zoning_outdated
+      assert_equal [zonings(:zoning_one).id], planning.zonings.map(&:id)
+      assert_not_equal stop_ids, planning.routes.flat_map{ |r| r.stop_ids }
+    end
   end
 
   test 'should switch with same vehicle' do
@@ -668,22 +687,6 @@ class PlanningsControllerTest < ActionController::TestCase
         end
       end
     end
-  end
-
-  test 'Apply Zonings' do
-    planning = plannings :planning_one
-    zoning = zonings :zoning_one
-    patch :apply_zonings, id: @planning.id, format: :json
-    assert_response :success
-    assert !planning.zonings.exists?
-    assert !planning.outdated
-    assert !planning.zoning_outdated
-    patch :apply_zonings, id: @planning.id, format: :json, planning: { zoning_ids: [zoning.id] }
-    assert_response :success
-    planning.reload
-    assert_equal [zoning.id], planning.zonings.map(&:id)
-    assert !planning.outdated
-    assert !planning.zoning_outdated
   end
 
   test 'should update active while automatic insert is in progress' do
