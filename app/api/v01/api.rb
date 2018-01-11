@@ -113,7 +113,8 @@ class V01::Api < Grape::API
       rack_response(format_message(response, e.backtrace), 403)
     elsif e.is_a?(Grape::Exceptions::MethodNotAllowed)
       rack_response(format_message(response, e.backtrace), 405)
-    elsif e.is_a?(Exceptions::JobInProgressError)
+    elsif e.is_a?(Exceptions::JobInProgressError) || e.is_a?(PG::TRSerializationFailure)
+      response[:message] = I18n.t('errors.planning.deadlock') if e.is_a?(PG::TRSerializationFailure)
       rack_response(format_message(response, e.backtrace), 409)
     else
       rack_response(format_message(response, e.backtrace), 500)
