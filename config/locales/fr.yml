@@ -2192,15 +2192,15 @@ fr:
       open_close1: Plage horaire 1
       open_close2: Plage horaire 2
       priority: Priorité
-      priority_help: Priorité d'insertion lors de l'optimisation
+      priority_help: Priorité d’insertion lors de l’optimisation (utile lorsque vous savez que votre flotte de véhicules ne pourra pas visiter tous les clients)
       close_help: Sans tenir compte de la durée de visite
       tags_help: Catégories de la visite
       delete: Marquer à supprimer
       delete_help: Supprimer cette visite (le client sera conservé)
     priority_level:
-      high: Haut
-      medium: Normal
-      low: Bas
+      high: Haute
+      medium: Normale
+      low: Basse
   zonings:
     default:
       from_route: Tournée

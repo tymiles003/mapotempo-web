@@ -2096,7 +2096,7 @@ en:
       open_close1: Time window 1
       open_close2: Time window 2
       priority: Priority
-      priority_help: Insertion priority when optimizing
+      priority_help: Insertion priority when optimizing (useful when you know all your vehicles will not be able to visit all clients)
       close_help: Without taking into account visit duration
       tags_help: Visit categories
       delete: Flag for deletion
