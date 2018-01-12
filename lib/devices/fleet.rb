@@ -115,6 +115,8 @@ class Fleet < DeviceBase
     raise DeviceServiceError.new("Fleet: #{I18n.t('errors.fleet.past_missions')}") if route.planning.date && route.planning.date < Date.today
 
     destinations = route.stops.select(&:active?).select(&:position?).select { |stop| stop.is_a?(StopVisit) }.sort_by(&:index).map do |destination|
+      quantities = destination.is_a?(StopVisit) ? (customer.enable_orders ? (destination.order ? destination.order.products.collect(&:code).join(',') : '') : destination.visit.default_quantities ? VisitQuantities.normalize(destination.visit, route.vehicle_usage.try(&:vehicle)).map { |d| d[:quantity] }.join("\r\n") : '') : nil
+
       {
         external_ref: generate_mission_id(destination),
         name: destination.name,
@@ -123,7 +125,10 @@ class Fleet < DeviceBase
           lat: destination.lat,
           lon: destination.lng
         },
-        comment: destination.comment,
+        comment: [
+          destination.comment,
+          quantities
+        ].compact.join("\r\n\r\n").strip,
         phone: destination.phone_number,
         reference: destination.visit.destination.ref,
         duration: destination.duration,
