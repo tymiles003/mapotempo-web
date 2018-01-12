@@ -139,26 +139,26 @@ var zonings_edit = function(params) {
 
   map.on(L.Draw.Event.DRAWSTART, function() {
     creating_drawing = true;
-
     markersGroup.togglePopupOnHover();
   });
 
   map.on(L.Draw.Event.DRAWSTOP, function() {
     creating_drawing = true;
-
     markersGroup.togglePopupOnHover();
   });
 
   map.on(L.Draw.Event.EDITSTART, function() {
     editing_drawing = true;
-
     markersGroup.togglePopupOnHover();
   });
 
   map.on(L.Draw.Event.EDITSTOP, function() {
     editing_drawing = true;
-
     markersGroup.togglePopupOnHover();
+  });
+
+  map.on(L.Draw.Event.EDITVERTEX, function(e) {
+    editing_drawing = e.target._layers;
   });
 
   map.on(L.Draw.Event.CREATED, function(e) {
@@ -504,7 +504,17 @@ var zonings_edit = function(params) {
     }
   };
 
-  $('form[id^=edit_zoning]').submit(function() {
+  $("#edit-zoning form").submit(function() {
+    if (typeof(editing_drawing) == 'object') {
+      for (var thisLayer in editing_drawing) {
+        if (editing_drawing.hasOwnProperty(thisLayer)) {
+          if (editing_drawing[thisLayer].hasOwnProperty("edited")) {
+            updateZone(editing_drawing[thisLayer]);
+          }
+        }
+      }
+    }
+
     var empty = false;
     $.each($('select').serializeArray(), function(i, e) {
       if (!e.value) {
