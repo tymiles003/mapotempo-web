@@ -828,6 +828,7 @@ en:
         is important, more the delay before time slot opening is important (0 to disallow
         the waiting time).
       optimization_force_start_help: Force vehicle start to the beginning of its schedule.
+      enable_global_optimization_test: Enabled if Test
       print_header_help: Block of text added before each route
       print:
         title: Printing

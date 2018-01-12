@@ -840,6 +840,7 @@ fr:
         sera pénalisée (0 pour ne pas considérer l'attente dans l'optimisation).
       optimization_force_start_help: Forcer le départ du véhicule à son horaire de
         début.
+      enable_global_optimization_test: Actif si Test
       print_header_help: Bloc de texte ajouté avant chaque tournée
       print:
         title: Impressions

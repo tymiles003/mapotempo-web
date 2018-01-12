@@ -310,6 +310,7 @@
       <% end %>
       <%= f.toggles t 'activerecord.attributes.customer.enable_global_optimization' do %>
         <%= f.check_box :enable_global_optimization %>
+        <% if !@customer.id || @customer.test %><p class="help-block"><%= t '.enable_global_optimization_test' %></p><% end %>
       <% end %>
       <%= f.toggles t 'activerecord.attributes.customer.enable_vehicle_position' do %>
         <%= f.check_box :enable_vehicle_position %>
