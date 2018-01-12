@@ -410,7 +410,7 @@ var destinations_form = function(params, api) {
         quantity.val('0');
     });
 
-    console.log(I18n.t('visits.form'))
+    $('.quantities_operations').popover();
 
     $('[name$=\\[priority\\]]', parent).slider({
       ticks: [-4, 0, 4],
