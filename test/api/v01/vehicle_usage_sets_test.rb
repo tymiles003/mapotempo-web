@@ -99,7 +99,7 @@ class V01::VehicleUsageSetsTest < ActiveSupport::TestCase
       assert_equal '001', json[0]['ref']
       assert_not_equal 'Véhicule 1', json[0]['name']
       assert_equal '08:00:00', json[0]['vehicle_usages'][0]['open']
-      assert_nil json[0]['vehicle_usages'][0]['close']
+      assert_equal '16:00:00', json[0]['vehicle_usages'][0]['close']
     end
   end
 
@@ -115,15 +115,15 @@ class V01::VehicleUsageSetsTest < ActiveSupport::TestCase
       assert_equal 'vehicle1@mapotempo.com', json[0]['contact_email']
       assert_equal 10, json[0]['consumption']
       assert_equal '08:00:00', json[0]['vehicle_usages'][2]['open']
-      assert_nil json[0]['vehicle_usages'][2]['close']
+      assert_equal '16:00:00', json[0]['vehicle_usages'][2]['close']
 
       assert_equal 'Véhicule 2', json[1]['name']
       assert_equal 'vehicle2@mapotempo.com', json[1]['contact_email']
       assert_equal 15, json[1]['consumption']
       assert_nil json[1]['vehicle_usages'][2]['open']
-      assert_nil json[1]['vehicle_usages'][2]['close']
+      assert_equal '16:00:00', json[1]['vehicle_usages'][2]['close']
 
-      assert_equal 57600, @customer.vehicle_usage_sets.last.close
+      assert_equal 64800, @customer.vehicle_usage_sets.last.close
     end
   end
 

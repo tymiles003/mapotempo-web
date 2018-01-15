@@ -204,6 +204,18 @@ class ImporterVehicleUsageSets < ImporterBase
 
   def after_import(_name, _options)
     # If all vehicles have the same parameters, set the parameter to the default configuration and remove it from vehicle
+    # Exclude required configuration (rest, service, ...) if all fields not in common
+    unless @common_configuration[:open] && @common_configuration[:close]
+      @common_configuration[:open] = @common_configuration[:close] = nil
+    end
+    unless @common_configuration[:rest_start] && @common_configuration[:rest_stop] && @common_configuration[:rest_duration]
+      @common_configuration[:rest_start] = @common_configuration[:rest_stop] = @common_configuration[:rest_duration] = nil
+    end
+    unless @common_configuration[:service_time_start] && @common_configuration[:service_time_end]
+      @common_configuration[:service_time_start] = @common_configuration[:service_time_end] = nil
+    end
+
+
     @common_configuration.compact!
     unless @common_configuration.keys.empty?
       @vehicle_usage_set.assign_attributes @common_configuration
