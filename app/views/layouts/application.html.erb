@@ -54,12 +54,8 @@
                       </li>
                     <% end %>
                     <li>
-                      <% if current_user.customer.too_many_plannings? %>
-                        <p class="padding-list" href=""><i class="fa fa-fw text-warning fa-exclamation-triangle"></i> <span class="text-warning"><%= t 'plannings.menu.plannings_limit.menu_message' %></span> </p>
-                      <% else %>
-                        <% current_user.customer.plannings.select(&:id).each do |planning| %>
-                          <%= link_to edit_planning_path(planning) do %><i class="fa fa-calendar fa-fw"></i> <%= planning.name %><% end %>
-                        <% end %>
+                      <% current_user.customer.plannings.select(&:id).each do |planning| %>
+                        <%= link_to edit_planning_path(planning) do %><i class="fa fa-calendar fa-fw"></i> <%= planning.name %><% end %>
                       <% end %>
                     </li>
                   </ul>
