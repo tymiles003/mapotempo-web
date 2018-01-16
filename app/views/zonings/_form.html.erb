@@ -20,8 +20,10 @@ options.merge!(default_div_class: 'col-lg-10 col-md-10') if @zoning.id %>
       <% if @planning %>
         <div class="col-md-12">
           <p class="help-block"><%= t('.stops_from_planning', s: @planning.name) %></p>
-          <%= check_box_tag :hide_out_of_route %>
-          <%= label_tag :hide_out_of_route, t(".hide_out_of_route") %>
+          <% unless @planning.routes.reject(&:vehicle_usage_id).all?(&:hidden) %>
+            <%= check_box_tag :hide_out_of_route %>
+            <%= label_tag :hide_out_of_route, t(".hide_out_of_route") %>
+          <% end %>
         </div>
       <% else %>
         <div class="col-md-12">
