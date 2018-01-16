@@ -107,7 +107,7 @@ module Mapotempo
     # Max number of models allowed by customer account
     config.max_plannings = 200
     config.max_plannings_default = nil
-    config.max_zonings = 100
+    config.max_zonings = 200
     config.max_zonings_default = nil
     config.max_destinations = 30000
     config.max_destinations_default = nil
