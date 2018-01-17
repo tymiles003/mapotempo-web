@@ -118,7 +118,7 @@ class Fleet < DeviceBase
       quantities = destination.is_a?(StopVisit) ? (customer.enable_orders ? (destination.order ? destination.order.products.collect(&:code).join(',') : '') : destination.visit.default_quantities ? VisitQuantities.normalize(destination.visit, route.vehicle_usage.try(&:vehicle)).map { |d| d[:quantity] }.join("\r\n") : '') : nil
 
       {
-        external_ref: generate_mission_id(destination),
+        external_ref: generate_mission_id(destination, planning_date(route.planning)),
         name: destination.name,
         date: p_time(route, destination.time).strftime('%FT%T.%L%:z'),
         location: {
@@ -165,7 +165,7 @@ class Fleet < DeviceBase
       delete_missions_by_date(route.vehicle_usage.vehicle.devices[:fleet_user], customer.devices[:fleet][:api_key], start_date, end_date)
     else
       destination_ids = route.stops.select(&:active?).select(&:position?).sort_by(&:index).map do |destination|
-        generate_mission_id(destination)
+        generate_mission_id(destination, planning_date(route.planning))
       end
       delete_missions(route.vehicle_usage.vehicle.devices[:fleet_user], customer.devices[:fleet][:api_key], destination_ids)
     end
@@ -247,9 +247,9 @@ class Fleet < DeviceBase
     URI.encode("#{api_url}/api/0.1/users/#{user}/missions/destroy_multiples?start_date=#{start_date}&end_date=#{end_date}")
   end
 
-  def generate_mission_id(destination)
+  def generate_mission_id(destination, date)
     order_id = destination.is_a?(StopVisit) ? "v#{destination.visit_id}" : "r#{destination.id}"
-    "mission-#{order_id}"
+    "mission-#{order_id}-#{date.to_i.to_s(36)}"
   end
 
   def decode_mission_id(mission_ref)
