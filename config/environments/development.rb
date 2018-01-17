@@ -106,7 +106,7 @@ Rails.application.configure do
     ENV['ROUTER_API_KEY']
   )
 
-  config.devices.fleet.api_url = 'http://0.0.0.0:4920'
+  config.devices.fleet.api_url = 'http://0.0.0.0:8084'
   config.devices.alyacom.api_url = 'http://partners.alyacom.fr/ws'
   config.devices.masternaut.api_url = 'http://ws.webservices.masternaut.fr/MasterWS/services'
   config.devices.orange.api_url = 'https://m2m-services.ft-dm.com'
