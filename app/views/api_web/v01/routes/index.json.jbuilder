@@ -28,11 +28,11 @@ json.routes @routes do |route|
     json.stop_id stop.id
     json.extract! stop, :name, :street, :detail, :postalcode, :city, :country, :comment, :phone_number, :lat, :lng, :drive_time, :out_of_window, :out_of_capacity, :out_of_drive_time, :out_of_work_time, :no_path
     json.ref stop.ref if @planning.customer.enable_references
-    json.open_close1 stop.open1 || stop.close1
+    json.open_close1 !!stop.open1 || !!stop.close1
     json.open1 stop.open1_time
     json.close1 stop.close1_time
     json.open1_close1_days number_of_days(stop.close1)
-    json.open_close2 stop.open2 || stop.close2
+    json.open_close2 !!stop.open2 || !!stop.close2
     json.open2 stop.open2_time
     json.close2 stop.close2_time
     json.open2_close2_days number_of_days(stop.close2)

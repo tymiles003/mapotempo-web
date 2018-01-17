@@ -87,12 +87,12 @@ if @with_stops
     json.stop_index stop.index
     json.extract! stop, :name, :street, :detail, :postalcode, :city, :country, :comment, :phone_number, :lat, :lng, :drive_time, :out_of_window, :out_of_capacity, :out_of_drive_time, :out_of_work_time, :no_path
     json.ref stop.ref if @planning.customer.enable_references
-    json.open_close1 stop.open1 || stop.close1
+    json.open_close1 !!stop.open1 || !!stop.close1
     (json.open1 stop.open1_time) if stop.open1
     (json.open1_day number_of_days(stop.open1)) if stop.open1
     (json.close1 stop.close1_time) if stop.close1
     (json.close1_day number_of_days(stop.close1)) if stop.close1
-    json.open_close2 stop.open2 || stop.close2
+    json.open_close2 !!stop.open2 || !!stop.close2
     (json.open2 stop.open2_time) if stop.open2
     (json.open2_day number_of_days(stop.open2)) if stop.open2
     (json.close2 stop.close2_time) if stop.close2

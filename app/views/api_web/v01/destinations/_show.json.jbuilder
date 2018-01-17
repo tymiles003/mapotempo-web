@@ -11,12 +11,12 @@ json.visits destination.visits do |visit|
   take_over = visit.default_take_over_time_with_seconds
   json.take_over take_over
   json.duration take_over
-  json.open_close1 visit.open1 || visit.close1
+  json.open_close1 !!visit.open1 || !!visit.close1
   json.open1 visit.open1_time
   (json.open1_day number_of_days(visit.open1)) if visit.open1
   json.close1 visit.close1_time
   (json.close1_day number_of_days(visit.close1)) if visit.close1
-  json.open_close2 visit.open2 || visit.close2
+  json.open_close2 !!visit.open2 || !!visit.close2
   json.open2 visit.open2_time
   (json.open2_day number_of_days(visit.open2)) if visit.open2
   json.close2 visit.close2_time
