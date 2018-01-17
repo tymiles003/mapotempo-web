@@ -2233,6 +2233,8 @@ fr:
     new:
       title: Nouveau zonage
     form:
+      planning_id: Clients depuis un plan
+      planning_id_help: Permet par exemple de filtrer les clients à afficher avec certains libellés définis dans le plan de tournées sélectionné
       hide_out_of_route: Cacher les clients non planifiés
       all_destinations: Afficher tous les clients
       from_planning_help: Vous pouvez aussi afficher les clients d'un unique plan

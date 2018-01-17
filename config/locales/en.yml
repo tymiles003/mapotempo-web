@@ -2134,6 +2134,8 @@ en:
     new:
       title: New zoning
     form:
+      planning_id: Destinations from plan
+      planning_id_help: For example, you can filter the destinations to be displayed with certain labels defined in the selected route plan.
       hide_out_of_route: Hide unaffected destinations
       all_destinations: Show all destinations
       from_planning_help: It's also possible to filter destinations from a unique

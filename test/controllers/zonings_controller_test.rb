@@ -25,10 +25,27 @@ class ZoningsControllerTest < ActionController::TestCase
     assert_valid response
   end
 
-  test 'should get new' do
+  test 'should get new without a planning_id' do
     get :new
     assert_response :success
     assert_valid response
+    @zoning.plannings.each do |planning|
+      planning_id = planning.id.to_s
+      assert_match '<option value="' + planning_id + '">', response.body
+    end
+  end
+
+  test 'should get new with a planning_id' do
+    selected_planning_id = @zoning.plannings.map(&:id).first.to_s
+    get :new, planning_id: selected_planning_id
+    @zoning.plannings.each do |planning|
+      planning_id = planning.id.to_s
+      if planning_id == selected_planning_id
+        assert_match '<option selected="selected" value="' + selected_planning_id + '">', response.body
+      else
+        assert_match '<option value="' + planning_id + '">', response.body
+      end
+    end
   end
 
   test 'should create zoning' do
@@ -81,10 +98,13 @@ class ZoningsControllerTest < ActionController::TestCase
     assert_valid response
   end
 
-  test 'should get edit' do
-    get :edit, id: @zoning
-    assert_response :success
-    assert_valid response
+  test 'should get edit with or without a planning_id' do
+    [{}, { planning_id: ''}, { planning_id: @zoning.plannings.first }].each do |option|
+      get :edit, { id: @zoning }.merge(option), locale: 'fr'
+      assert_response :success
+      assert_valid response
+      assert_match(/Modifier zonage/, response.body)
+    end
   end
 
   test 'should update zoning' do

@@ -35,11 +35,12 @@ class ZoningsController < ApplicationController
 
   def new
     @zoning = current_user.customer.zonings.build
+    @plannings = current_user.customer.plannings
     @planning = params.key?(:planning_id) ? current_user.customer.plannings.find(params[:planning_id]) : nil
   end
 
   def edit
-    @planning = params.key?(:planning_id) ? current_user.customer.plannings.find(params[:planning_id]) : nil
+    @planning = params.key?(:planning_id) && !params[:planning_id].empty? ? current_user.customer.plannings.find(params[:planning_id]) : nil
     @vehicle_usage_set = @planning ? @planning.vehicle_usage_set : @zoning.customer.vehicle_usage_sets[0]
     capabilities
   end
