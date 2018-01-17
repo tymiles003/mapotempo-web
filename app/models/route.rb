@@ -222,7 +222,7 @@ class Route < ApplicationRecord
         end
       }
 
-      compute_quantities unless options[:no_quantities]
+      compute_quantities(stops_sort) unless options[:no_quantities]
 
       # Last stop to store
       distance, drive_time, trace = traces.shift
@@ -459,10 +459,10 @@ class Route < ApplicationRecord
 
   attr_localized :quantities
 
-  def compute_quantities
+  def compute_quantities(stops_sort = nil)
     quantities_ = Hash.new(0)
 
-    stops.each do |stop|
+    (stops_sort || stops).each do |stop|
       if stop.active && stop.position? && stop.is_a?(StopVisit)
         out_of_capacity = nil
 
