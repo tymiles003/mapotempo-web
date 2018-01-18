@@ -127,7 +127,7 @@ class Fleet < DeviceBase
         },
         comment: [
           destination.comment,
-          quantities
+          quantities ? "#{I18n.t('activerecord.attributes.visit.quantities')} :\r\n#{quantities}" : nil
         ].compact.join("\r\n\r\n").strip,
         phone: destination.phone_number,
         reference: destination.visit.destination.ref,
