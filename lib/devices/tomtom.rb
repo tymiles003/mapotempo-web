@@ -306,10 +306,13 @@ class Tomtom < DeviceBase
       if status_code == 0 || (ignore_busy && status_code == 8015) || (ignore_addresses_empty_result && status_code == 9198)
         return response_body[:results][:result_item] if response_body[:results]
       else
-        raise DeviceServiceError.new 'TomTom: %s' % [ parse_error_msg(status_code) || response_body[:status_message] ]
+        raise DeviceServiceError.new("TomTom: #{parse_error_msg(status_code) || response_body[:status_message]}")
       end
     end
 
+  rescue SocketError => error
+    Rails.logger.info error
+    raise DeviceServiceError.new("TomTom: #{I18n.t('errors.tomtom.unreachable')}")
   rescue Savon::SOAPFault => error
     Rails.logger.info error
     fault_code = error.to_hash[:fault][:faultcode]
@@ -323,7 +326,7 @@ class Tomtom < DeviceBase
     i = 0
     loop do
       if i == max_tries
-        raise DeviceServiceError.new 'TomTom: %s' % [ I18n.t('errors.tomtom.service_failed') ]
+        raise DeviceServiceError.new("TomTom: #{I18n.t('errors.tomtom.service_failed')}")
       end
       begin
         yield
