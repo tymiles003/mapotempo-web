@@ -63,7 +63,7 @@ class Fleet < DeviceBase
       data['users'].map do |user|
         {
           id: user['sync_user'],
-          text: "#{user['sync_user']} - #{user['email']}",
+          text: "#{user['name']} - #{user['email']}",
           color: user['color'] || '#000000'
         }
       end
@@ -80,10 +80,10 @@ class Fleet < DeviceBase
       data['user_current_locations'].map do |current_location|
         {
           fleet_vehicle_id: current_location['sync_user'],
-          device_name: current_location['sync_user'],
+          device_name: current_location['name'],
           lat: current_location['location_detail']['lat'],
           lng: current_location['location_detail']['lon'],
-          time: current_location['location_detail']['time'],
+          time: current_location['location_detail']['date'],
           speed: current_location['location_detail']['speed'] && (current_location['location_detail']['speed'].to_f * 3.6).round,
           direction: current_location['location_detail']['bearing']
         }
@@ -116,6 +116,15 @@ class Fleet < DeviceBase
 
     destinations = route.stops.select(&:active?).select(&:position?).select { |stop| stop.is_a?(StopVisit) }.sort_by(&:index).map do |destination|
       quantities = destination.is_a?(StopVisit) ? (customer.enable_orders ? (destination.order ? destination.order.products.collect(&:code).join(',') : '') : destination.visit.default_quantities ? VisitQuantities.normalize(destination.visit, route.vehicle_usage.try(&:vehicle)).map { |d| d[:quantity] }.join("\r\n") : '') : nil
+      time_windows = []
+      time_windows << {
+        start: p_time(route, destination.open1).strftime('%FT%T.%L%:z'),
+        end: p_time(route, destination.close1).strftime('%FT%T.%L%:z')
+      } if destination.open1 && destination.close1
+      time_windows << {
+        start: p_time(route, destination.open2).strftime('%FT%T.%L%:z'),
+        end: p_time(route, destination.close2).strftime('%FT%T.%L%:z')
+      } if destination.open2 && destination.close2
 
       {
         external_ref: generate_mission_id(destination, planning_date(route.planning)),
@@ -140,12 +149,7 @@ class Fleet < DeviceBase
           state: destination.state,
           street: destination.street
         },
-        time_windows: [
-          {
-            start: p_time(route, destination.time).strftime('%FT%T.%L%:z'),
-            end: p_time(route, destination.duration ? destination.time + destination.duration.seconds : destination.time).strftime('%FT%T.%L%:z')
-          }
-        ]
+        time_windows: time_windows
       }
     end
 
@@ -224,7 +228,7 @@ class Fleet < DeviceBase
   end
 
   def get_user_url(user)
-    URI.encode("#{api_url}/api/0.1/users/#{user}")
+    URI.encode("#{api_url}/api/0.1/users/#{convert_user(user)}")
   end
 
   def get_vehicles_pos_url
@@ -232,24 +236,29 @@ class Fleet < DeviceBase
   end
 
   def get_missions_url(user = nil)
-    user ? URI.encode("#{api_url}/api/0.1/users/#{user}/missions") : URI.encode("#{api_url}/api/0.1/missions")
+    user ? URI.encode("#{api_url}/api/0.1/users/#{convert_user(user)}/missions") : URI.encode("#{api_url}/api/0.1/missions")
   end
 
   def set_missions_url(user)
-    URI.encode("#{api_url}/api/0.1/users/#{user}/missions/create_multiples")
+    URI.encode("#{api_url}/api/0.1/users/#{convert_user(user)}/missions/create_multiples")
   end
 
   def delete_missions_url(user, destination_ids)
-    URI.encode("#{api_url}/api/0.1/users/#{user}/missions/destroy_multiples?#{destination_ids.to_query('ids')}")
+    URI.encode("#{api_url}/api/0.1/users/#{convert_user(user)}/missions/destroy_multiples?#{destination_ids.to_query('ids')}")
   end
 
   def delete_missions_by_date_url(user, start_date, end_date)
-    URI.encode("#{api_url}/api/0.1/users/#{user}/missions/destroy_multiples?start_date=#{start_date}&end_date=#{end_date}")
+    URI.encode("#{api_url}/api/0.1/users/#{convert_user(user)}/missions/destroy_multiples?start_date=#{start_date}&end_date=#{end_date}")
   end
 
   def generate_mission_id(destination, date)
     order_id = destination.is_a?(StopVisit) ? "v#{destination.visit_id}" : "r#{destination.id}"
     "mission-#{order_id}-#{date.to_i.to_s(36)}"
+  end
+
+  def convert_user(user)
+    # Convert to SHA256 if user is a email address
+    user.include?('@') ? Digest::SHA256.hexdigest(user) : user
   end
 
   def decode_mission_id(mission_ref)
