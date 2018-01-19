@@ -2042,7 +2042,7 @@ fr:
         arrêt
       work_time: Durée de travail
       work_time_default: '%{n} (valeur par défaut)'
-      work_time_help: La durée de travail doit être inférieure ou égale à l'amplitude horaire (service compris sans la pause)
+      work_time_help: La durée de travail doit être inférieure ou égale à l'amplitude horaire (service compris sans la pause). Si défini, l'optimisation respectera strictement la durée de travail.
       devices:
         placeholder: Sélectionner un appareil
         fieldset: GPS & Mobiles

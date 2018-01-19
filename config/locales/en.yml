@@ -1959,7 +1959,7 @@ en:
         stop
       work_time: Work time
       work_time_default: '%{n} (default value)'
-      work_time_help: Work time must less or equal than working time shift (service included without the rest)
+      work_time_help: Work time must less or equal than working time shift (service included without the rest). If defined, optimization will strictly respect the work time.
       devices:
         placeholder: Choose a device
         fieldset: GPS & Mobiles
