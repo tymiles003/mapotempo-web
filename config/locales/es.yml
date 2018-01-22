@@ -129,7 +129,7 @@ es:
       customer:
         enable_external_callback: Activar URL de recordatorio
         end_subscription: Fin de suscripción
-        max_vehicles: ''
+        max_vehicles: Paquete
         take_over: Duración de visita de los clientes
         destinations: Clientes
         router: Calculador de itinerario
@@ -176,6 +176,7 @@ es:
         description_help: Detalles de la cuenta y los usuarios corrientes
         enable_vehicle_position: Activar la posición de los vehículos
         enable_stop_status: Activar los estatutos de las visitas
+        name: Nombre
       deliverable_unit:
         default_quantity: Cantidad por defecto
         default_capacity: Capacidad predeterminada
