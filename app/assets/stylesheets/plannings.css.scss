@@ -388,7 +388,7 @@ $sidebar-margins: 10px;
           margin-right: 4px;
         }
         .stops li .title {
-          max-width: 220px;
+          max-width: 210px; // on Windows available width is shorter than Linux
         }
       }
 
@@ -412,7 +412,7 @@ $sidebar-margins: 10px;
           }
 
           li .title {
-            max-width: 195px; // because of DnD
+            max-width: 190px; // because of DnD
           }
         }
       }
