@@ -14,12 +14,12 @@ es:
       one: mi.
       other: mi.
   time:
-    hour: hora
-    minute: minuto
+    hour: Hora
+    minute: Minuto
     formats:
-      default: "%A, %-d de %B de %Y %H:%M:%S %z"
-      long: "%-d de %B de %Y %H:%M"
-      short: "%-d de %b %H:%M"
+      default: '%A, %-d de %B de %Y %H:%M:%S %z'
+      long: '%-d de %B de %Y %H:%M'
+      short: '%-d de %b %H:%M'
       hour_minute: '%H:%M'
       hour_minute_second: '%H:%M:%S'
       complete: '%d-%m-%Y %H:%M:%S'
@@ -131,7 +131,6 @@ es:
         end_subscription: Fin de suscripción
         max_vehicles: Paquete
         take_over: Duración de visita de los clientes
-        name:
         destinations: Clientes
         router: Calculador de itinerario
         router_id: Calculador de itinerario
@@ -143,12 +142,13 @@ es:
         router_options_weight_per_axle: Peso por eje
         router_options_height: Altura del vehículo
         router_options_width: Anchura del vehículo
-        router_options_length: Longitud del vehículo
+        router_options_length: Largura del vehículo
         router_options_hazardous_goods: Tipo de sustancia peligrosa
         router_options_max_walk_distance: Distancia máxima a pie
-        router_options_approach: Llegar/salir con el punto de visita a la derecha
+        router_options_approach: Llegar/Salir con el punto de visita a la derecha
         router_options_snap: Posponer la parada al cruce
-        router_options_strict_restriction: Respeto estricto de las limitaciones vehículos pesados
+        router_options_strict_restriction: Respeto estricto de las limitaciones vehículos
+          pesados
         print_planning_annotating: Incluir una firma cliente
         print_header: Encabezamiento de las giras
         print_stop_time: Incluir los horarios de pasaje
@@ -158,7 +158,7 @@ es:
         enable_multi_vehicle_usage_sets: Permitir las configuraciones de vehículos
           múltiples
         enable_references: Mostrar las referencias
-        enable_multi_visits: Permitir las  visitas múltiples
+        enable_multi_visits: Permitir las visitas múltiples
         enable_global_optimization: Activar la optimización global
         test: Prueba
         jobs: Tareas
@@ -168,1653 +168,788 @@ es:
         optimization_vehicle_soft_upper_bound: Coeficiente retrasos/vehículos
         optimization_cost_waiting_time: Coeficiente de tiempo de espera
         optimization_force_start: Forzar la hora de salida del vehículo
-        profile:
-        profile_id:
-        speed_multiplicator:
-        default_country:
-        with_state:
-        ref:
-        ref_help:
-        description_title:
-        description_label:
-        description_help:
-        enable_vehicle_position:
-        enable_stop_status:
+        default_country: País por defecto
+        with_state: Añadir cuadro Estado en las direcciones
+        ref_help: La referencia debe de ser única
+        description_title: Descripción
+        description_label: Informaciones de la cuenta
+        description_help: Detalles de la cuenta y los usuarios corrientes
+        enable_vehicle_position: Activar la posición de los vehículos
+        enable_stop_status: Activar los estatutos de las visitas
       deliverable_unit:
-        label:
-        ref:
-        icon:
-        default_quantity:
-        default_capacity:
-        optimization_overload_multiplier:
+        default_quantity: Cantidad por defecto
+        default_capacity: Capacidad predeterminada
+        optimization_overload_multiplier: Coeficiente sobrepaso
       destination:
-        ref:
-        ref_small:
-        name:
-        address:
-        street:
-        detail:
-        postalcode:
-        city:
-        state:
-        country:
-        lat:
-        lng:
-        comment:
-        comment_small:
-        phone_number:
-        phone_number_small:
-        geocoding_accuracy:
-        geocoding_accuracy_small:
-        geocoding_level:
-        tags:
-        tag_ids:
-        visits:
-      destinations:
-        name:
-        address:
-        street:
-        detail:
-        postalcode:
-        city:
-        country:
-        comment:
-        phone_number:
-        geocoding_accuracy:
-        geocoding_level:
+        phone_number_small: Tel.
+        geocoding_accuracy_small: Geoco.
       layer:
-        name:
-        url:
-        attribution:
-      order:
-        date:
-        destination_id:
-        order_array_id:
+        attribution: Atribución
       order_array:
-        name:
-        base_date:
-        length:
-        customer_id:
+        base_date: Fecha de base
+        length: Periodo
       planning:
-        name:
-        ref:
-        ref_small:
-        active:
-        tag_ids:
-        tags:
-        zoning_id:
-        created_at:
-        updated_at:
-        order_array_id:
-        date:
-        begin_date:
-        end_date:
-        vehicle_usage_set:
-        vehicle_usage_set_id:
-        vehicle_usage_set_small:
+        created_at: Creación
+        updated_at: Actualización
+        begin_date: Inicio validez
+        end_date: Fin validez
+        vehicle_usage_set_small: Conf.
         tag_operation:
-          and:
-          or:
+          and: todos
+          or: o
       profile:
-        name:
-        layers:
-        routers:
+        layers: Fondo de mapa
+        routers: Calculador de itinerario
       product:
-        code:
-        name:
+        code: Código
       reseller:
-        host:
-        name:
-        welcome_url:
-        help_url:
-        contact_url:
-        logo_large:
-        logo_small:
-        favicon:
-        website_url:
-        url_protocol:
+        host: Anfitrión
+        website_url: URL sitio web
+        welcome_url: URL de acogida
+        help_url: URL de ayuda
+        contact_url: URL de contacto
+        logo_large: Gran logo
+        logo_small: Pequeño logo
+        favicon: Favicon
+        url_protocol: Tipo de conexión
       route:
-        distance:
-        emission:
-        outdated:
-        start:
-        end:
-        hidden:
-        locked:
-        ref:
+        outdated: Caducado
+        start: 'Inicio  '
+        hidden: Oculto
+        locked: Bloqueado
       router:
         router_dimensions:
-          time:
-          distance:
+          time: A lo mas rápido
+          distance: A lo mas corto
         options:
-          hazardous_goods_none:
           hazardous_goods:
-            explosive:
-            gas:
-            flammable:
-            combustible:
-            organic:
-            poison:
-            radio_active:
-            corrosive:
-            poisonous_inhalation:
-            harmful_to_water:
-            other:
+            explosive: Explosivo
+            gas: Gas
+            flammable: Inflamable
+            combustible: Combustible
+            organic: Orgánica
+            poison: Veneno
+            radio_active: Radioactivo
+            corrosive: Corrosivo
+            poisonous_inhalation: Toxico
+            harmful_to_water: Nocivo para el agua
+            other: Otro
+          approach_none: No definido
+          approach:
+            unrestricted: Indiferente
+            curb: Lado de circulación en la vía
       stop:
-        active:
-        begin:
-        end:
-        distance:
-        time:
-        wait_time:
+        begin: Inicio
+        wait_time: Tiempo de espera
       store:
-        name:
-        address:
-        street:
-        detail:
-        postalcode:
-        city:
-        state:
-        country:
-        customised_color:
-        lat:
-        lng:
-        open:
-        close:
-        store_start:
-        store_end:
-        color:
-        icon:
-        icon_size:
-      stores:
-        name:
-        address:
-        street:
-        postalcode:
-        city:
-        country:
-        geocoding_accuracy:
-        geocoding_level:
-      tag:
-        label:
-        color:
-        icon:
-        icon_size:
-        ref:
+        store_start: Deposito inicio
+        store_end: Deposito fin
       user:
-        email:
-        customer:
-        customer_id:
-        layer:
-        layer_id:
-        password:
-        password_confirmation:
-        current_password:
-        api_key:
-        url_click2call:
-        sign_in_count:
-        sign_in_at:
-        ref:
-        confirmed_at:
-        prefered_unit:
-      vehicle:
-        name:
-        emission:
-        consumption:
-        color:
-        router:
-        router_id:
-        router_dimension:
-        speed_multiplicator:
-        customised_color:
-        ref:
-        contact_email:
-        capacities:
-      vehicle_usage:
-        vehicle_id:
-        open:
-        close:
-        store_start:
-        store_start_id:
-        store_stop:
-        store_stop_id:
-        rest_start:
-        rest_stop:
-        rest_duration:
-        store_rest:
-        store_rest_id:
-        service_time_start:
-        service_time_end:
-        vehicle:
-      vehicle_usage_set:
-        name:
-        open:
-        close:
-        store_start:
-        store_start_id:
-        store_stop:
-        store_stop_id:
-        rest_start:
-        rest_stop:
-        rest_duration:
-        store_rest:
-        store_rest_id:
-        service_time_start:
-        service_time_end:
-      visit:
-        ref:
-        ref_small:
-        take_over:
-        take_over_small:
-        open1:
-        open1_small:
-        close1:
-        close1_small:
-        open_close1_small:
-        open1_close1_days:
-        open2:
-        open2_small:
-        close2:
-        close2_small:
-        open_close2_small:
-        open2_close2_days:
-        multi_visit:
-        tags:
-        tag_ids:
-        quantities:
-      visits:
-        ref:
-        ref_small:
-        take_over:
-        take_over_small:
-        open1:
-        open1_small:
-        close1:
-        close1_small:
-        open_close1_small:
-        open1_close1_days:
-        open2:
-        open2_small:
-        close2:
-        close2_small:
-        open_close2_small:
-        open2_close2_days:
-        multi_visit:
-        tags:
-        tag_ids:
-        quantities:
-          one:
-          other:
-      zoning:
-        name:
-      zone:
-        vehicle:
-        name:
+        password: Contraseña
+        password_confirmation: Confirmación contraseña
+        current_password: Contraseña actual
+        api_key: Clave de API
+        url_click2call: URL Click2Call
+        sign_in_count: Numero de conexiones
+        sign_in_at: Ultima conexión
+        confirmed_at: Fecha de confirmación
+        prefered_unit: Elección unidad
     successful:
       messages:
-        created:
-        updated:
+        created: '%{model} ha sido creado'
+        updated: '%{model} ha sido actualizado'
     errors:
       attributes:
-        inconsistent_customer:
+        inconsistent_customer: no es un valor autorizado para esa cuenta cliente
       models:
         location:
-          missing_address_or_latlng:
-          lat_outside_range:
-          lng_outside_range:
-          geocoding_accuracy_outside_range:
-        vehicle:
-          attributes:
-            capacities:
-              not_float:
-              negative_value:
+          missing_address_or_latlng: El código postal y la ciudad no pueden estar
+            vacíos si lat/Ing están vacíos
+          lat_outside_range: debe estar entre -90..90
+          lng_outside_range: debe estar entre -180..180
+          geocoding_accuracy_outside_range: debe estar entre 0,,1
         vehicles:
-          at_least_one:
+          at_least_one: Un vehículo por lo menos es necesario
         vehicle_usage:
-          attributes:
-            close:
-              after:
-            rest_stop:
-              after:
-          missing_rest_window:
-          missing_rest_duration:
-          rest_range:
-          service_range:
+          rest_range: La franja de descanso debe estar entre %{start} y %{end}
+          service_range: no puede ser superior o igual al tiempo de trabajo
         vehicle_usage_set:
-          attributes:
-            close:
-              after:
-            rest_stop:
-              after:
-          at_least_one:
-          missing_rest_window:
-          missing_rest_duration:
+          at_least_one: Una configuración del vehículo por lo menos es necesaria
+          missing_rest_window: debe ser cumplimentado(a) si la duración de descanso
+            esta cumplimentada
         visit:
           attributes:
             close1:
-              after:
-              blank:
-            open2:
-              after:
-            close2:
-              after:
-            quantities:
-              not_float:
-              negative_value:
+              blank: debe ser cumplimentado(a) si un inicio o una fin de Franja horario
+                2 esta indicado(a)
         zone:
           attributes:
             vehicle:
-              bad_customer:
+              bad_customer: no asociado a la cuenta cliente
             polygon:
-              invalid_json:
+              invalid_json: no es una cadena de caracteres json valida
         customer:
           attributes:
             destinations:
-              over_max_limit:
+              over_max_limit: Sobrepaso del numero máximo de clientes
             stores:
-              over_max_limit:
+              over_max_limit: Sobrepaso del numero máximo de depósitos
         store:
-          at_least_one:
-          icon_unknown:
-          icon_size_invalid:
+          at_least_one: Por lo menos un deposito es necesario
         route:
           attributes:
             stops:
-              bad_index:
+              bad_index: Malo índice %{índex} en la gira %{route}
         planning:
           attributes:
             ref:
-              invalid_format:
-              ref_value:
+              ref_value: Referencia gira
             begin_date:
-              blank:
+              blank: debe ser cumplimentado(a) si una fecha de fin de validez esta
+                indicada
             end_date:
-              blank:
-              after:
-        tag:
-          icon_unknown:
-          icon_size_invalid:
-  errors:
-    management:
-      title:
-      description:
-      status:
-        title:
-          default:
-          '404':
-          '422':
-          '500':
-        explanation:
-          default:
-          '404':
-          '422':
-          '500':
-      back_button:
-      home_button:
-    messages:
-      taken:
-    connection_refused:
-    location:
-      geocoding_fail:
-      reversegeocoding_fail:
-    planning:
-      import_too_routes:
-      already_optimizing:
-  import:
-    csv:
-      line:
-    tomtom:
-      record:
-    empty:
-    data:
-    data_erroneous:
-      csv:
-      json:
-      tomtom:
-    template_csv:
-    template_excel:
-  admin:
-    profiles:
-      menu:
-        profiles:
-      index:
-        title:
-        avoid_zones:
-        speed_multiplicator_zones:
-    resellers:
-      menu:
-        reseller:
-      edit:
-        title:
-      form:
-        host_help:
-        name_help:
-        welcome_url_help:
-        help_url_help:
-        contact_url_help:
-        logo_large_help:
-        logo_small_help:
-        favicon_help:
-        website_url_help:
-        protocol_url_http:
-        protocol_url_https:
-    users:
-      menu:
-        users:
-        send_email:
-      index:
-        title:
-        new:
-      new:
-        title:
-      create:
-        success:
-      edit:
-        title:
-        connect_as:
-      update:
-        success:
-      destroy:
-        success:
-      destroy_multiple:
-        success:
-      send_email:
-        success:
-  customers:
-    duplicate:
-      success:
-    default:
-      country:
-    menu:
-      customer:
-      user_settings:
-      customers:
-    edit:
-      title:
-      send_email:
-      password:
-      user:
-        connect_as:
-        list:
-        new:
-      vehicles:
-        list:
-      time_zone:
-      devices:
-    index:
-      title:
-      new:
-      map:
-      no_test:
-      status:
-      status_no_user:
-      status_no_sign_in_user:
-      status_inactive_user:
-      created_end_subscription:
-    new:
-      title:
-    destroy:
-      success:
-    destroy_multiple:
-      success:
-    delete_vehicle:
-      success:
-    form:
-      name:
-      default_value:
-      outputs:
-      options:
-      optimization_parameters:
-      router_help:
-      router_options_default:
-      router_options_motorway_yes:
-      router_options_motorway_no:
-      router_options_motorway_default:
-      router_options_toll_yes:
-      router_options_toll_no:
-      router_options_toll_default:
-      router_options_trailers_range:
-      router_options_weight_range:
-      router_options_weight_per_axle_range:
-      router_options_height_range:
-      router_options_width_range:
-      router_options_length_range:
-      router_options_max_walk_distance_range:
-      take_over_help:
-      optimization_cluster_size_default:
-      optimization_cluster_size_help:
-      optimization_time_default:
-      optimization_time_help:
-      optimization_soft_upper_bound_default:
-      optimization_stop_soft_upper_bound_help:
-      optimization_vehicle_soft_upper_bound_help:
-      optimization_cost_waiting_time_default:
-      optimization_cost_waiting_time_help:
-      optimization_force_start_help:
-      print_header_help:
-      print:
-        title:
-      speed_multiplicator_default:
-      speed_multiplicator_help:
-      submit:
-      external_callback:
-        title:
-        name:
-        name_placeholder:
-        url:
-        url_placeholder:
-        url_help:
-  deliverable_units:
-    edit:
-      title:
-    index:
-      title:
-      new:
-    new:
-      title:
-    form:
-      prefered_icons:
-      other_icons:
-      label_placeholder:
-      label_help:
-      ref_help:
-      default_quantity_help:
-      default_capacity_help:
-      optimization_overload_multiplier_no:
-      optimization_overload_multiplier_no_help:
-      optimization_overload_multiplier_yes:
-      optimization_overload_multiplier_yes_help:
-      optimization_overload_multiplier_ignore:
-      optimization_overload_multiplier_ignore_help:
-      optimization_overload_multiplier_help:
-  destinations:
-    upload_tomtom:
-      success:
-    menu:
-      destinations:
-      import:
-      export_spreadsheet_standard:
-      export_spreadsheet_excel:
-      stores:
-      import_stores:
-      tags:
-      clear:
-      clear_confirm:
-    form:
-      ref_help:
-      detail_help:
-      comment_help:
-      locate_manually:
-      geocoding_accuracy_none:
-      geocoding_fail:
-      geocoding_accuracy_help:
-      country_default:
-      geocoding_level:
-        point:
-        house:
-        street:
-        intersection:
-        city:
-        'null':
-      tags_help:
-      dialog:
-        confirm_overwrite_point:
-      visit:
-        enable_multi_visits:
-        new:
-        new_help:
-    edit:
-      title:
-    import:
-      title:
-      destinations:
-      replace_no:
-      replace_no_help:
-      replace_yes:
-      replace_yes_help:
-      replace_confirm:
-      plannings:
-      delete_plannings:
-      delete_plannings_help:
-      delete_plannings_confirm:
-      csv:
-        title:
-        help:
-        file_help:
-      import_template_help:
-      dialog:
-        help:
-          title:
-          desc:
-          columns_route:
-          columns_destination:
-          columns_visit:
-          def_help:
-          def_example:
-      tomtom:
-        title:
-        help:
-    index:
-      title:
-      new:
-      default_name:
-      columns:
-      no_position:
-      geocoding_level:
-      geocoding_column_help:
-      geocoding_empty:
-      mutli_quantities:
-      click2call:
-      quantity_small:
-      dialog:
-        import:
-          title:
-          in_progress:
-        geocoding:
-          title:
-          in_progress:
-          attempts:
-          inqueue:
-          error:
-        geocoding_danger:
-          title:
-          infos:
-          hide_help:
-          correct_help:
-          move_help:
-          dismiss:
-          sort_geocoding:
-    new:
-      title:
-    import_file:
-      refs_duplicate:
-      ref:
-      ref_desc:
-      route:
-      route_desc:
-      ref_vehicle:
-      ref_vehicle_desc:
-      stop_type:
-      stop_type_desc:
-      stop_type_visit:
-      stop_type_visit_desc:
-      stop_format:
-      name:
-      name_desc:
-      street:
-      street_desc:
-      detail:
-      detail_desc:
-      postalcode:
-      postalcode_desc:
-      city:
-      city_desc:
-      state:
-      state_desc:
-      country:
-      country_desc:
-      lat:
-      lat_desc:
-      lat_format:
-      lng:
-      lng_desc:
-      lng_format:
-      geocoding_accuracy:
-      geocoding_accuracy_desc:
-      geocoding_accuracy_format:
-      geocoding_level:
-      geocoding_level_desc:
-      take_over:
-      take_over_desc:
-      quantity:
-      quantity_desc:
-      quantity1_1:
-      quantity1_1_desc:
-      quantity1_2:
-      quantity1_2_desc:
-      active:
-      active_desc:
-      open:
-      open_desc:
-      close:
-      close_desc:
-      open1:
-      open1_desc:
-      close1:
-      close1_desc:
-      open2:
-      open2_desc:
-      close2:
-      close2_desc:
-      comment:
-      comment_desc:
-      phone_number:
-      phone_number_desc:
-      tags:
-      tags_desc:
-      tags_format:
-      without_visit:
-      without_visit_desc:
-      ref_visit:
-      ref_visit_desc:
-      tags_visit:
-      tags_visit_desc:
-      format:
-        string:
-        integer:
-        float:
-        hour:
-        second:
-        yes_no:
-        required:
-        advisable:
-        optionnal:
-        deprecated:
-      not_csv:
-      empty_file:
-      too_many_lines:
-      none_column:
-      missing_name:
-      missing_location:
-      invalid_numeric_value:
-      check_custom_columns:
-    reverse_geocoding:
-      apply:
-  index:
-    unsupported_browser:
-      unsupported_browser:
-      unsupported_browser_modern:
-      download_browser:
-  order_arrays:
-    menu:
-      order_arrays:
-    form:
-      week:
-      week2:
-      month:
-      export:
-        print:
-        menu:
-        spreadsheet_standard:
-        spreadsheet_excel:
-    index:
-      title:
-      new:
-    edit:
-      title:
-      vehicle:
-      name:
-      comment:
-      empty_row:
-      empty_column:
-      copy:
-      paste:
-      total:
-      planning:
-      confirm_ovewrite_column:
-      confirm_ovewrite_row:
-      dialog:
-        loading:
-          title:
-          in_progress:
-    new:
-      title:
-    export_file:
-      vehicle:
-      name:
-      comment:
-      total:
-  route_mailer:
-    send_kmz_route:
-      content:
-      vehicle:
-      planning:
-      planning_ref:
-      route_ref:
-      order_array:
-    send_computed_ics_route:
-      content:
-      vehicle:
-      planning:
-      planning_ref:
-      route_ref:
-      order_array:
-      link:
-  user_mailer:
-    welcome:
-      title:
-      content:
-  plannings:
-    menu:
-      plannings:
-      plannings_limit:
-        menu_message:
-    index:
-      title:
-      new:
-      export_selection:
-      export:
-        icalendar:
-        icalendar_email:
-        spreadsheet:
-        none_planning:
-      list_message:
-    edit:
-      vehicles:
-      current_position:
-      lock_routes:
-      toggle_routes:
-      zonings:
-        label:
-        success:
-        fail:
-        action:
-      zoning_new:
-      zoning_edit:
-      last_sent_to:
-      title:
-      stops:
-      without_stops_title:
-      load_stops_out_of_route:
-      load_stops:
-      optimized_at:
-      optimize_global:
-        title:
-        all_help:
-        active_help:
-        all_stops:
-        active_stops:
-        confirm:
-      optimize_each:
-        title:
-        all_help:
-        active_help:
-        all_stops:
-        active_stops:
-        confirm:
-      optimize_all:
-      optimize_actives:
-      optimize_help:
-      optimize_confirm:
-      optimize_complete:
-      optimize_failed:
-      zoning_confirm:
-      page_change_zoning_confirm:
-      route_placeholder:
-      service_time:
-      exports:
-      stop_status:
-        planned:
-        started:
-        finished:
-        rejected:
-        any:
-        none:
-      update_stops_status:
-      customer_external_callback_url:
-        action:
-      export:
-        customer_external_callback_url:
-          success:
-          fail:
-        icalendar:
-          action:
-          action_email:
-          success:
-          fail:
-          mail_error:
-        kmz_email:
-          action:
-          success:
-          fail:
-        csv:
-          success:
-        print:
-        spreadsheet:
-        gpx_route:
-        gpx_track:
-        kmz_track:
-      zoning:
-        none:
-        apply:
-        edit:
-        new:
-      order_array:
-        edit:
-      map:
-        zoom_in:
-        zoom_out:
-      reverse_order:
-      open_planning_panel:
-      collapse_planning_panel:
-      refresh:
-      refresh_help:
-      outdated_zoning:
-      stops_help:
-      duration_help:
-      distance_help:
-      emission_help:
-      out_of_route:
-      toggle_help:
-      locked_unplanned_help:
-      locked_help:
-      vehicle_help:
-      export_help:
-      route_stops_active_help:
-      route_duration_help:
-      route_distance_help:
-      route_quantity_help:
-      drag_help:
-      active_help:
-      edit_store_help:
-      edit_visit_help:
-      marker_help:
-      automatic_insert_help:
-      automatic_insert_help_multiple:
-      automatic_insert_confirm:
-      automatic_insert_too_many:
-      active_all:
-      active_reverse:
-      active_none:
-      send_to_route_help:
-      wait:
-      vehicle_speed:
-      vehicle_last_position_time:
-      route_change_color_help:
-      popup:
-        open_close1:
-        open1:
-        close1:
-        open_close2:
-        open2:
-        close2:
-        time:
-        quantity:
-        orders:
-        duration:
-        tags:
-        stop_drive_time:
-        stop_distance:
-        visit:
-        status:
-        eta:
-        day:
-      error:
-        no_geolocalization:
-        no_geolocalization_help:
-        out_of_window:
-        out_of_window_help:
-        out_of_capacity:
-        out_of_capacity_help:
-        out_of_drive_time:
-        out_of_drive_time_help:
-        no_path:
-        no_path_help:
-      dialog:
-        refresh:
-          title:
-          confirm:
-        optimizer:
-          title:
-          in_progress:
-          matrix:
-          optimize:
-          routes:
-          attempts:
-          inqueue:
-          no_solution:
-          error:
-        zoning:
-          title:
-          in_progress:
-        vehicle:
-          title:
-          in_progress:
-        automatic_insert:
-          title:
-          in_progress:
-        spreadsheet:
-          title:
-          stops:
-          out_of_route:
-          stores:
-          rests:
-          stops_inactives:
-          columns:
-          columns_export:
-          columns_skip:
-          columns_DnD_help:
-          format:
-          csv:
-          excel:
-          download:
-    new:
-      title:
-      dialog:
-        new_planning:
-    export_file:
-      ref_planning:
-      planning:
-      ref:
-      vehicle:
-      route:
-      order:
-      stop_type:
-      stop_type_store:
-      stop_type_visit:
-      stop_type_rest:
-      wait_time:
-      time:
-      distance:
-      drive_time:
-      name:
-      street:
-      detail:
-      postalcode:
-      city:
-      state:
-      country:
-      lat:
-      lng:
-      comment:
-      tags:
-      phone_number:
-      ref_visit:
-      duration:
-      quantity:
-      orders:
-      active:
-      open1:
-      close1:
-      open2:
-      close2:
-      tags_visit:
-      out_of_window:
-      out_of_capacity:
-      out_of_drive_time:
-      status:
-      eta:
-    form:
-      ref_help:
-      begin_end_date:
-      begin_end_date_help:
-      tags_help:
-      order_array:
-      zonings_help:
-      avoid_zones_help:
-      default_date:
-      default:
-    show:
-      print:
-  routes:
-    show:
-      print:
-      wait:
-      annotating:
-        hour:
-        signature:
-  shared:
-    error_messages:
-      form_contains_error:
-        one:
-        other:
-  stops:
-    default:
-      name_rest:
+              blank: debe ser cumplimentado(a) si una fecha de inicio de validez esta
+                indicada
+              after: debe ser después la fecha de inicio de validez
   stores:
     default:
-      name:
       lat: '40.35977'
       lng: '-3.66242'
       city: Madrid
-    geocoding:
-      geocoding_in_progress:
-    form:
-      ref:
-      ref_help:
-      locate_manually:
-      country_default:
-      icon_size:
-        small:
-        medium:
-        large:
-      prefered_icons:
-      other_icons:
     edit:
-      title:
-    import:
-      title:
-      stores:
-      replace_no:
-      replace_no_help:
-      replace_yes:
-      replace_yes_help:
-      replace_confirm:
-      csv:
+      title: Importar depósitos
+  errors:
+    management:
+      title: Imposible acceder a la pagina
+      description: La pagina que intenta alcanzar ha provocado un error
+      status:
         title:
-        help:
-        file_help:
-      import_template_help:
-      dialog:
-        help:
-          title:
-          desc:
-    index:
-      dialog:
-        import:
-          title:
-          in_progress:
-      title:
-      new:
-    new:
-      title:
-    import_file:
-      ref:
-      ref_desc:
-      name:
-      name_desc:
-      color:
-      color_desc:
-      color_format:
-      icon:
-      icon_desc:
-      icon_size:
-      icon_size_desc:
-      open:
-      open_desc:
-      close:
-      close_desc:
-      street:
-      street_desc:
-      postalcode:
-      postalcode_desc:
-      city:
-      city_desc:
-      state:
-      state_desc:
-      country:
-      country_desc:
-      lat:
-      lat_desc:
-      lat_format:
-      lng:
-      lng_desc:
-      lng_format:
-      geocoding_accuracy:
-      geocoding_accuracy_desc:
-      geocoding_accuracy_format:
-      geocoding_level:
-      geocoding_level_desc:
-      missing_name:
-      missing_location:
-      invalid_numeric_value:
-      format:
-        string:
-        integer:
-        hour:
-        float:
-        required:
-        advisable:
-        optionnal:
-  products:
-    menu:
-      products:
-    edit:
-      title:
-    index:
-      title:
-      new:
-    new:
-      title:
-    form:
-      name_help:
-      code_help:
-  tags:
-    edit:
-      title:
-    index:
-      title:
-      new:
-    new:
-      title:
-    form:
-      color_default:
-      color_help:
-      customised_color:
-      ref:
-      ref_help:
-      icon_size:
-        small:
-        medium:
-        large:
-      prefered_icons:
-      other_icons:
-  users:
-    menu:
-      sign_out:
-    edit:
-      title:
+          default: Un error ha ocurrido en la aplicación
+          '404': Pagina precedente
+          '500': Un error interno ha ocurrido
+        explanation:
+          '404': La pagina no ha sido encontrada en el servidor, a lo mejor ha sido
+            suprimida.
+      back_button: Pagina precedente
+      home_button: Volver al inicio
+    messages:
+      taken: esta ya utilizado(a)
+    connection_refused: Conexión a la base de datos imposible
+    location:
+      geocoding_fail: La geocodificacion ha fracasado
+      reversegeocoding_fail: 'La geocodificacion inversa ha fracasado :'
+    planning:
+      import_too_routes: Intento de importar mas giras que de vehículos disponibles
+      already_optimizing: Una optimización del plan esta ya pendiente
+      deadlock: 'Atención : fracaso de la actualización de los datos. Otra actualización
+        ha sido realizada, quizás ha realizado varias operaciones demasiado rápidamente.'
+  import:
+    csv:
+      line: Línea %{s}
+    tomtom:
+      record: Registro %{s}
+    empty: Nada a importar, verifique sus datos
+    data: Verificad sus datos
+    data_erroneous:
+      csv: Fichero invalido, line %{s}
+      json: Fichero invalido
+      tomtom: Datos tomtom inválidos, registro %{s}
+    template_csv: Modelo importe hoja de calculo estándar
+    template_excel: Modelo importe hoja de calculo Excel
+  admin:
+    profiles:
+      menu:
+        profiles: Perfiles
+      index:
+        title: Lista perfiles
+        avoid_zones: Zonas de circunvalación
+        speed_multiplicator_zones: Zonas de desaceleración
+    resellers:
       edit:
-      edit_user:
-    form:
-      url_click2call_help:
+        title: Modificar revendedor
+      form:
+        host_help: Nombre de host y puerto del URL web utilizados para detectar este
+          revendedor
+        name_help: Marca del revendedor
+        logo_large_help: Logo plena pagina redimensionable, preferentemente al formato
+          SVG, o sino en PNG
+        logo_small_help: Logo del menú, 150×40 pixeles en SVG o PNG.
+        favicon_help: Icono del sitio web, 16x16 pixeles al formato PNG o ICO.
+        protocol_url_http: HTTP
+        protocol_url_https: HTTPS
+    users:
+      menu:
+        users: Usuarios
+      index:
+        title: Modificar usuarios
+      create:
+        success: Usuario creado con éxito
+      edit:
+        title: Modificar usuario
+      destroy:
+        success: Usuario suprimo con éxito
+      destroy_multiple:
+        success: Usuarios suprimidos con éxito
       send_email:
-    update:
-      success:
-    password:
-      title:
-      unauthenticated:
-    set_password:
-      action:
-      success:
-  vehicles:
-    default_name:
-    emissions_nothing:
-    emissions_light_petrol:
-    emissions_light_diesel:
-    emissions_light_lgp:
-    import:
-      ref_vehicle:
-      ref_desc:
-      name_vehicle:
-      name_desc:
-      contact_email:
-      contact_email_desc:
-      emission:
-      emission_desc:
-      consumption:
-      consumption_desc:
-      capacities:
-      capacities_desc:
-      router_mode:
-      router_mode_desc:
-      router_dimension:
-      router_dimension_desc:
-      router_options:
-      router_options_desc:
-      speed_multiplicator:
-      speed_multiplicator_desc:
-      color:
-      color_desc:
-      devices:
-      devices_desc:
-      missing_name:
-      format:
-        string:
-        integer:
-        float:
-        hour:
-        second:
-        yes_no:
-        required:
-        advisable:
-        optionnal:
-        deprecated:
-    form:
-      ref:
-        help:
-      emissions:
-        help:
-      consumption:
-        help:
-        help_miles:
-      capacities:
-        label:
-        default:
-        no_overload:
-        ignore_overload:
-        help:
-      router:
-        default:
-        help:
-      router_dimension:
-        default:
-      speed_multiplicator:
-        default:
-        help:
-      contact_email:
-        help:
-  vehicle_usages:
-    menu:
-      vehicle_usages:
-    edit:
-      title:
-    index:
-      title:
-      capacities:
-      stores:
-      store:
-        no_start:
-        no_stop:
-        same_start_stop:
-      time:
-      devices:
-      disable:
-      disable_confirm:
-      enable:
-    new:
-      title:
-    toggle:
-      success:
-    form:
-      save:
-      vehicle:
-        legend:
-        help:
-      vehicle_usage:
-        legend:
-        help:
-      open:
-        default:
-      close:
-        default:
-      open_close_days:
-        default:
-      open_close:
-      open_close_help:
-      stores:
-      store:
-        default:
-        none:
-      stores_help:
-      rest_duration_store:
-      rest_start:
-        default:
-      rest_stop:
-        default:
-      rest_start_stop:
-      rest_start_stop_help:
-      rest_duration:
-        default:
-        help:
-      store_rest:
-        default:
-        none:
-      service_times:
-      service_time:
-        default:
-      service_time_start_addon:
-      service_time_end_addon:
-      service_times_help:
-      devices:
-        placeholder:
-        fieldset:
-  vehicle_usage_sets:
+        success: E-mail enviado al usuario con éxito
+  customers:
+    duplicate:
+      success: Cuenta cliente duplicada con éxito
     default:
-      name:
+      country: Francia
     menu:
-      vehicle_usage_sets:
-      import_vehicle_usage_sets:
-      deliverable_units:
+      customer: Parametrado global
+      user_settings: Configuraciones usuario
+      customers: Cuentas clientes
     edit:
-      title:
-    index:
-      title:
-      new:
-      stores:
-      time:
-      service_time:
-    new:
-      title:
-    import:
-      title:
-      vehicle_usage_set:
-      replace_yes:
-      replace_yes_help:
-      replace_no:
-      replace_no_help:
+      title: Modificar parametrado global
+      password: Cambiar la contraseña
+      user:
+        list: Lista de los usuarios
       vehicles:
-      replace_vehicles:
-      replace_vehicles_help:
-      csv:
-        title:
-        help:
-        file_help:
-      import_template_help:
-      dialog:
-        replace_vehicles_confirm:
-        import:
-          title:
-          in_progress:
-        help:
-          title:
-          desc:
-          columns_vehicle_usage_set:
-          columns_vehicle:
-      name_vehicle_usage_set:
-      name_desc:
-      open:
-      open_desc:
-      close:
-      close_desc:
-      store_start_ref:
-      store_start_desc:
-      store_stop_ref:
-      store_stop_desc:
-      rest_start:
-      rest_start_desc:
-      rest_stop:
-      rest_stop_desc:
-      rest_duration:
-      rest_duration_desc:
-      store_rest_ref:
-      store_rest_desc:
-      service_time_start:
-      service_time_start_desc:
-      service_time_end:
-      service_time_end_desc:
-      format:
-        string:
-        integer:
-        float:
-        hour:
-        second:
-        yes_no:
-        required:
-        required_for_default:
-        advisable:
-        optional:
-        deprecated:
-      not_csv:
-      empty_file:
-      too_many_lines:
-      none_column:
-      missing_name:
-      missing_open_close:
-      invalid_numeric_value:
-      check_custom_columns:
+        list: Lista de vehículos
+      time_zone: Huso horario
+      devices: Exportaciones GPS & Móviles
+    index:
+      title: Lista cuentas cliente
+      map: Mapa
+      no_test: fuera test
+      status: Estatus
+      status_no_user: Sin usuario
+      status_no_sign_in_user: Usuario nunca conectado
+      status_inactive_user: Usuario inactivo
+    destroy:
+      success: Client suprimido con éxito
+    destroy_multiple:
+      success: Clientes suprimidos con éxito
+    delete_vehicle:
+      success: Vehículo suprimido con éxito
     form:
-      open_close:
-      open_close_help:
-      stores:
-      store:
-        none:
-      stores_help:
-      service_times:
-      service_time_start_addon:
-      service_time_end_addon:
-      service_times_help:
-      rest_duration_store:
-      rest_duration:
+      default_value: Valores predeterminados
+      outputs: Difusión de las giras
+      options: Opciones
+      optimization_parameters: Configuraciones de optimización
+      router_help: Perfil utilizado para los cálculos de itinerarios predeterminados
+      router_options_trailers_range: Entre %{from} y %{to} remolques
+      router_options_weight_range: Peso (con remolques y mercancías) entre %{from}
+        y %{to} toneladas
+      router_options_weight_per_axle_range: Peso par eje entre %{from} y %{to} toneladas
+      router_options_height_range: Altura entre %{from} y %{to} metros
+      router_options_width_range: Anchura entre %{from} y %{to} metros
+      router_options_length_range: Largura entre %{from} y %{to} metros
+      router_options_max_walk_distance_range: Distancia máxima a pie antes de coger
+        los transportes públicos
+      router_options_approach_help: Llegar/Salir con el punto de visita del lado de
+        circulación en el camino
+      router_options_snap_range: Distancia máxima para pararse a un cruce sino parada
+        delante el punto de entrega
+      router_options_strict_restriction: Si no marcado el calculador intentara respetar
+        las prohibiciones a lo mas cerca y pasara por encima la prohibición solo si
+        no puede hacerlo de otra manera.
+      take_over_help: Duración de visita media por cliente
+      optimization_time_help: La optimización se para por defecto automáticamente.
+        Sin embargo puede precisar aquí un valor limite, por vehículo, que no se debe
+        sobrepasar.
+      optimization_stop_soft_upper_bound_help: 'Mas grande es el valor mas penalisantes
+        son los retrasos  (0 para impedir los retrasos de manera estricta : desactiva
+        los clúster en ese caso).'
+      optimization_vehicle_soft_upper_bound_help: 'Para una optimización global, permite
+        gestionar el reparte sobre los vehículos. Mas grande es el valor mas penalisantes
+        son los retrasos (0 para impedir los retrasos de manera estricta : desactiva
+        los clúster en ese caso).'
+      optimization_cost_waiting_time_help: Permite evaluar la importancia de los tiempos
+        de espera. Mas grande es el valor mas penalizada será la espera antes la apertura
+        de una franja horaria (0 para no considerar la espera en la optimización).
+      optimization_force_start_help: Forzar la salida del vehículo a su horario de
+        inicio.
+      print_header_help: Bloque de texto añadido antes cada gira
+      print:
+        title: Impresiones
+      speed_multiplicator_help: Un valor superior a 100% significa una velocidad mas
+        alta
+      submit: Registrar parametrado global
+      external_callback:
+        title: URL de recordatorio
+  deliverable_units:
+    edit:
+      title: Modificar unidad entregable
+    index:
+      title: Lista unidades entregables
+    form:
+      label_placeholder: unidad
+      label_help: Por ejemplo « paquete » o una unidad como « kg ».
+      default_quantity_help: Cantidad predeterminada que debe entregarse a todas vuestras
+        visitas (dejar vacío si no hay cantidad).
+      default_capacity_help: Capacidad predeterminada de todos sus vehículos (dejar
+        vacío si ilimitado).
+      optimization_overload_multiplier_no_help: Durante la optimización, si indica
+        una capacidad por sus vehículos, ningún sobrepaso será autorizado.
+      optimization_overload_multiplier_yes_help: Durante la optimización, si indica
+        una capacidad por sus vehículos, un sobrepaso esta autorizado. Mas grande
+        es el coeficiente menos la optimización permitirá un sobrepaso.
+      optimization_overload_multiplier_ignore: Ignorado
+      optimization_overload_multiplier_ignore_help: Durante la optimización las cantidades
+        y capacidades de sus vehículos no serán tomadas en cuenta.
+  destinations:
+    upload_tomtom:
+      success: Direcciones importadas con éxito
+    menu:
+      export_spreadsheet_standard: Exportación hoja de calculo estándar
+      export_spreadsheet_excel: Exportación hoja de calculo Excel
+      clear: Suprimir todos los clientes
+    form:
+      detail_help: Complemento de dirección no geocodable, ej. numero de escalera
+      comment_help: Informaciones necesarias para la entrega
+      geocoding_accuracy_none: No aplicable
+      geocoding_fail: La geocodificación ha fallado
+      geocoding_accuracy_help: Calidad de la conversión de la dirección hacia la posición
+        geográfica
+      geocoding_level:
+        point: Punto
+        house: 'Dirección '
+        intersection: Intersección
+      tags_help: Categorías del cliente
+      dialog:
+        confirm_overwrite_point: La posición anterior ha sido definida manualmente
+          en el mapa. Quiere remplazarla con el resultado de la geocodificación automática
+          ?
+      visit:
+        new: Nueva visita
+        new_help: Nueva visita si va varias veces a ese cliente.
+    edit:
+      title: Modificar cliente
+    import:
+      title: Importar clientes
+      replace_no_help: 'Una actualización de los clientes existentes (referencia cliente
+        invariable)  esta hecha y los nuevos están añadidos a la aplicación. '
+      replace_yes: Suprimir antiguos clientes
+      csv:
+        help: Importa los clientes desde un fichero CSV. Los ficheros CSV pueden ser
+          exportados a partir de hojas de calculo o desde otros programas.
+        file_help: Importe de fichero CSV únicamente.
+      import_template_help: Ayuda - Definición de las columnas
+      dialog:
         help:
-      rest_start_stop:
-      rest_start_stop_help:
+          title: Lista de las columnas de su fichero
+          desc: 'Su fichero de importe puede contener las columnas y tipos de valores
+            siguientes :'
+          columns_route: Columnas de la gira
+          columns_destination: Columnas de la destinación visitada
+          columns_visit: Columnas de la visita
+          def_help: Si no quiere utilizar los nombres de columnas predeterminados,
+            puede definirlos usted mismo. Puede definir una secuencia de numero de
+            columnas o títulos.
+      tomtom:
+        title: TomTom
+        help: Importa las direcciones de TomTom WEBFLEET como clientes
+    index:
+      title: Lista clientes
+      geocoding_column_help: Nivel de geocodificacion y calidad. Ordenar primero por
+        nivel y luego por calidad
+      mutli_quantities: Múltiples cantidades, editad esta visita para cambiar las
+        cantidades.
+      click2call: Haced clic para llamar
+      quantity_small: Ctd.
+      dialog:
+        geocoding:
+          title: Geocodificacion
+          in_progress: Geocodificacion en curso, por favor espere
+          inqueue: Tarea de geocodificacion en la cola
+          error: Imposible llevar a cabo el calculo.
+        geocoding_danger:
+          title: Resultados de la geocodificacion poco fiables
+          infos: Algunos de sus clientes parecen estar geocodados de manera poco fiable.
+            Quiere volver a verlos en la lista ?
+          hide_help: 'Para no ver mas este mensaje, seleccione los clientes que tienen
+            una geocodificacion poco fiable y luego :'
+          correct_help: Compruebe la dirección para corregirla o completarla si necesario
+          move_help: Desplace los puntos manualmente sobre el mapa en tal caso
+          sort_geocoding: Mostrar las geocodificaciones poco fiables en primer lugar
+    new:
+      title: Nuevo cliente
+    import_file:
+      refs_duplicate: 'La "referencia" : "%{refs}" esta presente en doble en el fichero.'
+      refs_visit_duplicate: 'La "referencia visita" :  "%{refs}" esta presente en
+        doble en el fichero.'
+      route_desc: numero o referencia de la gira en el plan
+      ref_vehicle_desc: referencia o nombre del vehículo que efectúa la parada en
+        le plan
+      stop_format: '[visita | deposito | descanso]'
+      name_desc: nombre del cliente o de la destinación visitada
+      street_desc: 'numero del edificio, tipo de vía y nombre de la vía (la ortografía
+        tiene que ser correcta para una geocodificacion fiable). Nota : les detalles
+        del acceso tienen que estar puestos en el cuadro "complemento"'
+      postalcode_desc: código postal de la ciudad o del municipio (la exactitud es
+        importante para una geocodificacion fiable)
+      city_desc: nombre de la ciudad o del municipio (la ortografía tiene que ser
+        correcta para una geocodificacion fiable)
+      country_desc: nombre del país (la ortografía tiene que ser correcta para una
+        geocodificacion fiable)
+      geocoding_accuracy_format: numero de coma de 0 a 1
+      quantity_desc: cantidad de unidades para entregar
+      quantity1_1: cantidad 1_1
+      quantity1_2: cantidad 1_2
+      active_desc: indica si la entrega al cliente ha sido hecha durante esta gira
+        o no
+      open_desc: 'depreciado : utilizar mas bien "horario inicio 1".'
+      close_desc: 'depreciado : utilizar mas bien "horario fin 1".'
+      open1_desc: inicio de la franja horaria 1 (puede superar 24:00) aconsejada para
+        la visita.
+      close1_desc: fin de la franja horaria 1 (puede superar 24:00) aconsejada para
+        la visita.
+      open2_desc: inicio de la franja horaria 2 (puede superar 24:00) aconsejada para
+        la visita.
+      close2_desc: fin de la franja horaria 2 (puede superar 24:00) aconsejada para
+        la visita.
+      comment_desc: informaciones necesarias para la visita.
+      phone_number_desc: numero de teléfono de cliente que se debe contactar.
+      tags_desc: categorías del cliente (que permiten por ejemplo de agruparlos).
+      tags_format: etiqueta 1, etiqueta 2
+      without_visit: sin visita
+      without_visit_desc: indica que no hay visita asociada
+      ref_visit_desc: referencia de la visita.
+      tags_visit_desc: categorías de la visita (que permiten por ejemplo agruparlos)
+      none_column: Ninguna columna correspondiente encontrada
+      missing_location: « ciudad / código postal » o « lat / lng » que falta.
+    reverse_geocoding:
+      apply: Aplique la nueva dirección
+  index:
+    unsupported_browser:
+      unsupported_browser: Navegador no soportado
+      unsupported_browser_modern: Su navegador es demasiado antiguo, por favor utilice
+        un navegador reciente.
+      download_browser: 'Puede descargar la ultima versión del navegador libre Firefox
+        en esta dirección :'
+  order_arrays:
+    form:
+      week: Semana
+      week2: 2 Semanas
+      month: Mes
+      export:
+        spreadsheet_standard: Hoja de calculo estándar
+        spreadsheet_excel: Hola de calculo Excel
+    index:
+      title: Lista cuadros de mandos
+      new: 'Nuevo cuadro de mandos
+
+        '
+    edit:
+      title: 'Modificar cuadro de mandos
+
+        '
+      empty_row: Vaciar la línea
+      empty_column: Vaciar la columna
+      copy: Copiar
+      paste: Pegar
+      total: Total
+      planning: Aplicar al plan
+      confirm_ovewrite_column: Esta seguro que quiere modificar los datos de la columna
+        ?
+      confirm_ovewrite_row: Esta seguro que quiere modificar los datos de la línea
+        ?
+      dialog:
+        loading:
+          title: Carga
+          in_progress: Carga en proceso, gracias por esperar.
+    new:
+      title: 'Nuevo cuadro de mandos
+
+        '
+    export_file:
+      total: total
+  route_mailer:
+    send_kmz_route:
+      content: Un exporta en el formato KMZ acaba de haberle sido mandado desde %{s}
+        en archivo adjunto a este e-mail.
+    send_computed_ics_route:
+      link: 'Enlace de descarga : <a href=%{link}>Planning iCalendar</a>'
+  user_mailer:
+    layout:
+      links:
+        title: Síguenos !
+        facebook: Enlace Facebook
+        twitter: Enlace Twitter
+        linkedin: Enlace LinkedIn
+    password:
+      detail:
+        test: test
+    accompanying_team:
+      panel_three:
+        title: Parametrado global usuario
+  plannings:
+    index:
+      title: Lista planes
+      new: Nuevo plan
+      export_selection: Exportar selección
+    edit:
+      current_position: 'Posición vehículo :'
+      lock_routes: Bloquear las giras
+      toggle_routes: Ocultar las giras
+      zonings:
+        success: Zonificaciones aplicadas con éxito
+        fail: Fracaso para aplicar zonificaciones
+        action: Aplicar Zonificación
+      zoning_new: Crear una nueva zonificación desde el plan
+      zoning_edit: Modificar esta zonificación desde ese plan
+      last_sent_to: Envió
+      title: Modificar plan
+      load_stops_out_of_route: Cargar las paradas no planificadas
+      load_stops: Cargar las paradas de esta gira
+      optimize_help: Optimizar la gira
+      optimize_complete: Optimización terminada
+      optimize_failed: Fracaso durante la optimización
+      optimized_at: Optimizado
+      zoning_confirm: Registrar y aplicar la nueva zonificación ? Las giras del plan
+        van a ser modificadas
+      page_change_zoning_confirm: Quiere salir de la pagina y perder los cambios de
+        zonificación ?
+      route_placeholder: Ref. de la gira
+      exports: Exportar el plan
+      stop_status:
+        planned: Planificado
+        started: Arrancado
+        finished: Acabado
+        rejected: Rechazado
+        any: Todos estatutos
+        none: Sin estatuto
+      update_stops_status: 'Estatutos paradas :'
+      export:
+        customer_external_callback_url:
+          success: Aplicación externa llamada con éxito
+          fail: Fracaso durante la llamada a la aplicación externa
+        icalendar:
+          success: Fichero mandado por email con éxito a todos los vehículos
+          fail: Fracaso durante la exportación por email
+          mail_error: Email(s) no mandado(s). <br/> Verificar la configuración de
+            los emails para sus vehículos.
+        kmz_email:
+          action: Trazado KMZ por email
+          success: Email mandado con éxito
+          fail: Fracaso durante el envió del email
+        csv:
+          success: CSV exportado con éxito
+        gpx_route: Ruta GPX
+        gpx_track: Trazado GPX
+        kmz_track: 'Trazado KMZ  '
+      zoning:
+        apply: Aplicar zonificación
+        edit: Modificar zonificación
+      order_array:
+        edit: 'Modificar cuadro de mandos
+
+          '
+      map:
+        zoom_in: Aumentar el zoom
+        zoom_out: Disminuir el zoom
+      reverse_order: Inversar el orden de las paradas
+      open_planning_panel: Desplegar el panel del plan
+      collapse_planning_panel: Reducir el panel del plan
+      refresh: Actualizar
+      refresh_help: Parámetros o clientes utilizados para este plan han sido cambiados,
+        hay que calcularlo de nuevo
+      outdated_zoning: La zonificación ha sido cambiada. Aplique de nuevo para actualizar.
+      stops_help: Paradas planificadas/total
+      duration_help: Suma de las duraciones de las giras
+      distance_help: Suma de las distancias de las giras
+      out_of_route: No planificados
+      toggle_help: Muestra o esconde las paradas en el mapa
+      locked_unplanned_help: Bloquea los no planificados para las operaciones globales
+        en el plan
+      locked_help: Bloquea la gira para las operaciones globales en el plan
+      vehicle_help: Parametrar el vehículo
+      export_help: Exportar la gira
+      route_stops_active_help: Seleccionar las paradas activas
+      route_distance_help: Distancia de la gira
+      route_quantity_help: Cantidad/Capacidad vehículo
+      drag_help: Deslizar-colocar para ordenar el cliente en las giras
+      active_help: Tener en cuenta o no un cliente en la gira
+      edit_store_help: Modificar las informaciones del deposito
+      edit_visit_help: Modificar las informaciones del cliente
+  vehicles:
+    import:
+      ref_vehicle: referencia vehículo
+      ref_desc: referencia del vehículo
+      devices_desc: referencia
+      format:
+        json: json
+  vehicle_usage_sets:
+    import:
+      dialog:
+        help:
+          columns_vehicle: Columnas de los vehículos
+      name_vehicle_usage_set: nombre configuración
+      open_desc: inicio del horario de trabajo del repartidor
+      close_desc: fin del horario de trabajo del repartidor
+      store_start_ref: referencia deposito salida
+      store_start_desc: referencia del deposito de salida del repartidor
+      store_stop_ref: referencia deposito llegada
+      store_stop_desc: referencia del deposito de llegada del repartidor
+      rest_start: inicio franja descanso
+      rest_start_desc: horario del inicio de la franja de descanso
+      rest_stop: fin franja descanso
+      rest_stop_desc: hora de fin de la franja de descanso
+      rest_duration: duración de descanso
+      rest_duration_desc: duración del descanso del repartidor
+      store_rest_ref: referencia deposito descanso
+      store_rest_desc: refrencia del deposito para la pausa del repartidor /  necesaria
+        si franja de descanso informada
+      service_time_start: 'duración de servicio antes   '
+      service_time_start_desc: duración de servicio antes y sin tener en cuenta la
+        duración de pausa
+      service_time_end: 'duración de servicio después  '
+      service_time_end_desc: duración de servicio después y sin tener en cuenta la
+        duración de pausa
+      format:
+        float: numero decimal
+        required_for_default: requerido por defecto
+      none_column: Ninguna columna encontrada
+      missing_name: « nombre » de la configuracion predeterminada faltante
+      missing_open_close: hora de inicio o de fin de la configuracion predeterminada
+        faltante
+    form:
+      service_times_help: Duraciones añadidas antes de la primera parada y después
+        de la ultima parada.
   visits:
     form:
-      legend:
-      destroy:
-      ref_help:
-      quantities:
-        default:
-        help:
-      take_over_default:
-      take_over_help:
-      open_close1:
-      open_close2:
-      close_help:
-      tags_help:
-      delete:
-      delete_help:
+      legend: 'Visita #%{n}'
+      destroy: Si marcada, la visita sera suprimida despues validacion. Desmarque
+        para anular.
+      ref_help: Referencia libre. IMPORTANTE si no quiere sobrescribir sus visitas
+        con importe/exporte en particular
+      take_over_default: Defecto
+      take_over_help: Si vacio utilisa el valor predeterminado
+      open_close1: Franja horaria 1
+      open_close2: Franja horaria 2
+      close_help: Sin tener en cuenta la duración de visita
+      tags_help: Categorias de la visita
+      delete: Marcar para suprimir
+      delete_help: Suprimir esta visita (el cliente sera conservado)
   zonings:
-    default:
-      from_route:
-      from_isochrone:
-      from_isodistance:
-      from:
-    menu:
-      zonings:
     edit:
-      title:
-      collapse_zoning_panel:
-      generate_confirm:
-      vehicleless_confirm:
-      isochrone_missing_vehicle:
-      isodistance_missing_vehicle:
-      failed:
-      success:
+      title: Modificar zonificación
+      collapse_zoning_panel: Reducir el panel de zonificacon
+      generate_confirm: Esto reiniciara todas sus zonas actuales. Seguir ?
+      vehicleless_confirm: Confirmar el registro de zonas sin vehiculos ?
+      isochrone_missing_vehicle: 'Isodistancia no puede ser generada para al menos
+        un vehiculo debido a una restriccion del calculador de itinerario
+
+        '
+      isodistance_missing_vehicle: 'Isodistancia no puede ser generada para al menos
+        un vehiculo debido a una restriccion del calculador de itinerario
+
+        '
+      failed: Fracaso durante la generacion del isochrone
+      success: Isochrone generado con exito
     index:
-      title:
-      new:
-    new:
-      title:
+      title: Lista zonificaciones
+      new: Nueva zonificación
     form:
-      hide_out_of_route:
-      all_destinations:
-      from_planning_help:
-      stops_from_planning:
-      generate:
+      hide_out_of_route: Ocultar los clientes no planificados
+      all_destinations: Mostrar todos los clientes
+      from_planning_help: Puede tambien mostrar los clientes de un unico plan cambiando
+        esta zonificacion desde el plan
+      stops_from_planning: Clientes cargados desde el plan « %{s} »
       automatic:
-        one:
-        other:
-      from_planning:
-      zone_placeholder:
-      zone_vehicle:
-      avoid_zone:
-      isochrone:
-      isodistance:
+        one: 'Automatico : 1 zona'
+        other: 'Automatico :  %{count} zonas'
+      from_planning: Desde las giras del plan
+      zone_placeholder: Zona
+      avoid_zone: No circular en esta zona
+      isochrone: Isochron / vehiculo(s)
+      isodistance: Isodistancia / vehiculo(s)
       dialog:
         isochrone:
-          title:
-          vehicle_usage_set:
-          vehicle_usage_set_help:
-          size:
-          size_help:
+          size_help: Zona accesible desde el punto de salida en ese tiempo de recorrido.
         isochrone-progress:
-          title:
+          title: Calculo de isochrones en marcha
         isodistance:
-          title:
-          vehicle_usage_set:
-          vehicle_usage_set_help:
-          size:
-          size_help:
+          size_help: Zona accesible desde el punto de salida con esta distancia de
+            recorrido.
         isodistance-progress:
-          title:
-        validate:
+          title: Calculo de isodistancias en marcha
   unauthorized:
-    default:
+    default: No esta autorizado acceder a esta pagnia
   web:
-    key_not_found:
-    slow_browser:
+    key_not_found: Su llave de conexion no es reconosida
+    slow_browser: Utiliza %{n} que ralentiza la aplicacion. Le invitamos a utilizar
+      otro navegador descargable gratuitamente para mejores rendimientos.
     form:
-      default:
-      empty_entry:
-      from_time:
-      to_time:
-      days:
+      empty_entry: '- No indicado -'
+      to_time: 'a '
     select2:
-      empty_result:
-    dialog:
-      close:
-    placeholder_filter:
-    help_menu:
-    help_search_placeholder:
-    help:
-    contact:
-    choose_file:
+      empty_result: Sin resultado
+    placeholder_filter: filtrar
+    help_search_placeholder: Terminos a buscar…
+    help: 'Ayuda en línea '
+    choose_file: Seleccionar fichero
     geocoder:
-      search:
-      empty_result:
+      search: Búsqueda de dirección…
+      empty_result: Sin resultado
   api_web:
     v01:
-      plannings:
-        print:
-          button:
       destinations:
         index:
-          none_destinations:
+          none_destinations: Ninguna destinación has sido cargada
       routes:
         index:
-          none_routes:
-          departure:
-          arrival:
-        print:
-          button:
+          none_routes: Ninguna carretera ha sido cargada
+          departure: 'Salida : '
+          arrival: 'Llegada :'
       stores:
         index:
-          none_stores:
+          none_stores: Ningún deposito ha sido cargado
       zones:
         index:
-          none_zones:
-          without_vehicle:
+          none_zones: Ninguna zona ha sido cargada
+          without_vehicle: Sin vehículo
   all:
-    datepicker:
+    datepicker: dd-mm-yyyy
     map_attribution:
-      osm:
-      here:
+      here: Aquí
     verb:
-      new:
-      list:
-      show:
-      edit:
+      new: Nuevo
+      list: Lista
+      show: Mostar
+      edit: Modificar
       export:
-        button:
-        csv:
-        excel:
-      send:
-      destroy:
-      destroy_selection:
-      destroy_confirm:
-      confirm:
-      duplicate:
-      toggle_selection:
-      dismiss:
-      import:
-      save:
+        csv: 'Hoja de calculo CSV  '
+        excel: Hoja de calculo Excel
+      send: Mandar
+      destroy: Suprimir
+      destroy_selection: Suprimir selección
+      duplicate: Duplicar
+      toggle_selection: Invertir selección
+      save: Salvaguardar
     unit:
-      m:
-      kms:
-      mile:
-      miles:
-      millisecond:
-      second:
-      minute:
-      kg:
-      ton:
-      kgco2e_html:
-      kgco2e_l_html:
-      l_100km:
-      l_62Miles:
-      hour_minute:
-      hour_minute_second:
+      millisecond: ms
+      second: si
+      minute: min
+      kg: kg
+      ton: toneladas
+      kgco2e_html: kgCO<sub>2</sub>e
+      kgco2e_l_html: kgCO<sub>2</sub>e/l
+      l_100km: l/100 km
+      l_62Miles: l/62.1 mi.
+      hour_minute: 'hora : minuto'
+      hour_minute_second: 'hora : minuto : segundo'
     value:
-      _true:
-      _false:
-      _yes:
-      _no:
+      _true: correcto
+      _false: falso
+      _yes: si
+      _no: 'no'
     subscribe:
-      planning_unavailable:
-      expiration_date:
-      expiration_date_over:
+      expiration_date: Su periodo de utilizacion acaba pronto. Fecha de fin el  %{date}.
+        Si quiere renovarlo puede contactar %{reseller}.
+      expiration_date_over: Su periodo de utilizacion ha acabado el  %{date}. Si quiere
+        renovarlo puede contactar %{reseller}.
   helpers:
     submit:
-      create:
-      update:
-      submit:
+      create: Crear %{model}
   devise:
     shared:
       links:
-        sign_in_prefix:
-        sign_up_prefix:
+        sign_in_prefix: Posee ya una cuenta ?
+        sign_up_prefix: Necesidad crear una cuenta ?
     sessions:
       new:
-        remember_me:
+        remember_me: Acordarse de mi
