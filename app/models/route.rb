@@ -467,9 +467,9 @@ class Route < ApplicationRecord
         out_of_capacity = nil
 
         stop.route.planning.customer.deliverable_units.each do |du|
-          if stop.visit.quantities_operations[du.id] == 'fill'
+          if vehicle_usage && stop.visit.quantities_operations[du.id] == 'fill'
             quantities_[du.id] = vehicle_usage.vehicle.default_capacities[du.id] if vehicle_usage.vehicle.default_capacities[du.id]
-          elsif stop.visit.quantities_operations[du.id] == 'empty'
+          elsif vehicle_usage && stop.visit.quantities_operations[du.id] == 'empty'
             quantities_[du.id] = 0
           else
             quantities_[du.id] = (quantities_[du.id] || 0) + (stop.visit.default_quantities[du.id] || 0)
