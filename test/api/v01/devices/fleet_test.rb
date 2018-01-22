@@ -28,7 +28,7 @@ class V01::Devices::FleetTest < ActiveSupport::TestCase
 
   setup do
     @customer = customers(:customer_one)
-    @customer.update(devices: { fleet: { enable: true, user: 'default', api_key: '123456' } }, enable_vehicle_position: true, enable_stop_status: true)
+    @customer.update(devices: { fleet: { enable: true, user: 'driver1', api_key: '123456' } }, enable_vehicle_position: true, enable_stop_status: true)
   end
 
   def planning_api(part = nil, param = {})

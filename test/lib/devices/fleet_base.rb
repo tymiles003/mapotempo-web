@@ -61,7 +61,7 @@ module FleetBase
             expected_response = {
               user_current_locations: [
                 {
-                  sync_user: 'azugheaze2z5za54ze',
+                  sync_user: 'driver1',
                   name: 'driver1',
                   location_detail: {
                     lat: 40.2,
