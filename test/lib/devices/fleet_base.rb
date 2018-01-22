@@ -61,7 +61,8 @@ module FleetBase
             expected_response = {
               user_current_locations: [
                 {
-                  sync_user: 'driver1',
+                  sync_user: 'azugheaze2z5za54ze',
+                  name: 'driver1',
                   location_detail: {
                     lat: 40.2,
                     lon: 4.5,
@@ -74,7 +75,8 @@ module FleetBase
             stubs << stub_request(:get, url).to_return(status: 200, body: expected_response)
           when :fetch_stops
             planning = plannings(:planning_one)
-            reference_ids = planning.routes.select(&:vehicle_usage?).collect(&:stops).flatten.collect { |stop| (stop.is_a?(StopVisit) ? "v#{stop.visit_id}" : "r#{stop.id}") }.uniq
+            planning_date_hash = planning.date.beginning_of_day.to_i.to_s(36)
+            reference_ids = planning.routes.select(&:vehicle_usage?).collect(&:stops).flatten.collect { |stop| (stop.is_a?(StopVisit) ? "mission-v#{stop.visit_id}-#{planning_date_hash}" : "mission-r#{stop.id}-#{planning_date_hash}") }.uniq
 
             url = FleetService.new(customer: @customer).service.send(:get_missions_url)
             expected_response = {

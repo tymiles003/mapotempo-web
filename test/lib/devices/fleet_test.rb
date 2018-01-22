@@ -24,7 +24,7 @@ class FleetTest < ActionController::TestCase
 
   setup do
     @customer = customers(:customer_one)
-    @customer.update(devices: { fleet: { enable: true } }, enable_vehicle_position: true, enable_stop_status: true)
+    @customer.update(devices: { fleet: { enable: true, user: 'test', password: '123456' } }, enable_vehicle_position: true, enable_stop_status: true)
     @service = Mapotempo::Application.config.devices.fleet
   end
 

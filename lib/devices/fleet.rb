@@ -258,11 +258,11 @@ class Fleet < DeviceBase
 
   def convert_user(user)
     # Convert to SHA256 if user is a email address
-    user.include?('@') ? Digest::SHA256.hexdigest(user) : user
+    user && user.include?('@') ? Digest::SHA256.hexdigest(user) : user
   end
 
   def decode_mission_id(mission_ref)
-    mission_ref.split('mission-').last
+    mission_ref.split('-').second
   end
 
 end
