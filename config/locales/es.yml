@@ -202,7 +202,7 @@ es:
         state: Estado
         country: País
         lat: Latitud
-        lng: 'Longitud   '
+        lng: Longitud
         comment: Comentario
         comment_small: Coment.
         phone_number: Numero de teléfono
@@ -259,7 +259,7 @@ es:
         url_protocol: Tipo de conexión
       route:
         outdated: Caducado
-        start: 'Inicio  '
+        start: Inicio
         hidden: Oculto
         locked: Bloqueado
         distance: Distancia
@@ -311,7 +311,7 @@ es:
         lng: Longitud
         open: Horario inicio
         close: Horario fin
-        color: 'Color   '
+        color: Color
         icon: Icono
         icon_size: Talla del icono
       user:
@@ -363,7 +363,7 @@ es:
         ref: Referencia
       vehicle:
         name: Nombre
-        emission: 'Emisión  '
+        emission: Emisión
         consumption: Consumo
         color: Color
         router: Calculador de itinerario
@@ -447,7 +447,7 @@ es:
         tags: Etiquetas
         tag_ids: Etiquetas
         quantities:
-          one: 'Cantidad  '
+          one: Cantidad
           other: Cantidades
       zoning:
         name: Nombre
@@ -525,7 +525,7 @@ es:
         planning:
           attributes:
             ref:
-              ref_value: Referencia gira
+              ref_value: 'Referencia gira '
             begin_date:
               blank: debe ser cumplimentado(a) si una fecha de fin de validez esta
                 indicada
@@ -585,7 +585,7 @@ es:
       taken: esta ya utilizado(a)
     connection_refused: Conexión a la base de datos imposible
     location:
-      geocoding_fail: La geocodificacion ha fracasado
+      geocoding_fail: 'La geocodificacion ha fracasado :'
       reversegeocoding_fail: 'La geocodificacion inversa ha fracasado :'
     planning:
       import_too_routes: Intento de importar mas giras que de vehículos disponibles
@@ -597,8 +597,8 @@ es:
       line: Línea %{s}
     tomtom:
       record: Registro %{s}
-    empty: Nada a importar, verifique sus datos
-    data: Verificad sus datos
+    empty: Nada a importar, verifique sus datos.
+    data: 'Verificad sus datos :'
     data_erroneous:
       csv: Fichero invalido, line %{s}
       json: Fichero invalido
@@ -621,7 +621,7 @@ es:
           revendedor
         name_help: Marca del revendedor
         logo_large_help: Logo plena pagina redimensionable, preferentemente al formato
-          SVG, o sino en PNG
+          SVG, o sino en PNG.
         logo_small_help: Logo del menú, 150×40 pixeles en SVG o PNG.
         favicon_help: Icono del sitio web, 16x16 pixeles al formato PNG o ICO.
         protocol_url_http: HTTP
@@ -728,20 +728,20 @@ es:
       print:
         title: Impresiones
       speed_multiplicator_help: Un valor superior a 100% significa una velocidad mas
-        alta
+        alta.
       submit: Registrar parametrado global
       external_callback:
         title: URL de recordatorio
         name: Nombre
         name_placeholder: Aplicación externa
-        url: 'URL  '
+        url: URL
       name: Cuenta
       router_options_default: '%{n} (valor predeterminado)'
-      router_options_motorway_yes: 'Si  '
-      router_options_motorway_no: 'No  '
+      router_options_motorway_yes: Si
+      router_options_motorway_no: 'No'
       router_options_motorway_default: Predeterminado (%{value})
       router_options_toll_yes: Si
-      router_options_toll_no: 'No  '
+      router_options_toll_no: 'No'
       router_options_toll_default: predeterminado (%{value})
       optimization_cluster_size_default: '%{n} (valor predeterminado)'
       optimization_time_default: '%{n} (valor predeterminado)'
@@ -798,7 +798,7 @@ es:
         geográfica
       geocoding_level:
         point: Punto
-        house: 'Dirección '
+        house: Dirección
         intersection: Intersección
         street: Vía
         city: Municipio
@@ -818,8 +818,8 @@ es:
       title: Modificar cliente
     import:
       title: Importar clientes
-      replace_no_help: 'Una actualización de los clientes existentes (referencia cliente
-        invariable)  esta hecha y los nuevos están añadidos a la aplicación. '
+      replace_no_help: Una actualización de los clientes existentes (referencia cliente
+        invariable)  esta hecha y los nuevos están añadidos a la aplicación.
       replace_yes: Suprimir antiguos clientes
       csv:
         help: Importa los clientes desde un fichero CSV. Los ficheros CSV pueden ser
@@ -856,7 +856,7 @@ es:
       dialog:
         geocoding:
           title: Geocodificacion
-          in_progress: Geocodificacion en curso, por favor espere
+          in_progress: Geocodificacion en curso, por favor espere.
           inqueue: Tarea de geocodificacion en la cola
           error: Imposible llevar a cabo el calculo.
           attempts: 'Intentos :'
@@ -885,9 +885,9 @@ es:
       refs_duplicate: 'La "referencia" : "%{refs}" esta presente en doble en el fichero.'
       refs_visit_duplicate: 'La "referencia visita" :  "%{refs}" esta presente en
         doble en el fichero.'
-      route_desc: numero o referencia de la gira en el plan
+      route_desc: numero o referencia de la gira en el plan.
       ref_vehicle_desc: referencia o nombre del vehículo que efectúa la parada en
-        le plan
+        le plan.
       stop_format: '[visita | deposito | descanso]'
       name_desc: nombre del cliente o de la destinación visitada
       street_desc: 'numero del edificio, tipo de vía y nombre de la vía (la ortografía
@@ -900,7 +900,7 @@ es:
       country_desc: nombre del país (la ortografía tiene que ser correcta para una
         geocodificacion fiable)
       geocoding_accuracy_format: numero de coma de 0 a 1
-      quantity_desc: cantidad de unidades para entregar
+      quantity_desc: cantidad de unidades para entregar.
       quantity1_1: cantidad 1_1
       quantity1_2: cantidad 1_2
       active_desc: indica si la entrega al cliente ha sido hecha durante esta gira
@@ -922,7 +922,7 @@ es:
       without_visit: sin visita
       without_visit_desc: indica que no hay visita asociada
       ref_visit_desc: referencia de la visita.
-      tags_visit_desc: categorías de la visita (que permiten por ejemplo agruparlos)
+      tags_visit_desc: categorías de la visita (que permiten por ejemplo agruparlos).
       none_column: Ninguna columna correspondiente encontrada
       missing_location: « ciudad / código postal » o « lat / lng » que falta.
       ref: referencia
@@ -984,7 +984,7 @@ es:
       too_many_lines: 'Importe parado, demasiadas líneas (max: %{n}).'
       missing_name: « nombre » que falta.
       invalid_numeric_value: valor numérico  « %{value} » invalido.
-      check_custom_columns: Compruebe su definición de las columnas a importar
+      check_custom_columns: Compruebe su definición de las columnas a importar.
     reverse_geocoding:
       apply: Aplique la nueva dirección
   index:
@@ -993,7 +993,7 @@ es:
       unsupported_browser_modern: Su navegador es demasiado antiguo, por favor utilice
         un navegador reciente.
       download_browser: 'Puede descargar la ultima versión del navegador libre Firefox
-        en esta dirección :'
+        en esta dirección : '
   order_arrays:
     form:
       week: Semana
@@ -1006,13 +1006,9 @@ es:
         menu: Exportar
     index:
       title: Lista cuadros de mandos
-      new: 'Nuevo cuadro de mandos
-
-        '
+      new: Nuevo cuadro de mandos
     edit:
-      title: 'Modificar cuadro de mandos
-
-        '
+      title: Modificar cuadro de mandos
       empty_row: Vaciar la línea
       empty_column: Vaciar la columna
       copy: Copiar
@@ -1031,9 +1027,7 @@ es:
       name: Nombre
       comment: Comentario
     new:
-      title: 'Nuevo cuadro de mandos
-
-        '
+      title: Nuevo cuadro de mandos
     export_file:
       total: total
       vehicle: vehículo
@@ -1128,7 +1122,7 @@ es:
           success: CSV exportado con éxito
         gpx_route: Ruta GPX
         gpx_track: Trazado GPX
-        kmz_track: 'Trazado KMZ  '
+        kmz_track: Trazado KMZ
         print: Imprimir
         spreadsheet: Hoja de calculo CSV / Excel
       zoning:
@@ -1137,9 +1131,7 @@ es:
         none: Ninguno
         new: Nueva zonificación
       order_array:
-        edit: 'Modificar cuadro de mandos
-
-          '
+        edit: Modificar cuadro de mandos
       map:
         zoom_in: Aumentar el zoom
         zoom_out: Disminuir el zoom
@@ -1225,10 +1217,10 @@ es:
       store_rest_ref: referencia deposito descanso
       store_rest_desc: refrencia del deposito para la pausa del repartidor /  necesaria
         si franja de descanso informada
-      service_time_start: 'duración de servicio antes   '
+      service_time_start: duración de servicio antes
       service_time_start_desc: duración de servicio antes y sin tener en cuenta la
         duración de pausa
-      service_time_end: 'duración de servicio después  '
+      service_time_end: duración de servicio después
       service_time_end_desc: duración de servicio después y sin tener en cuenta la
         duración de pausa
       format:
@@ -1298,14 +1290,10 @@ es:
       collapse_zoning_panel: Reducir el panel de zonificacon
       generate_confirm: Esto reiniciara todas sus zonas actuales. Seguir ?
       vehicleless_confirm: Confirmar el registro de zonas sin vehiculos ?
-      isochrone_missing_vehicle: 'Isodistancia no puede ser generada para al menos
+      isochrone_missing_vehicle: Isodistancia no puede ser generada para al menos
         un vehiculo debido a una restriccion del calculador de itinerario
-
-        '
-      isodistance_missing_vehicle: 'Isodistancia no puede ser generada para al menos
+      isodistance_missing_vehicle: Isodistancia no puede ser generada para al menos
         un vehiculo debido a una restriccion del calculador de itinerario
-
-        '
       failed: Fracaso durante la generacion del isochrone
       success: Isochrone generado con exito
     index:
@@ -1365,7 +1353,7 @@ es:
       otro navegador descargable gratuitamente para mejores rendimientos.
     form:
       empty_entry: '- No indicado -'
-      to_time: 'a '
+      to_time: a
       default: '%{n} (valor predeterminado)'
       from_time: de
       days: D+
@@ -1373,7 +1361,7 @@ es:
       empty_result: Sin resultado
     placeholder_filter: filtrar
     help_search_placeholder: Terminos a buscar…
-    help: 'Ayuda en línea '
+    help: Ayuda en línea
     choose_file: Seleccionar fichero
     geocoder:
       search: Búsqueda de dirección…
@@ -1390,7 +1378,7 @@ es:
       routes:
         index:
           none_routes: Ninguna carretera ha sido cargada
-          departure: 'Salida : '
+          departure: 'Salida :'
           arrival: 'Llegada :'
         print:
           button: Imprimir
@@ -1414,7 +1402,7 @@ es:
       show: Mostar
       edit: Modificar
       export:
-        csv: 'Hoja de calculo CSV  '
+        csv: Hoja de calculo CSV
         excel: Hoja de calculo Excel
         button: Exportar
       send: Mandar
