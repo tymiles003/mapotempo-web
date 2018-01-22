@@ -26,11 +26,7 @@
         {{#manage_vehicle}}
         <a href="{{path}}" class="btn btn-primary btn-xs" title="{{#i18n}}plannings.edit.vehicle_help{{/i18n}}"><i class="fa fa-truck"></i></a>
         {{/manage_vehicle}}
-
-        <div class="btn-group">
-          <button type="button" data-toggle="modal" data-target="#optimization-modal" data-keyboard="true" class="btn btn-primary btn-xs optimize" title="{{#i18n}}plannings.edit.optimize_help{{/i18n}}"{{#locked}}disabled="disabled"{{/locked}}><i class="fa fa-gear"></i></button>
-        </div>
-
+        <button type="button" data-toggle="modal" data-target="#optimization-modal" data-keyboard="true" class="btn btn-primary btn-xs optimize" title="{{#i18n}}plannings.edit.optimize_help{{/i18n}}"{{#locked}}disabled="disabled"{{/locked}}><i class="fa fa-gear"></i></button>
         <button type="button" class="toggle btn btn-default btn-xs" title="{{#i18n}}plannings.edit.toggle_help{{/i18n}}"><i class="fa fa-eye{{#hidden}}-slash{{/hidden}}"></i></button>
         <button type="button" class="lock btn {{^locked}}btn-default{{/locked}}{{#locked}}btn-warning{{/locked}} btn-xs" title="{{#i18n}}plannings.edit.locked_help{{/i18n}}"><i class="fa fa-{{^locked}}un{{/locked}}lock"></i></button>
         {{#manage_export}}

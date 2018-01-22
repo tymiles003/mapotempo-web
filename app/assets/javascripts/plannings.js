@@ -1126,10 +1126,10 @@ var plannings_edit = function(params) {
       if (!isRouteLocked && stopCount)
         maxUnlockedStops = Math.max(maxUnlockedStops, stopCount);
       if (!isRouteLocked && stopCount > 1) {
-        $(this).find('.optimize').parent().parent().prevAll('.btn').prop('disabled', false);
+        $(this).find('button.optimize').prop('disabled', false);
       }
       else
-        $(this).find('.optimize').parent().parent().prevAll('.btn').prop('disabled', true);
+        $(this).find('button.optimize').prop('disabled', true);
     });
 
     if (!maxUnlockedStops) {
@@ -1138,9 +1138,9 @@ var plannings_edit = function(params) {
       $('#planning_zoning_button').removeAttr('disabled');
     }
     if (maxUnlockedStops < 2) {
-      $('#global_tools').find('button').first().attr('disabled', 'disabled');
+      $('#global_tools').find('button.optimize').attr('disabled', 'disabled');
     } else {
-      $('#global_tools').find('button').first().removeAttr('disabled');
+      $('#global_tools').find('button.optimize').removeAttr('disabled');
     }
   };
 
