@@ -40,7 +40,7 @@
                     <li class="divider"></li>
                     <% if current_user.customer.default_max_plannings %>
                       <li>
-                        <div class="planning-count">
+                        <div class="dropdown-spacing">
                           <% if current_user.customer.too_many_plannings? %>
                             <i class="fa text-warning fa-calendar-times-o" aria-hidden="true"></i>
                             <span class="text-warning"><%= current_user.customer.plannings.length %></span> /
