@@ -42,6 +42,11 @@ class Tag < ApplicationRecord
   amoeba do
     exclude_association :visits
     exclude_association :plannings
+    exclude_association :destinations
+
+    customize( lambda { |original, copy|
+      def copy.update_outdated; end
+    })
   end
 
   def default_color
