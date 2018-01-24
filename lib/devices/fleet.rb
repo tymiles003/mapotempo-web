@@ -19,7 +19,7 @@ require 'addressable'
 
 class Fleet < DeviceBase
 
-  TIMEOUT_VALUE ||= 120
+  TIMEOUT_VALUE ||= 600 # Only for post and delete
 
   def definition
     {
@@ -70,6 +70,8 @@ class Fleet < DeviceBase
     else
       raise DeviceServiceError.new("Fleet: #{I18n.t('errors.fleet.list')}")
     end
+  rescue RestClient::Unauthorized, RestClient::InternalServerError
+    raise DeviceServiceError.new("Fleet: #{I18n.t('errors.fleet.list')}")
   end
 
   def get_vehicles_pos(customer)
@@ -91,6 +93,8 @@ class Fleet < DeviceBase
     else
       raise DeviceServiceError.new("Fleet: #{I18n.t('errors.fleet.get_vehicles_pos')}")
     end
+  rescue RestClient::Unauthorized, RestClient::InternalServerError
+    raise DeviceServiceError.new("Fleet: #{I18n.t('errors.fleet.get_vehicles_pos')}")
   end
 
   def fetch_stops(customer, _date)
@@ -109,13 +113,16 @@ class Fleet < DeviceBase
     else
       raise DeviceServiceError.new("Fleet: #{I18n.t('errors.fleet.fetch_stops')}")
     end
+  rescue RestClient::Unauthorized, RestClient::InternalServerError
+    raise DeviceServiceError.new("Fleet: #{I18n.t('errors.fleet.fetch_stops')}")
   end
 
   def send_route(customer, route, _options = {})
     raise DeviceServiceError.new("Fleet: #{I18n.t('errors.fleet.past_missions')}") if route.planning.date && route.planning.date < Date.today
 
     destinations = route.stops.select(&:active?).select(&:position?).select { |stop| stop.is_a?(StopVisit) }.sort_by(&:index).map do |destination|
-      quantities = destination.is_a?(StopVisit) ? (customer.enable_orders ? (destination.order ? destination.order.products.collect(&:code).join(',') : '') : destination.visit.default_quantities ? VisitQuantities.normalize(destination.visit, route.vehicle_usage.try(&:vehicle)).map { |d| d[:quantity] }.join("\r\n") : '') : nil
+      labels = (destination.visit.tags + destination.visit.destination.tags).map(&:label).join(', ')
+      quantities = destination.is_a?(StopVisit) ? (customer.enable_orders ? (destination.order ? destination.order.products.collect(&:code).join(',') : '') : destination.visit.default_quantities ? VisitQuantities.normalize(destination.visit, route.vehicle_usage.try(&:vehicle)).map { |d| "\u2022 #{d[:quantity]}" }.join("\r\n") : '') : nil
       time_windows = []
       time_windows << {
         start: p_time(route, destination.open1).strftime('%FT%T.%L%:z'),
@@ -136,7 +143,9 @@ class Fleet < DeviceBase
         },
         comment: [
           destination.comment,
-          quantities ? "#{I18n.t('activerecord.attributes.visit.quantities')} :\r\n#{quantities}" : nil
+          destination.priority ? I18n.t('activerecord.attributes.visit.priority') + I18n.t('text.separator') + destination.priority_text : nil,
+          labels.present? ? I18n.t('activerecord.attributes.visit.tags') + I18n.t('text.separator') + labels : nil,
+          quantities.present? ? I18n.t('activerecord.attributes.visit.quantities') + I18n.t('text.separator') + "\r\n"+ quantities : nil
         ].compact.join("\r\n\r\n").strip,
         phone: destination.phone_number,
         reference: destination.visit.destination.ref,
@@ -156,7 +165,7 @@ class Fleet < DeviceBase
     raise DeviceServiceError.new("Fleet: #{I18n.t('errors.fleet.no_missions')}") if destinations.empty?
 
     send_missions(route.vehicle_usage.vehicle.devices[:fleet_user], customer.devices[:fleet][:api_key], destinations)
-  rescue RestClient::InternalServerError, RestClient::ResourceNotFound, RestClient::UnprocessableEntity
+  rescue RestClient::Unauthorized, RestClient::InternalServerError, RestClient::ResourceNotFound, RestClient::UnprocessableEntity
     raise DeviceServiceError.new("Fleet: #{I18n.t('errors.fleet.set_missions')}")
   end
 
@@ -173,7 +182,7 @@ class Fleet < DeviceBase
       end
       delete_missions(route.vehicle_usage.vehicle.devices[:fleet_user], customer.devices[:fleet][:api_key], destination_ids)
     end
-  rescue RestClient::InternalServerError, RestClient::ResourceNotFound, RestClient::UnprocessableEntity
+  rescue RestClient::Unauthorized, RestClient::InternalServerError, RestClient::ResourceNotFound, RestClient::UnprocessableEntity
     raise DeviceServiceError.new("Fleet: #{I18n.t('errors.fleet.clear_missions')}")
   end
 
@@ -205,19 +214,23 @@ class Fleet < DeviceBase
   end
 
   def rest_client_post(url, api_key, params)
-    RestClient.post(
-      url,
-      params.to_json,
-      { content_type: :json, accept: :json, Authorization: "Token token=#{api_key}" }
+    RestClient::Request.execute(
+      method: :post,
+      url: url,
+      headers: { content_type: :json, accept: :json, Authorization: "Token token=#{api_key}" },
+      payload: params.to_json,
+      timeout: TIMEOUT_VALUE
     )
   rescue RestClient::RequestTimeout
     raise DeviceServiceError.new("Fleet: #{I18n.t('errors.fleet.timeout')}")
   end
 
   def rest_client_delete(url, api_key)
-    RestClient.delete(
-      url,
-      { content_type: :json, accept: :json, Authorization: "Token token=#{api_key}" }
+    RestClient::Request.execute(
+      method: :delete,
+      url: url,
+      headers: { content_type: :json, accept: :json, Authorization: "Token token=#{api_key}" },
+      timeout: TIMEOUT_VALUE
     )
   rescue RestClient::RequestTimeout
     raise DeviceServiceError.new("Fleet: #{I18n.t('errors.fleet.timeout')}")

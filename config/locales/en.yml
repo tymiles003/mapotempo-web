@@ -2278,6 +2278,8 @@ en:
       create: Create %{model}
       update: Save %{model}
       submit: Save %{model}
+  text:
+    separator: ':'
   devise:
     shared:
       links:
