@@ -129,6 +129,7 @@ class VehicleUsagesController < ApplicationController
                                                        ])
     if parameters.key?(:vehicle)
       parameters[:vehicle_attributes] = parameters[:vehicle]
+      parameters[:vehicle_attributes][:devices] = {} unless parameters[:vehicle_attributes].key?(:devices)
       parameters.except(:vehicle)
     else
       parameters
