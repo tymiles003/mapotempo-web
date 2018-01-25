@@ -1,4 +1,4 @@
-FROM mapotempo/nginx-passenger:1.0.0
+FROM mapotempo/nginx-passenger:2.0.1
 
 LABEL maintainer="Mapotempo <contact@mapotempo.com>"
 
@@ -13,7 +13,7 @@ ADD . /srv/app/
 # Install dependencies
 RUN apt-get update && \
     apt-get install -y git build-essential zlib1g-dev libicu-dev g++ libgeos-dev libgeos++-dev libpq-dev\
-    zlib1g libicu52 libgeos-3.4.2 libpq5 postgresql-client && \
+    zlib1g libicu57 libgeos-3.5.1 libpq5 postgresql-client && \
     \
 # Install app
     cd /srv/app && \

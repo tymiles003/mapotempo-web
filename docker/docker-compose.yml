@@ -14,7 +14,7 @@ services:
       - db
       - redis-cache
     environment:
-      - http_proxy
+      - http_proxy # Set http_proxy from the server running docker-compose
     env_file:
       - ./db.env
       - ./rails.env
