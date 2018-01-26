@@ -21,6 +21,9 @@ class Fleet < DeviceBase
 
   TIMEOUT_VALUE ||= 600 # Only for post and delete
 
+  USER_DEFAULT_ROLES = %w(mission.creating mission.updating mission.deleting user_current_location.creating user_current_location.updating user_track.updating user_track.updating)
+  USER_DEFAULT_PASSWORD = '123456'
+
   def definition
     {
       device: 'fleet',
@@ -72,6 +75,32 @@ class Fleet < DeviceBase
     end
   rescue RestClient::Unauthorized, RestClient::InternalServerError
     raise DeviceServiceError.new("Fleet: #{I18n.t('errors.fleet.list')}")
+  end
+
+  def create_drivers(customer)
+    api_key = customer.devices[:fleet][:api_key]
+    raise DeviceServiceError.new("Fleet: #{I18n.t('errors.fleet.create_drivers.no_api_key')}") unless api_key
+
+    users = customer.vehicles.select(&:contact_email).map do |vehicle|
+      driver_params = {
+        name: vehicle.name,
+        email: vehicle.contact_email,
+        password: USER_DEFAULT_PASSWORD,
+        roles: USER_DEFAULT_ROLES,
+      }
+
+      begin
+        rest_client_post(set_user_url, api_key, driver_params)
+      rescue RestClient::UnprocessableEntity
+        nil
+      end
+    end.compact
+
+    if users.empty?
+      raise DeviceServiceError.new("Fleet: #{I18n.t('errors.fleet.create_drivers.already_created')}")
+    else
+      users
+    end
   end
 
   def get_vehicles_pos(customer)
@@ -145,7 +174,7 @@ class Fleet < DeviceBase
           destination.comment,
           destination.priority ? I18n.t('activerecord.attributes.visit.priority') + I18n.t('text.separator') + destination.priority_text : nil,
           labels.present? ? I18n.t('activerecord.attributes.visit.tags') + I18n.t('text.separator') + labels : nil,
-          quantities.present? ? I18n.t('activerecord.attributes.visit.quantities') + I18n.t('text.separator') + "\r\n"+ quantities : nil
+          quantities.present? ? I18n.t('activerecord.attributes.visit.quantities') + I18n.t('text.separator') + "\r\n" + quantities : nil
         ].compact.join("\r\n\r\n").strip,
         phone: destination.phone_number,
         reference: destination.visit.destination.ref,
@@ -174,7 +203,7 @@ class Fleet < DeviceBase
 
     if use_date
       start_date = (planning_date(route.planning) + (route.start || 0)).strftime('%Y-%m-%d')
-      end_date = (planning_date(route.planning) + (route.end || 0)).strftime('%Y-%m-%d')
+      end_date = (planning_date(route.planning) + (route.end || 0) + 2.day).strftime('%Y-%m-%d')
       delete_missions_by_date(route.vehicle_usage.vehicle.devices[:fleet_user], customer.devices[:fleet][:api_key], start_date, end_date)
     else
       destination_ids = route.stops.select(&:active?).select(&:position?).sort_by(&:index).map do |destination|
@@ -242,6 +271,10 @@ class Fleet < DeviceBase
 
   def get_user_url(user)
     URI.encode("#{api_url}/api/0.1/users/#{convert_user(user)}")
+  end
+
+  def set_user_url
+    URI.encode("#{api_url}/api/0.1/users")
   end
 
   def get_vehicles_pos_url

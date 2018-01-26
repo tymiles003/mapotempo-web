@@ -78,6 +78,13 @@ class V01::Devices::Fleet < Grape::API
         fleet_sync_vehicles @customer
         status 204
       end
+
+      desc 'Create drivers',
+           detail: 'Create driver by vehicle',
+           nickname: 'createDrivers'
+      get '/create_drivers' do
+        service.create_drivers
+      end
     end
   end
 end

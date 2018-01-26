@@ -716,6 +716,9 @@ en:
         success: Users deleted successfully
       send_email:
         success: E-Mail sent to user successfully
+    vehicles:
+      devices:
+        create_drivers: 'Fleet: Create mobile drivers'
   customers:
     duplicate:
       success: Customer account duplicated successfully

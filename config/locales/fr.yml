@@ -722,6 +722,9 @@ fr:
         success: Utilisateurs supprimés avec succès
       send_email:
         success: Email envoyé à l'utilisateur avec succès
+    vehicles:
+      devices:
+        create_drivers: 'Fleet: Créer les utilisateurs mobiles'
   customers:
     duplicate:
       success: Compte client dupliqué avec succès

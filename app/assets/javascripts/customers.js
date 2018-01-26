@@ -112,9 +112,42 @@ var customers_edit = function(params) {
 
   /* API: Devices */
   devicesObserveCustomer.init($.extend(params, {
-    // FIXME -> THE DEFAULT PASSWORD MUST BE DONE AT THE BACKEND LVL, WICH MAKE NOT VISIBLE THE TRUE PASSWORD FROM DB
+    // FIXME -> THE DEFAULT PASSWORD MUST BE DONE AT THE BACKEND LVL, WHICH MAKE NOT VISIBLE THE TRUE PASSWORD FROM DB
     default_password: Math.random().toString(36).slice(-8)
   }));
+
+  // Create all device users on click, if vehicles has email
+  $('#create-user-device').on('click', function(event) {
+    event.preventDefault();
+
+    $.ajax({
+      type: 'GET',
+      url: '/api/0.1/devices/fleet/create_drivers.json',
+      data: {
+        customer_id: params.customer_id
+      },
+      dataType: 'json',
+      beforeSend: beforeSendWaiting,
+      success: function(data) {
+        if (data.error) {
+          stickyError(data.error);
+          return;
+        }
+
+        var drivers = ['Fleet utilisateurs créés: '];
+        data.map(function (driver) {
+          driver = JSON.parse(driver);
+          drivers.push(driver.user.email);
+        });
+
+        notice(drivers.join('\r\n'));
+      },
+      error: function(error) {
+        stickyError(error.statusText);
+      },
+      complete: completeWaiting
+    });
+  });
 
   $('#customer_end_subscription').datepicker({
     autoclose: true,

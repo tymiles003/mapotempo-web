@@ -93,6 +93,9 @@ en:
     fleet:
       invalid_account: User invalid (does not exist)
       list: Can't list devices
+      create_drivers:
+        no_api_key: No Fleet API key given for this customer
+        already_created: Users already created
       get_vehicles_pos: Cannot get vehicles position
       fetch_stops: Cannot get missions list
       no_missions: No missions to send

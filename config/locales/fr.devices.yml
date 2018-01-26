@@ -93,6 +93,9 @@ fr:
     fleet:
       invalid_account: Utilisateur invalide (non existant)
       list: Impossible de lister les appareils
+      create_drivers:
+        no_api_key: Pas de clé API Fleet renseigné pour ce compte client
+        already_created: Utilisateurs déjà existants
       get_vehicles_pos: Impossible de lister la position des véhicules
       fetch_stops: Impossible de récupérer la liste des missions
       no_missions: Aucune mission à envoyer

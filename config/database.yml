@@ -3,6 +3,7 @@ default: &default
   pool: 5
   timeout: 5000
   username: mapotempo
+  password: mapotempo
 
 development:
   <<: *default
