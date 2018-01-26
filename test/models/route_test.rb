@@ -11,16 +11,15 @@ class RouteTest < ActiveSupport::TestCase
     end
   end
 
-  def compute_route(route = :route_one_one)
-    route = routes(route)
-    route.outdated = true
-    route.compute
-    route
-  end
-
   test 'should not save' do
     route = Route.new
     assert_not route.save, 'Saved without required fields'
+  end
+
+  test 'should save without loading stops' do
+    route = routes(:route_one_one)
+    assert route.update(outdated: true)
+    assert_not route.stops.loaded?
   end
 
   test 'should dup' do
@@ -256,27 +255,24 @@ class RouteTest < ActiveSupport::TestCase
   end
 
   test 'should return the drive time when compute' do
-    route = compute_route(:route_one_one)
-
+    route = routes(:route_one_one)
+    route.compute!
     total_drive_time = route.stops.map(&:drive_time).sum(0) # Total stops drive time
     total_drive_time += route.stop_drive_time # The last stop (in case of store)
-
     assert_equal total_drive_time, route.drive_time # ensure compute, computed all stops drive time
   end
 
   test 'should return the waiting time when compute' do
-    route = compute_route(:route_one_one)
+    route = routes(:route_one_one)
+    route.compute!
     total_wait_time = route.stops.map(&:wait_time).sum(0) { |wait_time| wait_time || 0 }
-
     assert_equal route.wait_time, total_wait_time
   end
 
   test 'should reset all value to nil when deleting all stops' do
-    route = compute_route(:route_one_one)
-
+    route = routes(:route_one_one)
     route.planning.customer.delete_all_destinations
     route.reload
-
     assert_nil route.wait_time
     assert_nil route.drive_time
     assert_nil route.visits_duration
