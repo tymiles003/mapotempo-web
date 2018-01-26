@@ -191,7 +191,7 @@ class Route < ApplicationRecord
             stops_drive_time[stop] = stop.drive_time
             stop.time = self.end + stop.drive_time
             self.drive_time = (self.drive_time || 0) + stop.drive_time
-          elsif stop.is_a?(StopRest) || self.end
+          elsif !stop.no_path
             stop.time = self.end
           else
             stop.time = nil
