@@ -489,4 +489,27 @@ class ImporterDestinationsTest < ActionController::TestCase
     end
   end
 
+  test 'should import without error after update' do
+    @customer.update!(enable_multi_visits: true)
+    @customer.reload
+
+    Planning.all.each(&:destroy)
+    @customer.tags.all.each(&:destroy)
+    @customer.reload
+    @customer.destinations.destroy_all
+
+    import_init = ImportCsv.new(importer: ImporterDestinations.new(@customer, {}), replace: true, file: tempfile('test/fixtures/files/import_destinations_ref_and_tags_init.csv', 'text.csv'))
+    import_init.import
+
+    @customer.reload
+
+    import_update = ImportCsv.new(importer: ImporterDestinations.new(@customer), replace: false, file: tempfile('test/fixtures/files/import_destinations_ref_and_tags_update.csv', 'text.csv'))
+
+    # Import return value must contain updated destinations. Otherwise a stale error on route object is raised (in log only because it catch in import CSV).
+    assert import_update.import
+
+    # Ensure route is flagged outdated
+    assert @customer.plannings.last.routes.first.outdated?
+  end
+
 end

@@ -99,16 +99,28 @@ class Visit < ApplicationRecord
     @tag_ids_changed || super
   end
 
-  # Do not call during a planning/route save processing
   def outdated
-    Route.transaction do
-      # Function should be called outside update for planning/route
-      # => Allow using different graph
-      Route.where(id: stop_visits.map(&:route_id).uniq).each{ |route|
-        route.outdated = true
-        route.save!
+    # Temporary disable lock version because several object_ids from the same route are loaded in main customer graph (in case of import)
+    begin
+      ActiveRecord::Base.lock_optimistically = false
+      stop_visits.each { |stop|
+        stop.route.outdated = true
+        stop.route.save!
       }
+    ensure
+      ActiveRecord::Base.lock_optimistically = true
     end
+
+    # Previous solution:
+    # # Do not call during a planning/route save processing
+    # Route.transaction do
+    #   # Function should be called outside update for planning/route
+    #   # => Allow using different graph
+    #   Route.where(id: stop_visits.map(&:route_id).uniq).each { |route|
+    #     route.outdated = true
+    #     route.save!
+    #   }
+    # end
   end
 
   def default_take_over
