@@ -106,7 +106,7 @@ module FleetBase
             planning_date = planning.date ? planning.date.beginning_of_day.to_time : Time.zone.now.beginning_of_day
             planning.routes.select(&:vehicle_usage_id).each do |route|
               start_date = (planning_date + (route.start || 0)).strftime('%Y-%m-%d')
-              end_date = (planning_date + (route.end || 0)).strftime('%Y-%m-%d')
+              end_date = (planning_date + (route.end || 0) + 2.day).strftime('%Y-%m-%d')
 
               url = FleetService.new(customer: @customer).service.send(:delete_missions_by_date_url, 'driver1', start_date, end_date)
               stubs << stub_request(:delete, url).to_return(status: 204, body: nil)
