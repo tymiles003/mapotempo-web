@@ -233,7 +233,7 @@ var plannings_edit = function(params) {
     backgroundTaskIntervalId,
     currentZoom = 17,
     needUpdateStopStatus = params.update_stop_status && withStopsInSidePanel,
-    enableStopStatus = params.enable_stop_status,
+    availableStopStatus = params.available_stop_status,
     outOfRouteId = params.routes_array.filter(function(route) {
       return !route.vehicle_usage_id;
     }).map(function(route) {
@@ -966,7 +966,7 @@ var plannings_edit = function(params) {
       externalCallbackUrl(context);
 
       devicesObservePlanning.init(context, function(from) {
-        if (from && from.data('service') === 'tomtom' && enableStopStatus) {
+        if (availableStopStatus) {
           needUpdateStopStatus = true;
           requestUpdateStopsStatus();
         }

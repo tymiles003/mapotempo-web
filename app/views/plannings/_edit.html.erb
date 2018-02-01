@@ -213,7 +213,7 @@ controller.js(
   disable_clusters: @planning.routes.to_a.sum(0) { |r| r.stops.size } < 1000,
   url_click2call: current_user.link_phone_number,
   spreadsheet_columns: @spreadsheet_columns,
-  enable_stop_status: @planning.customer.enable_stop_status,
+  available_stop_status: @planning.customer.enable_stop_status && @planning.customer.device.available_stop_status?,
   update_stop_status: @planning.customer.enable_stop_status? && (@planning.date.nil? || @planning.date.between?(Time.now.beginning_of_day, Time.now.end_of_day)) && @planning.customer.device.available_stop_status?,
   callback_button: @callback_button
 )
