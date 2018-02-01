@@ -450,7 +450,7 @@ class Planning < ApplicationRecord
           if device.respond_to?(:fetch_stops) && customer.device.configured?(key)
             device.fetch_stops(self.customer, device.planning_date(self))
           end
-        }.compact.flatten.select { |s|
+        }.flatten.compact.select { |s|
           # Remove stores
           s[:order_id].to_i == 0
         }.each { |s|

@@ -132,13 +132,18 @@ class Fleet < DeviceBase
 
     if response.code == 200 && data['missions']
       data['missions'].map do |mission|
+        # As planning only display status for today, ignore mission status different than today
+        order_id, date = decode_mission_id(mission['external_ref'])
+        date = Date.parse(date.gsub('_', '-')) rescue nil
+        next unless date == Date.today
+
         {
-          order_id: decode_mission_id(mission['external_ref']),
+          order_id: order_id,
           status: @@order_status[mission['status_type_label']],
           color: mission['status_type_color'],
           eta: nil
         }
-      end
+      end.compact
     else
       raise DeviceServiceError.new("Fleet: #{I18n.t('errors.fleet.fetch_stops')}")
     end
@@ -299,7 +304,7 @@ class Fleet < DeviceBase
 
   def generate_mission_id(destination, date)
     order_id = destination.is_a?(StopVisit) ? "v#{destination.visit_id}" : "r#{destination.id}"
-    "mission-#{order_id}-#{date.to_i.to_s(36)}"
+    "mission-#{order_id}-#{date.strftime('%Y_%m_%d')}"
   end
 
   def convert_user(user)
@@ -308,7 +313,7 @@ class Fleet < DeviceBase
   end
 
   def decode_mission_id(mission_ref)
-    mission_ref.split('-').second
+    mission_ref.split('-')[1, 2]
   end
 
 end

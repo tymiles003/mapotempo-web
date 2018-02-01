@@ -75,8 +75,8 @@ module FleetBase
             stubs << stub_request(:get, url).to_return(status: 200, body: expected_response)
           when :fetch_stops
             planning = plannings(:planning_one)
-            planning_date_hash = planning.date.beginning_of_day.to_i.to_s(36)
-            reference_ids = planning.routes.select(&:vehicle_usage?).collect(&:stops).flatten.collect { |stop| (stop.is_a?(StopVisit) ? "mission-v#{stop.visit_id}-#{planning_date_hash}" : "mission-r#{stop.id}-#{planning_date_hash}") }.uniq
+            planning_date = DateTime.now.strftime('%Y_%m_%d')
+            reference_ids = planning.routes.select(&:vehicle_usage?).collect(&:stops).flatten.collect { |stop| (stop.is_a?(StopVisit) ? "mission-v#{stop.visit_id}-#{planning_date}" : "mission-r#{stop.id}-#{planning_date}") }.uniq
 
             url = FleetService.new(customer: @customer).service.send(:get_missions_url)
             expected_response = {
