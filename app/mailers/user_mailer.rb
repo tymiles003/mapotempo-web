@@ -83,7 +83,7 @@ class UserMailer < ApplicationMailer
   private
 
   def links_parameters(name, locale = :fr)
-    Rails.application.config.automation[:parameters][name.to_sym][locale.to_sym]
+    Rails.application.config.automation[:parameters][name.to_sym][locale.to_sym] || Rails.application.config.automation[:parameters][name.to_sym][:en]
   end
 
   def contact_url(user, locale)
