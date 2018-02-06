@@ -21,11 +21,6 @@ class UserTest < ActiveSupport::TestCase
     assert user.valid?
   end
 
-  test 'shouldn\t be valid on wrong locale' do
-    user = User.create(user_hash(customers(:customer_one), 'ee'))
-    assert_not user.valid?
-  end
-
   test 'should reset device attributes on duplication' do
     u = users(:user_one)
     customer_dopple = u.customer.duplicate

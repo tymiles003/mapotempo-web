@@ -35,7 +35,6 @@ class User < ApplicationRecord
 
   validates :customer, presence: true, unless: :admin?
   validates :layer, presence: true
-  validates :locale, length: { is: 2 }, format: { with: /(^fr$)|(^en$)/ }, if: -> (user) { user.locale.present? }
 
   attr_accessor :send_email
 
