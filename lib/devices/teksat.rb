@@ -58,7 +58,7 @@ class Teksat < DeviceBase
   end
 
   def list_devices(customer)
-    response = RestClient.get get_vehicles_url(customer)
+    response = rest_client_get(customer)
     if response.code == 200
       Nokogiri::XML(response).xpath('//vehicle').map do |item|
         { id: item['id'], text: '%s %s - %s' % [item['brand'], item['type'], item['code']] }
@@ -66,6 +66,9 @@ class Teksat < DeviceBase
     else
       raise DeviceServiceError.new('Teksat: %s' % [I18n.t('errors.teksat.list')])
     end
+  # Factorise the code in another method
+  rescue RestClient::RequestTimeout, Errno::ECONNREFUSED, SocketError
+    raise DeviceServiceError.new('Teksat: %s' % [I18n.t('errors.teksat.list')])
   end
 
   def send_route(customer, route, _options = {})
@@ -156,4 +159,11 @@ class Teksat < DeviceBase
       query: options.merge(custID: customer.devices[:teksat][:teksat_customer_id], tck: ticket_id)
     ).to_s
   end
+
+  def rest_client_get(customer)
+    RestClient.get get_vehicles_url(customer)
+  rescue RestClient::RequestTimeout, Errno::ECONNREFUSED, SocketError
+    raise DeviceServiceError.new("Fleet: #{I18n.t('errors.fleet.timeout')}")
+  end
+
 end

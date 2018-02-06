@@ -65,4 +65,32 @@ module PlanningsHelper
       unit[1]
     }
   end
+
+  def devices(customer)
+    devices = {}
+    devices_services = {
+      fleet: FleetService.new(customer:customer),
+      alyacom: AlyacomService.new(customer: customer),
+      masternaut: MasternautService.new(customer: customer),
+      teksat: TeksatService.new(customer: customer),
+      tomtom: TomtomService.new(customer: customer),
+      trimble: TrimbleService.new(customer: customer),
+      suivi_de_flotte: SuiviDeFlotteService.new(customer: customer),
+      notico: NoticoService.new(customer: customer),
+      praxedo: PraxedoService.new(customer: customer)
+    }
+
+    devices_services.each do |key, device|
+      next unless device.respond_to?(:list_devices) && customer.devices.has_key?(key)
+      begin
+        list = device.list_devices
+        definition_key = device.definition[:forms][:vehicle].keys.first
+        devices[definition_key] = list unless list.empty?
+      rescue DeviceServiceError => e
+        Rails.logger.info(e)
+      end
+    end
+    devices
+  end
+
 end

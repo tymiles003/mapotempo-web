@@ -19,7 +19,7 @@ class FleetService < DeviceService
   def list_devices
     if customer.devices[service_name] && customer.devices[:fleet][:user]
       with_cache [:list_devices, service_name, customer.id, customer.devices[:fleet][:user]] do
-        service.list_vehicles(customer)
+        service.list_devices(customer)
       end
     else
       []
@@ -29,7 +29,7 @@ class FleetService < DeviceService
   def list_vehicles(params)
     if (customer.devices[service_name] && customer.devices[:fleet][:user]) || (params && params[:user])
       with_cache [:list_vehicles, service_name, customer.id, customer.devices[:fleet][:user]] do
-        service.list_vehicles(customer, params)
+        service.list_devices(customer, params)
       end
     else
       []

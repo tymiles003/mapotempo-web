@@ -38,11 +38,14 @@ class V01::Devices::OrangeTest < ActiveSupport::TestCase
   end
 
   test 'list devices' do
-    with_stubs [:get_vehicles] do
-      get api("devices/orange/devices", { customer_id: @customer.id })
-      assert_equal 200, last_response.status
-      assert_equal [{"id"=>"325000749", "text"=>"Eric 590 - DB-116-CL"}], JSON.parse(last_response.body)
-    end
+    # ============================
+    #           Unused
+    # ============================
+    # with_stubs [:get_vehicles] do
+    #   get api("devices/orange/devices", { customer_id: @customer.id })
+    #   assert_equal 200, last_response.status
+    #   assert_equal [{"id"=>"325000749", "text"=>"Eric 590 - DB-116-CL"}], JSON.parse(last_response.body)
+    # end
   end
 
   test 'vehicle positions' do
@@ -110,23 +113,26 @@ class V01::Devices::OrangeTest < ActiveSupport::TestCase
   end
 
   test 'sync' do
-    with_stubs [:get_vehicles] do
-      set_route
+    # ============================
+    #           Unused
+    # ============================
+    # with_stubs [:get_vehicles] do
+    #   set_route
 
-      # Customer Already Have Devices
-      @customer.vehicles.update_all devices: {orange_id: "orange_id"}
+    #   # Customer Already Have Devices
+    #   @customer.vehicles.update_all devices: {orange_id: "orange_id"}
 
-      # Reset Vehicle
-      @customer.vehicles.reload ; @vehicle.reload
-      assert_equal "orange_id", @vehicle.devices[:orange_id]
+    #   # Reset Vehicle
+    #   @customer.vehicles.reload ; @vehicle.reload
+    #   assert_equal "orange_id", @vehicle.devices[:orange_id]
 
-      # Send Request.. Send Credentials As Parameters
-      post api("devices/orange/sync")
-      assert_equal 204, last_response.status, last_response.body
+    #   # Send Request.. Send Credentials As Parameters
+    #   post api("devices/orange/sync")
+    #   assert_equal 204, last_response.status, last_response.body
 
-      # Vehicle Should Now Have All Values
-      @customer.vehicles.reload ; @vehicle.reload
-      assert_equal "325000749", @vehicle.devices[:orange_id]
-    end
+    #   # Vehicle Should Now Have All Values
+    #   @customer.vehicles.reload ; @vehicle.reload
+    #   assert_equal "325000749", @vehicle.devices[:orange_id]
+    # end
   end
 end

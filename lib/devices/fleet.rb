@@ -60,7 +60,7 @@ class Fleet < DeviceBase
     raise DeviceServiceError.new("Fleet: #{I18n.t('errors.fleet.invalid_account')}")
   end
 
-  def list_vehicles(customer, _params = {})
+  def list_devices(customer, _params = {})
     response = rest_client_get(get_users_url(with_vehicle: true), customer.devices[:fleet][:api_key])
     data = JSON.parse(response.body)
 
@@ -288,7 +288,7 @@ class Fleet < DeviceBase
       url,
       { content_type: :json, accept: :json, Authorization: "Token token=#{api_key}" }
     )
-  rescue RestClient::RequestTimeout
+  rescue RestClient::RequestTimeout, Errno::ECONNREFUSED, SocketError
     raise DeviceServiceError.new("Fleet: #{I18n.t('errors.fleet.timeout')}")
   end
 

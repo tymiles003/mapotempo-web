@@ -51,4 +51,19 @@ module RoutesHelper
       end
     }
   end
+
+  def route_devices(devices, route)
+    route_devices_hash = {}
+    devices_route = route.vehicle_usage.vehicle.devices
+
+    devices_route.each do |key, value|
+      if devices.has_key?(key)
+        match_device = devices[key].select{ |dv| dv[:id] == value }.first
+        route_devices_hash[key] = match_device unless match_device.empty?
+      else
+        route_devices_hash[key] = value
+      end
+    end
+    route_devices_hash
+  end
 end

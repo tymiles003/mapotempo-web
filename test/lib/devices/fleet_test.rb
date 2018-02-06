@@ -46,7 +46,7 @@ class FleetTest < ActionController::TestCase
 
   test 'should get list of vehicles' do
     with_stubs [:get_users_url] do
-      response = @service.list_vehicles(@customer)
+      response = @service.list_devices(@customer)
       assert_kind_of Array, response
       assert response.all? { |v| v[:id] && v[:text] }
     end

@@ -65,7 +65,7 @@
             {{#fleet}}
               <div class="dropdown-spacing">
                 {{#i18n}}plannings.edit.dialog.fleet.title{{/i18n}} :
-                {{#devices.fleet_user}} {{devices.fleet_user}} {{/devices.fleet_user}}
+                {{#devices.fleet_user}} {{devices.fleet_user.text}} {{/devices.fleet_user}}
               </div>
               <li class="link device-operation" data-service="fleet" data-operation="send" data-route-id="{{route_id}}">
                 <i class="fa fa-mobile fa-rotate-90 fa-fw"></i>
@@ -80,7 +80,7 @@
             {{#tomtom}}
               <div class="dropdown-spacing">
                 {{#i18n}}plannings.edit.dialog.tomtom.title{{/i18n}} :
-                {{#devices.tomtom_id}} {{devices.tomtom_id}} {{/devices.tomtom_id}}
+                {{#devices.tomtom_id}} {{devices.tomtom_id.text}} {{/devices.tomtom_id}}
               </div>
               <li class="link device-operation" data-service="tomtom" data-operation="send" data-type="orders" data-route-id="{{route_id}}">
                   <i class="fa fa-mobile fa-rotate-90 fa-fw"></i>
@@ -99,7 +99,7 @@
             {{#teksat}}
               <div class="dropdown-spacing">
                   {{#i18n}}plannings.edit.dialog.teksat.title{{/i18n}} :
-                  {{#devices.teksat_id}} {{devices.teksat_id}} {{/devices.teksat_id}}
+                  {{#devices.teksat_id}} {{devices.teksat_id.text}} {{/devices.teksat_id}}
               </div>
               <li class="link device-operation" data-service="teksat" data-operation="send" data-route-id="{{route_id}}">
                   <i class="fa fa-mobile fa-rotate-90 fa-fw"></i>
@@ -114,7 +114,7 @@
             {{#orange}}
               <div class="dropdown-spacing">
                 {{#i18n}}plannings.edit.dialog.orange.title{{/i18n}} :
-                {{#devices.orange_id}} {{devices.orange_id}} {{/devices.orange_id}}
+                {{#devices.orange_id}} {{devices.orange_id.text}} {{/devices.orange_id}}
               </div>
               <li class="link device-operation" data-service="orange" data-operation="send" data-route-id="{{route_id}}">
                 <i class="fa fa-mobile fa-rotate-90 fa-fw"></i>
@@ -128,8 +128,8 @@
             {{/orange}}
             {{#masternaut}}
               <div class="dropdown-spacing">
-                {{#i18n}}plannings.edit.dialog.masternaut.title{{/i18n}} :
-                {{#devices.masternaut_ref}} {{devices.masternaut_ref}} {{/devices.masternaut_ref}}
+                {{#i18n}}plannings.edit.dialog.orange.title{{/i18n}} :
+                {{#devices.masternaut_ref}} {{devices.masternaut_ref.text}} {{/devices.masternaut_ref}}
               </div>
               <li class="link device-operation" data-service="masternaut" data-operation="send" data-route-id="{{route_id}}">
                 <i class="fa fa-mobile fa-rotate-90 fa-fw"></i>
@@ -146,8 +146,8 @@
             {{/alyacom}}
             {{#trimble}}
               <div class="dropdown-spacing">
-                {{#i18n}}plannings.edit.dialog.trimble.title{{/i18n}} :
-                {{#devices.trimble_ref}} {{devices.trimble_ref}} {{/devices.trimble_ref}}
+                {{#i18n}}plannings.edit.dialog.orange.title{{/i18n}} :
+                {{#devices.trimble_ref}} {{devices.trimble_ref.text}} {{/devices.trimble_ref}}
               </div>
               <li class="link device-operation" data-service="trimble" data-operation="send" data-route-id="{{route_id}}">
                   <i class="fa fa-mobile fa-rotate-90 fa-fw"></i>
@@ -161,8 +161,8 @@
             {{/trimble}}
             {{#notico}}
               <div class="dropdown-spacing">
-                {{#i18n}}plannings.edit.dialog.trimble.title{{/i18n}} :
-                {{#devices.agent_id}} {{devices.agent_id}} {{/devices.agent_id}}
+                {{#i18n}}plannings.edit.dialog.orange.title{{/i18n}} :
+                {{#devices.agent_id}} {{devices.agent_id.text}} {{/devices.agent_id}}
               </div>
               <li class="link device-operation" data-service="notico" data-operation="send" data-route-id="{{route_id}}">
                   <i class="fa fa-mobile fa-rotate-90 fa-fw"></i>
@@ -176,8 +176,8 @@
             {{/notico}}
             {{#praxedo}}
               <div class="dropdown-spacing">
-                {{#i18n}}plannings.edit.dialog.praxedo.title{{/i18n}} :
-                {{#devices.praxedo_agent_id}} {{devices.praxedo_agent_id}} {{/devices.praxedo_agent_id}}
+                {{#i18n}}plannings.edit.dialog.orange.title{{/i18n}} :
+                {{#devices.praxedo_agent_id}} {{devices.praxedo_agent_id.text}} {{/devices.praxedo_agent_id}}
               </div>
               <li class="link device-operation" data-service="praxedo" data-operation="send" data-route-id="{{route_id}}">
                   <i class="fa fa-mobile fa-rotate-90 fa-fw"></i>

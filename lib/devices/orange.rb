@@ -43,22 +43,27 @@ class Orange < DeviceBase
     send_request list_operations(nil, { auth: params.slice(:user, :password) })
   end
 
-  def list_devices(customer, params)
-    options = {}
-    options.merge!(auth: params.slice(:user, :password)) if !params.blank?
-    response = send_request get_vehicles(customer, options)
-    if response.code.to_i == 200
-      vehicle_infos = []
-      Nokogiri::XML(response.body).xpath('//vehicle').each_with_object({}) do |item, hash|
-        item.children.select(&:element?).map{ |node| hash[node.name] = node.inner_html }
-        vehicle_infos << hash
-      end
-      vehicle_infos.map do |item|
-        { id: item['esht'], text: '%s - %s' % [item['vdes'], item['vreg']] }
-      end
-    else
-      raise DeviceServiceError.new('Orange: %s' % [I18n.t('errors.orange.list')])
-    end
+  def list_devices(customer, params = {})
+    # ===============
+    #     Unused
+    # ===============
+    
+    # options = {}
+    # options.merge!(auth: params.slice(:user, :password)) if !params.blank?
+    # response = send_request get_vehicles(customer, options)
+    # if response.code.to_i == 200
+    #   vehicle_infos = []
+    #   Nokogiri::XML(response.body).xpath('//vehicle').each_with_object({}) do |item, hash|
+    #     item.children.select(&:element?).map{ |node| hash[node.name] = node.inner_html }
+    #     vehicle_infos << hash
+    #   end
+    #   vehicle_infos.map do |item|
+    #     { id: item['esht'], text: '%s - %s' % [item['vdes'], item['vreg']] }
+    #   end
+    # else
+    #   raise DeviceServiceError.new('Orange: %s' % [I18n.t('errors.orange.list')])
+    # end
+    []
   end
 
   def send_route(customer, route, _options = {})

@@ -27,7 +27,7 @@ if route.vehicle_usage_id
   json.color route.color || route.vehicle_usage.vehicle.color
   json.contact_email route.vehicle_usage.vehicle.contact_email if route.vehicle_usage.vehicle.contact_email
   json.vehicle_usage_id route.vehicle_usage.id
-  json.devices route.vehicle_usage.vehicle.devices
+  json.devices route_devices(list_devices, route)
   json.vehicle_id route.vehicle_usage.vehicle.id
   if route.drive_time != 0 && !route.drive_time.nil?
     json.route_averages do
