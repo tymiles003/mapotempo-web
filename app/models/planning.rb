@@ -216,7 +216,7 @@ class Planning < ApplicationRecord
 
   # Available options:
   # out_of_zone (true by default)
-  # active_only (true by default, only for for prefered_route_and_index)
+  # active_only (true by default, only for prefered_route_and_index)
   # max_time
   # max_distance
   def automatic_insert(stop, options = {})
@@ -636,6 +636,7 @@ class Planning < ApplicationRecord
   def prefered_route_and_index(available_routes, stop, options = {})
     options[:active_only] = true if options[:active_only].nil?
     cache_sum_out_of_window = Hash.new{ |h, k| h[k] = k.sum_out_of_window }
+    tmp_routes = {}
 
     by_distance = available_routes.flat_map { |route|
       stops = route.stops.select { |s| (options[:active_only] ? s.active? : true) && s.position? }
@@ -657,11 +658,12 @@ class Planning < ApplicationRecord
         nullify :planning_id
       end
 
-      r = ri[0].amoeba_dup
+      tmp_routes[ri[0].id] = ri[0].amoeba_dup if !tmp_routes[ri[0].id]
+      r = tmp_routes[ri[0].id]
       if stop.is_a?(StopVisit)
         r.add(stop.visit, ri[1], true)
       else
-        r.add_rest(true)
+        r.add_or_update_rest(true)
       end
       r.compute(no_geojson: true, no_quantities: true)
 
@@ -669,6 +671,9 @@ class Planning < ApplicationRecord
       ri[2] = ((r.end - r.start) - (ri[0].end && ri[0].start ? ri[0].end - ri[0].start : 0)) + (r.sum_out_of_window - cache_sum_out_of_window[ri[0]])
       # Delta distance
       ri[3] = r.distance - ri[0].distance
+
+      r.remove_visit(stop.visit) if stop.is_a?(StopVisit)
+
       # Return ri with time and distance added
       ri
     }.select { |ri|
