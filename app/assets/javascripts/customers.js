@@ -116,39 +116,6 @@ var customers_edit = function(params) {
     default_password: Math.random().toString(36).slice(-8)
   }));
 
-  // Create all device users on click, if vehicles has email
-  $('#create-user-device').on('click', function(event) {
-    event.preventDefault();
-
-    $.ajax({
-      type: 'GET',
-      url: '/api/0.1/devices/fleet/create_drivers.json',
-      data: {
-        customer_id: params.customer_id
-      },
-      dataType: 'json',
-      beforeSend: beforeSendWaiting,
-      success: function(data) {
-        if (data.error) {
-          stickyError(data.error);
-          return;
-        }
-
-        var drivers = ['Fleet utilisateurs créés: '];
-        data.map(function (driver) {
-          driver = JSON.parse(driver);
-          drivers.push(driver.user.email);
-        });
-
-        notice(drivers.join('\r\n'));
-      },
-      error: function(error) {
-        stickyError(error.statusText);
-      },
-      complete: completeWaiting
-    });
-  });
-
   $('#customer_end_subscription').datepicker({
     autoclose: true,
     calendarWeeks: true,
@@ -299,6 +266,70 @@ var devicesObserveCustomer = (function() {
             }
           });
         }
+      });
+
+      // Create company with mobile users for each vehicle with email
+      $('#create-customer-device').on('click', function(event) {
+        event.preventDefault();
+
+        $.ajax({
+          type: 'GET',
+          url: '/api/0.1/devices/fleet/create_company.json',
+          data: {
+            customer_id: params.customer_id
+          },
+          dataType: 'json',
+          beforeSend: beforeSendWaiting,
+          success: function(data) {
+            if (!data) {
+              return;
+            } else if (data.error) {
+              stickyError(data.error);
+              return;
+            }
+
+            location.reload();
+          },
+          error: function(error) {
+            stickyError(error.statusText);
+          },
+          complete: completeWaiting
+        });
+      });
+
+      // Create mobile users for each vehicle with user
+      $('#create-user-device').on('click', function(event) {
+        event.preventDefault();
+
+        $.ajax({
+          type: 'GET',
+          url: '/api/0.1/devices/fleet/create_drivers.json',
+          data: {
+            customer_id: params.customer_id
+          },
+          dataType: 'json',
+          beforeSend: beforeSendWaiting,
+          success: function(data) {
+            if (!data) {
+              return;
+            } else if (data.error) {
+              stickyError(data.error);
+              return;
+            }
+
+            var drivers = [I18n.t('customers.form.devices.fleet.drivers_created')];
+            data.map(function (driver) {
+              driver = JSON.parse(driver);
+              drivers.push(driver.user.email);
+            });
+
+            notice(drivers.join('\r\n'));
+          },
+          error: function(error) {
+            stickyError(error.statusText);
+          },
+          complete: completeWaiting
+        });
       });
     }
 

@@ -718,7 +718,8 @@ en:
         success: E-Mail sent to user successfully
     vehicles:
       devices:
-        create_drivers: 'Fleet: Create mobile drivers'
+        create_company: 'Fleet: Create company with mobile drivers'
+        create_drivers: 'Fleet: Update mobile drivers'
   customers:
     duplicate:
       success: Customer account duplicated successfully

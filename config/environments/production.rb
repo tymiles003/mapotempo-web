@@ -142,6 +142,7 @@ Rails.application.configure do
   )
 
   config.devices.fleet.api_url = 'https://fleet.mapotempo.com'
+  config.devices.fleet.admin_api_key = ENV['DEVICE_FLEET_ADMIN_API_KEY']
   config.devices.alyacom.api_url = 'http://app.alyacom.fr/ws'
   config.devices.masternaut.api_url = 'http://gc.api.geonaut.masternaut.com/MasterWS/services'
   config.devices.orange.api_url = 'https://m2m-services.ft-dm.com'

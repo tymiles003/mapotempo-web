@@ -16,7 +16,7 @@
 # <http://www.gnu.org/licenses/agpl.html>
 #
 class DeviceBase
-  attr_accessor :api_url, :api_key
+  attr_accessor :api_url, :api_key, :admin_api_key
 
   def planning_date(planning)
     planning.date ? planning.date.beginning_of_day : Time.zone.now.beginning_of_day

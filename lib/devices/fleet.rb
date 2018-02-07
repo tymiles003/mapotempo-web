@@ -31,6 +31,8 @@ class Fleet < DeviceBase
       label_small: 'Fleet',
       route_operations: [:send, :clear],
       has_sync: true,
+      has_create_device: true,
+      has_create_user: true,
       help: true,
       forms: {
         settings: {
@@ -77,11 +79,52 @@ class Fleet < DeviceBase
     raise DeviceServiceError.new("Fleet: #{I18n.t('errors.fleet.list')}")
   end
 
+  def create_company(customer)
+    admin_api_key = Mapotempo::Application.config.devices.fleet.admin_api_key
+    raise DeviceServiceError.new("Fleet: #{I18n.t('errors.fleet.create_company.no_admin_api_key')}") unless admin_api_key
+
+    begin
+      # Create company with admin user
+      user_email = customer.users.first.email.gsub(/@/, '+admin@')
+      company_params = {
+        name: customer.name,
+        user_email: user_email
+      }
+
+      company = rest_client_post(set_company_url, admin_api_key, company_params)
+      company = JSON.parse(company)['company']
+
+      # Associate to customer
+      customer.update!(devices: {
+        fleet: {
+          enable: true,
+          user: user_email,
+          api_key: company['admin_user']['api_key']
+        }
+      })
+
+      self.api_key = company['admin_user']['api_key']
+
+      return company
+    rescue RestClient::UnprocessableEntity => e
+      error = JSON.parse(e.response)
+      if error['name'] && error['name'][0] == 'has already been taken'
+        raise DeviceServiceError.new("Fleet: #{I18n.t('errors.fleet.create_company.already_created')}")
+      else
+        raise DeviceServiceError.new("Fleet: #{I18n.t('errors.fleet.create_company.error')}")
+      end
+    rescue RestClient::Unauthorized, RestClient::InternalServerError
+      raise DeviceServiceError.new("Fleet: #{I18n.t('errors.fleet.create_company.error')}")
+    end
+  end
+
   def create_drivers(customer)
     api_key = customer.devices[:fleet][:api_key]
     raise DeviceServiceError.new("Fleet: #{I18n.t('errors.fleet.create_drivers.no_api_key')}") unless api_key
 
-    users = customer.vehicles.select(&:contact_email).map do |vehicle|
+    vehicles_with_email = customer.vehicles.select(&:contact_email)
+
+    users = vehicles_with_email.map do |vehicle|
       driver_params = {
         name: vehicle.name,
         email: vehicle.contact_email,
@@ -90,13 +133,15 @@ class Fleet < DeviceBase
       }
 
       begin
-        rest_client_post(set_user_url, api_key, driver_params)
+        response = rest_client_post(set_user_url, api_key, driver_params)
+        vehicle.update! devices: {fleet_user: JSON.parse(response)['user']['sync_user']}
+        response
       rescue RestClient::UnprocessableEntity
         nil
       end
     end.compact
 
-    if users.empty?
+    if users.empty? && !vehicles_with_email.empty?
       raise DeviceServiceError.new("Fleet: #{I18n.t('errors.fleet.create_drivers.already_created')}")
     else
       users
@@ -268,6 +313,10 @@ class Fleet < DeviceBase
     )
   rescue RestClient::RequestTimeout
     raise DeviceServiceError.new("Fleet: #{I18n.t('errors.fleet.timeout')}")
+  end
+
+  def set_company_url
+    URI.encode("#{api_url}/api/0.1/companies")
   end
 
   def get_users_url(params = {})

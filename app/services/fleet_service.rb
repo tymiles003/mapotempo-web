@@ -44,11 +44,15 @@ class FleetService < DeviceService
     end
   end
 
+  def create_company
+    if customer.devices[service_name]
+      service.create_company(customer)
+    end
+  end
+
   def create_drivers
     if customer.devices[service_name] && customer.devices[:fleet][:user]
-      with_cache [:create_drivers, service_name, customer.id, customer.devices[:fleet][:user]] do
-        service.create_drivers(customer)
-      end
+      service.create_drivers(customer)
     end
   end
 end

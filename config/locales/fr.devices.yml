@@ -93,8 +93,12 @@ fr:
     fleet:
       invalid_account: Utilisateur invalide (non existant)
       list: Impossible de lister les appareils
+      create_company:
+        no_admin_api_key: Pas de clé admin API Fleet renseignée
+        already_created: Compagnie déjà existante
+        error: Impossible de créer la compagnie
       create_drivers:
-        no_api_key: Pas de clé API Fleet renseigné pour ce compte client
+        no_api_key: Pas de clé API Fleet renseignée pour ce compte client
         already_created: Utilisateurs déjà existants
       get_vehicles_pos: Impossible de lister la position des véhicules
       fetch_stops: Impossible de récupérer la liste des missions
@@ -162,6 +166,8 @@ fr:
             pour le dernier plan modifié."
         fleet:
           help: "Permet d'envoyer les tournées vers Mapotempo fleet."
+          company_created: "Fleet compagnie créée :"
+          drivers_created: "Fleet utilisateurs créés :"
         alyacom:
           help: "Permet d'envoyer les tournées vers l'application AlyaCom."
         tomtom:

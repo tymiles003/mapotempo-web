@@ -724,7 +724,8 @@ fr:
         success: Email envoyé à l'utilisateur avec succès
     vehicles:
       devices:
-        create_drivers: 'Fleet: Créer les utilisateurs mobiles'
+        create_company: 'Fleet: Créer la compagnie avec les utilisateurs'
+        create_drivers: 'Fleet: Mettre à jour les utilisateurs mobiles'
   customers:
     duplicate:
       success: Compte client dupliqué avec succès

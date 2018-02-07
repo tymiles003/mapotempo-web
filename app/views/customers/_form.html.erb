@@ -450,6 +450,14 @@
                     <%= t 'customers.form.devices.sync.action' %>
                   </div>
                   <% end %>
+                  <% if current_user.admin? %>
+                    <% if definition[:has_create_device] %>
+                      <%= link_to '#', id: 'create-customer-device',  class: "btn btn-default btn-sm", remote: true do %><i class="fa fa-plus-square fa-fw"></i> <%= t('admin.vehicles.devices.create_company') %><% end %>
+                    <% end %>
+                    <% if definition[:has_create_user] %>
+                      <%= link_to '#', id: 'create-user-device',  class: "btn btn-default btn-sm", remote: true do %><i class="fa fa-user-plus fa-fw"></i> <%= t('admin.vehicles.devices.create_drivers') %><% end %>
+                    <% end %>
+                  <% end %>
                 </div>
               </div>
             </div>

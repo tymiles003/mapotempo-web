@@ -79,9 +79,17 @@ class V01::Devices::Fleet < Grape::API
         status 204
       end
 
+      desc 'Create company with drivers',
+           detail: 'Create company with a driver by vehicle',
+           nickname: 'deviceFleetCreateCompanyAndDrivers'
+      get '/create_company' do
+        service.create_company
+        service.create_drivers
+      end
+
       desc 'Create drivers',
            detail: 'Create driver by vehicle',
-           nickname: 'createDrivers'
+           nickname: 'deviceFleetCreateDrivers'
       get '/create_drivers' do
         service.create_drivers
       end

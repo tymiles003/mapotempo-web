@@ -93,6 +93,10 @@ en:
     fleet:
       invalid_account: User invalid (does not exist)
       list: Can't list devices
+      create_company:
+        no_admin_api_key: No Fleet admin API key given
+        already_created: Company already created
+        error: Cannot create company
       create_drivers:
         no_api_key: No Fleet API key given for this customer
         already_created: Users already created
@@ -160,6 +164,8 @@ en:
             for the last updated plan."
         fleet:
           help: "Allows sending routes to Mapotempo fleet."
+          company_created: "Fleet company created:"
+          drivers_created: "Fleet drivers created:"
         alyacom:
           help: "Allows sending routes to AlyaCom application."
         tomtom:
