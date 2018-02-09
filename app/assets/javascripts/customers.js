@@ -245,93 +245,7 @@ var devicesObserveCustomer = (function() {
         clearCallback();
         checkCredentialsWithDelay();
       });
-
-      // Sync
-      $('.' + config.name + '-api-sync').on('click', function(e) {
-        if (confirm(I18n.t('customers.form.devices.sync.confirm'))) {
-          $.ajax({
-            url: '/api/0.1/devices/' + config.name + '/sync.json',
-            type: 'POST',
-            data: $.extend(_userCredential(), {
-              customer_id: params.customer_id
-            }),
-            beforeSend: function(jqXHR, settings) {
-              beforeSendWaiting();
-            },
-            complete: function(jqXHR, textStatus) {
-              completeWaiting();
-            },
-            success: function(data, textStatus, jqXHR) {
-              alert(I18n.t('customers.form.devices.sync.complete'));
-            }
-          });
-        }
-      });
-
-      // Create company with mobile users for each vehicle with email
-      $('#create-customer-device').on('click', function(event) {
-        event.preventDefault();
-
-        $.ajax({
-          type: 'GET',
-          url: '/api/0.1/devices/fleet/create_company.json',
-          data: {
-            customer_id: params.customer_id
-          },
-          dataType: 'json',
-          beforeSend: beforeSendWaiting,
-          success: function(data) {
-            if (!data) {
-              return;
-            } else if (data.error) {
-              stickyError(data.error);
-              return;
-            }
-
-            location.reload();
-          },
-          error: function(error) {
-            stickyError(error.statusText);
-          },
-          complete: completeWaiting
-        });
-      });
-
-      // Create mobile users for each vehicle with user
-      $('#create-user-device').on('click', function(event) {
-        event.preventDefault();
-
-        $.ajax({
-          type: 'GET',
-          url: '/api/0.1/devices/fleet/create_drivers.json',
-          data: {
-            customer_id: params.customer_id
-          },
-          dataType: 'json',
-          beforeSend: beforeSendWaiting,
-          success: function(data) {
-            if (!data) {
-              return;
-            } else if (data.error) {
-              stickyError(data.error);
-              return;
-            }
-
-            var drivers = [I18n.t('customers.form.devices.fleet.drivers_created')];
-            data.map(function (driver) {
-              driver = JSON.parse(driver);
-              drivers.push(driver.user.email);
-            });
-
-            notice(drivers.join('\r\n'));
-          },
-          error: function(error) {
-            stickyError(error.statusText);
-          },
-          complete: completeWaiting
-        });
-      });
-    }
+    };
 
     /* Password Inputs: set fake password  (input view fake) */
     if ("password" in config) {
@@ -339,7 +253,29 @@ var devicesObserveCustomer = (function() {
       if ($(password_field).val() == '') {
         $(password_field).val(params.default_password);
       }
-    };
+    }
+
+    // Sync
+    $('.' + config.name + '-api-sync').on('click', function(e) {
+      if (confirm(I18n.t('customers.form.devices.sync.confirm'))) {
+        $.ajax({
+          url: '/api/0.1/devices/' + config.name + '/sync.json',
+          type: 'POST',
+          data: $.extend(_userCredential(), {
+            customer_id: params.customer_id
+          }),
+          beforeSend: function(jqXHR, settings) {
+            beforeSendWaiting();
+          },
+          complete: function(jqXHR, textStatus) {
+            completeWaiting();
+          },
+          success: function(data, textStatus, jqXHR) {
+            alert(I18n.t('customers.form.devices.sync.complete'));
+          }
+        });
+      }
+    });
 
     // Check credantial for current device config
     // Observe Widget if Customer has Service Enabled or Admin (New Customer)
@@ -365,7 +301,79 @@ var devicesObserveCustomer = (function() {
       config.name = deviceName;
       _devicesInitCustomer('customer_devices', config, params);
     });
-  }
+
+    // Create company with mobile users for each vehicle with email
+    $('#create-customer-device').on('click', function(event) {
+      event.preventDefault();
+      $('#create-customer-device').attr('disabled', true);
+
+      $.ajax({
+        type: 'GET',
+        url: '/api/0.1/devices/fleet/create_company.json',
+        data: {
+          customer_id: params.customer_id
+        },
+        dataType: 'json',
+        beforeSend: beforeSendWaiting,
+        success: function(data) {
+          $('#create-customer-device').attr('disabled', false);
+
+          if (!data) {
+            return;
+          } else if (data.error) {
+            stickyError(data.error);
+            return;
+          }
+
+          location.reload();
+        },
+        error: function(error) {
+          $('#create-customer-device').attr('disabled', false);
+          stickyError(error.statusText + ' : ' + error.responseJSON.message);
+        },
+        complete: completeWaiting
+      });
+    });
+
+    // Create mobile users for each vehicle with user
+    $('#create-user-device').on('click', function(event) {
+      event.preventDefault();
+      $('#create-user-device').attr('disabled', true);
+
+      $.ajax({
+        type: 'GET',
+        url: '/api/0.1/devices/fleet/create_drivers.json',
+        data: {
+          customer_id: params.customer_id
+        },
+        dataType: 'json',
+        beforeSend: beforeSendWaiting,
+        success: function(data) {
+          $('#create-user-device').attr('disabled', false);
+
+          if (!data) {
+            return;
+          } else if (data.error) {
+            stickyError(data.error);
+            return;
+          }
+
+          var drivers = [I18n.t('customers.form.devices.fleet.drivers_created')];
+          data.map(function (driver) {
+            driver = JSON.parse(driver);
+            drivers.push(driver.user.email);
+          });
+
+          notice(drivers.join('\r\n'));
+        },
+        error: function(error) {
+          $('#create-user-device').attr('disabled', false);
+          stickyError(error.statusText);
+        },
+        complete: completeWaiting
+      });
+    });
+  };
 
   return { init: initialize };
 })();
