@@ -95,13 +95,13 @@ class Fleet < DeviceBase
       company = JSON.parse(company)['company']
 
       # Associate to customer
-      customer.update!(devices: {
+      customer.update!(devices: customer.devices.merge({
         fleet: {
           enable: true,
           user: user_email,
           api_key: company['admin_user']['api_key']
         }
-      })
+      }))
 
       self.api_key = company['admin_user']['api_key']
 
